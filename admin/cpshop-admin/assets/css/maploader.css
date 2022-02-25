@@ -1,0 +1,18 @@
+/*.maploader {
+    background-image: url('../img/maploading.gif') repeat scroll 0 0;
+    height: 100%;
+    left: 0;
+    margin: auto;
+    top: 0;
+    width: 100%;
+}*/
+
+.maploader {
+    background-image: url('../img/maploading.gif');
+    background-repeat: no-repeat;
+    background-position: center;
+}
+/*.jumbo-banner h1, p {
+    color: #fff;
+    z-index: 999;
+}*/
