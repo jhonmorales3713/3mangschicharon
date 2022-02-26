@@ -1,0 +1,25 @@
+.banner{
+    background-color: lightgray;
+    width: 100%;
+    padding: 20px;
+    height: 150px;    
+}
+
+.header{    
+    background-color: lightgray;    
+    padding: 5px;
+}
+
+.header b{
+    display: inline-block;
+    font-size: 25pt !important;
+    vertical-align: middle;
+}
+
+img.system_logo{
+    width: 120px !important;
+    display: inline-block;
+}
+
+
+
