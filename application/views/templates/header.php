@@ -76,18 +76,21 @@
             header{
                 margin-top:100px;
             }
+            .font-text{
+                color:<?=$primary_color;?> !important;
+            }
         </style>
 </head>
 <nav class="navbar navbar-expand-md navbar-dark fixed-top" style="background-color: <?=$header_bg_color;?> !important;"> <!-- header navigation - put styles here -->
     <?php if(isset($this->session->chapter_id)){ ?>
         <a class="navbar-brand" href="#"><img width="50" height="50" src="<?=base_url('uploads/chapters/chapter_logo/'.$this->session->chapter_logo);?>"><span class="h4" style="margin-left: 10px;">JCI<?php if(isset($_SESSION['chapter'])){echo'  '. $_SESSION['chapter'];} ?></span></a>
     <?php } else { ?>
-        <a class="navbar-brand" href="#"><img width="50" height="50" src="<?=base_url('assets/img/logo.png')?>"><span class="h4" style="margin-left: 10px;"><?=$name?><?php if(isset($_SESSION['chapter'])){echo' - '. $_SESSION['chapter'];} ?></span></a>
+        <a class="navbar-brand font-text" href="#"><img width="50" height="50" src="<?=base_url('assets/img/logo.png')?>"><span class="h4" style="margin-left: 10px;"><?=$name?><?php if(isset($_SESSION['chapter'])){echo' - '. $_SESSION['chapter'];} ?></span></a>
     <?php } ?>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarCollapse">
+    <div class="collapse navbar-collapse " id="navbarCollapse">
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
                 <?php if(isset($_SESSION['chapter_id'])){?>
@@ -96,26 +99,14 @@
                     <!-- <a class="nav-link p-2" href="<?= $home_link ?>" id="landing">Home</a> -->
                 <?php } ?>
             </li>
-            <li class="nav-item">
+            <li class="nav-item font-text">
                 <a class="nav-link p-2" href="<?= base_url('about'); ?>" id="about">About Us</a>
             </li>
             <?php if(!isset($_SESSION['is_logged_in'])){ ?>
-                <li class="nav-item">
-                    <a class="nav-link p-2" href="<?= base_url('chapter/propose'); ?>" id="login">Chapter Application</a>
-                </li>           
                 <li class="nav-item bg-primary rounded">
                     <a class="nav-link p-2 text-white" href="<?= base_url('login'); ?>">Login</a>
                 </li>
             <?php }else{ ?>
-                <li class="nav-item">
-                    <a class="nav-link p-2" href="<?= base_url('events'); ?>" id="events">Events</a>
-                </li>           
-                <li class="nav-item">
-                    <a class="nav-link p-2" href="<?= base_url('members'); ?>" id="member">Members</a>
-                </li>           
-                <li class="nav-item">
-                    <a class="nav-link p-2" href="<?= base_url('EventPropose'); ?>" id="eventpropose">Propose Event</a>
-                </li>           
                 <li class="nav-item dropleft bg-primary rounded">
                     <a class="nav-link p-2 dropdown-toggle text-white form-inline" data-toggle="dropdown" href="#"><?=$_SESSION['username'];?></a>
                     <div class="dropdown-menu dropdown-menu-right">
