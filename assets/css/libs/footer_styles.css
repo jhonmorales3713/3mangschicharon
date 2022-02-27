@@ -1,0 +1,59 @@
+@import url('http://fonts.cdnfonts.com/css/andhika-finta');
+@import url('http://fonts.cdnfonts.com/css/irenyekan');
+
+.footer-nav{    
+    color: #333;
+    background-color: #F5F5F5;
+    font-family: 'IRENYekan', sans-serif !important;
+}
+
+.styled{
+    font-family: 'IRENYekan', sans-serif !important;
+}
+
+.c-name{
+    font-family: 'Andhika Finta', sans-serif !important;
+    font-size: 5rem;
+}
+
+.n-top10{
+    margin-top: -30px !important;
+}
+
+.n-top20{
+    margin-top: -30px !important;
+}
+
+.n-top30{
+    margin-top: -30px !important;
+}
+
+
+
+.no-decor{
+    text-decoration: none !important;
+}
+
+
+/* responsive styles */
+@media only screen and (min-width: 749px) {
+    
+}
+
+@media only screen and (max-width: 748px) {
+    .social-links{
+        text-align: center;
+        padding: 0 !important;
+    }
+    .social-links small, .social-links ul{
+        width: 100%;
+        text-align: center;        
+    }
+    .about-links {        
+        text-align: center;
+        padding: 0 !important;
+    }
+    .about-links small, .about-links ul{
+        text-align: center;
+    }    
+}

@@ -1,0 +1,81 @@
+@keyframes example {
+    0%   {opacity: 0;}
+    25%   {opacity: .25;}
+    50%   {opacity: .5;}
+    100%   {opacity: 1;}
+}
+.gallery-img{
+    padding:10px;
+}
+.gallery-img-animation,.services,.feedback{
+    opacity:0;
+}
+.gallery-img-animation2{
+    animation: fadein 2s;
+    -moz-animation: fadein 2s; /* Firefox */
+    -webkit-animation: fadein 2s; /* Safari and Chrome */
+    -o-animation: fadein 2s; /* Opera */
+    animation-fill-mode: forwards;
+}
+
+.gallery-img-animation3{
+    animation: fadein 0.5s;
+    -moz-animation: fadein 0.5s; /* Firefox */
+    -webkit-animation: fadein 0.5s; /* Safari and Chrome */
+    -o-animation: fadein 0.5s; /* Opera */
+    animation-fill-mode: forwards;
+}
+
+@keyframes fadein {
+    from {
+        opacity:0;
+    }
+    to {
+        opacity:1;
+    }
+}
+@-moz-keyframes fadein { /* Firefox */
+    from {
+        opacity:0;
+    }
+    to {
+        opacity:1;
+    }
+}
+@-webkit-keyframes fadein { /* Safari and Chrome */
+    from {
+        opacity:0;
+    }
+    to {
+        opacity:1;
+    }
+}
+@-o-keyframes fadein { /* Opera */
+    from {
+        opacity:0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .home {
+        margin:20px;
+    }
+    .home-img{
+        padding-right:20px;
+        padding-left:20px;
+    }
+}
+@media screen and (min-width: 1024px) {
+    .gallery-img-animation img{
+        width:200px !important;
+        height:200px!important;
+    }
+}
+.carousel-inner > .item > img,
+.carousel-inner > .item > a > img {
+    width: 70%;
+    margin: auto;
+}

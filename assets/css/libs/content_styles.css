@@ -1,0 +1,118 @@
+@import url('http://fonts.cdnfonts.com/css/andhika-finta');
+@import url('http://fonts.cdnfonts.com/css/real-ohio');
+@import url('http://fonts.cdnfonts.com/css/irenyekan');
+
+html *{
+    font-family: 'IRENYekan', sans-serif;
+}
+
+.package-group{
+    font-family: 'Real Ohio', sans-serif;
+    font-size: 3rem;
+}
+
+/* minimum height for page content is 689px */
+.main-content{
+    min-height: 1200px; /* 689 */
+    padding: 30px;
+}
+
+.a{
+    cursor:  pointer !important;
+}
+
+.b{
+    font-weight: bold !important;
+}
+
+.primary-color{
+    color: #333 !important;
+}
+
+.p5{
+    padding: 10px !important;
+}
+
+.p10{
+    padding: 10px !important;
+}
+
+.p20{
+    padding: 20px !important;
+}
+
+.p30{
+    padding: 30px !important;
+}
+
+.h50{
+    height: 50px !important;
+}
+
+.h60{
+    height: 60px !important;
+}
+
+.h70{
+    height: 70px !important;
+}
+
+.m5{
+    margin: 5px !important;
+}
+
+.m10{
+    margin: 10px !important;
+}
+
+.mt5{
+    margin-top: 5px !important;
+}
+
+.ml5{
+    margin-left: 5px !important;
+}
+
+.hidden{
+    display: none;
+}
+
+.shop_name{
+    font-family: Georgia;
+    font-style: Italic;
+    font-size: 20pt;
+}
+
+.package-img{
+    border-radius: 10px;
+    border: 1px solid gold;
+}
+
+.card-header, .card-footer{
+    background-color: white !important;
+}
+
+.no-decor{
+    text-decoration: none !important;
+}
+
+.breadcrumb{
+    background-color: #fff !important;    
+    padding: 0 !important;
+}
+
+.breadcrumb ol, .breadcrumb li{
+    font-size: 0.8rem !important;
+    padding: 3px !important;
+}
+
+.notes{
+    background-color: rgba(255,223,211, 0.75);
+}
+
+.btn-info{
+    background-color: #D291BC !important;
+}
+.btn-info:hover{
+    background-color: #957DAD !important;
+}

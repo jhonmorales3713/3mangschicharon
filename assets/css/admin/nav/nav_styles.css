@@ -1,0 +1,16 @@
+.admin_header{
+    height: 70px;
+    z-index: 100;    
+    position: fixed;
+    top: 0;
+    background-color: white;
+}
+
+.admin_nav{
+    position: fixed;
+    left: 0;
+    width: 250px;    
+    height: 100% !important;
+    padding-top: 70px
+    background-color: white;
+}

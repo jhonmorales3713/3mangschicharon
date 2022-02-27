@@ -702,17 +702,11 @@ input[readonly] {
 .bc-icons-2 .breadcrumb-item + .breadcrumb-item::before {
     content: none; }
 .bc-icons-2 .breadcrumb-item.active {
-    color: #eeeeee; }
-
-
-
-/*din*/
-.nav-tabs .nav-item .nav-link{
-    color:#000 !important;
+    color: #eeeeee; 
 }
 
-/*rhan*/
-.order_details_card table tr td:first-of-type {
-    font-weight: bold;
-    text-transform: capitalize;
-}
+
+
+
+
+

@@ -50,16 +50,21 @@
         <!-- Place favicon.ico in the root directory -->
         
         <link rel = "icon" href = "<?=base_url('assets/img/favicon.png')?>" type = "image/x-icon">
-        <link rel="shortcut icon" href="<?=base_url('assets/img/favicon.png')?>">
-        <link rel="stylesheet" href="<?=base_url('assets/css/libs/bootstrap.min.css')?>">
+        <link rel="shortcut icon" href="<?=base_url('assets/img/favicon.png')?>">        
         <link rel="stylesheet" href="<?=base_url('assets/css/libs/fontawesome/css/all.css')?>">
         <link rel="stylesheet" href="<?=base_url('assets/css/libs/jquery.toast.css')?>">
         <link rel="stylesheet" href="<?=base_url('assets/css/libs/jquery-ui.css')?>">        
         <link rel="stylesheet" href="<?=base_url();?>assets/css/libs/bootstrap-4.1.3.min.css">
         <link rel="stylesheet" href="<?=base_url();?>assets/css/libs/owl-carousel.min.css">        
-        <link rel="stylesheet" href="<?=base_url('assets/css/libs/header_styles.css')?>">    
-        <script src="<?php echo base_url();?>assets/js/libs/popper.min.js"></script>
-        <title><?=$name.' - '.$tagline;?></title>
+        <link rel="stylesheet" href="<?=base_url('assets/css/libs/header_styles.css')?>">
+        <link rel="stylesheet" href="<?=base_url('assets/css/libs/content_styles.css')?>">
+        <link rel="stylesheet" href="<?=base_url('assets/css/libs/error_styles.css')?>">
+        <script src="<?= base_url();?>assets/js/libs/popper.min.js"></script>
+        <script src="<?= base_url('assets/js/libs/jquery.min.js') ?>"></script>       
+        <script src="<?= base_url('assets/js/libs/helper_functions.js') ?>"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <title>3Mangs Chicharon</title>
         <style>
             @font-face {
                 font-family:  <?=$font_choice;?>;
@@ -76,48 +81,6 @@
             header{
                 margin-top:100px;
             }
-            .font-text{
-                color:<?=$primary_color;?> !important;
-            }
         </style>
 </head>
-<nav class="navbar navbar-expand-md navbar-dark fixed-top" style="background-color: <?=$header_bg_color;?> !important;"> <!-- header navigation - put styles here -->
-    <?php if(isset($this->session->chapter_id)){ ?>
-        <a class="navbar-brand" href="#"><img width="50" height="50" src="<?=base_url('uploads/chapters/chapter_logo/'.$this->session->chapter_logo);?>"><span class="h4" style="margin-left: 10px;">JCI<?php if(isset($_SESSION['chapter'])){echo'  '. $_SESSION['chapter'];} ?></span></a>
-    <?php } else { ?>
-        <a class="navbar-brand font-text" href="#"><img width="50" height="50" src="<?=base_url('assets/img/logo.png')?>"><span class="h4" style="margin-left: 10px;"><?=$name?><?php if(isset($_SESSION['chapter'])){echo' - '. $_SESSION['chapter'];} ?></span></a>
-    <?php } ?>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse " id="navbarCollapse">
-        <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-                <?php if(isset($_SESSION['chapter_id'])){?>
-                    <a class="nav-link p-2" href="<?= 'Chapter?chapter='.$_SESSION["chapter"]; ?>" id="landing">Home</a>
-                <?php }else{?>
-                    <!-- <a class="nav-link p-2" href="<?= $home_link ?>" id="landing">Home</a> -->
-                <?php } ?>
-            </li>
-            <li class="nav-item font-text">
-                <a class="nav-link p-2" href="<?= base_url('about'); ?>" id="about">About Us</a>
-            </li>
-            <?php if(!isset($_SESSION['is_logged_in'])){ ?>
-                <li class="nav-item bg-primary rounded">
-                    <a class="nav-link p-2 text-white" href="<?= base_url('login'); ?>">Login</a>
-                </li>
-            <?php }else{ ?>
-                <li class="nav-item dropleft bg-primary rounded">
-                    <a class="nav-link p-2 dropdown-toggle text-white form-inline" data-toggle="dropdown" href="#"><?=$_SESSION['username'];?></a>
-                    <div class="dropdown-menu dropdown-menu-right">
-                        <a class="dropdown-item" href="<?php echo base_url('members?view='.$_SESSION['id']);?>">Account Profile</a>
-                        <a class="dropdown-item" href="<?php echo base_url('Login')?>">Logout</a>
-                    </div>
-                </li>
-            <?php } ?>
-        </ul>
-    </div>
-</nav>
-<header>
-<!-- Fixed navbar -->
-</header>
+<body data-base_url="<?= base_url(); ?>" style="background-image: url(<?=base_url('assets/img/bg.jpg')?>); background-size: cover;">

@@ -15,6 +15,9 @@ user_guide_src/cilexer/build/*
 user_guide_src/cilexer/dist/*
 user_guide_src/cilexer/pycilexer.egg-info/*
 /vendor/
+/uploads/
+
+.phpintel/
 
 # IDE Files
 #-------------------------
@@ -29,3 +32,16 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 *.sublime-project
 /tests/tests/
 /tests/results/
+
+## Node
+node_modules/
+package-lock.json
+
+## uploads folder
+assets/uploads/*
+
+## test ctrl
+application/controllers/Test.php
+
+.env
+.vscode/
