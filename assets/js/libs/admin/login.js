@@ -8,6 +8,27 @@ $(function(){
 		error: "#f0ad4e"
 	}
 
+	$("#signin").click(function(){
+        var application_form = $("#form-login").serialize(); 
+        var newform=new FormData($("#form-login")[0]);
+        $.ajax({
+        url: base_url+"admin/Login/signin",
+            data: newform,  // what to expect back from the PHP script, if anything       
+            type: 'post',
+            dataType: 'json',
+            contentType:false,
+            cache:false,
+            processData:false,
+            beforeSend:function(data){
+              $('#btnLogin').prop('disabled',true);
+              $.LoadingOverlay("show");
+            },
+            success:function(data){
+                console.log(data);
+                $.LoadingOverlay("hide");
+            }
+        });
+    });
 	function toastMessage(heading, text, icon) {
 
 		$.toast({
@@ -239,7 +260,6 @@ $(function(){
 			}
 		});
 	}
-
 	$("#setpassword-form").submit(function(e){
 		e.preventDefault();
 		var serial = $(this).serialize();
@@ -311,19 +331,17 @@ $(function(){
 		
 	});
 });
-
-$(".password-icon").click(function(){
-	$(".form-control-password").toggleClass("form-control-password--show");
-});
-
-$(".password-show").click(function(){
-	document.getElementById('login-password').type = 'text';
-	document.getElementById('login-password_2').type = 'text';
-})
-$(".password-hide").click(function(){
-	document.getElementById('login-password').type = 'password';
-	document.getElementById('login-password_2').type = 'password';
-})
+  $("#show_hide_password a").on('click', function() {
+    if($('#show_hide_password input').attr("type") == "text"){
+        $('#show_hide_password input').attr('type', 'password');
+        $('#show_hide_password i').addClass( "fa-eye-slash" );
+        $('#show_hide_password i').removeClass( "fa-eye" );
+    }else if($('#show_hide_password input').attr("type") == "password"){
+        $('#show_hide_password input').attr('type', 'text');
+        $('#show_hide_password i').removeClass( "fa-eye-slash" );
+        $('#show_hide_password i').addClass( "fa-eye" );
+    }
+  });
 
 
 	

@@ -6,24 +6,15 @@
     
     $access_nav = $this->session->userdata('access_nav');
 
-    $company_logo = base_url('assets/img/pandabooks.png');
-    $company_logo_small = base_url('assets/img/pandabookslogo.png');
+    $company_logo = base_url('assets/img/logo.png');
+    $company_logo_small = base_url('assets/img/logo.png');
     // avatar
-    $avatar_img = base_url("assets/avatar/cp-panda-only.png");
-    $avatar_file = $this->session->userdata('avatar_file');
-    if (!empty($avatar_file)) {
-        $avatar = base_url(avatar_folder_url() . '/' . $avatar_file);
-        if (file_exists($avatar)) {
-            $avatar_img = $avatar;
-        }
-
-    }
     $primary_color = cs_clients_info()->primary_color;
     $button_radius_size = cs_clients_info()->button_radius_size;
     $button_text_color = cs_clients_info()->button_text_color;
     $button_primary_color = cs_clients_info()->button_primary_color;
     $header_bg_color = cs_clients_info()->header_bg_color;
-    $middle_bg_color = cs_clients_info()->middle_bg_color;
+    $middle_bg_color = cs_clients_info()->header_bg_color;
     $footer_bg_color = cs_clients_info()->footer_bg_color;
     $facebook_link = cs_clients_info()->facebook_link;
     $instagram_link = cs_clients_info()->instagram_link;
@@ -37,6 +28,8 @@
     $font_choice = cs_clients_info()->font_choice;
     $fonts_link=base_url('assets/fonts');
     $name = cs_clients_info()->name;
+    $contact_us = cs_clients_info()->c_contact_us;
+    $terms_and_conditions = cs_clients_info()->c_terms_and_condition;
 ?>
 <!DOCTYPE HTML>
 <html class="no-js" lang="en">
@@ -64,7 +57,7 @@
         <script src="<?= base_url('assets/js/libs/helper_functions.js') ?>"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-        <title>3Mangs Chicharon</title>
+	    <title><?=$name;?></title>
         <style>
             @font-face {
                 font-family:  <?=$font_choice;?>;
@@ -81,6 +74,30 @@
             header{
                 margin-top:100px;
             }
+            :root {
+                --primary-color: <?=$primary_color?>;
+                --primary-font: <?=$font_choice?>;
+                --header_upper_bg: <?=$header_bg_color?>;
+                --header_upper_txtcolor: <?=$primary_color?>;
+                --header_middle_bg: <?=$header_bg_color?>;
+                --header_middle_txtcolor: <?=$primary_color?>;
+                --header_middle_icons: <?=$primary_color?>;
+                --header_bottom_bg: <?=$footer_bg_color?>;
+                --header_bottom_textcolor: <?=$primary_color?>;
+                --footer_bg: <?=$footer_bg_color?>;
+                --footer_textcolor: <?=$primary_color?>;
+                --footer_titlecolor: <?=$primary_color?>;
+            }
         </style>
 </head>
+<?php 
+    switch (ini()) {
+        case '3mangs':
+            $bg_url = "bg.jpg";
+            break;
+        default:
+            $bg_url = "bg_default.jpg";
+            break;
+    }
+?>
 <body data-base_url="<?= base_url(); ?>" style="background-image: url(<?=base_url('assets/img/bg.jpg')?>); background-size: cover;">
