@@ -10,6 +10,7 @@
     <script src="<?=base_url('assets/js/libs/jquery-ui.js'); ?>" ></script>
     <script src="<?=base_url('assets/js/libs/jquery.toast.js'); ?>" ></script>
     <script src="<?=base_url('assets/js/libs/moment.js')?>"></script>
-    
-<script src="<?=base_url('assets/js/libs/loadingoverlay.js');?>"></script>
+    <script src="<?=base_url('assets/js/libs/loadingoverlay.js')?>"></script>
+    <script src="<?=base_url('assets/js/libs/public.js')?>"></script>
+    <script src="<?=base_url('assets/js/libs/bs4-toast.js') ?>"></script>
 </html>

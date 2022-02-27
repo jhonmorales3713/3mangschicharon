@@ -24,7 +24,8 @@ $(function(){
               $.LoadingOverlay("show");
             },
             success:function(data){
-                console.log(data);
+                sys_toast_success(data.message);
+                window.location.href = base_url+'/Main';
                 $.LoadingOverlay("hide");
             }
         });
@@ -147,8 +148,8 @@ $(function(){
 		}
 		
 	});
-	createCaptcha();
-	getLoginAttempts();
+	//createCaptcha();
+	//getLoginAttempts();
 
 	$("#refreshCaptcha").click(function(e){
 		createCaptcha();

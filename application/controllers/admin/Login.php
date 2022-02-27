@@ -32,7 +32,6 @@ class Login extends CI_Controller {
             }
             if(password_verify($this->input->post('password'),$hash_password)){
                 if($user_status == 1){
-
                     $userData = array( // store in array
                         'id' => $user_info->sys_users_id,
                         'username' => $user_info->username,
@@ -111,14 +110,13 @@ class Login extends CI_Controller {
                     ($code_isset == 1) ? null:$this->resetLoginAttempts($user_info->sys_users_id);
                     echo json_encode($data);
                 }else{
-                    
-                    echo json_encode(array("response"=>"Account is disabled. Please contact administrator for more info."));
+                    echo json_encode(array("response"=>"Account is disabled. Please contact administrator for more info.","success"=>0));
                 }
             }else{
-                echo json_encode(array("response"=>"Invalid Password, please try again."));
+                echo json_encode(array("response"=>"Invalid Password, please try again.","success"=>0));
             }
         }else{
-            echo json_encode(array("response"=>"Account does not exist in our database."));
+            echo json_encode(array("response"=>"Account does not exist in our database.","success"=>0));
         }
     }
     public function validate_username($username){
