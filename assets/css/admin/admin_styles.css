@@ -1,0 +1,18 @@
+.main-content{    
+    width: 100vw;
+    height: 100vh;
+    margin-top: 70px;
+    margin-left: 250px;
+    background-color: green;
+    transition: all 0.3s ease-in-out;
+}
+
+.main-footer{
+    width: 100%;
+    position: fixed;
+    bottom: 0;    
+    margin-left: 250px;
+    padding-left: 20px;
+    background-color: orange;
+    transition: all 0.3s ease-in-out;
+}

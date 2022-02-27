@@ -1,0 +1,14 @@
+$('#nav_toggle').on('click',function(){
+    if($(this).hasClass('open')){
+        $('.admin-nav').css('margin-left','-250px');
+        $('.main-content').css('margin-left','0');
+        $('.main-footer').css('margin-left','0');
+        $(this).removeClass('open');
+    }
+    else{        
+        $('.admin-nav').css('margin-left','0');
+        $('.main-content').css('margin-left','250px');                        
+        $('.main-footer').css('margin-left','250px');
+        $(this).addClass('open');
+    }
+});

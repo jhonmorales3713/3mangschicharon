@@ -1,2 +1,4 @@
-All rights reserved &copy;
+<div class="main-footer">
+    All rights reserved &copy;
+</div>
 </div>

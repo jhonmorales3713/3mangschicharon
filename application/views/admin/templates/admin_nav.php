@@ -1,4 +1,4 @@
-<div class="admin_nav">
+<div class="admin-nav">
     <ul class="list-unstyled">
         <li>Dashboard</li>
         <li>Orders</li>

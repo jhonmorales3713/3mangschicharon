@@ -9,3 +9,5 @@
 
 <?php $this->load->view('admin/templates/admin_footer');?>
 <?php $this->load->view('templates/footer');?>
+
+<script src="<?= base_url('assets/js/libs/admin/admin.js'); ?>"></script>
