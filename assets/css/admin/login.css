@@ -1,0 +1,16 @@
+
+.login-body {
+	padding-top:30px;
+}
+.card{
+	border-radius:10px;
+}
+.logo_login{
+	margin:0;
+}
+a,.btn-link{
+	color: var(--primary-color) !important;
+}
+.btn-primary{
+	background-color: var(--primary-color) !important;
+}
