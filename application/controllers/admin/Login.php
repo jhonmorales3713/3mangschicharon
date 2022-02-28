@@ -96,7 +96,7 @@ class Login extends CI_Controller {
                     $this->audittrail->logActivity('Login', $this->input->post('username').' successfully logged in.', 'login', $this->input->post('username'));
                     $data = array(
                         'success' => 1,
-                        'message' => 'Login successfully',
+                        'response' => 'Login successfully',
                         'token_session' => $token,
                         'is_dashboard' => $is_dashboard,
                         'first_login' => $first_login,

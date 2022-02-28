@@ -24,8 +24,12 @@ $(function(){
               $.LoadingOverlay("show");
             },
             success:function(data){
-                sys_toast_success(data.message);
-                window.location.href = base_url+'/Main';
+                if(data.success){
+                    sys_toast_success(data.response);
+                    window.location.href = base_url+'/Main';
+                }else{
+                    sys_toast_error(data.response);
+                }
                 $.LoadingOverlay("hide");
             }
         });

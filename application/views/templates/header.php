@@ -52,11 +52,10 @@
         <link rel="stylesheet" href="<?=base_url('assets/css/libs/header_styles.css')?>">
         <link rel="stylesheet" href="<?=base_url('assets/css/libs/content_styles.css')?>">
         <link rel="stylesheet" href="<?=base_url('assets/css/libs/error_styles.css')?>">
+        <link rel="stylesheet" href="<?=base_url('assets/css/libs/jconfirm.css')?>">
         <script src="<?= base_url();?>assets/js/libs/popper.min.js"></script>
-        <script src="<?= base_url('assets/js/libs/jquery.min.js') ?>"></script>       
-        <script src="<?= base_url('assets/js/libs/helper_functions.js') ?>"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+        <script src="<?=base_url('assets/js/libs/jquery.min.js')?>"></script>
 	    <title><?=$name;?></title>
         <style>
             @font-face {

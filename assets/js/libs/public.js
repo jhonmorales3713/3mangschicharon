@@ -25,17 +25,17 @@ $(document).ready(function(){
 		}
 		// revise this function by passing only parameter, check if env key exists then do the following conditions
 	}
-
-	sys_toast = function(message,heading,icon,position,bgcolor,txtcolor)
+	sys_toast = function(message,heading,theme)
 	{
-        $.toast({
-          title:'Notice!',
-          subtitle:'11 mins ago',
-          content:'This is a toast message.',
-          type:'info',
-          delay: 3000,
-          dismissible:true
+        //Msg.show(message, type, timeout);
+        $.alert({
+            title: heading,
+            content: message,
+            theme: theme,
+            backgroundDismiss: true
         });
+        //$('.jconfirm-box-container').css('transform','translate(0px,-350px)');
+        
 	}
 
 
@@ -50,27 +50,27 @@ $(document).ready(function(){
 	// toast options
 	sys_toast_success = function(message)
 	{
-		sys_toast(message,'Success','success','top-center','yellowgreen','white');
+		sys_toast(message,'&#10004; Success','success');
 	}
 
 	sys_toast_error = function(message)
 	{
-		sys_toast(message,'Error','error','top-center','red','white');
+		sys_toast(message,'&#x2715; Error','danger');
 	}
 
 	sys_toast_warning = function(message)
 	{
-		sys_toast(message,'Warning','warning','top-center','orange','white');
+		sys_toast(message,'&#9888; Warning','warning');
 	}
 
 	sys_toast_warning_info = function(message)
 	{
-		sys_toast(message,'Note','info','top-center','orange','white');
+		sys_toast(message,'&#8505; Note','info');
 	}
 
 	sys_toast_info = function(message)
 	{
-		sys_toast(message,'Note','info','top-center','lightblue','white');
+		sys_toast(message,'&#8505; Note','info');
 	}
 	//close the transparent cover once the page was successfully loaded
 
