@@ -40,7 +40,7 @@
             </div>
             </center>
         </div>
-        <div class="col-lg-8 col-md-8 col-sm-6">
+        <div class="col-lg-8 col-md-8 col-sm-6 mt20">
             <div class="col-12">
                 <strong>Send Us a message</strong><br>
                 <p><small>If you have any concern please feel free to message us</small></p><br>

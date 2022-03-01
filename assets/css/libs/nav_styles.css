@@ -41,11 +41,13 @@
 #navbar a:hover {    
     font-weight: bold;
     background-color: lightgray;
+    color: black !important;
 }
 
 #navbar a.active{    
     font-weight: bold !important;
     background-color: lightgray;
+    color: black !important;
 }
 
 .cover-photo{

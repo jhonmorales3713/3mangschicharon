@@ -76,6 +76,14 @@
     margin-top: 5px !important;
 }
 
+.mt10{
+    margin-top: 10px !important;
+}
+
+.mt20{
+    margin-top: 20px !important;
+}
+
 .ml5{
     margin-left: 5px !important;
 }
@@ -153,5 +161,12 @@
     border: 1px solid #873e23;    
     background-size: cover;
     background-position: center;
-    height: 250px !important;
+    height: 300px !important;
+}
+
+
+@media only screen and (max-width: 548px) {
+    .right-bordered{
+        border-right: none;
+    }
 }
