@@ -1,18 +1,125 @@
 .main-content{    
-    width: 100vw;
+    /* <!--width: 100vw;--> */
     height: 100vh;
     margin-top: 70px;
-    margin-left: 250px;
-    background-color: green;
+    padding-left: 250px;
     transition: all 0.3s ease-in-out;
 }
 
 .main-footer{
-    width: 100%;
+    width: 100vw;
     position: fixed;
-    bottom: 0;    
-    margin-left: 250px;
-    padding-left: 20px;
-    background-color: orange;
+    bottom: 0;            
+    padding: 5px;
+    background-color: pink;
+}
+
+.copyright{
+    width: 100%;
+    text-align: right;  
+}
+
+.admin-header .logout{
+    position: absolute;
+    margin: 15px;
+    right: 0;
+    padding: 5px;      
+    border-radius: 5px;
+    font-size: 15pt;
+    color: #333;
+    cursor: pointer;    
     transition: all 0.3s ease-in-out;
+}
+
+.logout:hover{
+    background-color: #FEE8E5;
+}
+
+#nav_toggle{
+    margin: 15px;
+    font-size: 15pt !important;
+    padding: 10px;
+    background-color: #FEE8E5;
+    color: #333;
+    cursor: pointer;
+    border-radius: 5px;    
+    text-align: center;
+    width: 40px;
+    height: 40px;
+    transition: all 0.3s ease-in-out;
+}
+
+.nav-cover{
+    position: fixed;
+    width: 100vw;
+    height: 100vh;    
+    opacity: 0;
+    z-index: -1;
+    background-color: rgba(0,0,0,0.3);
+    transition: all 0.3s ease-in-out;
+}
+
+.loading-icon{      
+    position: fixed;
+    top: 45%;
+    left: 48%;
+    z-index: 101;
+    color: #fff;    
+    display: none;
+}
+
+
+.card .card-header-title {
+	font-size: 13px;
+}
+
+.card small {
+	font-size: 10px;
+}
+
+.card-option {
+	border-left: 10px solid var(--primary-color);
+	position: relative;
+	overflow: visible !important;
+}
+
+.option-check {
+	transition: 0.3s;
+}
+
+.option-check > i {
+	color: #fff;
+	display: none;
+	position: absolute;
+	left: -35px;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.card-option:hover .option-check > i {
+	display: block !important;
+}
+
+.loading-icon i{
+    font-size: 3rem !important;
+}
+
+/* responsive styles */
+@media only screen and (min-width: 749px) {
+    .main-content{
+        padding-left: 250px;
+    }
+    .loading-icon{
+        padding-right: 250px;
+    }
+}
+
+@media only screen and (max-width: 748px) {
+    .main-content{
+        padding-left: 0;
+    }
+    .copyright{
+        text-align: center;
+    }
+
 }

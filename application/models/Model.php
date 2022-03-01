@@ -18,6 +18,19 @@ class Model extends CI_Model {
 		return $this->db->query($sql, $data);
 	}
     
+	public function get_content_navigation($main_nav_id){
+		$sql = "SELECT * FROM cp_content_navigation WHERE cn_fkey = ? AND status = 1  ORDER BY cn_name ASC";
+		$data = array($main_nav_id);
+		return $this->db->query($sql,$data);
+	}
+	
+
+	public function get_url_content_db($arr_){
+		$sql = "SELECT cn_url FROM cp_content_navigation WHERE id IN ? AND status = 1";
+		$data = array($arr_);
+		return $this->db->query($sql, $data);
+	}
+
 	public function resetLoginAttempts($user_id, $ip_address, $date_created){
 		$sql = "SELECT * FROM sys_login_attempt WHERE user_id = ? AND ip_address = ? AND status = 1";
 		$data = array($user_id, $ip_address);
@@ -38,6 +51,32 @@ class Model extends CI_Model {
 		}
 
 		return $attempt;
+	}
+
+	public function getMainNav()
+	{
+		
+		$sql = "SELECT * from cp_main_navigation";
+		return $this->db->query($sql);
+	}
+
+	public function get_main_nav_id($labelname)
+	{
+		
+		$sql = "SELECT * from cp_main_navigation where main_nav_desc = '$labelname'";
+		return $this->db->query($sql);
+	}
+	
+	public function get_main_nav_id_cn_url($content_url){
+		$sql = "SELECT cn_fkey FROM `cp_content_navigation` WHERE cn_url = ? AND status = 1";
+		$data = array($content_url);
+		$query = $this->db->query($sql, $data);
+
+		if ($query->num_rows() > 0) {
+			return $query->row()->cn_fkey;
+		}else{
+			return "";
+		}
 	}
 
 	public function log_seller_time_activity($seller, $shop, $activity = 'in')

@@ -7,8 +7,17 @@ $(function(){
 		info: "#5cb85c",
 		error: "#f0ad4e"
 	}
-
+    $("#password").on('keyup', function (e) {
+        if (e.key === 'Enter' || e.keyCode === 13) {
+            login();
+        }
+    });
+    
 	$("#signin").click(function(){
+        login();
+    });
+    function login(){
+        
         var application_form = $("#form-login").serialize(); 
         var newform=new FormData($("#form-login")[0]);
         $.ajax({
@@ -24,16 +33,20 @@ $(function(){
               $.LoadingOverlay("show");
             },
             success:function(data){
+                $.LoadingOverlay("hide");
                 if(data.success){
-                    sys_toast_success(data.response);
-                    window.location.href = base_url+'/Main';
+                    sys_toast_success(data.response);setTimeout(
+                        function() 
+                        {
+                            window.location.href = base_url+'/Main';
+                        }, 2000);
+                   
                 }else{
                     sys_toast_error(data.response);
                 }
-                $.LoadingOverlay("hide");
             }
         });
-    });
+    }
 	function toastMessage(heading, text, icon) {
 
 		$.toast({

@@ -33,7 +33,23 @@ class Main extends CI_Controller {
     }
 	public function index()
 	{
-		$this->load->view('admin/login');
+		if($this->session->userdata('role') == 'admin'){
+			header('Location: '.base_url('admin/Home'));
+			if($this->session->userdata('role')=='admin'){
+
+			}
+		}
+		var_dump($this->session->userdata());
 	}
+    public function logout()
+    {
+        if(!empty($this->session->userdata('username'))){
+            //$this->log_seller_time_out_activity();
+            //$this->audittrail->logActivity('Logout', $this->session->userdata('username').' have been successfully logged out.', 'logout', $this->session->userdata('username'));
+        }
+
+        $this->session->sess_destroy();
+		header('Location: '.base_url('admin/Home'));
+    }
 	
 }

@@ -32,7 +32,12 @@ $(document).ready(function(){
             title: heading,
             content: message,
             theme: theme,
-            backgroundDismiss: true
+            autoClose: 'cancel|1000',
+            backgroundDismiss: true,
+            buttons: {
+                cancel: function () {
+                }
+            }
         });
         //$('.jconfirm-box-container').css('transform','translate(0px,-350px)');
         

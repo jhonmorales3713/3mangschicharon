@@ -1,4 +1,6 @@
-<div class="main-footer">
-    All rights reserved &copy;
+<div class="main-footer">    
+    <center>
+    <small>&copy; All rights reserved 2022</small>
+    </center>
 </div>
 </div>
