@@ -8,8 +8,12 @@ class Products extends CI_Controller {
         parent::__construct();                
     }
 
-    public function index(){
-        
-    }
+    public function index()
+	{		
+		$data['active_page'] = 'products';
+		
+        $data['page_content'] = $this->load->view('user/home/index','',TRUE);     
+		$this->load->view('landing_template',$data,'',TRUE);
+	}
 
 }

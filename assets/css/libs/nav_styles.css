@@ -33,6 +33,7 @@
 
 #navbar a.active{    
     font-weight: bold !important;
+    background-color: lightgray;
 }
 
 .cover-photo{
