@@ -13,7 +13,7 @@ html *{
 
 /* minimum height for page content is 689px */
 .main-content{
-    min-height: 1200px; /* 689 */
+    min-height: 700px; /* 689 */
     padding: 30px;
     padding-top: 100px;
 }
@@ -119,7 +119,7 @@ html *{
 }
 
 .icon-container *{
-    font-size: 1.7rem !important;
+    font-size: 1.6rem !important;
 }
 
 .right-bordered{

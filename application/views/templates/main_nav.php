@@ -18,10 +18,10 @@
             </div>
             <div class="nav-container">
                 <center>  
-                <a href="<?= base_url(); ?>" class="nav-home">Home</a>
-                <a href="<?= base_url('shop'); ?>" class="nav-shop">Shop Now</a>
-                <a href="<?= base_url('about'); ?>" class="nav-about">About Us</a>        
-                <a href="<?= base_url('contact_us'); ?>" class="nav-contact_us">Contact Us</a>      
+                <a href="<?= base_url(); ?>" class="nav-home">HOME</a>
+                <a href="<?= base_url('shop'); ?>" class="nav-shop">SHOP NOW</a>
+                <a href="<?= base_url('about'); ?>" class="nav-about">ABOUT US</a>        
+                <a href="<?= base_url('contact_us'); ?>" class="nav-contact_us">CONTACT US</a>      
                 <a href="<?= base_url('admin'); ?>">ADMIN</a>  
                 <a href="<?= base_url('signup'); ?>">Login/Sign Up</a>  
                 </center>  
