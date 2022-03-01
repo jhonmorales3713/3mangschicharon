@@ -51,14 +51,14 @@
     function navigation() {
         if (window.pageYOffset >= 60) {
             navbar.classList.add("sticky");
-            $('#navbar').css('background-color','rgba(255,255,255,0.9)');
+            $('#navbar').css('background-color','white');
             $('#navbar').addClass('shadow');            
             $('#shop_logo').show();
             $('#home_logo').css('display','inline');
             $('#menu_btn_container').css('background-color','rgba(255,255,255,0.9)');
         } else {
             navbar.classList.remove("sticky");            
-            $('#navbar').css('background-color','rgba(255,255,255,0)');
+            $('#navbar').css('background-color','white');
             $('#navbar').removeClass('shadow');            
             $('#shop_logo').hide();        
             $('#home_logo').css('display','none');

@@ -1,14 +1,26 @@
 
 @import url('http://fonts.cdnfonts.com/css/andhika-finta');
 
+@font-face {
+    font-family: 'Uni Sans Heavy';
+    src: url('http://localhost/3mangschicharon/assets/fonts/Uni-Sans-Heavy.otf') format("opentype");
+}
+
+@font-face {
+    font-family: 'Uni Sans Thin';
+    src: url('http://localhost/3mangschicharon/assets/fonts/Uni-Sans-Thin.otf') format("opentype");
+}
+
 .info-bar{
     width: 100%;
 }
-
+ 
 #navbar {    
     width: 100%;    
+    font-family: 'Uni Sans Thin' !important;
+    font-weight: bold;
     transition: all 0.3s ease-in-out !important;    
-    background-color: none;
+    background-color: white;
     z-index: 100;
     position: fixed;
     top: 0;            
