@@ -55,13 +55,28 @@ class Main_products extends CI_Controller {
                 'shops'               => $this->model_products->get_shop_options(),
             );
 
-            $data_admin['active_page'] = 'dashboard';
+            $data_admin['active_page'] =  $this->session->userdata('active_page');
             $data_admin['subnav'] = false;
-            $data_admin['page_content'] = $this->load->view('admin/dashboard/index',$data_admin,TRUE);
+            $data_admin['page_content'] = $this->load->view('admin/products/products',$data_admin,TRUE);
             $this->load->view('admin_template',$data_admin,'',TRUE);
         }else{
             $this->load->view('error_404');
         }
+    }
+
+
+    public function product_table()
+    {
+        $this->isLoggedIn();
+        $request = $_REQUEST;
+
+        $member_id = $this->session->userdata('sys_users_id');
+        $sys_shop = $this->model_products->get_sys_shop($member_id);
+        
+        $query = $this->model_products->product_table($sys_shop, $request);
+        
+        
+        generate_json($query);
     }
     public function views_restriction($content_url)
     {

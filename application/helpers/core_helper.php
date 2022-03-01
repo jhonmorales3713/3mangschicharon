@@ -15,6 +15,27 @@ function db_core(){
 }
 
 
+function get_company_name(){
+	return (cs_clients_info()) ? cs_clients_info()->name : "";
+}
+
+
+function get_s3_imgpath_upload(){
+	$directory = base_url('assets/uploads');
+	return $directory;
+}
+function get_tag_line(){
+	return (cs_clients_info()) ? cs_clients_info()->tag_line : "";
+}
+
+function get_company_email(){
+	return (cs_clients_info()) ? cs_clients_info()->c_email : "";
+}
+
+function get_company_phone(){
+	return (cs_clients_info()) ? cs_clients_info()->c_phone : "";
+}
+
 function cs_clients_info(){
 	$sql = "SELECT * FROM cs_clients_info WHERE id_key = ? LIMIT 1";
     $query = db_core()->query($sql, ini());

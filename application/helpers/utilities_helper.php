@@ -77,6 +77,117 @@ function crypto_rand_secure($min, $max){
     return $min + $rnd;
 }
 
+	// Start of date and time functions
+
+    function datetime()
+    {
+        date_default_timezone_set('Asia/Manila');
+        return date("Y-m-d h:i:s");
+    }
+
+    function today() {
+        date_default_timezone_set('Asia/Manila');
+        return date("Y-m-d");
+    }
+
+    function today_close_reverse() {
+        date_default_timezone_set('Asia/Manila');
+        return date("Ymd");
+    }
+
+    function today_datetime_dash_reverse() {
+        date_default_timezone_set('Asia/Manila');
+        return date("Y-m-d H:i:s");
+    }
+
+    function today_text() {
+        date_default_timezone_set('Asia/Manila');
+        return date("m/d/Y");
+    }
+
+    function today_date() {
+        date_default_timezone_set('Asia/Manila');
+        return date("m/d/Y");
+    }
+
+    function time_only() {
+        date_default_timezone_set('Asia/Manila');
+        return date("G:i");
+    }
+
+    function time_w_sec(){
+        date_default_timezone_set('Asia/Manila');
+        return date("G:i:s");
+    }
+
+    function year_only() {
+        date_default_timezone_set('Asia/Manila');
+        return date("Y");
+    }
+
+    function todaytime() {
+        date_default_timezone_set('Asia/Manila');
+        return date("Y-m-d G:i:s");
+    }
+
+    function todaytime_slash_proper() {
+        date_default_timezone_set('Asia/Manila');
+        return date("m/d/Y h:i A");
+    }
+
+    function check_date_full_long($str){
+        return ($str ? format_date_full_long($str) : 'N/A');
+    }
+
+    function check_date_full($str){
+        return ($str ? format_date_full($str) : 'N/A');
+    }
+
+    function format_date_full_long($str){
+        $datetime = date('F d, Y h:i:s A', strtotime($str));
+        return $datetime;
+    }
+
+    function format_date_full($str){
+        $datetime = date('F d, Y - h:i A', strtotime($str));
+        return $datetime;
+    }
+
+    function format_date_full_long_withday($str){
+        $datetime = date('D - F d, Y h:i:s A ', strtotime($str));
+        return $datetime;
+    }
+
+    function format_full_time($str){
+        $date = date('h:i:s A', strtotime($str));
+        return $date;
+    }
+
+    function format_date_dash_reverse($str){
+        $date = date('Y-m-d', strtotime($str));
+        return $date;
+    }
+
+    function format_datetime_dash_reverse($str){
+        $date = date('Y-m-d H:i:s', strtotime($str));
+        return $date;
+    }
+
+    function check_date($time, $format, $format_week, $format_else){
+        date_default_timezone_set('Asia/Manila');
+        $given_time = format_date_dash_reverse($time);
+        if($given_time === format_date_dash_reverse('today')){
+            return "Today at ".$format($time);
+        }else if($given_time === format_date_dash_reverse('-1 days')){
+            return "Yesterday at ".$format($time);
+        }else if($given_time === format_date_dash_reverse('-7 days')){
+            return $format_week($time);
+        }else{
+            return $format_else($time);
+        };
+    }
+// End of date and time functions
+
 function getToken($length){
     $token = "";
     $codeAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
