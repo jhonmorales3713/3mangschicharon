@@ -12,6 +12,7 @@ class Shop extends CI_Controller {
     public function index()
 	{		
 		$data['active_page'] = 'shop';
+        $view_data['categories'] = $this->model_products->get_categories();
 		$view_data['products'] = $this->model_products->get_products();
         $data['page_content'] = $this->load->view('user/shop/index',$view_data,TRUE);     
 		$this->load->view('landing_template',$data,'',TRUE);

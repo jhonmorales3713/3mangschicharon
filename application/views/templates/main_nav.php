@@ -23,7 +23,7 @@
                 <a href="<?= base_url('about'); ?>" class="nav-about">ABOUT US</a>        
                 <a href="<?= base_url('contact_us'); ?>" class="nav-contact_us">CONTACT US</a>      
                 <a href="<?= base_url('admin'); ?>">ADMIN</a>  
-                <a href="<?= base_url('signup'); ?>">Login/Sign Up</a>  
+                <a href="<?= base_url('registration'); ?>" class="nav-registration">Login/Sign Up</a>  
                 </center>  
             </div>              
         </div>
