@@ -2,8 +2,14 @@
 @import url('http://fonts.cdnfonts.com/css/real-ohio');
 @import url('http://fonts.cdnfonts.com/css/irenyekan');
 
-html *{
-    font-family: 'IRENYekan', sans-serif;
+@font-face {
+    font-family: 'Uni Sans Heavy';
+    src: url('http://localhost/3mangschicharon/assets/fonts/Uni-Sans-Heavy.otf') format("opentype");
+}
+
+@font-face {
+    font-family: 'Uni Sans Thin';
+    src: url('http://localhost/3mangschicharon/assets/fonts/Uni-Sans-Thin.otf') format("opentype");
 }
 
 .package-group{
@@ -13,8 +19,9 @@ html *{
 
 /* minimum height for page content is 689px */
 .main-content{
-    min-height: 1200px; /* 689 */
+    min-height: 700px; /* 689 */
     padding: 30px;
+    padding-top: 100px;
 }
 
 .a{
@@ -69,6 +76,14 @@ html *{
     margin-top: 5px !important;
 }
 
+.mt10{
+    margin-top: 10px !important;
+}
+
+.mt20{
+    margin-top: 20px !important;
+}
+
 .ml5{
     margin-left: 5px !important;
 }
@@ -115,4 +130,43 @@ html *{
 }
 .btn-info:hover{
     background-color: #957DAD !important;
+}
+
+.icon-container *{
+    font-size: 1.6rem !important;
+}
+
+.right-bordered{
+    border-right: 1px solid blue;
+    
+}
+
+.btn-primary{
+    background-color: #7c3404 !important;
+    color: white !important;
+    font-family: 'Uni Sans Heavy' !important;
+    font-weight: bold;
+    border-radius: 0;
+    transition: all 0.2s ease-in-out;
+    border: none !important; 
+}
+
+.btn-primary:hover{
+    border-radius: 0;
+    border: none !important; 
+}
+
+.product-img{
+    width: 100%;    
+    border: 1px solid #873e23;    
+    background-size: cover;
+    background-position: center;
+    height: 300px !important;
+}
+
+
+@media only screen and (max-width: 548px) {
+    .right-bordered{
+        border-right: none;
+    }
 }

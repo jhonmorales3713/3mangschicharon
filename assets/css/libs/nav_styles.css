@@ -1,23 +1,38 @@
 
 @import url('http://fonts.cdnfonts.com/css/andhika-finta');
 
+@font-face {
+    font-family: 'Uni Sans Heavy';
+    src: url('http://localhost/3mangschicharon/assets/fonts/Uni-Sans-Heavy.otf') format("opentype");
+}
+
+@font-face {
+    font-family: 'Uni Sans Thin';
+    src: url('http://localhost/3mangschicharon/assets/fonts/Uni-Sans-Thin.otf') format("opentype");
+}
+
 .info-bar{
     width: 100%;
 }
-
-#navbar {
+ 
+#navbar {    
     width: 100%;    
+    font-family: 'Uni Sans Thin' !important;
+    font-weight: bold;
     transition: all 0.3s ease-in-out !important;    
-    background-color: none;
+    background-color: white;
     z-index: 100;
     position: fixed;
-    top: 0;    
+    top: 0;            
 }
   
 #navbar a {
     display: inline-block;        
     text-align: center;
     padding: 5px;    
+    padding-top: 15px;
+    padding-bottom: 15px;
+    color: #773305 !important;
     text-decoration: none;       
     transition: all 0.15s ease-in-out;    
     font-size: 1rem;    
@@ -25,10 +40,14 @@
   
 #navbar a:hover {    
     font-weight: bold;
+    background-color: lightgray;
+    color: black !important;
 }
 
 #navbar a.active{    
     font-weight: bold !important;
+    background-color: lightgray;
+    color: black !important;
 }
 
 .cover-photo{
@@ -67,17 +86,23 @@
     width: 100%;
 }
 
+img.shop-icon{
+    margin-top: 10px;
+    margin-left: 200px;
+    width: 130px !important;
+}
+
 #menu_btn_container{            
     z-index: 100;
     display: none;
     padding: 10px;
     width: 100%;
     position: relative;
-    background-color: #F5F5F5;
+    background-color: #F5F5F5;    
 }
 
 #menu_btn_container *{
-    display: inline-block;
+    display: inline-block;    
 }
 
 #shop_logo{
@@ -89,7 +114,8 @@
 #menu_btn{    
     display: inline-block;    
     position: absolute;
-    right: 10px;    
+    top: 10px;
+    right: 10px;        
 }
 
 .nav-cart{
@@ -99,8 +125,8 @@
     background-color: floralwhite !important;
 }
 
-.nav-container{
-    padding: 5px !important;
+.nav-container{        
+    padding: 0;
     position: relative;    
     width: 100%;
 }
@@ -160,11 +186,20 @@
         display: none;
     }
     .nav-container{
-        display: block;
+        display: block;        
     }
     #navbar a{
         display: inline-block; 
-    }    
+    }   
+    img.shop-icon{
+        margin-left: 180px;        
+    } 
+    .shop-nav{
+        min-width: 500px !important;
+    }
+    .shop-nav-icon{
+        width: 300px;
+    }
 }
 
 @media only screen and (max-width: 748px) {
@@ -188,5 +223,15 @@
     #home_logo{
         display: none;
     }
+    .shop-nav{
+        width: 100% !important;
+    }
+    .shop-nav-icon{
+        width: 100% !important;
+    }
+    img.shop-icon{
+        margin-left: 10px;
+        padding-bottom: 15px;   
+    } 
 
 }
