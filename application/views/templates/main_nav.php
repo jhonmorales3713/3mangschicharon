@@ -1,31 +1,37 @@
 <link rel="stylesheet" href="<?=base_url('assets/css/libs/nav_styles.css')?>">
 
 <input type="hidden" id="active_page" value="<?= $active_page; ?>">
-
-<div class="cover-photo" style="background-image: url(<?=base_url('assets/img/cover_photo.jpg')?>); background-size: cover;">
     
 </div>
 
 <div id="navbar">    
 
-    <div id="menu_btn_container">        
-        <img src="<?= base_url('assets/img/shop_logo.png'); ?>" alt="" width="70">
+    <div class="row">
+        <div class="col-4">
+            <img class="shop-icon" src="<?= base_url('assets/img/favicon.png'); ?>" alt="">
+            <div id="menu_btn_container">
+                <button class="btn btn-light m5" id="menu_btn">
+                    <i class="fa fa-bars" aria-hidden="true"></i>
+                </button>        
+            </div>    
+        </div>
+        <div class="col-8">
+            <div class="nav-container">
+                <center>  
+                <a href="<?= base_url(); ?>" class="nav-home">Home</a>
+                <a href="<?= base_url(); ?>" class="nav-shop">Shop Now</a>
+                <a href="<?= base_url(); ?>" class="nav-about">About Us</a>        
+                <a href="<?= base_url(); ?>" class="nav-contact_us">Contact Us</a>      
+                <a href="<?= base_url('admin'); ?>">ADMIN</a>  
+                <a href="<?= base_url('signup'); ?>">Login/Sign Up</a>  
+                </center>  
+            </div>  
+        </div>
+    </div>
 
-        <button class="btn btn-light m5" id="menu_btn">
-            <i class="fa fa-bars" aria-hidden="true"></i>
-        </button>        
-    </div>      
+      
 
-    <div class="nav-container">      
-        <center>  
-        <a href="<?= base_url(); ?>" class="nav-home">Home</a>
-        <a href="<?= base_url(); ?>" class="nav-shop">Shop Now</a>
-        <a href="<?= base_url(); ?>" class="nav-about">About Us</a>        
-        <a href="<?= base_url(); ?>" class="nav-contact_us">Contact Us</a>      
-        <a href="<?= base_url('admin'); ?>" class="btn btn-sm btn-outline-primary">ADMIN</a>  
-        <a href="#" class="btn btm-sm btn-outline-primary">Login/Sign Up</a>  
-        </center>  
-    </div>    
+      
         
 </div>
 

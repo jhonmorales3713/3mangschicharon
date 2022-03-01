@@ -11,13 +11,16 @@
     background-color: none;
     z-index: 100;
     position: fixed;
-    top: 0;    
+    top: 0;            
 }
   
 #navbar a {
     display: inline-block;        
     text-align: center;
     padding: 5px;    
+    padding-top: 15px;
+    padding-bottom: 15px;
+    color: #773305 !important;
     text-decoration: none;       
     transition: all 0.15s ease-in-out;    
     font-size: 1rem;    
@@ -25,6 +28,7 @@
   
 #navbar a:hover {    
     font-weight: bold;
+    background-color: lightgray;
 }
 
 #navbar a.active{    
@@ -67,17 +71,23 @@
     width: 100%;
 }
 
+img.shop-icon{
+    margin-top: 10px;
+    margin-left: 10px;
+    width: 130px !important;
+}
+
 #menu_btn_container{            
     z-index: 100;
     display: none;
     padding: 10px;
     width: 100%;
     position: relative;
-    background-color: #F5F5F5;
+    background-color: #F5F5F5;    
 }
 
 #menu_btn_container *{
-    display: inline-block;
+    display: inline-block;    
 }
 
 #shop_logo{
@@ -99,8 +109,7 @@
     background-color: floralwhite !important;
 }
 
-.nav-container{
-    padding: 5px !important;
+.nav-container{    
     position: relative;    
     width: 100%;
 }

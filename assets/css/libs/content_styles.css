@@ -15,6 +15,7 @@ html *{
 .main-content{
     min-height: 1200px; /* 689 */
     padding: 30px;
+    padding-top: 100px;
 }
 
 .a{

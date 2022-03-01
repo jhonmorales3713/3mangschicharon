@@ -57,6 +57,8 @@ $route['translate_uri_dashes'] = FALSE;
 $route['contact_us'] = 'landing/contact_us';
 $route['faqs'] = 'home/faqs';
 
+$route['signup'] = 'user/signup/index';
+
 //admin side
 $route['admin'] = 'admin/login/index';
 $route['admin/dashboard'] = 'admin/dashboard/index';
