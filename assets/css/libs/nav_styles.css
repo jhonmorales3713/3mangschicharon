@@ -5,7 +5,7 @@
     width: 100%;
 }
 
-#navbar {
+#navbar {    
     width: 100%;    
     transition: all 0.3s ease-in-out !important;    
     background-color: none;
@@ -74,7 +74,7 @@
 
 img.shop-icon{
     margin-top: 10px;
-    margin-left: 10px;
+    margin-left: 200px;
     width: 130px !important;
 }
 
@@ -100,7 +100,8 @@ img.shop-icon{
 #menu_btn{    
     display: inline-block;    
     position: absolute;
-    right: 10px;    
+    top: 10px;
+    right: 10px;        
 }
 
 .nav-cart{
@@ -110,7 +111,8 @@ img.shop-icon{
     background-color: floralwhite !important;
 }
 
-.nav-container{    
+.nav-container{        
+    padding: 0;
     position: relative;    
     width: 100%;
 }
@@ -174,7 +176,16 @@ img.shop-icon{
     }
     #navbar a{
         display: inline-block; 
-    }    
+    }   
+    img.shop-icon{
+        margin-left: 180px;        
+    } 
+    .shop-nav{
+        min-width: 500px !important;
+    }
+    .shop-nav-icon{
+        width: 300px;
+    }
 }
 
 @media only screen and (max-width: 748px) {
@@ -198,5 +209,15 @@ img.shop-icon{
     #home_logo{
         display: none;
     }
+    .shop-nav{
+        width: 100% !important;
+    }
+    .shop-nav-icon{
+        width: 100% !important;
+    }
+    img.shop-icon{
+        margin-left: 10px;
+        padding-bottom: 15px;   
+    } 
 
 }

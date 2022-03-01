@@ -19,7 +19,7 @@ class Home extends CI_Controller {
 	{		
 		$data['active_page'] = 'contact_us';
 		
-        $data['page_content'] = $this->load->view('user/home/index','',TRUE);     
+        $data['page_content'] = $this->load->view('user/home/contact_us','',TRUE);     
 		$this->load->view('landing_template',$data,'',TRUE);
 	}
 	

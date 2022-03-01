@@ -117,3 +117,12 @@ html *{
 .btn-info:hover{
     background-color: #957DAD !important;
 }
+
+.icon-container *{
+    font-size: 1.7rem !important;
+}
+
+.right-bordered{
+    border-right: 1px solid blue;
+    
+}

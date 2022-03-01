@@ -7,15 +7,15 @@
 <div id="navbar">    
 
     <div class="row">
-        <div class="col-4">
-            <img class="shop-icon" src="<?= base_url('assets/img/favicon.png'); ?>" alt="">
+        <div class="col-4">            
+            <img class="shop-icon" src="<?= base_url('assets/img/favicon.png'); ?>" alt="">              
+        </div>
+        <div class="col-8">
             <div id="menu_btn_container">
                 <button class="btn btn-light m5" id="menu_btn">
                     <i class="fa fa-bars" aria-hidden="true"></i>
                 </button>        
-            </div>    
-        </div>
-        <div class="col-8">
+            </div>
             <div class="nav-container">
                 <center>  
                 <a href="<?= base_url(); ?>" class="nav-home">Home</a>
@@ -25,7 +25,7 @@
                 <a href="<?= base_url('admin'); ?>">ADMIN</a>  
                 <a href="<?= base_url('signup'); ?>">Login/Sign Up</a>  
                 </center>  
-            </div>  
+            </div>              
         </div>
     </div>
 
