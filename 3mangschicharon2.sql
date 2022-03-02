@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.1.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 02, 2022 at 11:34 AM
--- Server version: 10.4.22-MariaDB
--- PHP Version: 7.3.33
+-- Generation Time: Mar 02, 2022 at 11:41 AM
+-- Server version: 10.4.18-MariaDB
+-- PHP Version: 7.3.27
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,8 +18,39 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `3mangschicharon`
+-- Database: `3mangschicharon2`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `app_members`
+--
+
+CREATE TABLE `app_members` (
+  `id` int(11) NOT NULL,
+  `name` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `categories`
+--
+
+CREATE TABLE `categories` (
+  `id` int(11) NOT NULL,
+  `category_name` varchar(250) NOT NULL,
+  `date_created` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `categories`
+--
+
+INSERT INTO `categories` (`id`, `category_name`, `date_created`) VALUES
+(1, 'Chicharon', '2022-03-01 10:29:23'),
+(2, 'Coffee', '2022-03-01 13:32:08');
 
 -- --------------------------------------------------------
 
@@ -196,6 +227,43 @@ INSERT INTO `cp_main_navigation` (`main_nav_id`, `main_nav_desc`, `main_nav_icon
 (10, 'Vouchers', 'fa-money', 'vouchers_home', 'acb_vouchers', 'cb_vouchers', 9, '2020-07-02 00:00:00', '2020-07-02 00:00:00', 1),
 (11, 'Wallet', 'fa-money', 'wallet_home', 'acb_wallet', 'cb_wallet', 9, '2020-07-02 00:00:00', '2020-07-02 00:00:00', 1),
 (12, 'Support', 'fa-weixin', 'csr_section_home', 'acb_csr', 'cb_csr', 12, '2020-08-02 15:52:21', '2020-08-02 15:52:21', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `products`
+--
+
+CREATE TABLE `products` (
+  `id` int(11) NOT NULL,
+  `code` varchar(50) NOT NULL,
+  `name` varchar(200) NOT NULL,
+  `category_id` int(11) NOT NULL,
+  `price` double NOT NULL,
+  `price_small` double NOT NULL,
+  `price_large` double NOT NULL,
+  `img` varchar(200) NOT NULL,
+  `date_created` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `products`
+--
+
+INSERT INTO `products` (`id`, `code`, `name`, `category_id`, `price`, `price_small`, `price_large`, `img`, `date_created`) VALUES
+(1, 'PLAIN', 'Chicharon Plain', 1, 0, 63, 82, '', '2022-03-01 10:25:35'),
+(2, 'GRLC', 'Chicharon Garlic', 1, 0, 73, 92, '', '2022-03-01 10:26:06'),
+(3, 'SPCY', 'Chicharon Spicy', 1, 0, 73, 92, '', '2022-03-01 10:26:06'),
+(4, 'BBQ', 'Chicharon Barbeque', 1, 0, 73, 92, '', '2022-03-01 11:18:09'),
+(5, 'CHSE', 'Chicharon Cheese', 1, 0, 73, 92, '', '2022-03-01 11:18:09'),
+(6, 'SRCRM', 'Chicharon Sour Cream', 1, 0, 73, 92, '', '2022-03-01 11:18:09'),
+(7, 'SLTEGG', 'Chicharon Salted Egg', 1, 0, 110, 156, '', '2022-03-01 11:18:09'),
+(8, 'SPCYCHSE', 'Chicharon Spicy Cheese', 1, 0, 73, 92, '', '2022-03-01 11:18:09'),
+(9, 'SPCYBBQ', 'Chicharon Spicy Barbeque', 1, 0, 73, 92, '', '2022-03-01 11:18:09'),
+(10, 'SPCYGRLC', 'Chicharon Spicy Garlic', 1, 0, 73, 92, '', '2022-03-01 11:18:09'),
+(11, 'BRKO', 'Kapeng Barako', 2, 120, 0, 0, '', '2022-03-01 13:33:32'),
+(12, 'HSEBLND	', 'House Blend', 2, 120, 0, 0, '', '2022-03-01 13:33:32'),
+(13, 'DRKRST', 'Dark Roast', 2, 120, 0, 0, '', '2022-03-01 13:33:32');
 
 -- --------------------------------------------------------
 
@@ -8959,6 +9027,18 @@ INSERT INTO `sys_users_activity` (`id`, `sys_user_id`, `sysshop`, `in_time`, `ou
 --
 
 --
+-- Indexes for table `app_members`
+--
+ALTER TABLE `app_members`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `categories`
+--
+ALTER TABLE `categories`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `cp_content_navigation`
 --
 ALTER TABLE `cp_content_navigation`
@@ -8969,6 +9049,12 @@ ALTER TABLE `cp_content_navigation`
 --
 ALTER TABLE `cp_main_navigation`
   ADD PRIMARY KEY (`main_nav_id`);
+
+--
+-- Indexes for table `products`
+--
+ALTER TABLE `products`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `sys_audittrail`
@@ -9048,6 +9134,18 @@ ALTER TABLE `sys_users_activity`
 --
 
 --
+-- AUTO_INCREMENT for table `app_members`
+--
+ALTER TABLE `app_members`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `categories`
+--
+ALTER TABLE `categories`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `cp_content_navigation`
 --
 ALTER TABLE `cp_content_navigation`
@@ -9058,6 +9156,12 @@ ALTER TABLE `cp_content_navigation`
 --
 ALTER TABLE `cp_main_navigation`
   MODIFY `main_nav_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT for table `products`
+--
+ALTER TABLE `products`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `sys_audittrail`
