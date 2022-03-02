@@ -14,9 +14,10 @@
             </div>
             <?php foreach($products as $product){ ?>
                 <?php if($category['id'] == $product['category_id']){ ?>
-                <div class="col-lg-3 col-md-4 col-sm-6 mt10">                
-                    <div class="product-img" style="background-image: url(<?= base_url('assets/img/shop_logo.png'); ?>);">                          
-                    </div>              
+                <div class="col-lg-2 col-md-4 col-sm-4 col- mt10">       
+                    
+                        <div class="product-img" style="background-image: url(<?= base_url('assets/img/shop_logo.png'); ?>);"></div>                         
+                    
                     <center>
                         <strong><?= $product['name']; ?></strong><br>
                         <?php if($product['price'] > 0){ ?>
@@ -31,7 +32,7 @@
                         <?php }?>                    
                     </center>
                     <button class="btn btn-primary form-control mt5">ORDER NOW</button><br>
-                    <button class="btn btn-primary form-control mt5">ADD TO CART</button>                
+                    <button class="btn btn-primary add-to-cart form-control mt5">ADD TO CART</button>                
                 </div>
                 <?php } ?>
             <?php } ?>

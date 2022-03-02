@@ -66,3 +66,23 @@ function clearFormErrors(){
     $('.has-error').removeClass('has-error');
     $('.field_error').remove();
 }
+
+function loading_screen(action){
+    if(action == 'show'){
+        $('.loading-screen').css('z-index','10');
+        $('.loading-screen').css('opacity',1);
+    }
+    else if(action == 'hide'){
+        $('.loading-screen').css('z-index','-1');
+        $('.loading-screen').css('opacity',0);
+    }
+}
+
+//loading screen on ajax - 
+$(document).ajaxSend(function(){
+    loading_screen('show');
+});
+
+$(document).ajaxStop(function(){
+    loading_screen('hide');
+});

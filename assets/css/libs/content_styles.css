@@ -12,6 +12,27 @@
     src: url('http://localhost/3mangschicharon/assets/fonts/Uni-Sans-Thin.otf') format("opentype");
 }
 
+.loading-screen{
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0,0,0,0.5);
+    opacity: 0;
+    z-index: -1;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.loading-icon{
+    position: fixed; 
+    left: 48%;
+    top: 30%;
+    color: white;
+}
+
+.loading-icon i{
+    font-size: 3rem;
+}
+
 .package-group{
     font-family: 'Real Ohio', sans-serif;
     font-size: 3rem;
@@ -156,12 +177,20 @@
     border: none !important; 
 }
 
+.add-to-cart{
+    background-color: #d67943 !important;
+}
+
 .product-img{
-    width: 100%;    
-    border: 1px solid #873e23;    
+    width: 100%;        
+    border: 1px solid #873e23;
     background-size: cover;
     background-position: center;
-    height: 300px !important;
+    height: 250px !important;
+}
+
+.product-img:hover{
+    border: 2px solid #873e23;
 }
 
 
