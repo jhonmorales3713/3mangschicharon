@@ -7,8 +7,9 @@ $(function(){
 	function fillDatatable(){
 		var _record_status 	= $("select[name='_record_status']").val();
 		var _name 			= $("input[name='_name']").val();
-		var _shops 			= $("select[name='_shops']").val();
+		var _categories     = $("select[name='_categories']").val();
 		var date_from       = $("#date_from").val();
+
 
 
 		var dataTable = $('#table-grid-product').DataTable({
@@ -29,7 +30,7 @@ $(function(){
 				url:base_url+"admin/Main_products/product_table", // json datasource
 				data: {'_record_status':_record_status, 
 				        '_name':_name, 
-						'_shops':_shops,
+						'_categories':_categories,
 						'date_from':date_from
 					}, // serialized dont work, idkw
 				beforeSend:function(data) {

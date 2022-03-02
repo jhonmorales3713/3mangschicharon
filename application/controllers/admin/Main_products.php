@@ -153,7 +153,7 @@ class Main_products extends CI_Controller {
                 'main_nav_categories' => $this->model_dev_settings->main_nav_categories()->result(),
                 'shopid'              => $this->model_products->get_sys_shop($member_id),
                 'shopcode'            => $this->model_products->get_shopcode($member_id),
-                'shops'               => $this->model_products->get_shop_options(),
+                'categories'          => $this->model_products->get_category_options(),
             );
 
             $data_admin['active_page'] =  $this->session->userdata('active_page');

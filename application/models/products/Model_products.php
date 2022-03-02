@@ -18,7 +18,7 @@ class Model_products extends CI_Model {
 		$date_from      = $this->input->post('date_from');
 		$_record_status = $this->input->post('_record_status');
 		$_name 			= $this->input->post('_name');
-		$_shops 		= $this->input->post('_shops');
+		$_categories 	= $this->input->post('_categories');
 		$token_session  = $this->session->userdata('token_session');
 		$token          = en_dec('en', $token_session);
 		$branchid       = $this->session->userdata('branchid');
@@ -73,8 +73,8 @@ class Model_products extends CI_Model {
 		if($_name != ""){
 			$sql.=" AND a.itemname LIKE '%" . $this->db->escape_like_str($_name) . "%' ";
 		}
-		if($_shops != ""){
-			$sql.=" AND b.id = " . $this->db->escape($_shops) . "";
+		if($_categories != ""){
+			$sql.=" AND c.id = " . $this->db->escape($_categories) . "";
 		}
 
 		if($date_from != ""){
@@ -87,7 +87,6 @@ class Model_products extends CI_Model {
 		}
 
 		$sql.=" AND a.parent_product_id IS NULL";
-
 		$query = $this->db->query($sql);
 		$totalFiltered = $query->num_rows(); // when there is a search parameter then we have to modify total number filtered rows as per search result.
 
@@ -224,6 +223,11 @@ class Model_products extends CI_Model {
     }
     public function get_shop_options() {
 		$query="SELECT * FROM sys_shops WHERE status = 1";
+		return $this->db->query($query)->result_array();
+    }
+
+    public function get_category_options() {
+		$query="SELECT * FROM sys_product_category WHERE status = 1";
 		return $this->db->query($query)->result_array();
     }
 

@@ -36,10 +36,10 @@
                             <div class="col-md-6 col-lg-3">
                                 <?php if($shopid == 0){?> 
                                     <div class="form-group">
-                                        <select name="_shops" class="form-control material_josh form-control-sm search-input-text enter_search">
+                                        <select name="_categories" class="form-control material_josh form-control-sm search-input-text enter_search">
                                             <option value="">All Category</option>
-                                            <?php foreach ($shops as $shop): ?>
-                                                <option value="<?=$shop['id'];?>"><?=$shop['shopname'];?></option>
+                                            <?php foreach ($categories as $category): ?>
+                                                <option value="<?=$category['id'];?>"><?=$category['category_code'];?></option>
                                             <?php endforeach ?>
                                         </select>
                                     </div>
