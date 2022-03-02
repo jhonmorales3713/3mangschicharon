@@ -1,7 +1,7 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-2 col-md-2 col-sm-4 search_filters">
-            <i class="fa fa-filter" aria-hidden="true"></i> <b>Search Filters</b>
+            <i class="fa fa-filter" aria-hidden="true"></i> <b>Search Filter</b>
             <br><br>
             <small><b>Category</b></small><br>            
             <?php foreach($categories as $category){ ?>
@@ -9,20 +9,15 @@
             <?php } ?>
             <br><br>
             <small><b>Price Range</b></small><br> 
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="form-group">
-                        <small for="">From</small>
-                        <input type="text" name="" id="" class="form-control form-control-sm">
-                    </div>                    
-                </div>
-                <div class="col-lg-6">
-                    <div class="form-group">
-                        <small for="">To</small>
-                        <input type="text" name="" id="" class="form-control form-control-sm">
-                    </div>                    
-                </div>
-            </div>
+            <input type="checkbox"> <small>Php 1 - 1000</small><br>
+            <input type="checkbox"> <small>Php 1001 - 2000</small><br>
+            <input type="checkbox"> <small>Php 2001 - 3000</small><br>
+            <input type="checkbox"> <small>Php 3001 - 4000</small><br>
+            <input type="checkbox"> <small>Php 4001 - 5000</small><br>
+            <input type="checkbox"> <small>Php 5000 above</small>
+
+            <br><br>
+            <button class="btn btn-sm btn-primary form-control form-control-sm add-to-cart">Apply</button>
         </div>
         <div class="col-lg-10 col-md-10 col-sm-8">
             <?php foreach($categories as $category){ ?>        
