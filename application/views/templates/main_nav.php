@@ -29,7 +29,7 @@
     </div>
     <div class="top-nav">
         <div class="welcome">
-            <small>Hello <b>Joseph Magat</b></small> <span class="badge badge-success">Verified</span>
+            <small>Hello <b>New User</b></small> <span class="badge badge-success">Verified</span>
         </div>
         <div class="top-nav-container">            
             <?php if(isset($has_search)){ ?>
@@ -62,7 +62,7 @@
                     <li>
                         <center>
                             <div class="profile-img" style="background-image: url(<?= base_url('assets/img/profile_default.png'); ?>)"></div>
-                            <b>Joseph Magat</b><br>
+                            <b>New User</b><br>
                             <span class="badge badge-success">Verified</span>
                         </center>
                     </li>
