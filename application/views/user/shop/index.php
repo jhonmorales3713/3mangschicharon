@@ -14,9 +14,8 @@
             </div>
             <?php foreach($products as $product){ ?>
                 <?php if($category['id'] == $product['category_id']){ ?>
-                <div class="col-lg-2 col-md-4 col-sm-4 col- mt10">       
-                    
-                        <div class="product-img" style="background-image: url(<?= base_url('assets/img/shop_logo.png'); ?>);"></div>                         
+                <div class="col-lg-2 col-md-4 col-sm-4 col- mt10">   
+                    <div class="product-img" style="background-image: url(<?= base_url('assets/img/shop_logo.png'); ?>);" data-product_id="<?= $product['id'] ?>"></div>                         
                     
                     <center>
                         <strong><?= $product['name']; ?></strong><br>
@@ -24,10 +23,10 @@
                             <?= php_money($product['price']); ?>
                         <?php } else { ?>
                             <?php if($product['price_small'] > 0){ ?>
-                                <span class="badge badge-info">Small</span> <?= php_money($product['price_small']); ?><br>
+                                <span class="badge badge-info size-select">Small</span> <?= php_money($product['price_small']); ?><br>
                             <?php }?>
                             <?php if($product['price_large'] > 0){ ?>
-                                <span class="badge badge-primary">Large</span> <?= php_money($product['price_large']); ?>
+                                <span class="badge badge-primary size-select">Large</span> <?= php_money($product['price_large']); ?>
                             <?php }?>
                         <?php }?>                    
                     </center>
@@ -40,4 +39,4 @@
     <?php } ?>
 </div>
 
-<script src="<?= base_url('assets/js/libs/user/home/home.js'); ?>"></script>
+<script src="<?= base_url('assets/js/libs/user/shop/shop.js'); ?>"></script>

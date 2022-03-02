@@ -22,6 +22,22 @@ class Model_products extends CI_Model {
                 ON
                     p.category_id = c.id";
         return $this->db->query($sql)->result_array();
-    }    
+    }  
+    
+    public function get_product_info($product_id){
+        $sql = "SELECT
+                    p.*,                    
+                    c.category_name
+                FROM 
+                    products p
+                LEFT JOIN
+                    categories c
+                ON
+                    p.category_id = c.id
+                WHERE
+                    p.id = ?";
+                
+        return $this->db->query($sql,[$product_id])->row_array();
+    }
 
 }

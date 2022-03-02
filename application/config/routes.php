@@ -63,6 +63,8 @@ $route['about'] = 'user/about/index';
 $route['registration'] = 'user/signup/index';
 $route['signup'] = 'user/signup/signup';
 
+$route['products/(:any)'] = 'user/products/products/$1';
+
 $route['cart'] = 'user/cart/index';
 
 //admin side

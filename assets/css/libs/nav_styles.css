@@ -315,7 +315,9 @@ img.shop-icon{
     .searchbar{
         width: 250px !important;
     }
-
+    .welcome{
+        display: none;
+    }
 }
 
 @media only screen and (max-width: 400px) {

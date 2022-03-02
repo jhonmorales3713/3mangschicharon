@@ -196,6 +196,25 @@
     border: 1px solid #873e23;
 }
 
+.size-select{
+    cursor: pointer;
+    border: 1px solid #d67943;
+    background-color: gray;
+}
+
+.size-select:hover, .selected{
+    border: 1px solid #873e23;
+    color: white !important;
+    background-color: #873e23 !important;
+}
+
+.quantity-selector{
+    padding: 5px; 
+    font-size: 0.8rem;
+    text-align: center;
+    border-radius: 15px;
+    border: 1px solid #873e23;
+}
 
 @media only screen and (max-width: 548px) {
     .right-bordered{
