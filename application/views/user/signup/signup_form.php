@@ -2,27 +2,43 @@
     <div class="row">        
         <h2>Sign Up</h2>        
     </div>
-    <div class="row">         
+    <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-12">
             <div class="form-group">
-                <label for="">Email Address</label>
-                <input type="text" id="email" class="form-control"/>
+                <label for="">Full Name <span class="text-red">*</span></label>
+                <input type="text" id="full_name" class="form-control"/>
             </div>
-        </div>
+        </div>   
     </div>
     <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-12">
             <div class="form-group">
-                <label for="">Mobile No.</label>
+                <label for="">Mobile No. <span class="text-red">*</span></label>
                 <input type="text" id="mobile" class="form-control"/>
             </div>
         </div>    
+    </div> 
+    <div class="row">         
+        <div class="col-lg-6 col-md-6 col-sm-12">
+            <div class="form-group">
+                <label for="">Email Address <span class="text-red">*</span></label>
+                <input type="text" id="email" class="form-control"/>
+            </div>
+        </div>
     </div>    
     <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-12">
             <div class="form-group">
-                <label for="">Full Name</label>
-                <input type="text" id="full_name" class="form-control"/>
+                <label for="">Password <span class="text-red">*</span></label>
+                <input type="password" id="password" class="form-control"/>
+            </div>
+        </div>   
+    </div>
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-12">
+            <div class="form-group">
+                <label for="">Confirm Password <span class="text-red">*</span></label>
+                <input type="password" id="password2" class="form-control"/>
             </div>
         </div>   
     </div>

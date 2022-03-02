@@ -7,7 +7,9 @@ $('#btn_signup').click(function(){
         data: {
             email: $('#email').val(),
             full_name: $('#full_name').val(),
-            mobile: $('#mobile').val()
+            mobile: $('#mobile').val(),
+            password: $('#password').val(),
+            password2: $('#password2').val(),
         },
         success: function(response){            
             if(response.success){

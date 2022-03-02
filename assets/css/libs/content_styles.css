@@ -172,13 +172,17 @@
     border: none !important; 
 }
 
-.btn-primary:hover{
-    border-radius: 0;
+.btn-primary:hover{    
     border: none !important; 
+    color: #d67943 !important;
 }
 
 .add-to-cart{
     background-color: #d67943 !important;
+}
+
+.add-to-cart:hover{
+    color: #7c3404 !important;
 }
 
 .product-img{
