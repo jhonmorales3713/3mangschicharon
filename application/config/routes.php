@@ -72,5 +72,6 @@ $route['admin'] = 'admin/login/index';
 $route['admin/dashboard'] = 'admin/dashboard/index';
 $route['products_home/(:any)'] = 'admin/Main_products/products_home/$1';
 $route['Main_products/products/(:any)'] = 'admin/Main_products/products/$1';
+$route['Main_products/add_products/(:any)'] = 'admin/Main_products/add_products/$1';
 
 
