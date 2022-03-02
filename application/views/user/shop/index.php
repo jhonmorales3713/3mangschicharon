@@ -13,8 +13,8 @@
                 <strong><?= $category['category_name']; ?></strong>    
             </div>
             <?php foreach($products as $product){ ?>
-                <?php if($category['id'] == $product['category_id']){ ?>
-                <div class="col-lg-2 col-md-4 col-sm-4 col- mt10">   
+                <?php if($category['id'] == $product['category_id']){ ?>                   
+                <div class="col-lg-3 col-md-4 col-sm-6 mt10">   
                     <div class="product-img" style="background-image: url(<?= base_url('assets/img/shop_logo.png'); ?>);" data-product_id="<?= $product['id'] ?>"></div>                         
                     
                     <center>
