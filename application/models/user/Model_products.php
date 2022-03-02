@@ -26,7 +26,7 @@ class Model_products extends CI_Model {
     
     public function get_product_info($product_id){
         $sql = "SELECT
-                    p.*,                    
+                    p.*,                                        
                     c.category_name
                 FROM 
                     products p

@@ -37,17 +37,17 @@ $(function(){
     });
 
     function check_size_selected(){
-        var element = $('.size-select');
+        var element = $('.size-select');        
         var size = '';
-        if(element.length > 0){        
+        if(element.length > 0){
             $.each(element,function(index, value){
                 if($(value).hasClass('selected')){
                     size = $(value).data('size');
                 }
             });
         }
-        else{
-            size = 0;
+        else{            
+            size = 'Regular';
         }
         return size;
     }

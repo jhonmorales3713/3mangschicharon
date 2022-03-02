@@ -40,7 +40,7 @@
                     <button class="btn btn-primary form-control mt5" data-product_id="<?= $product['id'] ?>">ORDER NOW</button>                   
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12">
-                    <button class="btn btn-primary add-to-cart form-control mt5" data-product_id="<?= $product['id'] ?>">ADD TO CART</button>
+                    <button class="btn btn-primary add-to-cart form-control mt5" data-product_id="<?= $product['id'] ?>" data-category_id="<?= $product['category_id'] ?>">ADD TO CART</button>
                 </div>                    
             </div>    
             <hr>

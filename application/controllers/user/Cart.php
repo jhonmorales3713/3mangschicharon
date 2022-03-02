@@ -63,6 +63,19 @@ class Cart extends CI_Controller {
         generate_json($response);
     }
 
+    public function modify_quantity(){
+        $data = $this->input->post();
+        
+        $key = $data['target'];
+        
+        $_SESSION['cart'][$key]['quantity'] = intval($data['quantity']);
+        
+        $response['success'] = true;
+        $response['quantity'] = $_SESSION['cart'][$key]['quantity'];        
+
+        generate_json($response);        
+    }
+
     public function clear_cart(){
         $data = $this->input->post();
 
@@ -75,5 +88,7 @@ class Cart extends CI_Controller {
 
         generate_json($response);
     }
+
+    
     
 }

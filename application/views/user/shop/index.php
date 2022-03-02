@@ -7,7 +7,13 @@
             <?php foreach($categories as $category){ ?>
                 <input type="checkbox"/ data-cat_id="<?= $category['id']; ?>"> <small><?= $category['category_name']; ?></small><br>
             <?php } ?>
-            <br><br>
+            
+            <br>
+            <small><b>Size</b></small><br>
+            <input type="checkbox"> <small>Small</small><br>
+            <input type="checkbox"> <small>Large</small><br>
+
+            <br>
             <small><b>Price Range</b></small><br> 
             <input type="checkbox"> <small>Php 1 - 1000</small><br>
             <input type="checkbox"> <small>Php 1001 - 2000</small><br>

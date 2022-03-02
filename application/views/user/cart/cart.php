@@ -11,36 +11,30 @@
         </div>
     <?php } else { ?>
     <div class="row">
-        <div class="col-12">            
-            <i class="fa fa-trash" id="delete_cart_all" aria-hidden="true"></i>
-            <small>Delete All Items</small>
+        <div class="col-12">
+            <span id="delete_cart_all" class="a">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+                <small>DELETE ALL</small>
+            </span>            
         </div>
     </div>
     <div class="row">
         <div class="col-lg-7 col-md-7 col-sm-12 cart-item-list">
             <center>
-                <h5>Cart Items</h5>
+                <h5>Review Items</h5>
             </center>
             <div class="container p20">               
-                <div class="row">
-                    <div class="col-6">
-                        <b>Item</b>
-                    </div>
-                    <div class="col-3">
-                        <b>Quantity</b>
-                    </div>
-                    <div class="col-3">
-                        <b>Action</b>
-                    </div>
+                <div class="row">                    
                     <?php foreach($_SESSION['cart'] as $key => $value){ ?>
                         <div class="col-6">
+                            <img src="<?= base_url('assets/img/shop_logo.png'); ?>" alt="" width="50px">
                             <strong><?= $_SESSION['cart'][$key]['name'] ?> (<?= $_SESSION['cart'][$key]['size']; ?>)</strong> <br>
                         </div>
-                        <div class="col-3">
-                            <small><b>x</b> <?= $_SESSION['cart'][$key]['quantity'] ?></small>
+                        <div class="col-3">                            
+                            <input type="number" value="<?= $_SESSION['cart'][$key]['quantity']; ?>" min="1" max="100" class="qty" data-target="<?= $key; ?>"/>
                         </div>    
                         <div class="col-3">
-                            <span class="badge badge-danger remove-item">REMOVE</span>
+                            <span class="remove-item text-danger"><i class="fa fa-trash" aria-hidden="true"></i></span>
                         </div>            
                     <?php } ?>                    
                 </div>
@@ -68,12 +62,17 @@
                     <hr>
                     <div class="row">
                         <div class="col-7">
-                            <b>Total Amount</b>
+                            <b>Sub Total</b>
                         </div>
                         <div class="col-5">
                             <strong><?= php_money($total_amount); ?></strong>
                         </div>
                     </div>
+                </div>
+                <div class="col-12">
+                    <br><br>
+                    <hr>
+                    <button class="btn btn-primary form-control">PROCEED TO CHECKOUT</button>
                 </div>
             </div>
         </div>

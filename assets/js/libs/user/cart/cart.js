@@ -1,3 +1,5 @@
+$(function(){
+
 $('#delete_cart_all').click(function(){    
     $.ajax({
         url: base_url + 'user/cart/clear_cart',
@@ -16,4 +18,25 @@ $('#delete_cart_all').click(function(){
 
         }
     });
+});
+
+$('.qty').on('change',function(){
+    var target = $(this).data('target');
+    var quantity = $(this).val();
+    $.ajax({
+        url: base_url + 'user/cart/modify_quantity',
+        type: 'POST',
+        data: {
+            target: target,
+            quantity: quantity,
+        },
+        success: function(response){
+            location.reload();
+        },
+        error: function(){
+
+        }
+    });
+});
+
 });
