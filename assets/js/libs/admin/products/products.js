@@ -3,7 +3,6 @@ $(function(){
 	var base_url = $(".body").data('base_url'); //base_url came from built-in CI function base_url();
 	var token = $('#token').val();
 	var ini      = $(".body").data('ini');
-    alert(base_url);
 	// start - for loading a table
 	function fillDatatable(){
 		var _record_status 	= $("select[name='_record_status']").val();

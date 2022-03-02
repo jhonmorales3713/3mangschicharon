@@ -48,13 +48,21 @@
         <link rel="stylesheet" href="<?=base_url('assets/css/libs/jquery.toast.css')?>">
         <link rel="stylesheet" href="<?=base_url('assets/css/libs/jquery-ui.css')?>">        
         <link rel="stylesheet" href="<?=base_url();?>assets/css/libs/bootstrap-4.1.3.min.css">
-        <link rel="stylesheet" href="<?=base_url();?>assets/css/libs/owl-carousel.min.css">        
-        <link rel="stylesheet" href="<?=base_url('assets/css/libs/header_styles.css')?>">
-        <link rel="stylesheet" href="<?=base_url('assets/css/libs/content_styles.css')?>">
+        <link rel="stylesheet" href="<?=base_url();?>assets/css/libs/owl-carousel.min.css">   
+        <?php if($this->session->userdata('role')!='admin'){?>
+                <link rel="stylesheet" href="<?=base_url('assets/css/libs/header_styles.css')?>">
+                <link rel="stylesheet" href="<?=base_url('assets/css/libs/content_styles.css')?>">
+        <?php }else{?>
+                <link rel="stylesheet" href="<?=base_url('assets/css/admin/admin_styles.css')?>">
+        <?php }?>
         <link rel="stylesheet" href="<?=base_url('assets/css/libs/error_styles.css')?>">
         <link rel="stylesheet" href="<?=base_url('assets/css/libs/jconfirm.css')?>">
+
+        
         <script src="<?= base_url();?>assets/js/libs/popper.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+                <link rel="stylesheet" href="<?=base_url('assets/css/libs/bootstrap-datepicker.css')?>">
+
         <script src="<?=base_url('assets/js/libs/jquery.min.js')?>"></script>
 	    <title><?=$name;?></title>
         <style>

@@ -2,13 +2,14 @@
 
 <div class="col-12">
     <div class="alert alert-secondary ml-4 color-dark" role="alert">
-        <span class="font-weight-bold"><?=$active_page?></span>
+        <span class="font-weight-bold"><a class="text-dark" href="<?=base_url('admin/Main_products/products_home/Products');?>"><?=$active_page?></a></span>
+        
     </div>
 </div>
 <div class="col-12">
     <section class="tables  ml-4">   
         <div class="container-fluid">
-            <div class="card">
+            <div class="card ">
                 <div class="card-header py-2">
                     <div class="row">
                         <div class="col d-flex align-items-center">
@@ -19,71 +20,49 @@
                         </div>
                     </div>
                 </div>
+                
                 <div class="px-4 pt-3 pb-3 pb-md-0" id="card-header_search" data-show="1">
                     <form id="form_search">
-                    <div class="row">
-
-                    <div class="search-filter col-lg-3 col-xs-12 col-md-7 col-sm-7 row m-0">
-                            <div class="input-daterange input-group datetimepicker" data-date-end-date="0d">
-                                <input type="text" autocomplete="off" class="input-sm form-control search-input-select1 date_from col-xs-10 mb-2 sm:mb-0" style="z-index: 2 !important;" value="" id="date_from" name="date_from" placeholder="Select Date Product Created" autocomplete="false">
-                                <!-- <span class="input-group-addon">&nbsp;to&nbsp;</span>
-                                <input type="text" autocomplete="off" class="input-sm form-control search-input-select2 date_to col-xs-10 mb-2 sm:mb-0" style="z-index: 2 !important;" value="<?=today_date();?>" id="date_to" name="date_to" placeholder="MM/DD/YYYY" autocomplete="false">
-                                <input type="hidden" id="todaydate" name="todaydate" value="<?=today_date();?>"/> -->
+                        <div class="row ">
+                            <div class="col-md-6 col-lg-3">
+                                <input type="text" placeholder="Select Date Product Created" autocomplete="false" class="form-control form-control-sm datetimepicker-input" id="date_from" data-toggle="datetimepicker" data-target="#datepicker"/>
+        
                             </div>
-                            <!-- <div class="my-2 my-md-0 text-xs font-semibold text-orange-400 pt-2"><i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp;You cannot pick more than 3 months of data. Pick End Date First.</div> -->
-                        </div>
-
-                        <div class="col-md-6 col-lg-3">
-                            <div class="form-group">
-                                <input type="text" name="_name" class="form-control material_josh form-control-sm search-input-text enter_search" placeholder="Name">
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-lg-3">
-                            <?php if($shopid == 0){?> 
+                            <div class="col-md-6 col-lg-3">
                                 <div class="form-group">
-                                    <select name="_shops" class="form-control material_josh form-control-sm search-input-text enter_search">
-                                        <option value="">All Shops</option>
-                                        <?php foreach ($shops as $shop): ?>
-                                            <option value="<?=$shop['id'];?>"><?=$shop['shopname'];?></option>
-                                        <?php endforeach ?>
-                                    </select>
+                                    <input type="text" name="_name" class="form-control material_josh form-control-sm search-input-text enter_search" placeholder="Name">
                                 </div>
-                            <?php } ?>
-                        </div>
-                        <div class="col-md-6 col-lg-3">
-                            <div class="form-group">
-                                <select name="_record_status" class="form-control material_josh form-control-sm enter_search" id="_record_status">
-                                    <option value="">All Records</option>
-                                    <option value="1" selected>Enabled</option>
-                                    <option value="2">Disabled</option>
-                                </select> 
+                            </div>
+                            <div class="col-md-6 col-lg-3">
+                                <?php if($shopid == 0){?> 
+                                    <div class="form-group">
+                                        <select name="_shops" class="form-control material_josh form-control-sm search-input-text enter_search">
+                                            <option value="">All Category</option>
+                                            <?php foreach ($shops as $shop): ?>
+                                                <option value="<?=$shop['id'];?>"><?=$shop['shopname'];?></option>
+                                            <?php endforeach ?>
+                                        </select>
+                                    </div>
+                                <?php } ?>
+                            </div>
+                            <div class="col-md-6 col-lg-3">
+                                <div class="form-group">
+                                    <select name="_record_status" class="form-control material_josh form-control-sm enter_search" id="_record_status">
+                                        <option value="">All Records</option>
+                                        <option value="1" selected>Enabled</option>
+                                        <option value="2">Disabled</option>
+                                    </select> 
+                                </div>
                             </div>
                         </div>
-                        <!-- start - record status is a default for every table -->
-                        <!-- <div class="col-md-6 col-lg-3">
-                            <div class="form-group">
-                                <select name="_record_status" class="form-control material_josh form-control-sm enter_search" id="_record_status">
-                                    <option value="">All Records</option>
-                                    <option value="1" selected>Active</option>
-                                    <option value="2">Inactive</option>
-                                </select> 
-                            </div>
-                        </div>
-                        -->
-                    </div>
+
                     </form>
                     
                 </div>
                 <div class="card-body table-body">
-
-                    <div class="col-md-8 col-lg-auto table-search-container text-right">
-                        <div class="row no-gutters">
-                            <?php if(ini() == 'toktokmart'){ ?>
-                                <div class="col-12 col-md-auto px-1">
-                                    <button  class="btn-mobile-w-100 btn btn-primary btnSearch w-100"  data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#batchUploadModal" class="btn-mobile" id="batchUpload">Batch Upload</button>
-                                </div>
-                            <?php } ?>
-                            <div class="col-12 col-md-auto px-1">
+                    <div class="col-md-12 col-lg-auto table-search-container text-right d-flex justify-content-end">
+                        <div class="row no-gutters ">
+                            <div class="col-12 col-md-auto">
                                 <?php if($this->loginstate->get_access()['products']['create'] == 1){ ?>
                                         <button class="btn-mobile-w-100 mx-0 mx-sm-2 btn btn-primary mb-3 mb-md-0" id="addBtn">Add</button>
                                 <?php } ?>
@@ -91,7 +70,7 @@
                             <div class="col-12 col-md-auto">
                                 <div class="row no-gutters">
                                     <div class="col-12 col-md-auto px-1 mb-3">
-                                        <form action="<?=base_url('products/Main_products/export_product_table')?>" method="post" target="_blank">
+                                        <form action="<?=base_url('admin/Main_products/export_product_table')?>" method="post" target="_blank">
                                             <input type="hidden" name="date_from" id="date_from">
                                             <input type="hidden" name="_shops" id="_shops">
                                             <input type="hidden" name="_name" id="_name">
@@ -99,7 +78,6 @@
                                             <input type="hidden" name="_search" id="_search">
                                             <button class="btn-mobile-w-100 btn btn-primary btnExport" type="submit" id="btnExport" style="display:none">Export</button>&nbsp;
                                         </form>
-                                    
                                     </div>
                                     <div class="col-6 col-md-auto px-1 mb-3">
                                         <a class="btn-mobile-w-100 btn btn-outline-secondary py-1 btn-block" type="button" id="search_clear_btn"><i class="fa fa-refresh" aria-hidden="true"></i></a>

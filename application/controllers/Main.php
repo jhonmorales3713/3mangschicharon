@@ -22,7 +22,7 @@ class Main extends CI_Controller {
         parent::__construct();        
         $this->load->helper('core');
         // $this->load->model('chapter/model_chapter');
-        // $this->load->model('admin/model_events');
+         $this->load->model('model');
         // $this->load->model('model_public');
         // $this->load->model('admin/model_chapters');
         
@@ -34,12 +34,33 @@ class Main extends CI_Controller {
 	public function index()
 	{
 		if($this->session->userdata('role') == 'admin'){
-			header('Location: '.base_url('admin/Home'));
+			
+			$access_nav=explode(',',$this->session->userdata('access_nav'));
+			$main_nav = ($access_nav)[0];
+			$url='';
+			switch($main_nav){
+				case 2://orders
+					$url = "Main_orders";
+				break;
+				case 3://products
+					$url = "Main_products";
+					$this->session->set_userdata('active_page','Products');
+				break;
+				case 4://orders
+					$url = "Main_shops";
+				break;
+				case 5://orders
+					$url = "Main_customers";
+				break;
+				case 6://orders
+					$url = "Main_accounts";
+				break;
+			}
+			header('Location: '.base_url('admin/'.$url));
 			if($this->session->userdata('role')=='admin'){
 
 			}
 		}
-		var_dump($this->session->userdata());
 	}
     public function logout()
     {
@@ -49,7 +70,7 @@ class Main extends CI_Controller {
         }
 
         $this->session->sess_destroy();
-		header('Location: '.base_url('admin/Home'));
+		header('Location: '.base_url('admin/Login'));
     }
 	
 }

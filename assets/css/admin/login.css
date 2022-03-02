@@ -11,6 +11,3 @@
 a,.btn-link{
 	color: var(--primary-color) !important;
 }
-.btn-primary{
-	background-color: var(--primary-color) !important;
-}

@@ -10,8 +10,9 @@ class Home extends CI_Controller {
 	public function index()
 	{		
 		$data['active_page'] = 'home';
-		$data['has_search'] = true;		
-        $data['page_content'] = $this->load->view('user/home/index','',TRUE);     
+		$data['subnav'] = false;
+		
+        $data['page_content'] = $this->load->view('user/home/index',$data,TRUE);     
 		$this->load->view('landing_template',$data,'',TRUE);
 	}
 

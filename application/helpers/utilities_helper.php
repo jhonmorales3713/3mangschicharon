@@ -188,6 +188,11 @@ function crypto_rand_secure($min, $max){
     }
 // End of date and time functions
 
+function removeFileExtension($filename){
+    $filename = preg_replace('/\\.[^.\\s]{3,4}$/', '', $filename);
+
+    return $filename;
+}
 function getToken($length){
     $token = "";
     $codeAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";

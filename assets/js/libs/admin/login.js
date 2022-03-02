@@ -38,7 +38,7 @@ $(function(){
                     sys_toast_success(data.response);setTimeout(
                         function() 
                         {
-                            window.location.href = base_url+'/Main';
+                        window.location.href = base_url+'/Main';
                         }, 2000);
                    
                 }else{

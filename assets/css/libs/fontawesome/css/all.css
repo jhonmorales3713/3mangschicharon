@@ -411,6 +411,9 @@ readers do not read off random characters that represent icons */
 .fa-autoprefixer:before {
   content: "\f41c"; }
 
+.fa-refresh:before {
+content: "\f021";}
+
 .fa-avianex:before {
   content: "\f374"; }
 
