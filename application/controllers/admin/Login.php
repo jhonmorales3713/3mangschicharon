@@ -148,5 +148,10 @@ class Login extends CI_Controller {
         return $return;
    }
 
+   public function signout(){
+       session_destroy();
+       redirect('admin');
+   }
+
 
 }

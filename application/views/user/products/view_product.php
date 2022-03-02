@@ -21,28 +21,35 @@
                 <?php } else { ?>
                     <small>Select Size:</small><br>
                     <?php if($product['price_small'] > 0){ ?>                        
-                        <span class="badge badge-info size-select">Small</span> <?= php_money($product['price_small']); ?><br>
+                        <span class="badge badge-info size-select" data-size="S">Small</span> <?= php_money($product['price_small']); ?><br>
                     <?php }?>
                     <?php if($product['price_large'] > 0){ ?>
-                        <span class="badge badge-primary size-select">Large</span> <?= php_money($product['price_large']); ?>
+                        <span class="badge badge-primary size-select" data-size="L">Large</span> <?= php_money($product['price_large']); ?>
                     <?php }?>
                 <?php }?>  
 
                 <br><br>
                 <small>Quantity</small><br>
-                <input class="quantity-selector" type="number" value="1" min="1" max="100">
+                <input class="quantity-selector" id="qty" type="number" value="1" min="1" max="100">
 
                 <hr>
 
             </div>
             <div class="row col-12">
-            <div class="col-lg-6 col-md-6 col-sm-12">
-                <button class="btn btn-primary form-control mt5">ORDER NOW</button>                   
-            </div>
-            <div class="col-lg-6 col-md-6 col-sm-12">
-                <button class="btn btn-primary add-to-cart form-control mt5">ADD TO CART</button>
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    <button class="btn btn-primary form-control mt5" data-product_id="<?= $product['id'] ?>">ORDER NOW</button>                   
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    <button class="btn btn-primary add-to-cart form-control mt5" data-product_id="<?= $product['id'] ?>">ADD TO CART</button>
+                </div>                    
             </div>    
-            </div>            
+            <hr>
+            <div class="row col-12">
+                <div class="col-12">
+                    <small><a href="<?= base_url('shop'); ?>" class=""><i class="fa fa-arrow-left" aria-hidden="true"></i> BACK TO SHOPPING</a></small>
+                </div>
+                
+            </div>        
         </div>                  
     </div>
 </div>

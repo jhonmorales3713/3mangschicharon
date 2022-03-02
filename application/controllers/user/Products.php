@@ -19,10 +19,12 @@ class Products extends CI_Controller {
 
     public function products($en_product_id){
         
-        $data['active_page'] = 'shop';
+        $data['active_page'] = 'products';
         
         $product_id = en_dec('dec',$en_product_id);
-        $view_data['product'] = $this->model_products->get_product_info($product_id);
+        $product = $this->model_products->get_product_info($product_id);
+        $product['id'] = en_dec('en',$product['id']);
+        $view_data['product'] = $product;
 
         $data['page_content'] = $this->load->view('user/products/view_product',$view_data,TRUE);
         $this->load->view('landing_template',$data,'',TRUE);

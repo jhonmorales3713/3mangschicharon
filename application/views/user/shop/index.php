@@ -33,7 +33,6 @@
                     <div class="col-lg-3 col-md-4 col-sm-6 mt10">   
                         <div class="product-img" style="background-image: url(<?= base_url('assets/img/shop_logo.png'); ?>);" data-product_id="<?= $product['id'] ?>"></div>                         
                         
-                        <center>
                             <strong><?= $product['name']; ?></strong><br>
                             <?php if($product['price'] > 0){ ?>
                                 <?= php_money($product['price']); ?>
@@ -45,9 +44,7 @@
                                     <span class="badge badge-primary size-select">Large</span> <?= php_money($product['price_large']); ?>
                                 <?php }?>
                             <?php }?>                    
-                        </center>
-                        <button class="btn btn-primary form-control mt5">ORDER NOW</button><br>
-                        <button class="btn btn-primary add-to-cart form-control mt5">ADD TO CART</button>                
+                        
                     </div>
                     <?php } ?>
                 <?php } ?>

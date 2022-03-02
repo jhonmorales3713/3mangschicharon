@@ -46,7 +46,7 @@
             <?php } ?>
             <div class="top-nav-icon">
                 <i class="fa fa-shopping-cart" id="cart_btn" aria-hidden="true"></i>
-                <b>2</b>
+                <b class="cart-items"><?= isset($_SESSION['cart_items']) ? $_SESSION['cart_items'] : 0; ?></b>
             </div>      
             <?php if($this->session->has_logged_in == true){ ?>
                 <div class="top-nav-icon">

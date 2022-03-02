@@ -6,12 +6,12 @@ class Shop extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->load->model('user/model_products');
+        $this->load->model('user/model_products');        
     }
     
     public function index()
 	{		
-		$data['active_page'] = 'shop';
+		$data['active_page'] = 'shop';        
         $data['has_search'] = true;
         $view_data['categories'] = $this->model_products->get_categories();
 		
