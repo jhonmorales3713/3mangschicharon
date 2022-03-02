@@ -179,6 +179,33 @@ class Main_products extends CI_Controller {
         
         generate_json($query);
     }
+    
+
+    public function add_products($token = '')
+    {
+        $this->isLoggedIn();
+        if($this->loginstate->get_access()['overall_access'] == 1 || $this->loginstate->get_access()['products']['create'] == 1) {
+            $member_id = $this->session->userdata('sys_users_id');
+            $branchid  = $this->session->userdata('branchid');
+
+            $data_admin = array(
+                'token'               => $token,
+                'branchid'            => $branchid,
+                'main_nav_categories' => $this->model_dev_settings->main_nav_categories()->result(),
+                'shopid'              => $this->model_products->get_sys_shop($member_id),
+                'shopcode'            => $this->model_products->get_shopcode($member_id),
+                'shops'               => $this->model_products->get_shop_options(),
+                'categories'          => $this->model_products->get_category_options(),
+                'featured_products'   => $this->model_products->getFeaturedProduct(),
+            );
+
+            $this->load->view('includes/header', $data_admin);
+            $this->load->view('products/add_products', $data_admin);
+        }else{
+            $this->load->view('error_404');
+        }
+    }
+    
     public function views_restriction($content_url)
     {
         //this code is for destroying session and page if they access restricted page
