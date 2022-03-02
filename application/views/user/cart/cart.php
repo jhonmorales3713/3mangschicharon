@@ -74,6 +74,10 @@
                     <hr>
                     <button class="btn btn-primary form-control">PROCEED TO CHECKOUT</button>
                 </div>
+                <div class="col-12">
+                    <hr>
+                    <a href="<?= base_url('shop'); ?>">Back to shopping</a>
+                </div>
             </div>
         </div>
     </div>
