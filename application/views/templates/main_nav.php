@@ -5,7 +5,6 @@
 </div>
 
 <div id="navbar">    
-
     <div class="row">
         <div class="col-4">            
             <img class="shop-icon" src="<?= base_url('assets/img/favicon.png'); ?>" alt="">              
@@ -26,13 +25,38 @@
                 <a href="<?= base_url('registration'); ?>" class="nav-registration">Login/Sign Up</a>  
                 </center>  
             </div>              
-        </div>
+        </div>        
     </div>
-
-      
-
-      
-        
+    <div class="top-nav">
+        <div class="top-nav-container">
+            <?php if(isset($has_search)){ ?>
+                <div class="top-nav-icon">
+                    <div class="searchbar">
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control form-control-sm" placeholder="Search here..." aria-label="Recipient's username" aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                                <button class="btn btn-sm btn-primary" type="button"><i class="fas fa-search"></i></button>
+                            </div>
+                        </div>
+                    </div>  
+                </div> 
+            <?php } ?>
+            <div class="top-nav-icon">
+                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                <b>2</b>
+            </div>      
+            <div class="top-nav-icon">
+                <i class="fa fa-user" id="user_option" aria-hidden="true"></i>                
+            </div>               
+        </div>
+        <div class="user-option p20">
+            <span class="close" id="close_user_options">&times;</span>
+            <br>
+            <div class="col-12">
+                
+            </div>
+        </div>
+    </div>        
 </div>
 
 
@@ -77,4 +101,32 @@
         }
         
     });
+
+    function toggle_options(el_id, target_el, action){
+        if(action == 'show'){
+            $('#'+el_id).addClass('open');
+            $(target_el).css('z-index','5');
+            $(target_el).css('opacity','1');
+        }
+        else if(action == 'hide'){
+            $('#'+el_id).removeClass('open');
+            $(target_el).css('z-index','-1');
+            $(target_el).css('opacity','0');
+        }
+    }
+
+    //user option
+    $('#user_option').click(function(){
+        if($(this).hasClass('open')){
+            toggle_options('user_options','.user-option','hide');
+        }
+        else{
+            toggle_options('user_options','.user-option','show');            
+        }        
+    });
+
+    $('#close_user_options').click(function(){
+        toggle_options('user_options','.user-option','hide');
+    });
+
 </script>

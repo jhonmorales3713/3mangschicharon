@@ -39,3 +39,5 @@
         </div>
     <?php } ?>
 </div>
+
+<script src="<?= base_url('assets/js/libs/user/home/home.js'); ?>"></script>

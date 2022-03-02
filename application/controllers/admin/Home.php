@@ -11,7 +11,7 @@ class Home extends CI_Controller {
         $this->load->model('model');
     }
 
-    public function index(){
+    public function index(){        
         $data['active_page'] = 'dashboard';
         $view_data['mewo'] = 'dashboard';
         $data['page_content'] = $this->load->view('admin/dashboard/index',$view_data,TRUE);

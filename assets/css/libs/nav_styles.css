@@ -14,7 +14,7 @@
 .info-bar{
     width: 100%;
 }
- 
+
 #navbar {    
     width: 100%;    
     font-family: 'Uni Sans Thin' !important;
@@ -23,7 +23,7 @@
     background-color: white;
     z-index: 100;
     position: fixed;
-    top: 0;            
+    top: 0;
 }
   
 #navbar a {
@@ -118,13 +118,6 @@ img.shop-icon{
     right: 10px;        
 }
 
-.nav-cart{
-    position: relative;
-    padding: 5px;
-    font-size: 0.9rem;
-    background-color: floralwhite !important;
-}
-
 .nav-container{        
     padding: 0;
     position: relative;    
@@ -146,38 +139,99 @@ img.shop-icon{
     transition: 0.3s ease-in-out !important;
 }
 
-/* cart styles */
-.cart{
-    margin: 0 !important;
-    padding: 0 !important;
-    position: absolute;    
-    right: 1rem;
-    transition: 0.3s ease-in-out !important;
+/* top nav styles */
+.top-nav{
+    font-family: Arial !important;
+    margin: 0;
+    height: 44px;
+    position: relative;
+    width: 100vw;
+    color: #d67943;
+    background-color: rgba(214,121,67,0.3);
 }
 
-.cart-icon{
+.top-nav-container{
+    margin: 0 !important;    
+    position: absolute;
+    top: 8px;
+    right: 30px;
+    transition: 0.3s ease-in-out !important;    
+}
+
+.top-nav-icon{
     position: relative;
     cursor: pointer;    
-    margin-right: 10px;
-    margin-top: 5px;
+    margin-right: 10px;   
+    margin-left: 10px;
+    display: inline-block; 
+    transition: 0.2s ease-in-out !important;
 }
 
-.cart-icon i{
+.top-nav-icon i{
     font-size: 1rem;
 }
 
-.cart-icon span{
-    position: absolute;
-    top: -11px;
-    right: -15px;    
-    z-index: 100;    
+.top-nav-icon b{    
+    position: absolute;    
+    top: -5px;
+    right: -14px;    
+    z-index: 99;    
     font-size: 0.6rem;
-    font-weight: 900;
     color: black;
-    background-color: rgba(255,255,255,0.75);
-    padding: 3px;
-    width: 20px;
+    background-color: rgba(255,255,255,0.75);    
+    width: 15px;
+    text-align: center;
     border-radius: 50%;
+}
+
+.cart-icon:hover{
+    color: #7c3404;
+}
+
+.searchbar{
+    min-width: 380px;
+    font-size: 0.8rem !important;  
+}
+
+.searchbar input{
+    font-size: .8rem !important;  
+    height: 28px !important;
+    border: none !important;
+}
+
+.searchbar .btn{
+    border-radius: 0 5px 5px 0 !important;
+    border: none !important;
+    height: 28px !important;
+}
+
+.searchbar input:hover, .searchbar .btn:hover{
+    border: none;
+}
+
+/* account dropdown styles */
+.user-option{
+    position: absolute;
+    top: 30px !important; 
+    right: 30px !important;
+    min-height: 300px;
+    width: 300px;
+    background-color: white;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.1s ease-in-out;
+    box-shadow: 5px 8px 15px 1px rgba(0,0,0,0.18);
+    -webkit-box-shadow: 5px 8px 15px 1px rgba(0,0,0,0.18);
+    -moz-box-shadow: 5px 8px 15px 1px rgba(0,0,0,0.18);
+}
+
+.close{
+    font-size: 1.2rem;
+    color: lighgray;    
+}
+
+.close:hover{
+    color: #333;
 }
 
 /* responsive styles */
