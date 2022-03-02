@@ -28,32 +28,55 @@
         </div>        
     </div>
     <div class="top-nav">
-        <div class="top-nav-container">
+        <div class="welcome">
+            <small>Hello <b>Joseph Magat</b></small> <span class="badge badge-success">Verified</span>
+        </div>
+        <div class="top-nav-container">            
             <?php if(isset($has_search)){ ?>
                 <div class="top-nav-icon">
                     <div class="searchbar">
                         <div class="input-group mb-3">
                             <input type="text" class="form-control form-control-sm" placeholder="Search here..." aria-label="Recipient's username" aria-describedby="basic-addon2">
                             <div class="input-group-append">
-                                <button class="btn btn-sm btn-primary" type="button"><i class="fas fa-search"></i></button>
+                                <button class="btn btn-sm btn-primary add-to-cart" type="button"><i class="fas fa-search"></i></button>
                             </div>
                         </div>
                     </div>  
                 </div> 
             <?php } ?>
             <div class="top-nav-icon">
-                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                <i class="fa fa-shopping-cart" id="cart_btn" aria-hidden="true"></i>
                 <b>2</b>
             </div>      
-            <div class="top-nav-icon">
-                <i class="fa fa-user" id="user_option" aria-hidden="true"></i>                
-            </div>               
+            <?php if($this->session->has_logged_in == true){ ?>
+                <div class="top-nav-icon">
+                    <i class="fa fa-user" id="user_option" aria-hidden="true"></i>                
+                </div>               
+            <?php } ?>
         </div>
         <div class="user-option p20">
             <span class="close" id="close_user_options">&times;</span>
             <br>
             <div class="col-12">
-                
+                <ul class="list-unstyled">
+                    <li>
+                        <center>
+                            <div class="profile-img" style="background-image: url(<?= base_url('assets/img/profile_default.png'); ?>)"></div>
+                            <b>Joseph Magat</b><br>
+                            <span class="badge badge-success">Verified</span>
+                        </center>
+                    </li>
+                    <br>
+                    <li>
+                    <i class="fa fa-user" aria-hidden="true"></i> <small>Profile</small>
+                    </li>
+                    <li>
+                        <i class="fa fa-square" aria-hidden="true"></i> <small>Orders</small>
+                    </li>
+                    <li>
+                        <i class="fas fa-sign-out-alt" aria-hidden="true"></i> <small>Signout</small>
+                    </li>                    
+                </ul>
             </div>
         </div>
     </div>        
@@ -100,6 +123,11 @@
             $('.nav-container').slideDown(300);
         }
         
+    });
+
+    //cart btn
+    $('#cart_btn').click(function(){
+        window.location.href = base_url + 'cart';
     });
 
     function toggle_options(el_id, target_el, action){

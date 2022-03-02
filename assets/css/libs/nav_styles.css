@@ -189,7 +189,7 @@ img.shop-icon{
 }
 
 .searchbar{
-    min-width: 380px;
+    width: 380px;
     font-size: 0.8rem !important;  
 }
 
@@ -197,6 +197,7 @@ img.shop-icon{
     font-size: .8rem !important;  
     height: 28px !important;
     border: none !important;
+    border: 1px solid #d67943 !important;
 }
 
 .searchbar .btn{
@@ -213,9 +214,8 @@ img.shop-icon{
 .user-option{
     position: absolute;
     top: 30px !important; 
-    right: 30px !important;
-    min-height: 300px;
-    width: 300px;
+    right: 30px !important;    
+    width: 220px;
     background-color: white;
     z-index: -1;
     opacity: 0;
@@ -225,14 +225,39 @@ img.shop-icon{
     -moz-box-shadow: 5px 8px 15px 1px rgba(0,0,0,0.18);
 }
 
+.user-option small{
+    color: #333 !important;
+    cursor: pointer;
+}
+
+.user-option small:hover{
+    text-decoration: underline;
+}
+
 .close{
     font-size: 1.2rem;
     color: lighgray;    
+    background-color: none !important;
 }
 
 .close:hover{
     color: #333;
 }
+
+.profile-img{
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+}
+
+.welcome{
+    padding-left: 15px;
+    padding-top: 10px;
+}
+
+
 
 /* responsive styles */
 @media only screen and (min-width: 749px) {
@@ -287,5 +312,26 @@ img.shop-icon{
         margin-left: 10px;
         padding-bottom: 15px;   
     } 
+    .searchbar{
+        width: 250px !important;
+    }
 
+}
+
+@media only screen and (max-width: 400px) {
+    .searchbar{
+        width: 200px !important;
+    }
+}
+
+@media only screen and (max-width: 360px) {
+    .searchbar{
+        width: 180px !important;
+    }
+}
+
+@media only screen and (max-width: 300px) {
+    .searchbar{
+        width: 130px !important;
+    }
 }
