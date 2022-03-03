@@ -222,7 +222,7 @@
     left: 0;
     padding: 5px;
     transition: all 0.2s ease-in-out;    
-    background: linear-gradient(180deg, rgba(255,255,255,0.0) 0%, rgba(181,129,74,1) 55%);
+    background: linear-gradient(180deg, rgba(255,255,255,0.0) 0%, rgba(119,51,5,1) 55%);
 }
 
 .size-select{

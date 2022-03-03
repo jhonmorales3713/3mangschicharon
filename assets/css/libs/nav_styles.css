@@ -52,7 +52,7 @@
 
 .cover-photo{
     width: 100%;
-    height: 650px !important;
+    height: 500px !important;
     overflow: hidden;
     position: relative;
 }
@@ -72,7 +72,7 @@
     color: black;
     text-shadow: 1px 1px 3px #fff;    
     margin: auto;
-    margin-top: -100px;    
+    margin-top: -30px;    
     display: block;
 }
 
@@ -217,12 +217,16 @@ img.shop-icon{
     right: 30px !important;    
     width: 220px;
     background-color: white;
-    z-index: -1;
+    z-index: -5;
     opacity: 0;
     transition: opacity 0.1s ease-in-out;
     box-shadow: 5px 8px 15px 1px rgba(0,0,0,0.18);
     -webkit-box-shadow: 5px 8px 15px 1px rgba(0,0,0,0.18);
     -moz-box-shadow: 5px 8px 15px 1px rgba(0,0,0,0.18);
+}
+
+.option-lists,.option-lists *{
+    position: relative !important;
 }
 
 .user-option small{

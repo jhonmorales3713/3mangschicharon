@@ -6,7 +6,8 @@
     <div class="cover-photo" style="background-image: url(<?= base_url('assets/img/s2.jpg'); ?>); background-size: cover;">        
         <br><br><br>
         <center>
-            <strong class="cover-name">3Mang's</strong>
+            <strong class="cover-name">3Mang's</strong><br>
+            <b class="cover-tagline">Mushroom Chicharon</b>
         </center>
     </div>
 <?php } ?>
@@ -66,7 +67,7 @@
         <div class="user-option p20">
             <span class="close" id="close_user_options">&times;</span>
             <br>
-            <div class="col-12">
+            <div class="col-12 option-lists">
                 <ul class="list-unstyled">
                     <li>
                         <center>
