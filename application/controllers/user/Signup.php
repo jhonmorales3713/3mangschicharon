@@ -101,8 +101,9 @@ class Signup extends CI_Controller {
         generate_json($response);       
     }
 
-    private function set_session(){
+    private function set_session($user_data){
         $_SESSION['has_logged_in'] = true;
+        $_SESSION['full_name'] = $user_data['full_name'];
     }
 
     public function signout(){
