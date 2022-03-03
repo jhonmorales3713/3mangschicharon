@@ -6,6 +6,17 @@
     transition: all 0.3s ease-in-out;
 }
 
+.hidden{
+    display:none;
+}
+.bootstrap-tagsinput .tag {
+    background: var(--primary-color);
+    border: none;
+    padding: 0 6px;
+    margin-right: 2px;
+    color: white;
+    border-radius: 4px;
+}
 .main-footer{
     width: 100vw;
     position: fixed;
@@ -89,8 +100,16 @@ select.custom-select.custom-select-sm.form-control.form-control-sm {
     .position-absolute.right-0 { position: relative !important; padding: 0; }
     .position-absolute.right-0 button { margin-right: 0; margin-left: 0; }
 }
-
-
+.card-header{
+    
+	background-color: var(--primary-color) !important;
+}
+.card-title{
+    font-size : 16px;
+    font-weight: bold;
+    margin:0 !important;
+    color:white;
+}
 table.dataTable thead .sorting:before, 
 table.dataTable thead .sorting:after, 
 table.dataTable thead .sorting_asc:before, 

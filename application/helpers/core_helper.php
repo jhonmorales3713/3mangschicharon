@@ -19,6 +19,10 @@ function get_company_name(){
 	return (cs_clients_info()) ? cs_clients_info()->name : "";
 }
 
+function get_shop_url($path){
+	return 'shop url in core helper';
+}
+
 
 function get_s3_imgpath_upload(){
 	$directory = base_url('assets/uploads');

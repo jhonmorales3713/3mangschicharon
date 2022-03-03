@@ -2,7 +2,7 @@
     background-color: none;
 }
 .jconfirm.jconfirm .jconfirm-box{
-    transform:translate(0px,-300px);
+    transform:translate(0px,-250px);
 }
 .jconfirm.jconfirm-danger .jconfirm-box{
     border: 1px solid #F8D7DA;
@@ -36,7 +36,7 @@
 }
 @media only screen and (max-width: 768px) {
     .jconfirm.jconfirm .jconfirm-box{
-        transform:translate(0px,-200px);
+        transform:translate(0px,200px);
     }
   }
 .jconfirm.jconfirm-danger .jconfirm-box-container{

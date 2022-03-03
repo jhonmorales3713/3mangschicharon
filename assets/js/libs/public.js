@@ -33,6 +33,7 @@ $(document).ready(function(){
             content: message,
             theme: theme,
             autoClose: 'cancel|1000',
+			draggable: false,
             backgroundDismiss: true,
             buttons: {
                 cancel: function () {
