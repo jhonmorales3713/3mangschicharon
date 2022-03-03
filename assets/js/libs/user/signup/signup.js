@@ -13,7 +13,7 @@ $('#btn_signup').click(function(){
         },
         success: function(response){            
             if(response.success){
-                console.log(user_id);
+                sys_toast_success(response.message);
             }
             else{
                 clearFormErrors();

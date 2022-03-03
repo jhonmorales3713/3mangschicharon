@@ -43,6 +43,8 @@ class Signup extends CI_Controller {
             generate_json($response);
             die();            
         }     
+
+        unset($user_data['password2']);
         
         $user_id = $this->model_users->insert_user($user_data);
 

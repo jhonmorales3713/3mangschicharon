@@ -19,7 +19,7 @@ class Products extends CI_Controller {
 
     public function products($en_product_id){
         
-        $data['active_page'] = 'products';
+        $data['active_page'] = 'shop';
         
         $product_id = en_dec('dec',$en_product_id);
         $product = $this->model_products->get_product_info($product_id);
