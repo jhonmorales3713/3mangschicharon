@@ -25,7 +25,7 @@
                 <hr>
 
                 <?php if($product['price'] > 0){ ?>
-                    &#8369; <?= php_money($product['price']); ?>
+                    &#8369; <?= number_format($product['price'],2); ?>
                 <?php } else { ?>
                     <small>Select Size:</small><br>
                     <?php if($product['price_small'] > 0){ ?>                        
