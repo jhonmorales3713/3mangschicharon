@@ -52,9 +52,14 @@ class Cart extends CI_Controller {
         }
         else{
             $_SESSION['cart'][$key] = $product;
-            $_SESSION['cart'][$key]['quantity'] = intval($data['quantity']);
-            $_SESSION['cart_items'] = intval($_SESSION['cart_items']) + 1;
+            $_SESSION['cart'][$key]['quantity'] = intval($data['quantity']);            
         }        
+
+        $total_qty = 0;
+        foreach($_SESSION['cart'] as $key => $value){
+            $total_qty += intval($_SESSION['cart'][$key]['quantity']);
+        }
+        $_SESSION['cart_items'] = $total_qty;
 
         $response['success'] = true;
         $response['cart_items'] = $_SESSION['cart_items'];
@@ -69,6 +74,12 @@ class Cart extends CI_Controller {
         $key = $data['target'];
         
         $_SESSION['cart'][$key]['quantity'] = intval($data['quantity']);
+
+        $total_qty = 0;
+        foreach($_SESSION['cart'] as $key => $value){
+            $total_qty += intval($_SESSION['cart'][$key]['quantity']);
+        }
+        $_SESSION['cart_items'] = $total_qty;
         
         $response['success'] = true;
         $response['quantity'] = $_SESSION['cart'][$key]['quantity'];        
