@@ -217,7 +217,7 @@ img.shop-icon{
     right: 30px !important;    
     width: 220px;
     background-color: white;
-    z-index: -5;
+    z-index: -105;
     opacity: 0;
     transition: opacity 0.1s ease-in-out;
     box-shadow: 5px 8px 15px 1px rgba(0,0,0,0.18);

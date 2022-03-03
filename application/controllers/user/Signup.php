@@ -93,6 +93,8 @@ class Signup extends CI_Controller {
             generate_json($response); die();
         }
 
+        $this->set_session();
+
         $response['success'] = true;        
         $response['message'] = 'Login Successful';
 
@@ -100,11 +102,12 @@ class Signup extends CI_Controller {
     }
 
     private function set_session(){
-
+        $_SESSION['has_logged_in'] = true;
     }
 
     public function signout(){
-
+        session_destroy();
+        redirect('home');
     }
 
 }

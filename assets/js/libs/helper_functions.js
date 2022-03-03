@@ -1,3 +1,5 @@
+var base_url = $('body').data('base_url');
+
 function format_number(num,decimal = 0){
     if(decimal != 0){
         num = parseFloat(num).toFixed(decimal);
@@ -86,3 +88,7 @@ $(document).ajaxSend(function(){
 $(document).ajaxStop(function(){
     loading_screen('hide');
 });
+
+$('#signout').click(function(){
+    window.location.href = base_url + 'signout';
+})

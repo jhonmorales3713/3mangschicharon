@@ -30,7 +30,7 @@
                 <a href="<?= base_url('about'); ?>" class="nav-about">ABOUT US</a>        
                 <a href="<?= base_url('contact_us'); ?>" class="nav-contact_us">CONTACT US</a>      
                 <a href="<?= base_url('admin'); ?>">ADMIN</a>  
-                <?php if(!isset($this->session->isLoggedIn) || $this->session->isLogggedIn != true){ ?>
+                <?php if(!isset($_SESSION['has_logged_in'])){ ?>
                     <a href="<?= base_url('registration'); ?>" class="nav-registration">Login/Sign Up</a>  
                 <?php } ?>                
                 </center>  
@@ -83,7 +83,7 @@
                     <li>
                         <i class="fa fa-square" aria-hidden="true"></i> <small>Orders</small>
                     </li>
-                    <li>
+                    <li id="signout">
                         <i class="fas fa-sign-out-alt" aria-hidden="true"></i> <small>Signout</small>
                     </li>                    
                 </ul>

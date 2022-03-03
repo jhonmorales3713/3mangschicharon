@@ -1,7 +1,15 @@
 <div class="container">
     <div class="row">
-        <div class="col-lg-4 col-md-4 col-sm-12">                    
-            <div class="product-img" style="background-image: url(<?= base_url('assets/img/favicon.png'); ?>);"></div>   
+        <div class="col-lg-4 col-md-4 col-sm-12">           
+            <?php
+                if($product['img'] == '' || $product['img'] == NULL){
+                    $image_path = base_url('assets/img/favicon.png');
+                }
+                else{                                
+                    $image_path = base_url('uploads/products/').$product['img'];
+                }
+            ?>
+            <div class="product-img2" style="background-image: url(<?= $image_path; ?>); background-position: center; background-size: contain; background-repeat: no-repeat;" data-product_id="<?= $product['id'] ?>"></div>
             <br>
             <small><b>Category: </b><?= $product['category_name'] ?></small><br>
             <small><b>Product Rating: </b></small><br>
@@ -17,14 +25,14 @@
                 <hr>
 
                 <?php if($product['price'] > 0){ ?>
-                    <?= php_money($product['price']); ?>
+                    &#8369; <?= php_money($product['price']); ?>
                 <?php } else { ?>
                     <small>Select Size:</small><br>
                     <?php if($product['price_small'] > 0){ ?>                        
-                        <span class="badge badge-info size-select" data-size="S">Small</span> <?= php_money($product['price_small']); ?><br>
+                        <span class="badge badge-info size-select" data-size="S">Small</span> &#8369; <?= number_format($product['price_small'],2); ?><br>
                     <?php }?>
                     <?php if($product['price_large'] > 0){ ?>
-                        <span class="badge badge-primary size-select" data-size="L">Large</span> <?= php_money($product['price_large']); ?>
+                        <span class="badge badge-primary size-select" data-size="L">Large</span> &#8369; <?= number_format($product['price_large'],2); ?>
                     <?php }?>
                 <?php }?>  
 
