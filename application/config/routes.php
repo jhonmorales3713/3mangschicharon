@@ -62,6 +62,7 @@ $route['about'] = 'user/about/index';
 
 $route['registration'] = 'user/signup/index';
 $route['signup'] = 'user/signup/signup';
+$route['signin'] = 'user/signup/login';
 
 $route['products/(:any)'] = 'user/products/products/$1';
 

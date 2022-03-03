@@ -1,3 +1,7 @@
+$(function(){
+
+
+
 var base_url = $('body').data('base_url');
 
 $('#btn_signup').click(function(){
@@ -25,3 +29,5 @@ $('#btn_signup').click(function(){
         }
     });
 });
+
+})

@@ -11,7 +11,7 @@ class Signup extends CI_Controller {
 
     public function index(){
         $data['active_page'] = 'registration';		
-        $data['page_content'] = $this->load->view('user/signup/signup_form','',TRUE);     
+        $data['page_content'] = $this->load->view('user/signup/index','',TRUE);     
 		$this->load->view('landing_template',$data,'',TRUE);        
     }
 
@@ -45,6 +45,7 @@ class Signup extends CI_Controller {
         }     
 
         unset($user_data['password2']);
+        $user_data['password'] = en_dec('en',$user_data['password']);
         
         $user_id = $this->model_users->insert_user($user_data);
 
@@ -54,6 +55,56 @@ class Signup extends CI_Controller {
 
         generate_json($response); 
        
+    }
+
+    public function login(){
+        $data = $this->input->post();        
+
+        $this->form_validation->validation_data = $data;
+
+        //declaration of form validations
+        $this->form_validation->set_rules('login_email','Email Address','required');
+        $this->form_validation->set_rules('login_password','Password','required');
+
+        if($this->form_validation->run() == FALSE) {
+            $response = array(
+              'success'      => false,
+              'message'      => 'Please check for field errors',
+              'field_errors' => $this->form_validation->error_array(),              
+            );
+
+            generate_json($response);
+            die();            
+        }
+        
+        $user_data = $this->model_users->get_user_by_email($data['login_email']); 
+
+        $en_password = en_dec('en',$data['login_password']);
+        if($user_data){
+            if($en_password != $user_data['password']){
+                $response['success'] = false;
+                $response['field_errors'] = array('login_password' => 'Invalid Password');
+                generate_json($response); die();
+            }
+        }
+        else{
+            $response['success'] = false;
+            $response['field_errors'] = array('login_email' => 'Account does not exist');
+            generate_json($response); die();
+        }
+
+        $response['success'] = true;        
+        $response['message'] = 'Login Successful';
+
+        generate_json($response);       
+    }
+
+    private function set_session(){
+
+    }
+
+    public function signout(){
+
     }
 
 }
