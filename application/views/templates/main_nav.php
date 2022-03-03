@@ -40,7 +40,7 @@
     <div class="top-nav">
         <div class="welcome">
             <?php if(isset($_SESSION['full_name'])){ ?>
-                <small>Hello <b>New User</b></small> <span class="badge badge-success">Verified</span>
+                <small>Hello <b><?= $_SESSION['full_name']; ?></b></small> <span class="badge badge-success">Verified</span>
             <?php }?>
         </div>
         <div class="top-nav-container">            
