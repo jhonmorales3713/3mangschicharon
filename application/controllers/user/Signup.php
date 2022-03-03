@@ -93,7 +93,7 @@ class Signup extends CI_Controller {
             generate_json($response); die();
         }
 
-        $this->set_session();
+        $this->set_session($user_data);
 
         $response['success'] = true;        
         $response['message'] = 'Login Successful';
