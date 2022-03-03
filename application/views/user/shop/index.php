@@ -37,20 +37,51 @@
                 <?php foreach($products as $product){ ?>
                     <?php if($category['id'] == $product['category_id']){ ?>                   
                     <div class="col-lg-3 col-md-4 col-sm-6 mt10">   
-                        <div class="product-img" style="background-image: url(<?= base_url('assets/img/shop_logo.png'); ?>);" data-product_id="<?= $product['id'] ?>"></div>                         
-                        
-                            <strong><?= $product['name']; ?></strong><br>
+                        <?php
+                            if($product['img'] == '' || $product['img'] == NULL){
+                                $image_path = base_url('assets/img/shop_logo.png');
+                            }
+                            else{                                
+                                $image_path = base_url('uploads/products/').$product['img'];
+                            }
+                        ?>
+                        <div class="product-img" style="background-image: url(<?= $image_path; ?>);" data-product_id="<?= $product['id'] ?>">                       
+                            <div class="product-info">
+                            <strong class="product-name"><?= $product['name']; ?></strong><br>
                             <?php if($product['price'] > 0){ ?>
-                                <?= php_money($product['price']); ?>
+                                <span class="badge badge-info size-select">Regular</span> <span>&#8369; <?= number_format($product['price'],2); ?></span><br>
+                                <span class="badge badge-info size-select">Large</span> <span>Not Available</span><br>
                             <?php } else { ?>
                                 <?php if($product['price_small'] > 0){ ?>
-                                    <span class="badge badge-info size-select">Small</span> <?= php_money($product['price_small']); ?><br>
+                                    <span class="badge badge-info size-select">Small</span> <span>&#8369; <?= number_format($product['price_small'],2); ?></span><br>
                                 <?php }?>
                                 <?php if($product['price_large'] > 0){ ?>
-                                    <span class="badge badge-primary size-select">Large</span> <?= php_money($product['price_large']); ?>
+                                    <span class="badge badge-primary size-select">Large</span> <span>&#8369; <?= number_format($product['price_large'],2); ?></span>
                                 <?php }?>
-                            <?php }?>                    
-                        
+                            <?php }?>
+                            </div>   
+                        </div>  
+                        <div class="ml5">
+                        <?php if($product['price'] > 0){ ?>
+                            <div class="row">
+                                <div class="col-6">
+                                    <strong>&#8369; <?= number_format($product['price'],2); ?></strong>
+                                </div>
+                                <div class="col-6 text-right">
+                                    <small><b>1 sold</b></small>
+                                </div>
+                            </div>
+                        <?php } else { ?>
+                            <div class="row">
+                                <div class="col-6">
+                                    <strong>&#8369; <?= number_format($product['price_small'],2); ?></strong>
+                                </div>
+                                <div class="col-6 text-right">
+                                    <small><b>1 sold</b></small>
+                                </div>
+                            </div>                            
+                        <?php }?>        
+                        </div>                
                     </div>
                     <?php } ?>
                 <?php } ?>
