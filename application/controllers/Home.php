@@ -11,6 +11,7 @@ class Home extends CI_Controller {
 	{		
 		$data['active_page'] = 'home';
 		$data['subnav'] = false;
+		$data['has_search'] = true;
 		
         $data['page_content'] = $this->load->view('user/home/index',$data,TRUE);     
 		$this->load->view('landing_template',$data,'',TRUE);

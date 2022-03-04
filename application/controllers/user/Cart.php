@@ -100,6 +100,10 @@ class Cart extends CI_Controller {
         generate_json($response);
     }
 
-    
+    public function checkout(){
+        $data['active_page'] = 'cart';
+        $data['page_content'] = $this->load->view('user/cart/checkout','',TRUE);     
+		$this->load->view('landing_template',$data,'',TRUE);
+    }
     
 }

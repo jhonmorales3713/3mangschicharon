@@ -39,4 +39,8 @@ $('.qty').on('change',function(){
     });
 });
 
+$('#btn_checkout').click(function(){
+    window.location.href = base_url + 'user/cart/checkout';
+})
+
 });

@@ -72,7 +72,7 @@
                 <div class="col-12">
                     <br><br>
                     <hr>
-                    <button class="btn btn-primary form-control">PROCEED TO CHECKOUT</button>
+                    <button class="btn btn-primary form-control" id="btn_checkout">PROCEED TO CHECKOUT</button>
                 </div>
                 <div class="col-12">
                     <hr>
