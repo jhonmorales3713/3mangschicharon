@@ -74,7 +74,7 @@ $(function(){
         else{
             countFiles = $(this)[0].files.length;
             $.LoadingOverlay("show");
-            $( ".imagepreview" ).empty();
+            $( ".imagepreview2" ).empty();
             imagesPreview(this, 'div.imagepreview');
             $('#product-placeholder').hide();
             $('.imagepreview').hide('slow');
@@ -106,7 +106,7 @@ $(function(){
                 var reader = new FileReader();
 
                 reader.onload = function(event) {
-                    $($.parseHTML('<img id="product_preview">')).attr('src', event.target.result).appendTo(placeToInsertImagePreview);
+                    $($.parseHTML('<img id="product_preview"  width=100%>')).attr('src', event.target.result).appendTo(placeToInsertImagePreview);
                     $('<font>&nbsp;</font>').appendTo(placeToInsertImagePreview)
                 }
 
@@ -209,7 +209,7 @@ $(function(){
 
         // if(result == true){
             filename_2 = filename.split('.').join("");
-            $('<div class="closediv p-1 bd-highlight img'+filename_2+'">'+'<li class="ui-state-default" data-id="'+count+'" data-directory="'+base_url + 'assets/uploads/products/'+ filename+"?"+Math.random()+'" data-imagename="'+filename+'" ><img id="product_preview" class="img'+filename_2+'" src="'+base_url + 'assets/uploads/products/'+ filename+"?"+Math.random()+'"></li><span class="deleteimg" data-value="'+filename_2+'" data-format="'+filename+'" data-noformat="'+filename+'">x</span></div>').appendTo('.imagepreview2');
+            $('<div class="closediv p-1 bd-highlight img'+filename_2+'">'+'<li class="ui-state-default" data-id="'+count+'" data-directory="'+base_url + 'assets/uploads/products/'+ filename+"?"+Math.random()+'" data-imagename="'+filename+'" ><img id="product_preview" width=100% class="img'+filename_2+'" src="'+base_url + 'assets/uploads/products/'+ filename+"?"+Math.random()+'"></li><span class="deleteimg" data-value="'+filename_2+'" data-format="'+filename+'" data-noformat="'+filename+'">x</span></div>').appendTo('.imagepreview2');
             $('<font>&nbsp;</font>').appendTo('.imagepreview2');
             $('#current_product_url').val(filename);
             $('#upload_checker').val(filename);

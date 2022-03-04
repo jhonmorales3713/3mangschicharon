@@ -352,7 +352,7 @@ class Main_products extends CI_Controller {
 
                 // $this->makedirImage($f_id, $shopcode);
 
-                $directory    = 'assets/uploads/';
+                $directory    = 'assets/uploads/products/';
                 if (!is_dir( 'assets/uploads/')) {
                     mkdir( 'assets/uploads/', 0777, true);
                 }
@@ -360,18 +360,18 @@ class Main_products extends CI_Controller {
                     mkdir( 'assets/uploads/products/', 0777, true);
                 }
             
-                foreach($reorder_image as $val){
+                // foreach($reorder_image as $val){
                     for($i = 0; $i < $count_upload; $i++) { 
-                        if($val == $_FILES['product_image']['name'][$i]){
+                        // if($val == $_FILES['product_image']['name'][$i]){
                             $_FILES['userfile']['name']     = $_FILES['product_image']['name'][$i];
                             $_FILES['userfile']['type']     = $_FILES['product_image']['type'][$i];
                             $_FILES['userfile']['tmp_name'] = $_FILES['product_image']['tmp_name'][$i];
                             $_FILES['userfile']['error']    = $_FILES['product_image']['error'][$i];
                             $_FILES['userfile']['size']     = $_FILES['product_image']['size'][$i];
 
-                            $file_name   = $i.'-'.$f_id;
-                            $file_names3 = $i.'-'.$f_id;
+                            $file_name   = en_dec('en', $_FILES['userfile']['name']).'.'. pathinfo($_FILES['userfile']['name'], PATHINFO_EXTENSION);
                             
+                        $imgArr[] = $file_name;
                             $config = array(
                                 'file_name'     => $file_name,
                                 'allowed_types' => '*',
@@ -397,26 +397,26 @@ class Main_products extends CI_Controller {
                                 copy($_FILES['userfile']['tmp_name'], 'assets/uploads/products/'. en_dec('en', $_FILES['userfile']['name']).'.'. pathinfo($_FILES['userfile']['name'], PATHINFO_EXTENSION));
                                     
                             }
-                        }
+                        // }
                     }
-                } 
+                // } 
             } 
 
         }
 
-        $shopcode = $this->model_products->get_shopcode_via_shopid($this->input->post('f_member_shop'));
-        if($already_upload == 0 && $image_changes == 1){
-            error_reporting(0);
-             // unlink image
-            $this->unlinkImage($f_id, $shopcode, $prev_image_name, $prev_image);
-            // rearrange image
-            $rearrange = $this->rearrangeImage($f_id, $shopcode, $reorder_image, $prev_image, $imgArr);
-            $imgArr = $rearrange['imgArr'];
-            $count  = $rearrange['count'];
+        //$shopcode = $this->model_products->get_shopcode_via_shopid($this->input->post('f_member_shop'));
+        // if($already_upload == 0 && $image_changes == 1){
+        //     error_reporting(0);
+        //      // unlink image
+        //     $this->unlinkImage($f_id, $shopcode, $prev_image_name, $prev_image);
+        //     // rearrange image
+        //     $rearrange = $this->rearrangeImage($f_id, $shopcode, $reorder_image, $prev_image, $imgArr);
+        //     $imgArr = $rearrange['imgArr'];
+        //     $count  = $rearrange['count'];
 
-            $upload_string .= count($prev_image_name)." image(s) deleted. \n";
+        //     $upload_string .= count($prev_image_name)." image(s) deleted. \n";
 
-        }
+        // }
 
         error_reporting(1);
         $id = $this->input->post('f_id');
@@ -551,8 +551,8 @@ class Main_products extends CI_Controller {
             }
             $main = (strpos($main, 'into') !== false) ? $main : 'None';
 
-            $Get_app_member_details = $this->model_products->getAppMember($this->session->userdata('id'));
-            $Get_parent_product     = $this->model_products->getParentProduct($this->input->post('f_parent_product_id'));
+            // $Get_app_member_details = $this->model_products->getAppMember($this->session->userdata('id'));
+            // $Get_parent_product     = $this->model_products->getParentProduct($this->input->post('f_parent_product_id'));
             // $Get_email_settings = $this->model_products->get_email_settings();
             // $data_email = array(
             //     'variant_name'           => $this->input->post('f_itemname'),
