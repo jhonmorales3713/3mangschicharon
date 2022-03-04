@@ -180,7 +180,6 @@ $(function(){
         else{
             var save = 1;
         }
-
         if(save == 1){
             $.ajax({
                 type: 'post',

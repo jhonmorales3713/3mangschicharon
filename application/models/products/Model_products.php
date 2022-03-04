@@ -3,17 +3,6 @@ class Model_products extends CI_Model {
 
 	# Start - Products
 
-    public function get_sys_shop($user_id){
-		$sql=" SELECT sys_shop FROM app_members WHERE sys_user = ? AND status = 1";
-		$sql = $this->db->query($sql, $user_id); 
-
-        if($sql->num_rows() > 0){
-            return $sql->row()->sys_shop;
-        }else{
-            return "";
-        }
-	}
-	
 	public function save_product($args, $f_id, $imgArr,$featured_product,$featured_product_arrangment) {
 
 		$branchid = $this->session->userdata('branchid');
@@ -39,15 +28,10 @@ class Model_products extends CI_Model {
 		$args['f_others']  = ($args['f_others'] != '') ? $args['f_others'] : 0;
 		$args['f_others']  =  $args['f_others'] / 100;
 
-		if(ini() == 'toktokmall'){
-			$args['f_disc_rate'] = ($args['f_disc_rate'] != '') ? $args['f_disc_rate'] : 0;
-			$args['f_disc_rate'] =  $args['f_disc_rate'] / 100;
-			$args['f_disc_ratetype'] = "p";
-		}
 
 		$args['f_status']  = ($args['f_itemid'] == '') ? 2 : $args['f_status'];
 
-		$sql = "INSERT INTO sys_products (`Id`, `sys_shop`, `cat_id`,`itemid`, `itemname`, `otherinfo`, `uom`, `price`, `compare_at_price`, `tags`, `inv_sku`, `inv_barcode`, `tq_isset`, `cont_selling_isset`, `max_qty_isset`, `max_qty`, `admin_isset`, `disc_ratetype`, `disc_rate`, `summary`, `arrangement`, `age_restriction_isset`, `img_1`, `img_2`, `img_3`, `img_4`, `img_5`, `img_6`, `enabled`, `date_created`, `date_updated`, `featured_prod_isset`, `variant_isset`, `set_product_arrangement`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+		$sql = "INSERT INTO sys_products (`Id`, `sys_shop`, `cat_id`,`itemid`, `itemname`, `otherinfo`, `uom`, `price`, `compare_at_price`, `tags`, `inv_sku`, `inv_barcode`, `tq_isset`, `cont_selling_isset`, `max_qty_isset`, `max_qty`, `no_of_stocks`,`admin_isset`, `disc_ratetype`, `disc_rate`, `summary`, `arrangement`, `age_restriction_isset`, `img_1`, `img_2`, `img_3`, `img_4`, `img_5`, `img_6`, `enabled`, `date_created`, `date_updated`, `featured_prod_isset`, `variant_isset`, `set_product_arrangement`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
 
 		if($args['f_max_qty'] == null || $args['f_max_qty'] == ''){
 			$args['f_max_qty'] = 1;
@@ -70,6 +54,7 @@ class Model_products extends CI_Model {
 			$args['f_cont_selling_isset'],
 			$args['f_max_qty_isset'],
 			$args['f_max_qty'],
+			$args['f_no_of_stocks'],
 			$args['f_admin_isset'],
 			$args['f_disc_ratetype'],
 			$args['f_disc_rate'],
@@ -108,183 +93,6 @@ class Model_products extends CI_Model {
 			}
 		}
 
-		////save image filename
-
-
-		///for promo price tracking
-		$sql = "INSERT INTO sys_products_promo (`product_id`, `promo_price`, `date_created`,`enabled`) VALUES (?,?,?,?) ";
-		$bind_data = array(
-			$f_id,
-			$args['f_compare_at_price'],
-			date('Y-m-d H:i:s'),
-			1
-		);
-
-		/// referralcommrate
-		$sql = "INSERT INTO 8_referralcom_rate (`itemid`, `product_id`, `instance_id`,`startup`, `jc`, `mcjr`, `mc`, `mcsuper`, `mcmega`, `others`, `status`) VALUES (?,?,?,?,?,?,?,?,?,?,?) ";
-		$bind_data = array(
-			$args['f_itemid'],
-			$f_id,
-			ini(),
-			$args['f_startup'],
-			$args['f_jc'],
-			$args['f_mcjr'],
-			$args['f_mc'],
-			$args['f_mcsuper'],
-			$args['f_mcmega'],
-			$args['f_others'],
-			1
-		);
-
-		$this->db->query($sql, $bind_data);
-
-		///for inventory shipping weight
-		$sql = "INSERT INTO sys_products_shipping (`product_id`, `weight`, `uom_id`, `shipping_isset`, `length`, `width`, `height`, `date_created`, `enabled`) VALUES (?,?,?,?,?,?,?,?,?) ";
-		$bind_data = array(
-			$f_id,
-			$args['f_weight'],
-			$args['f_uom'],
-			$args['f_shipping_isset'],
-			$args['f_length'],
-			$args['f_width'],
-			$args['f_height'],
-			date('Y-m-d H:i:s'),
-			1
-		);
-
-		$this->db->query($sql, $bind_data);
-
-
-		$sql = "INSERT INTO sys_product_status (`product_id`, `status`, `user_id`, `created`, `updated`,`itemid`,`instance_id`,`disc_rate`,`startup`,`jc`,`mcjr`,`mc`,`mcsuper`,`mcmega`,`others`,`price`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
-		$bind_data = array(
-			$f_id,
-	        3,
-			$this->session->userdata('id'),
-			date('Y-m-d H:i:s'),
-			date('Y-m-d H:i:s'),
-			$args['f_itemid'],
-			ini(),
-			$args['f_disc_rate'],
-			$args['f_startup'],
-			$args['f_jc'],
-			$args['f_mcjr'],
-			$args['f_mc'],
-			$args['f_mcsuper'],
-			$args['f_mcmega'],
-			$args['f_others'],
-			$args['f_price'],
-		);
-
-		$this->db->query($sql, $bind_data);
-
-		 
-		/// product inventory validation per branch
-		if($branchid == 0){
-			$sql = "SELECT * FROM sys_products_invtrans_branch WHERE shopid = ? AND product_id = ? AND branchid = 0 AND status = 1";
-			$bind_data = array(
-				$args['f_member_shop'],
-				$f_id
-			);
-
-			$branch_invtrans = $this->db->query($sql, $bind_data);
-
-			if($branch_invtrans->num_rows() > 0){
-				$sql = "UPDATE sys_products_invtrans_branch SET no_of_stocks = ? WHERE shopid = ? AND product_id = ? AND branchid = 0 AND status = 1";
-				$bind_data = array(
-					$args['f_no_of_stocks'],
-					$args['f_member_shop'],
-					$f_id
-
-				);	
-
-				$this->db->query($sql, $bind_data);
-			}else{
-				$sql = "INSERT INTO sys_products_invtrans_branch (`shopid`, `branchid`, `product_id`, `no_of_stocks`, `date_created`, `status`) VALUES (?,?,?,?,?,?) ";
-				$bind_data = array(
-					$args['f_member_shop'],
-					0,
-					$f_id,
-					$args['f_no_of_stocks'],
-					date('Y-m-d H:i:s'),
-					1
-				);	
-
-				$this->db->query($sql, $bind_data);
-			}
-
-			$sql = "SELECT SUM(quantity) as qty_count_stocks FROM sys_products_invtrans WHERE product_id = ? AND branchid = 0 AND enabled = 1";
-			$bind_data = array(
-				$f_id
-			);
-
-			$invtrans = $this->db->query($sql, $bind_data);
-
-			if($invtrans->row()->qty_count_stocks > 0){
-				$total_qty = 0;
-				$total_qty = $args['f_no_of_stocks'] - $invtrans->row()->qty_count_stocks;
-
-				if($total_qty != 0){
-					$sql = "INSERT INTO sys_products_invtrans (`branchid`, `product_id`, `quantity`, `type`, `username`, `date_created`,`enabled`) VALUES (?,?,?,?,?,?,?) ";
-					$bind_data = array(
-						0,
-						$f_id,
-						$total_qty,
-						'Add_products_admin',
-						$this->session->userdata('username'),
-						date('Y-m-d H:i:s'),
-						1
-					);
-
-					$this->db->query($sql, $bind_data);
-				}else{
-					$this->db->query($sql, $bind_data);
-				}
-			}else{
-				if($args['f_no_of_stocks'] != 0){
-					$sql = "INSERT INTO sys_products_invtrans (`branchid`, `product_id`, `quantity`, `type`, `username`, `date_created`,`enabled`) VALUES (?,?,?,?,?,?,?) ";
-					$bind_data = array(
-						0,
-						$f_id,
-						$args['f_no_of_stocks_0'],
-						'Add_products_admin',
-						$this->session->userdata('username'),
-						date('Y-m-d H:i:s'),
-						1
-					);
-
-					$this->db->query($sql, $bind_data);
-				}else{
-					$this->db->query($sql, $bind_data);
-				}
-				
-			}
-		}
-		
-		// $branchdetails = $this->get_sys_branch_profile($args['f_member_shop'], $f_id, $branchid);
-
-		// if($branchdetails != false){
-		// 	foreach($branchdetails as $val){
-		// 		if(isset($args['f_no_of_stocks_'.$val['id']])){
-		// 			$branch_no_of_stocks = 'f_no_of_stocks_'.$val['id'];
-		// 			$this->update_branch_invtrans($args['f_member_shop'], $val['id'], $args[$branch_no_of_stocks], $f_id, 'Add_products_admin');
-		// 		}
-		// 	}
-		// }
-
-		// $sql = "SELECT SUM(quantity) as grand_total_no_of_stocks FROM sys_products_invtrans WHERE product_id = ? AND enabled = 1";
-		// $bind_data = array(
-		// 	$f_id
-		// );
-
-		// $grand_total_no_of_stocks = $this->db->query($sql, $bind_data);
-
-		// $sql = "UPDATE sys_products SET no_of_stocks = ? WHERE Id = ?";
-		// $bind_data = array(
-		// 	$grand_total_no_of_stocks->row()->grand_total_no_of_stocks,
-		// 	$f_id
-		// );
-		//$this->db->query($sql, $bind_data);
-
 		$sql = "UPDATE sys_products SET img_1 = (SELECT sys_products_images.filename FROM sys_products_images WHERE sys_products_images.product_id = ? AND arrangement = 1 AND status = 1) WHERE Id = ? AND enabled > 0";
 		$bind_data = array(
 			$f_id,
@@ -300,11 +108,6 @@ class Model_products extends CI_Model {
 		return $this->db->query($query, $params)->result_array();
 	}
 
-	public function getVariantsOption($product_id) {
-		$query  = "SELECT * FROM sys_products_variantsummary WHERE parent_product_id = ? AND status = 1 AND (variant_type <> '' OR variant_type IS NOT NULL AND variant_list <> '' OR variant_list IS NOT NULL)";
-		$params = array($product_id);
-		return $this->db->query($query, $params);
-	}
 
 
 	public function getParentProduct($id){
@@ -317,6 +120,633 @@ class Model_products extends CI_Model {
 		$query="SELECT * FROM sys_shops WHERE id = '$id' AND status = '1' ";
 		return $this->db->query($query)->result_array();
 	}
+	public function check_products_id($id){
+		$sql=" SELECT * FROM sys_products WHERE Id = ? AND enabled > 0";
+		$params = array($id);
+       
+        return $this->db->query($sql, $params);
+        
+	}
+	
+	public function check_products($id){
+		$sql=" SELECT a.*, d.shopcode, d.shopname  
+		FROM sys_products AS a
+		LEFT JOIN sys_shops AS d ON a.sys_shop = d.id 
+		WHERE a.Id = ?";
+		$params = array($id);
+       
+        return $this->db->query($sql, $params);
+        
+    }
+	public function update_product($args, $id, $save_promo_log, $imgArr,$featured_product,$featured_product_arrangment) {
+		$branchid    	   = $this->session->userdata('branchid');
+		$get_product 	   = $this->check_products($id)->row_array();
+		$imgArr[0]         = (!empty($imgArr[0])) ? $imgArr[0] : '';
+		$imgArr[1]         = (!empty($imgArr[1])) ? $imgArr[1] : '';
+		$imgArr[2]         = (!empty($imgArr[2])) ? $imgArr[2] : '';
+		$imgArr[3]         = (!empty($imgArr[3])) ? $imgArr[3] : '';
+		$imgArr[4]         = (!empty($imgArr[4])) ? $imgArr[4] : '';
+		$imgArr[5]   	   = (!empty($imgArr[5])) ? $imgArr[5] : '';
+
+		$f_status          = $get_product['enabled'];
+		
+		$sql = "UPDATE sys_products SET sys_shop = ?, cat_id = ?, itemid = ?, itemname = ?, otherinfo = ?, uom = ?, compare_at_price = ?,price =?,  tags = ?, inv_sku = ?, inv_barcode = ?, tq_isset = ?, cont_selling_isset = ?, max_qty_isset = ?, max_qty = ?, no_of_stocks = ?, admin_isset = ?, disc_ratetype = ?, summary = ?, arrangement = ?, age_restriction_isset = ?, img_1 = ?, img_2 = ?, img_3 = ?, img_4 = ?, img_5 = ?, img_6 = ?, enabled = ?, date_updated = ?, featured_prod_isset = ?, variant_isset = ?, set_product_arrangement = ? WHERE Id = ?";
+		
+		if($args['f_max_qty'] == null || $args['f_max_qty'] == ''){
+			$args['f_max_qty'] = 1;
+		}
+
+		$bind_data = array(
+			$args['f_member_shop'],
+			$args['f_category'],
+			$args['f_itemid'],
+			$args['f_itemname'],
+			$args['f_otherinfo'],
+			$args['f_uom'],
+			$args['f_compare_at_price'],
+			$args['f_price'],
+			$args['f_tags'],
+			$args['f_inv_sku'],
+			$args['f_inv_barcode'],
+			$args['f_tq_isset'],
+			$args['f_cont_selling_isset'],
+			$args['f_max_qty_isset'],
+			$args['f_max_qty'],
+			$args['f_no_of_stocks'],
+			$args['f_admin_isset'],
+			$args['f_disc_ratetype'],
+			$args['f_summary'],
+			$args['f_arrangement'],
+			$args['f_age_restriction_isset'],
+			'none',
+			'none',
+			'none',
+			'none',
+			'none',
+			'none',
+			$f_status,
+			date('Y-m-d H:i:s'),
+			$featured_product,
+			$args['f_variants_isset'],
+			$featured_product_arrangment,
+			$id
+		);
+
+		$this->db->query($sql, $bind_data);
+		$string = $this->audittrail->checkProductChanges_sys_products($get_product, $args);
+		
+		if($imgArr[0] != ''){
+			$sql = "UPDATE sys_products_images SET status = 0 WHERE product_id = ? AND status = 1";
+			$bind_data = array(
+				$id
+			);
+
+			$this->db->query($sql, $bind_data);
+
+			foreach($imgArr as $key => $value){
+				if($value != ""){
+					$sql = "INSERT INTO sys_products_images (`product_id`, `arrangement`, `filename`,`date_created`, `status`) VALUES (?,?,?,?,?) ";
+					$bind_data = array(
+						$id,
+						$key+1,
+						$value,
+						date('Y-m-d H:i:s'),
+						1
+					);
+
+					$this->db->query($sql, $bind_data);
+				}
+			}
+		}
+
+		$sql = "UPDATE sys_products SET img_1 = (SELECT sys_products_images.filename FROM sys_products_images WHERE sys_products_images.product_id = ? AND arrangement = 1 AND status = 1) WHERE Id = ? AND enabled > 0";
+		$bind_data = array(
+			$id,
+			$id
+		);
+
+		$this->db->query($sql, $bind_data);
+
+		return $string;
+	}
+
+	public function update_variant($args, $id, $save_promo_log, $imgArr,$featured_product,$featured_product_arrangment, $delivery_areas_str) {
+
+
+		$branchid    	   = $this->session->userdata('branchid');
+		$get_product 	   = $this->check_products($id)->row_array();
+		$imgArr[0]         = (!empty($imgArr[0])) ? $imgArr[0] : '';
+		$imgArr[1]         = (!empty($imgArr[1])) ? $imgArr[1] : '';
+		$imgArr[2]         = (!empty($imgArr[2])) ? $imgArr[2] : '';
+		$imgArr[3]         = (!empty($imgArr[3])) ? $imgArr[3] : '';
+		$imgArr[4]         = (!empty($imgArr[4])) ? $imgArr[4] : '';
+		$imgArr[5]   	   = (!empty($imgArr[5])) ? $imgArr[5] : '';
+
+
+		
+		//delivery areas, only set to jcww
+		
+		$str_update = "";
+		$f_status          = ($args['f_itemid'] == '') ? 2 : $get_product['enabled'];
+
+		
+		$sql = "UPDATE sys_products SET sys_shop = ?, cat_id = ?, itemid = ?, itemname = ?, otherinfo = ?, uom = ?, price = ?, compare_at_price = ?,  tags = ?, inv_sku = ?, inv_barcode = ?, tq_isset = ?, cont_selling_isset = ?, max_qty_isset = ?, no_of_stocks = ?, admin_isset = ?, disc_ratetype = ?, disc_rate = ?,  summary = ?, arrangement = ?, img_1 = ?, img_2 = ?, img_3 = ?, img_4 = ?, img_5 = ?, img_6 = ?, enabled = ?, date_updated = ?, featured_prod_isset = ?, variant_isset = ?, set_product_arrangement = ? $str_update WHERE Id = ?";
+		
+		if($args['f_max_qty'] == null || $args['f_max_qty'] == ''){
+			$args['f_max_qty'] = 1;
+		}
+
+
+
+		$bind_data = array(
+			$args['f_member_shop'],
+			$args['f_category'],
+			$args['f_itemid'],
+			$args['f_itemname'],
+			$args['f_otherinfo'],
+			$args['f_uom'],
+			$args['f_price'],
+			$args['f_compare_at_price'],
+			$args['f_tags'],
+			$args['f_inv_sku'],
+			$args['f_inv_barcode'],
+			$args['f_tq_isset'],
+			$args['f_cont_selling_isset'],
+			$args['f_max_qty_isset'],
+			$args['f_max_qty'],
+			$args['no_of_stocks'],
+			$args['f_admin_isset'],
+			$args['f_disc_ratetype'],
+			$args['f_disc_rate'],
+			$args['f_summary'],
+			$args['f_arrangement'],
+			'none',
+			'none',
+			'none',
+			'none',
+			'none',
+			'none',
+			$f_status,
+			date('Y-m-d H:i:s'),
+			$featured_product,
+			$args['f_variants_isset'],
+			$featured_product_arrangment,
+			$id
+		);
+
+		$this->db->query($sql, $bind_data);
+		$string = $this->audittrail->checkProductChanges_sys_products($get_product, $args);
+		
+		if($imgArr[0] != ''){
+			$sql = "UPDATE sys_products_images SET status = 0 WHERE product_id = ? AND status = 1";
+			$bind_data = array(
+				$id
+			);
+
+			$this->db->query($sql, $bind_data);
+
+			foreach($imgArr as $key => $value){
+				if($value != ""){
+					$sql = "INSERT INTO sys_products_images (`product_id`, `arrangement`, `filename`,`date_created`, `status`) VALUES (?,?,?,?,?) ";
+					$bind_data = array(
+						$id,
+						$key+1,
+						$value,
+						date('Y-m-d H:i:s'),
+						1
+					);
+
+					$this->db->query($sql, $bind_data);
+				}
+			}
+		}
+
+		
+		/// referralcommrate
+		$sql = "SELECT a.*, b.`disc_rate`, a.itemID as ProductItemID, b.`featured_prod_isset`, b.price
+		        FROM 8_referralcom_rate AS a 
+				LEFT JOIN sys_products AS b 
+				ON a.`product_id` = b.`Id` 
+				WHERE a.product_id = '$id' ";
+
+		$prod_refcomm = $this->db->query($sql);
+		$prod_refcom1 =   $prod_refcomm->result_array();
+
+
+		$sql_prodStatus = "SELECT * FROM sys_product_status WHERE product_id =  '$id' ";
+		$prod_status  = $this->db->query($sql_prodStatus);
+
+
+
+
+	    if($prod_refcom1[0]['price'] != $args['f_price']  || strval($prod_refcom1[0]['ProductItemID']) != strval($args['f_itemid']) || strval($prod_refcom1[0]['startup'])  != strval($args['f_startup'])  || strval($prod_refcom1[0]['jc']) != strval($args['f_jc'])  || strval($prod_refcom1[0]['mcjr']) != strval($args['f_mcjr']) || strval($prod_refcom1[0]['mc']) != strval($args['f_mc']) || strval($prod_refcom1[0]['mcsuper']) != strval($args['f_mcsuper']) || strval($prod_refcom1[0]['mcmega']) != strval($args['f_mcmega']) || strval($prod_refcom1[0]['others']) != strval($args['f_others']) || strval($prod_refcom1[0]['disc_rate']) != strval($args['f_disc_rate'])){
+
+		if(count($prod_refcom1) != 0){
+			if($prod_status->num_rows() == 0){
+				// print_r('if');
+				 $sql = "INSERT INTO sys_product_status (`itemid`, `product_id`, `instance_id`, `disc_rate`, `startup`, `jc`, `mcjr`, `mc`, `mcsuper`, `mcmega`, `others`,`price`,`status`, `user_id`, `created`, `updated`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+				 $bind_data = array(
+					 $args['f_itemid'],
+					 $id,
+					 ini(),
+					 $args['f_disc_rate'],
+					 $args['f_startup'],
+					 $args['f_jc'],
+					 $args['f_mcjr'],
+					 $args['f_mc'],
+					 $args['f_mcsuper'],
+					 $args['f_mcmega'],
+					 $args['f_others'],
+					 $args['f_price'],
+					 3,
+					 $this->session->userdata('id'),
+					 date('Y-m-d H:i:s'),
+					 date('Y-m-d H:i:s'),
+				 );	
+				 $this->db->query($sql, $bind_data);
+				 
+					 
+
+			 }else{
+			  
+				 $sql = "UPDATE sys_product_status SET `itemid` = ?, `disc_rate` = ?, `startup` = ?, `jc` = ?, `mcjr` = ?, `mc` = ?, `mcsuper` = ?, `mcmega` = ?, `others` = ?, `price` = ?, `user_id` = ?, `updated` = ?, `status` = ?  WHERE `product_id` = ?";
+				 $bind_data = array(
+					 $args['f_itemid'],
+					 $args['f_disc_rate'],
+					 $args['f_startup'],
+					 $args['f_jc'],
+					 $args['f_mcjr'],
+					 $args['f_mc'],
+					 $args['f_mcsuper'],
+					 $args['f_mcmega'],
+					 $args['f_others'],
+					 $args['f_price'],
+					 $this->session->userdata('id'),
+					 date('Y-m-d H:i:s'),
+					 3,
+					 $id,
+				 );
+				 $this->db->query($sql, $bind_data);
+
+
+			 
+			 }
+		   
+			 $string .= $this->audittrail->checkProductChanges_refcommrate($get_product, $args);
+
+		}
+
+		}else{   
+
+	
+					if($prod_refcomm->num_rows() == 0){
+						$sql = "INSERT INTO 8_referralcom_rate (`itemid`, `product_id`, `instance_id`,`startup`, `jc`, `mcjr`, `mc`, `mcsuper`, `mcmega`, `others`, `status`) VALUES (?,?,?,?,?,?,?,?,?,?,?) ";
+						$bind_data = array(
+							$args['f_itemid'],
+							$id,
+							ini(),
+							$args['f_startup'],
+							$args['f_jc'],
+							$args['f_mcjr'],
+							$args['f_mc'],
+							$args['f_mcsuper'],
+							$args['f_mcmega'],
+							$args['f_others'],
+							1
+						);	
+						
+						$this->db->query($sql, $bind_data);
+					}
+					else{
+						$sql = "UPDATE 8_referralcom_rate SET itemid = ?, startup = ?, jc = ?, mcjr = ?, mc = ?, mcsuper = ?, mcmega = ?, others = ? WHERE product_id = ? AND status = ?";
+						$bind_data = array(
+							$args['f_itemid'],
+							$args['f_startup'],
+							$args['f_jc'],
+							$args['f_mcjr'],
+							$args['f_mc'],
+							$args['f_mcsuper'],
+							$args['f_mcmega'],
+							$args['f_others'],
+							$id,
+							1
+						);
+
+
+						$this->db->query($sql, $bind_data);
+					}
+
+
+					$string .= $this->audittrail->checkProductChanges_refcommrate($get_product, $args);
+
+
+		}
+
+			
+		$sql = "UPDATE sys_products SET sys_shop = ?, cat_id = ?, itemid = ?, itemname = ?, otherinfo = ?, uom = ?, compare_at_price = ?,  tags = ?, inv_sku = ?, inv_barcode = ?, tq_isset = ?, cont_selling_isset = ?, max_qty_isset = ?, max_qty = ?, admin_isset = ?, disc_ratetype = ?,  summary = ?, arrangement = ?, img_1 = ?, img_2 = ?, img_3 = ?, img_4 = ?, img_5 = ?, img_6 = ?, enabled = ?, date_updated = ?, featured_prod_isset = ?, variant_isset = ?, set_product_arrangement = ? $str_update WHERE Id = ?";
+		
+		if($args['f_max_qty'] == null || $args['f_max_qty'] == ''){
+			$args['f_max_qty'] = 1;
+		}
+
+
+		$bind_data = array(
+			$args['f_member_shop'],
+			$args['f_category'],
+			$args['f_itemid'],
+			$args['f_itemname'],
+			$args['f_otherinfo'],
+			$args['f_uom'],
+			$args['f_compare_at_price'],
+			$args['f_tags'],
+			$args['f_inv_sku'],
+			$args['f_inv_barcode'],
+			$args['f_tq_isset'],
+			$args['f_cont_selling_isset'],
+			$args['f_max_qty_isset'],
+			$args['f_max_qty'],
+			$args['f_admin_isset'],
+			$args['f_disc_ratetype'],
+			$args['f_summary'],
+			$args['f_arrangement'],
+			'none',
+			'none',
+			'none',
+			'none',
+			'none',
+			'none',
+			$f_status,
+			date('Y-m-d H:i:s'),
+			$featured_product,
+			$args['f_variants_isset'],
+			$featured_product_arrangment,
+			$id
+		);
+
+		$this->db->query($sql, $bind_data);
+		$string = $this->audittrail->checkProductChanges_sys_products($get_product, $args);
+		
+		if($imgArr[0] != ''){
+			$sql = "UPDATE sys_products_images SET status = 0 WHERE product_id = ? AND status = 1";
+			$bind_data = array(
+				$id
+			);
+
+			$this->db->query($sql, $bind_data);
+
+			foreach($imgArr as $key => $value){
+				if($value != ""){
+					$sql = "INSERT INTO sys_products_images (`product_id`, `arrangement`, `filename`,`date_created`, `status`) VALUES (?,?,?,?,?) ";
+					$bind_data = array(
+						$id,
+						$key+1,
+						$value,
+						date('Y-m-d H:i:s'),
+						1
+					);
+
+					$this->db->query($sql, $bind_data);
+				}
+			}
+		}
+
+
+
+	
+	
+		//// product shipping validation
+		$sql = "SELECT * FROM sys_products_shipping WHERE product_id = ? AND enabled = 1";
+		$bind_data = array(
+			$id
+		);
+
+		$prod_shipping = $this->db->query($sql, $bind_data);
+
+		if($prod_shipping->num_rows() > 0){
+			$sql = "UPDATE sys_products_shipping SET weight = ?, uom_id = ?, shipping_isset = ?, length = ?, width = ?, height = ?, date_updated = ? WHERE product_id = ?";
+
+			$bind_data = array(
+				$args['f_weight'],
+				$args['f_uom'],
+				$args['f_shipping_isset'],
+				$args['f_length'],
+				$args['f_width'],
+				$args['f_height'],
+				date('Y-m-d H:i:s'),
+				$id
+			);
+
+			$this->db->query($sql, $bind_data);
+		}else{
+			$sql = "INSERT INTO sys_products_shipping (`product_id`, `weight`, `uom_id`, `shipping_isset`, `length`, `width`, `height`, `date_created`,`enabled`) VALUES (?,?,?,?,?,?,?,?,?) ";
+				$bind_data = array(
+					$id,
+					$args['f_weight'],
+					$args['f_uom'],
+					$args['f_shipping_isset'],
+					$args['f_length'],
+					$args['f_width'],
+					$args['f_height'],
+					date('Y-m-d H:i:s'),
+					1
+				);
+
+				$this->db->query($sql, $bind_data);
+		}
+
+		$string .= $this->audittrail->checkProductChanges_sys_products_shipping($prod_shipping->row_array(), $args);
+		
+		if($save_promo_log == 1){
+			///for promo price tracking
+			$sql = "UPDATE sys_products_promo SET enabled = 0 WHERE product_id = ?";
+			$bind_data = array(
+				$id,
+			);
+
+			$this->db->query($sql, $bind_data);
+
+			$sql = "INSERT INTO sys_products_promo (`product_id`, `promo_price`, `date_created`,`enabled`) VALUES (?,?,?,?) ";
+			$bind_data = array(
+				$id,
+				$args['f_compare_at_price'],
+				date('Y-m-d H:i:s'),
+				1
+			);
+
+			$this->db->query($sql, $bind_data);
+		}
+
+		/// product inventory validation per branch
+		if($branchid == 0){
+			if(floatval($args['f_no_of_stocks_0']) != floatval($args['hidden_f_no_of_stocks_0'])){
+				$sql = "SELECT * FROM sys_products_invtrans_branch WHERE shopid = ? AND product_id = ? AND branchid = 0 AND status = 1";
+				$bind_data = array(
+					$args['f_member_shop'],
+					$id
+				);
+
+				$branch_invtrans = $this->db->query($sql, $bind_data);
+
+				$string .= $this->audittrail->checkProductChanges_sys_products_invtrans_branch($id, 0, $args['f_no_of_stocks_0']);
+
+				if($branch_invtrans->num_rows() > 0){
+					$sql = "UPDATE sys_products_invtrans_branch SET no_of_stocks = ? WHERE shopid = ? AND product_id = ? AND branchid = 0 AND status = 1";
+					$bind_data = array(
+						$args['f_no_of_stocks_0'],
+						$args['f_member_shop'],
+						$id
+
+					);	
+
+					$this->db->query($sql, $bind_data);
+				}else{
+					$sql = "INSERT INTO sys_products_invtrans_branch (`shopid`, `branchid`, `product_id`, `no_of_stocks`, `date_created`, `status`) VALUES (?,?,?,?,?,?) ";
+					$bind_data = array(
+						$args['f_member_shop'],
+						0,
+						$id,
+						$args['f_no_of_stocks_0'],
+						date('Y-m-d H:i:s'),
+						1
+					);	
+
+					$this->db->query($sql, $bind_data);
+				}
+
+				$sql = "SELECT SUM(quantity) as qty_count_stocks FROM sys_products_invtrans WHERE product_id = ? AND branchid = 0 AND enabled = 1";
+				$bind_data = array(
+					$id
+				);
+
+				$invtrans = $this->db->query($sql, $bind_data);
+
+				if($invtrans->row()->qty_count_stocks > 0){
+					$total_qty = 0;
+					$total_qty = $args['f_no_of_stocks_0'] - $invtrans->row()->qty_count_stocks;
+
+					if($total_qty != 0){
+						$sql = "INSERT INTO sys_products_invtrans (`branchid`, `product_id`, `quantity`, `type`, `username`, `date_created`,`enabled`) VALUES (?,?,?,?,?,?,?) ";
+						$bind_data = array(
+							0,
+							$id,
+							$total_qty,
+							'Update_products_admin',
+							$this->session->userdata('username'),
+							date('Y-m-d H:i:s'),
+							1
+						);
+
+						$this->db->query($sql, $bind_data);
+					}else{
+						$this->db->query($sql, $bind_data);
+					}
+				}else{
+					if($args['f_no_of_stocks_0'] != 0){
+						$sql = "INSERT INTO sys_products_invtrans (`branchid`, `product_id`, `quantity`, `type`, `username`, `date_created`,`enabled`) VALUES (?,?,?,?,?,?,?) ";
+						$bind_data = array(
+							0,
+							$id,
+							$args['f_no_of_stocks_0'],
+							'Update_products_admin',
+							$this->session->userdata('username'),
+							date('Y-m-d H:i:s'),
+							1
+						);
+
+						$this->db->query($sql, $bind_data);
+					}else{
+						$this->db->query($sql, $bind_data);
+					}
+					
+				}
+			}
+		}
+		
+		// $branchdetails = $this->get_sys_branch_profile($args['f_member_shop'], $id, $branchid);
+
+		// if($branchdetails != false){
+		// 	foreach($branchdetails as $val){
+		// 		if(isset($args['f_no_of_stocks_'.$val['id']])){
+		// 			$branch_no_of_stocks = 'f_no_of_stocks_'.$val['id'];
+		// 			$hidden_branch_no_of_stocks = 'hidden_f_no_of_stocks_'.$val['id'];
+		// 			if(floatval($args[$branch_no_of_stocks]) != floatval($args[$hidden_branch_no_of_stocks])){
+		// 				$string .= $this->audittrail->checkProductChanges_sys_products_invtrans_branch($id, $val['id'], $args[$branch_no_of_stocks]);
+		// 				$this->update_branch_invtrans($args['f_member_shop'], $val['id'], $args[$branch_no_of_stocks], $id, 'Update_products_admin');
+		// 			}
+		// 		}
+		// 	}
+		// }
+
+		$sql = "SELECT SUM(no_of_stocks) as grand_total_no_of_stocks FROM sys_products_invtrans_branch WHERE product_id = ? AND status = 1";
+		
+		$bind_data = array(
+			$id
+		);
+		$grand_total_no_of_stocks = $this->db->query($sql, $bind_data);
+
+
+
+		$sql = "SELECT SUM(a.no_of_stocks) as deleted_stocks FROM sys_products_invtrans_branch AS a
+		LEFT JOIN sys_branch_profile AS b ON a.branchid = b.id
+		WHERE a.product_id = ? AND a.status = 1 AND b.status IN (0, 2)";
+
+		$bind_data = array(
+			$id
+		);
+		$deleted_stocks = $this->db->query($sql, $bind_data)->row()->deleted_stocks;
+
+		
+		$grand_total_no_of_stocks = $grand_total_no_of_stocks->row()->grand_total_no_of_stocks;
+		$grand_total              = $grand_total_no_of_stocks - abs($deleted_stocks);
+
+		$sql = "UPDATE sys_products SET no_of_stocks = ? WHERE Id = ?";
+		$bind_data = array(
+			$grand_total,
+			$id
+		);
+		$this->db->query($sql, $bind_data);
+
+
+
+		$sql = "SELECT parent_product_id, Id , no_of_stocks as variant_stocks FROM sys_products WHERE Id = ?";
+		$bind_data = array(
+			$id
+		);
+		$parent_product_id = $this->db->query($sql, $bind_data);
+
+
+		$sql = "SELECT SUM(quantity) as grand_total_no_of_stocks FROM sys_products_invtrans WHERE product_id = ? AND enabled = 1";
+		$bind_data = array(
+			$parent_product_id->row()->parent_product_id
+		);
+		$grand_parentproduct_stocks = $this->db->query($sql, $bind_data);
+
+		$sql = "SELECT SUM(no_of_stocks)  as variants_no_of_stocks FROM sys_products WHERE parent_product_id = ?";
+		$bind_data = array(
+			$parent_product_id->row()->parent_product_id
+		);
+		$variant_stocks = $this->db->query($sql, $bind_data);
+
+    	$sum_of_stocks = strval($variant_stocks->row()->variants_no_of_stocks) + strval($grand_parentproduct_stocks->row()->grand_total_no_of_stocks);
+
+
+		$sql = "UPDATE sys_products SET no_of_stocks = ? WHERE Id = ?";
+		$bind_data = array(
+			strval($sum_of_stocks),
+			$parent_product_id->row()->parent_product_id
+		);
+		$this->db->query($sql, $bind_data);
+
+		$sql = "UPDATE sys_products SET img_1 = (SELECT sys_products_images.filename FROM sys_products_images WHERE sys_products_images.product_id = ? AND arrangement = 1 AND status = 1) WHERE Id = ? AND enabled > 0";
+		$bind_data = array(
+			$id,
+			$id
+		);
+
+		$this->db->query($sql, $bind_data);
+		
+		return $string;
+	}
 
 	public function save_variant($args, $f_id, $imgArr,$featured_product,$featured_product_arrangment, $delivery_areas_str) {
 
@@ -327,43 +757,13 @@ class Model_products extends CI_Model {
 		$imgArr[3] 	   	   = (!empty($imgArr[3])) ? $imgArr[3] : '';
 		$imgArr[4] 		   = (!empty($imgArr[4])) ? $imgArr[4] : '';
 		$imgArr[5] 		   = (!empty($imgArr[5])) ? $imgArr[5] : '';
-
-		$args['f_startup'] = ($args['f_startup'] != '') ? $args['f_startup'] : 0;
-		$args['f_startup'] =  $args['f_startup'] / 100;
-		$args['f_jc']      = ($args['f_jc'] != '') ? $args['f_jc'] : 0;
-		$args['f_jc']      =  $args['f_jc'] / 100;
-		$args['f_mcjr']    = ($args['f_mcjr'] != '') ? $args['f_mcjr'] : 0;
-		$args['f_mcjr']    =  $args['f_mcjr'] / 100;
-		$args['f_mc']      = ($args['f_mc'] != '') ? $args['f_mc'] : 0;
-		$args['f_mc']      =  $args['f_mc'] / 100;
-		$args['f_mcsuper'] = ($args['f_mcsuper'] != '') ? $args['f_mcsuper'] : 0;
-		$args['f_mcsuper'] =  $args['f_mcsuper'] / 100;
-		$args['f_mcmega']  = ($args['f_mcmega'] != '') ? $args['f_mcmega'] : 0;
-		$args['f_mcmega']  =  $args['f_mcmega'] / 100;
-		$args['f_others']  = ($args['f_others'] != '') ? $args['f_others'] : 0;
-		$args['f_others']  =  $args['f_others'] / 100;
+		$str_insert = "";
+		$str_value  = "";
 		$args['f_status']  = ($args['f_itemid'] == '') ? 2 : $args['f_status'];
 
 		//delivery areas condition. only set to jcww 
-		if(ini() == 'jcww'){
-			$str_insert = ", `delivery_areas`";
-			$str_value  = ", '".$delivery_areas_str."'";
-		}
-		else{
-			$str_insert = "";
-			$str_value  = "";
-		}
-		/// merchant comm rate, only set to toktokmall
-		if(ini() == 'toktokmall'){
-			$args['f_disc_rate'] = ($args['f_disc_rate'] != '') ? $args['f_disc_rate'] : 0;
-			$args['f_disc_rate'] =  $args['f_disc_rate'] / 100;
-			$args['f_disc_ratetype'] = "p";
-		}else{
-			$args['f_disc_rate'] = 0;
-			$args['f_disc_ratetype'] = "p";
-		}
 
-		$sql = "INSERT INTO sys_products (`Id`, `sys_shop`, `cat_id`,`itemid`, `itemname`, `otherinfo`, `uom`, `price`, `compare_at_price`, `tags`, `inv_sku`, `inv_barcode`, `tq_isset`, `cont_selling_isset`, `max_qty_isset`, `max_qty`, `admin_isset`, `disc_ratetype`, `disc_rate`, `summary`, `arrangement`, `img_1`, `img_2`, `img_3`, `img_4`, `img_5`, `img_6`, `enabled`, `date_created`, `date_updated`, `featured_prod_isset`, `variant_isset`, `parent_product_id`,`set_product_arrangement`".$str_insert.") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?".$str_value.") ";
+		$sql = "INSERT INTO sys_products (`Id`, `sys_shop`, `cat_id`,`itemid`, `itemname`, `otherinfo`, `uom`, `price`, `compare_at_price`, `tags`, `inv_sku`, `inv_barcode`, `tq_isset`, `cont_selling_isset`, `max_qty_isset`, `max_qty`,`no_of_stocks`, `admin_isset`, `disc_ratetype`, `disc_rate`, `summary`, `arrangement`, `img_1`, `img_2`, `img_3`, `img_4`, `img_5`, `img_6`, `enabled`, `date_created`, `date_updated`, `featured_prod_isset`, `variant_isset`, `parent_product_id`,`set_product_arrangement`".$str_insert.") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?".$str_value.") ";
 
 		if($args['f_max_qty'] == null || $args['f_max_qty'] == ''){
 			$args['f_max_qty'] = 1;
@@ -386,6 +786,7 @@ class Model_products extends CI_Model {
 			$args['f_cont_selling_isset'],
 			$args['f_max_qty_isset'],
 			$args['f_max_qty'],
+			$args['f_no_of_stocks'],
 			$args['f_admin_isset'],
 			$args['f_disc_ratetype'],
 			$args['f_disc_rate'],
@@ -424,197 +825,6 @@ class Model_products extends CI_Model {
 			}
 		}
 
-		////save image filename
-
-
-		///for promo price tracking
-		$sql = "INSERT INTO sys_products_promo (`product_id`, `promo_price`, `date_created`,`enabled`) VALUES (?,?,?,?) ";
-		$bind_data = array(
-			$f_id,
-			$args['f_compare_at_price'],
-			date('Y-m-d H:i:s'),
-			1
-		);
-
-		/// referralcommrate
-		$sql = "INSERT INTO 8_referralcom_rate (`itemid`, `product_id`, `instance_id`,`startup`, `jc`, `mcjr`, `mc`, `mcsuper`, `mcmega`, `others`, `status`) VALUES (?,?,?,?,?,?,?,?,?,?,?) ";
-		$bind_data = array(
-			$args['f_itemid'],
-			$f_id,
-			ini(),
-			$args['f_startup'],
-			$args['f_jc'],
-			$args['f_mcjr'],
-			$args['f_mc'],
-			$args['f_mcsuper'],
-			$args['f_mcmega'],
-			$args['f_others'],
-			1
-		);
-
-		$this->db->query($sql, $bind_data);
-
-		///for inventory shipping weight
-		$sql = "INSERT INTO sys_products_shipping (`product_id`, `weight`, `uom_id`, `shipping_isset`, `length`, `width`, `height`, `date_created`, `enabled`) VALUES (?,?,?,?,?,?,?,?,?) ";
-		$bind_data = array(
-			$f_id,
-			$args['f_weight'],
-			$args['f_uom'],
-			$args['f_shipping_isset'],
-			$args['f_length'],
-			$args['f_width'],
-			$args['f_height'],
-			date('Y-m-d H:i:s'),
-			1
-		);
-
-		$this->db->query($sql, $bind_data);
-
-
-		
-		$sql = "INSERT INTO sys_product_status (`product_id`, `status`, `user_id`, `created`, `updated`,`itemid`,`instance_id`,`disc_rate`,`startup`,`jc`,`mcjr`,`mc`,`mcsuper`,`mcmega`,`others`,`price`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
-		$bind_data = array(
-			$f_id,
-	        3,
-			$this->session->userdata('id'),
-			date('Y-m-d H:i:s'),
-			date('Y-m-d H:i:s'),
-			$args['f_itemid'],
-			ini(),
-			$args['f_disc_rate'],
-			$args['f_startup'],
-			$args['f_jc'],
-			$args['f_mcjr'],
-			$args['f_mc'],
-			$args['f_mcsuper'],
-			$args['f_mcmega'],
-			$args['f_others'],
-			$args['f_price'],
-		);
-		$this->db->query($sql, $bind_data);
-		 
-		/// product inventory validation per branch
-		if($branchid == 0){
-			$sql = "SELECT * FROM sys_products_invtrans_branch WHERE shopid = ? AND product_id = ? AND branchid = 0 AND status = 1";
-			$bind_data = array(
-				$args['f_member_shop'],
-				$f_id
-			);
-
-			$branch_invtrans = $this->db->query($sql, $bind_data);
-
-			if($branch_invtrans->num_rows() > 0){
-				$sql = "UPDATE sys_products_invtrans_branch SET no_of_stocks = ? WHERE shopid = ? AND product_id = ? AND branchid = 0 AND status = 1";
-				$bind_data = array(
-					$args['f_no_of_stocks_0'],
-					$args['f_member_shop'],
-					$f_id
-
-				);	
-
-				$this->db->query($sql, $bind_data);
-			}else{
-				$sql = "INSERT INTO sys_products_invtrans_branch (`shopid`, `branchid`, `product_id`, `no_of_stocks`, `date_created`, `status`) VALUES (?,?,?,?,?,?) ";
-				$bind_data = array(
-					$args['f_member_shop'],
-					0,
-					$f_id,
-					$args['f_no_of_stocks_0'],
-					date('Y-m-d H:i:s'),
-					1
-				);	
-
-				$this->db->query($sql, $bind_data);
-			}
-
-			$sql = "SELECT SUM(quantity) as qty_count_stocks FROM sys_products_invtrans WHERE product_id = ? AND branchid = 0 AND enabled = 1";
-			$bind_data = array(
-				$f_id
-			);
-
-			$invtrans = $this->db->query($sql, $bind_data);
-
-			if($invtrans->row()->qty_count_stocks > 0){
-				$total_qty = 0;
-				$total_qty = $args['f_no_of_stocks_0'] - $invtrans->row()->qty_count_stocks;
-
-				if($total_qty != 0){
-					$sql = "INSERT INTO sys_products_invtrans (`branchid`, `product_id`, `quantity`, `type`, `username`, `date_created`,`enabled`) VALUES (?,?,?,?,?,?,?) ";
-					$bind_data = array(
-						0,
-						$f_id,
-						$total_qty,
-						'Add_products_admin',
-						$this->session->userdata('username'),
-						date('Y-m-d H:i:s'),
-						1
-					);
-
-					$this->db->query($sql, $bind_data);
-				}else{
-					$this->db->query($sql, $bind_data);
-				}
-			}else{
-				if($args['f_no_of_stocks_0'] != 0){
-					$sql = "INSERT INTO sys_products_invtrans (`branchid`, `product_id`, `quantity`, `type`, `username`, `date_created`,`enabled`) VALUES (?,?,?,?,?,?,?) ";
-					$bind_data = array(
-						0,
-						$f_id,
-						$args['f_no_of_stocks_0'],
-						'Add_products_admin',
-						$this->session->userdata('username'),
-						date('Y-m-d H:i:s'),
-						1
-					);
-
-					$this->db->query($sql, $bind_data);
-				}else{
-					$this->db->query($sql, $bind_data);
-				}
-				
-			}
-		}
-		
-		// $branchdetails = $this->get_sys_branch_profile($args['f_member_shop'], $f_id, $branchid);
-
-		// if($branchdetails != false){
-		// 	foreach($branchdetails as $val){
-		// 		//
-		// 		if(isset($args['f_no_of_stocks_'.$val['id']])){
-		// 			$branch_no_of_stocks = 'f_no_of_stocks_'.$val['id'];
-		// 			$this->update_branch_invtrans($args['f_member_shop'], $val['id'], $args[$branch_no_of_stocks], $f_id, 'Add_products_admin');	
-		// 		}
-		// 	}
-		// }
-
-
-		$sql = "SELECT SUM(quantity) as grand_total_no_of_stocks FROM sys_products_invtrans WHERE product_id = ? AND enabled = 1";
-		$bind_data = array(
-			$args['f_parent_product_id']
-		);
-
-		$grand_parentproduct_stocks = $this->db->query($sql, $bind_data);
-
-		$sql = "SELECT SUM(quantity) as grand_total_no_of_stocks FROM sys_products_invtrans WHERE product_id = ? AND enabled = 1";
-		$bind_data = array(
-			$f_id
-		);
-		$grand_total_no_of_stocks = $this->db->query($sql, $bind_data);
-		$grand_total_no_of_stocks_=0;
-		if($grand_total_no_of_stocks->row()->grand_total_no_of_stocks==''){
-			$grand_total_no_of_stocks_ = 0;
-		}
-		if($grand_parentproduct_stocks->row()->grand_total_no_of_stocks==''){
-			$grand_total_no_of_stocks_ = 0;
-		}
-		
-		$sql = "UPDATE sys_products SET no_of_stocks = ? WHERE Id = ?";
-		$bind_data = array(
-			strval($grand_total_no_of_stocks_) + strval($grand_total_no_of_stocks_),
-			$f_id
-		);
-		//end
-		$this->db->query($sql, $bind_data);
 
 		$sql = "UPDATE sys_products SET img_1 = (SELECT sys_products_images.filename FROM sys_products_images WHERE sys_products_images.product_id = ? AND arrangement = 1 AND status = 1) WHERE Id = ? AND enabled > 0";
 		$bind_data = array(
@@ -670,16 +880,12 @@ class Model_products extends CI_Model {
 	}
 
 	public function get_productdetails($Id) {
-		$query=" SELECT a.*, c.weight, c.uom_id, c.shipping_isset, d.shopcode, d.shopname, e.no_of_stocks as inv_qty, f.startup as refstartup, f.jc as refjc, f.mcjr as refmcjr, f.mc as refmc, f.mcsuper as refmcsuper, f.mcmega as refmcmega, f.others as refothers,
-		c.length, c.width, c.height 
+		$query=" SELECT a.*, d.shopcode, d.shopname
 		FROM sys_products AS a 
-		LEFT JOIN sys_products_shipping AS c ON a.Id = c.product_id AND c.enabled = 1
 		LEFT JOIN sys_shops AS d ON a.sys_shop = d.id 
-		LEFT JOIN sys_products_invtrans_branch AS e ON a.sys_shop = e.shopid AND e.status = 1 AND e.branchid = 0  AND e.product_id = ?
-		LEFT JOIN 8_referralcom_rate AS f ON a.Id = f.product_id AND f.status = 1
 		WHERE a.Id = ? AND a.enabled > 0;";
 		
-		$params = array($Id, $Id);
+		$params = array($Id);
 		return $this->db->query($query, $params)->row_array();
 	}
 
@@ -736,14 +942,14 @@ class Model_products extends CI_Model {
 		//
 
 		if (!$exportable) {
-			$sql = "SELECT a.*, code.shopcode, c.category_name, b.shopname, no_of_stocks FROM sys_products a 
+			$sql = "SELECT a.*, code.shopcode, c.category_name, no_of_stocks FROM sys_products a 
                 LEFT JOIN sys_shops b ON a.sys_shop = b.id AND b.status > 0
 				LEFT JOIN sys_product_category c ON a.cat_id = c.id AND c.status > 0
 				LEFT JOIN sys_shops code ON a.sys_shop = code.id";
 				// LEFT JOIN sys_products_images d ON a.Id = d.product_id AND d.arrangement = 1 AND d.status = 1";
 		}
 		else{
-			$sql = "SELECT a.*, code.shopcode, c.category_name, b.shopname, no_of_stocks FROM sys_products a 
+			$sql = "SELECT a.*, code.shopcode, c.category_name, no_of_stocks FROM sys_products a 
                 LEFT JOIN sys_shops b ON a.sys_shop = b.id AND b.status > 0
 				LEFT JOIN sys_product_category c ON a.cat_id = c.id AND c.status > 0
 				LEFT JOIN sys_shops code ON a.sys_shop = code.id";
@@ -818,7 +1024,6 @@ class Model_products extends CI_Model {
 			// $nestedData[] = number_format($no_of_stocks, 1);
 
 			$nestedData[] = $row["no_of_stocks"];
-            $nestedData[] = $row["shopname"];
 
 
 
