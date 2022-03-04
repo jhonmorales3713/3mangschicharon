@@ -79,5 +79,6 @@ $route['Main_products/add_products/(:any)'] = 'admin/Main_products/add_products/
 $route['Main_products/update_products/(:any)'] = 'admin/Main_products/update_products/$1';
 $route['Main_products/add_variant/(:any)'] = 'admin/Main_products/add_variant/$1/$2';
 $route['Main_products/update_variants/(:any)'] = 'admin/Main_products/update_variants/$1/$2/$3';
+$route['Main_products/view_products/(:any)'] = 'admin/Main_products/view_products/$1/$2';
 
 

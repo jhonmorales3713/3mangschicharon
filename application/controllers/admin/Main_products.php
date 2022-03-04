@@ -199,6 +199,46 @@ class Main_products extends CI_Controller {
         generate_json($query);
     }
     
+    public function view_products($token = '', $Id)
+    {
+        $this->isLoggedIn();
+        $this->checkProductStatus($Id);
+        if($this->loginstate->get_access()['overall_access'] == 1 || $this->loginstate->get_access()['products']['view'] == 1) {
+            $member_id = $this->session->userdata('sys_users_id');
+            $sys_shop = $this->session->userdata('sys_users_id');
+            
+            $prev_product = $this->model_products->get_prev_product_per_shop($this->model_products->get_productdetails($Id)['itemname'], $sys_shop);
+            $next_product = $this->model_products->get_next_product_per_shop($this->model_products->get_productdetails($Id)['itemname'], $sys_shop);
+
+            $content_url = $this->uri->segment(1) . '/' . $this->uri->segment(2) . '/';
+            $main_nav_id = $this->views_restriction($content_url);
+            $branchid = $this->session->userdata('branchid');
+
+            $data_admin = array(
+                'token'               => $token,
+                'main_nav_categories' => $this->model_dev_settings->main_nav_categories()->result(),
+                'shopid'              => $this->session->userdata('sys_shop_id'),
+                'main_nav_id'         => $main_nav_id, //for highlight the navigation
+                'prev_product'        => $prev_product,
+                'next_product'        => $next_product,
+                'Id'                  => $Id,
+                'shops'               => $this->model_products->get_shop_options(),
+                'categories'          => $this->model_products->get_category_options(),
+                'get_productdetails'  => $this->model_products->get_productdetails($Id),
+                'itemname'            => $this->model_products->get_productdetails($Id)['itemname'],
+                //'get_branchdetails'   => $this->model_products->get_sys_branch_profile($this->model_products->get_productdetails($Id)['sys_shop'], $Id, $branchid),
+                'branchid'            => $branchid,
+                'featured_products'   => $this->model_products->getFeaturedProduct(),
+                'getVariants'         => $this->model_products->getVariants($Id)
+            );
+            $data_admin['active_page'] =  $this->session->userdata('active_page');
+            $data_admin['subnav'] = false;
+            $data_admin['page_content'] = $this->load->view('admin/products/view_products',$data_admin,TRUE);
+            $this->load->view('admin_template',$data_admin,'',TRUE);
+        }else{
+            $this->load->view('error_404');
+        }
+    }
 
     public function add_products($token = '')
     {
@@ -993,7 +1033,7 @@ class Main_products extends CI_Controller {
             if($variants_isset == 1){
                 $variants_count = count($var_option_name);
                 for($i = 0; $i < $variants_count; $i++) { 
-                    $this->model_products->save_variantsummary($f_id, $var_option_name[$i], $var_option_list[$i], $i);
+                  //  $this->model_products->save_variantsummary($f_id, $var_option_name[$i], $var_option_list[$i], $i);
                 }
                 $variant_name    = $this->input->post('variant_name');
                 $variant_price   = $this->input->post('variant_price');
@@ -1326,7 +1366,7 @@ class Main_products extends CI_Controller {
                 $variants_count = count($var_option_name);
                 for($i = 0; $i < $variants_count; $i++) { 
                    
-                    $this->model_products->update_variantsummary($id, $var_option_name[$i], $var_option_list[$i], $i);
+                    //$this->model_products->update_variantsummary($id, $var_option_name[$i], $var_option_list[$i], $i);
                     if($var_option_name[$i] != ''){
                         $this->audittrail->logActivity('Product List - Variant Options: ', $var_option_name[$i].' and '.$var_option_list[$i].' from '.$get_product->itemname.' has been updated successfully.', 'update', $this->session->userdata('username'));
                     }

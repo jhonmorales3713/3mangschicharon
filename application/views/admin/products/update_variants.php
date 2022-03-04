@@ -771,7 +771,7 @@
                                                     <input type="number" class="form-control" name="f_no_of_stocks" id="f_no_of_stocks" placeholder="Number of stocks" value="<?=$get_productdetails['no_of_stocks']?>">
                                                     <input type="hidden" name="hidden_f_no_of_stocks_0" id="hidden_f_no_of_stocks_0" value="<?=$get_productdetails['no_of_stocks']?>">
                                                 </div>
-                                                        </div>
+                                        </div>
                                         <!-- <div class="col-md-6 nostocksdiv">
                                             <?php if($branchid == 0){?>
                                                 <div class="form-group divnostock" id="div_no_of_stocks_0">

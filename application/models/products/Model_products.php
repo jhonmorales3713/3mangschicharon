@@ -757,6 +757,48 @@ class Model_products extends CI_Model {
 
 		return $json_data;
 	}
+
+	
+
+	public function deleteVariant($Id){
+		$sql = "UPDATE sys_products SET `enabled` = '0', `featured_prod_isset` = '0', set_product_arrangement = '0' WHERE Id = ?";
+		$bind_data = array(
+			$Id
+		);	
+
+		$this->db->query($sql, $bind_data);
+
+		$sql = "UPDATE sys_products_promotion SET `status` = '0' WHERE product_id = ?";
+		$bind_data = array(
+			$Id
+		);	
+
+		$this->db->query($sql, $bind_data);
+	}
+	public function update_variants($product_id, $child_product_id, $variant_name, $variant_price, $variant_sku, $variant_status) {
+		$sql = "UPDATE sys_products SET itemname = ?, price = ?, inv_sku = ?, enabled = ?, date_updated = ?";
+
+
+        if($variant_status == 2){
+			$sql .= ",featured_prod_isset = '0', set_product_arrangement = '0'";
+		}	
+
+	 	$sql .= " WHERE Id = ? AND parent_product_id = ? ";
+		
+		$variant_price = ($variant_price == '') ? 0: $variant_price;
+		$bind_data = array(
+			$variant_name,
+			$variant_price,
+			$variant_sku,
+			$variant_status,
+			date('Y-m-d H:i:s'),
+			$child_product_id,
+			$product_id
+		);	
+
+		return $this->db->query($sql, $bind_data);
+	}
+
     public function get_shopcode($user_id){
 		$sql=" SELECT b.shopcode as shopcode FROM app_members a 
 			    LEFT JOIN sys_shops b ON a.sys_shop = b.id
