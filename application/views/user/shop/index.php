@@ -55,19 +55,19 @@
                         <div class="ml5">
                         <?php if($product['price'] > 0){ ?>
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-8">
                                     <strong>&#8369; <?= number_format($product['price'],2); ?></strong>
                                 </div>
-                                <div class="col-6 text-right">
+                                <div class="col-4 text-right">
                                     <small><b>1 sold</b></small>
                                 </div>
                             </div>
                         <?php } else { ?>
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-8">
                                     <strong>&#8369; <?= number_format($product['price_small'],2); ?></strong>
                                 </div>
-                                <div class="col-6 text-right">
+                                <div class="col-4 text-right">
                                     <small><b>1 sold</b></small>
                                 </div>
                             </div>                            

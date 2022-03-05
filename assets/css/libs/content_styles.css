@@ -262,6 +262,17 @@
     border: 1px solid #873e23;
 }
 
+.payment-method-select{
+    padding: 7px; 
+    margin: 5px;
+    border-radius: 10px;   
+    border: 1px solid gray;
+}
+
+.payment-method-select:hover, .method-selected{
+    border: 1px solid #873e23;
+}
+
 @media only screen and (max-width: 548px) {
     .right-bordered{
         border-right: none;

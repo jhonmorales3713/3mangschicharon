@@ -19,12 +19,12 @@ class Shop extends CI_Controller {
 
         $view_data['products'] = array();
         foreach($products as $product){            
-            $product['id'] = en_dec('en',$product['id']); 
+            $product['id'] = en_dec('en',$product['id']);
             array_push($view_data['products'],$product);
         }
 
         $data['page_content'] = $this->load->view('user/shop/index',$view_data,TRUE);     
 		$this->load->view('landing_template',$data,'',TRUE);
-	}    
+	}
     
 }

@@ -74,7 +74,7 @@
                     <li>
                         <center>
                             <div class="profile-img" style="background-image: url(<?= base_url('assets/img/profile_default.png'); ?>)"></div>
-                            <b><?= isset($_SESSION['full_name']) ? $_SESSION['full_name'] : ''; ?></b><br>
+                            <b><?= isset($_SESSION['full_name']) ? $_SESSION['full_name'] : '' ; ?></b><br>
                             <span class="badge badge-success">Verified</span>
                         </center>
                     </li>

@@ -12,7 +12,7 @@ function set_cart_data(cart_data){
     Object.keys(cart_data).forEach(function(key){
 
         cart_item_string += '<div class="row p5"> ';
-        cart_item_string += '<div class="col-6"><strong>' + cart_data[key]['name'] + '(' + cart_data[key]['quantity'] + ')</strong></div>';
+        cart_item_string += '<div class="col-6"><strong>' + cart_data[key]['name'] + '(' + cart_data[key]['size'] + ')</strong></div>';
         cart_item_string += '<div class="col-3"><input type="number" min="1" max="1000" class="qty" data-target="' + key + '" value="' + cart_data[key]['quantity'] + '" /> </div>';
         cart_item_string += '<div class="col-3"><span class="remove-item a" data-target="' + key + '"><i class="fa fa-times" aria-hidden="true"></i></span> </div>';
         cart_item_string += '</div>';
@@ -107,6 +107,11 @@ function set_qty_change(){
 
 $('#btn_checkout').click(function(){
     window.location.href = base_url + 'user/cart/checkout';
+});
+
+$('.payment-method-select').click(function(){
+    $('.payment-method-select').removeClass('method-selected');
+    $(this).addClass('method-selected');
 });
 
 });

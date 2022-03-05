@@ -47,7 +47,7 @@ $(function(){
             });
         }
         else{            
-            size = 'Regular';
+            size = 'R';
         }
         return size;
     }

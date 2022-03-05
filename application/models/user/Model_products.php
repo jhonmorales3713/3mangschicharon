@@ -6,7 +6,7 @@ class Model_products extends CI_Model {
         $sql = "SELECT
                     c.*                    
                 FROM                    
-                    categories c";
+                    sys_product_category c";
                     
         return $this->db->query($sql)->result_array();
     }
@@ -16,9 +16,9 @@ class Model_products extends CI_Model {
                     p.*,                    
                     c.category_name
                 FROM 
-                    products p
+                    sys_products p
                 LEFT JOIN
-                    categories c
+                    sys_product_category c
                 ON
                     p.category_id = c.id";
         return $this->db->query($sql)->result_array();
@@ -29,9 +29,9 @@ class Model_products extends CI_Model {
                     p.*,                                        
                     c.category_name
                 FROM 
-                    products p
+                    sys_products p
                 LEFT JOIN
-                    categories c
+                    sys_product_category c
                 ON
                     p.category_id = c.id
                 WHERE

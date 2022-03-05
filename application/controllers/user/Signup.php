@@ -6,7 +6,7 @@ class Signup extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->load->model('user/model_users');
+        $this->load->model('user/model_customers');
     }
 
     public function index(){
@@ -16,9 +16,9 @@ class Signup extends CI_Controller {
     }
 
     public function signup(){
-        $user_data = $this->input->post();        
+        $customer_data = $this->input->post();        
 
-        $this->form_validation->validation_data = $user_data;
+        $this->form_validation->validation_data = $customer_data;
 
         //declaration of form validations      
         $this->form_validation->set_rules('full_name','Full Name','required');
@@ -35,7 +35,7 @@ class Signup extends CI_Controller {
               'field_errors' => $this->form_validation->error_array(),              
             );
 
-            if($user_data['password'] != $user_data['password2'] && $user_data['password2'] != ''){
+            if($customer_data['password'] != $customer_data['password2'] && $customer_data['password2'] != ''){
                 $response['field_errors']['password'] = 'Passwords do not match';
                 $response['field_errors']['password2'] = 'Passwords do not match';
             }
@@ -44,13 +44,13 @@ class Signup extends CI_Controller {
             die();            
         }     
 
-        unset($user_data['password2']);
-        $user_data['password'] = en_dec('en',$user_data['password']);
+        unset($customer_data['password2']);
+        $customer_data['password'] = en_dec('en',$customer_data['password']);
         
-        $user_id = $this->model_users->insert_user($user_data);
+        $customer_id = $this->model_customers->insert_customer($customer_data);
 
         $response['success'] = true;
-        $response['user_id'] = $user_id;
+        $response['customer_id'] = $customer_id;
         $response['message'] = 'Registration Successful';
 
         generate_json($response); 
@@ -77,11 +77,11 @@ class Signup extends CI_Controller {
             die();            
         }
         
-        $user_data = $this->model_users->get_user_by_email($data['login_email']); 
+        $customer_data = $this->model_customers->get_customer_by_email($data['login_email']); 
 
         $en_password = en_dec('en',$data['login_password']);
-        if($user_data){
-            if($en_password != $user_data['password']){
+        if($customer_data){
+            if($en_password != $customer_data['password']){
                 $response['success'] = false;
                 $response['field_errors'] = array('login_password' => 'Invalid Password');
                 generate_json($response); die();
@@ -92,21 +92,56 @@ class Signup extends CI_Controller {
             $response['field_errors'] = array('login_email' => 'Account does not exist');
             generate_json($response); die();
         }
-
-        $this->set_session($user_data);
-
+        
+        $this->set_session($customer_data);
         $response['success'] = true;        
         $response['message'] = 'Login Successful';
 
         generate_json($response);       
     }
 
-    private function set_session($user_data){
+    private function set_session($customer_data){
         $_SESSION['has_logged_in'] = true;
-        $_SESSION['full_name'] = $user_data['full_name'];
+        $_SESSION['full_name'] = $customer_data['full_name'];
+        $_SESSION['customer_id'] = en_dec('en',$customer_data['id']);
+        
+        $cart_session = $this->model_customers->get_cart_session($customer_data['id']);     
+        if($cart_session){            
+            $_SESSION['cart'] = json_decode($cart_session['cart_data'],true);
+            $cart_items = 0;
+            foreach($_SESSION['cart'] as $key => $value){
+                $cart_items += intval($_SESSION['cart'][$key]['quantity']);
+            }
+            $_SESSION['cart_items'] = $cart_items;            
+        }
     }
 
-    public function signout(){
+    private function save_cart_session(){
+        $cart_session = array(
+            'customer_id' => en_dec('dec',$_SESSION['customer_id']),
+            'cart_data' => json_encode($_SESSION['cart'])
+        );
+        $this->model_customers->save_cart_session($cart_session);        
+    }
+
+    public function signout(){        
+        $customer_id = en_dec('dec',$_SESSION['customer_id']);
+        $cart_session = $this->model_customers->get_cart_session($customer_id);
+        if(isset($_SESSION['cart'])){            
+            if(sizeof($_SESSION['cart']) > 0){                
+                if($cart_session){                    
+                    $this->model_customers->update_cart_session($customer_id,json_encode($_SESSION['cart']));
+                }
+                else{
+                    $this->save_cart_session();
+                }                
+            }                        
+        }
+        else{
+            if($cart_session){
+                $this->model_customers->remove_cart_session($customer_id);
+            }
+        }
         session_destroy();
         redirect('home');
     }

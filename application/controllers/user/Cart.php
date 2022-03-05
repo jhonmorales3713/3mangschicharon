@@ -8,6 +8,7 @@ class Cart extends CI_Controller {
         parent::__construct();
         $this->load->model('user/model_cart');
         $this->load->model('user/model_products');
+        $this->load->model('user/model_address');
     }
 
     public function index()
@@ -128,10 +129,22 @@ class Cart extends CI_Controller {
         unset($_SESSION['cart_items']);
     }
 
-    public function checkout(){
-        $data['active_page'] = 'cart';
-        $data['page_content'] = $this->load->view('user/cart/checkout','',TRUE);     
+    public function checkout($product_id = ''){
+        $data['active_page'] = 'shop'; 
+        $view_data['sub_active_page'] = 'checkout';
+
+        $customer_id = isset($_SESSION['customer_id']) ? $_SESSION['customer_id'] : 0;        
+        $view_data['shipping_address'] = $this->model_address->get_shipping_address($customer_id);
+
+        $view_data['payment_methods'] = $this->model_cart->get_payment_methods();
+        $view_data['shipping_types'] = $this->model_cart->get_shipping_types();
+
+        $data['page_content'] = $this->load->view('user/cart/checkout',$view_data,TRUE);     
 		$this->load->view('landing_template',$data,'',TRUE);
+    }
+
+    public function place_order(){
+        
     }
     
 }
