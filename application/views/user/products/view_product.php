@@ -16,7 +16,7 @@
             <small><b>14</b> Sold</small><br>
             <br>            
         </div>  
-        <div class="col-lg-8 col-md-4 col-sm-12">            
+        <div class="col-lg-8 col-md-8 col-sm-12">            
             <div class="col-12">
                 <strong><?= $product['name']; ?></strong><br><br>
                 <small><b>Product Description:</b></small><br>

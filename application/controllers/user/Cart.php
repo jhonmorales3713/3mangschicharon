@@ -82,22 +82,50 @@ class Cart extends CI_Controller {
         $_SESSION['cart_items'] = $total_qty;
         
         $response['success'] = true;
-        $response['quantity'] = $_SESSION['cart'][$key]['quantity'];        
+        
+        $response['cart_items'] = $_SESSION['cart_items'];
+        $response['cart_data'] = $_SESSION['cart'];   
 
         generate_json($response);        
     }
 
-    public function clear_cart(){
+    public function remove_from_cart(){
         $data = $this->input->post();
 
-        unset($_SESSION['cart']);
-        unset($_SESSION['cart_items']);
-
         $response['success'] = true;
-        $response['cart_items'] = 0;
-        $response['message'] = 'Successfully cleared cart';
+        $response['message'] = 'Successfully removed';
+
+        if($data['key'] == 'all'){
+            $this->clear_cart();
+            generate_json($response);
+            die();
+        }
+        else{
+            unset($_SESSION['cart'][$data['key']]);
+            $total_qty = 0;
+            foreach($_SESSION['cart'] as $key => $value){
+                $total_qty += intval($_SESSION['cart'][$key]['quantity']);
+            }
+            $_SESSION['cart_items'] = $total_qty;
+        }        
+
+        if(isset($_SESSION['cart'])){
+            if(sizeof($_SESSION['cart']) == 0){
+                $this->clear_cart();
+                generate_json($response);
+                die();            
+            }
+        }
+
+        $response['cart_items'] = $_SESSION['cart_items'];
+        $response['cart_data'] = $_SESSION['cart'];
 
         generate_json($response);
+    }
+
+    public function clear_cart(){
+        unset($_SESSION['cart']);
+        unset($_SESSION['cart_items']);
     }
 
     public function checkout(){

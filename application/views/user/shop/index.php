@@ -11,16 +11,7 @@
             <br>
             <small><b>Size</b></small><br>
             <input type="checkbox"> <small>Small</small><br>
-            <input type="checkbox"> <small>Large</small><br>
-
-            <br>
-            <small><b>Price Range</b></small><br> 
-            <input type="checkbox"> <small>Php 1 - 1000</small><br>
-            <input type="checkbox"> <small>Php 1001 - 2000</small><br>
-            <input type="checkbox"> <small>Php 2001 - 3000</small><br>
-            <input type="checkbox"> <small>Php 3001 - 4000</small><br>
-            <input type="checkbox"> <small>Php 4001 - 5000</small><br>
-            <input type="checkbox"> <small>Php 5000 above</small>
+            <input type="checkbox"> <small>Large</small><br>           
 
             <br><br>
             <button class="btn btn-sm btn-primary form-control form-control-sm add-to-cart">Apply</button>

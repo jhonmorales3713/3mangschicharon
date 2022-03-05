@@ -13,6 +13,10 @@ function format_number(num,decimal = 0){
     }
 }
 
+function php_money(number){
+    return '&#8369;' + format_number(number, 2);
+}
+
 // Display Form Errors
 function show_errors(data, container){
     if ('field_errors' in data) { // Check field errors exists in response

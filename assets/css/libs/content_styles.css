@@ -50,6 +50,10 @@
     cursor:  pointer !important;
 }
 
+.a:hover{
+    color: #873e23;
+}
+
 .b{
     font-weight: bold !important;
 }
