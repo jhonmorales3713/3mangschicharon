@@ -30,7 +30,7 @@
         &nbsp;<span class="fa fa-chevron-right"></span>&nbsp;
         <span class="font-weight-bold"><a class="text-dark" href="<?=base_url('admin/Main_products/products/'.$token);?>">Products List</a></span>
         &nbsp;<span class="fa fa-chevron-right"></span>&nbsp;
-        <span class="font-weight-bold"><a class="text-dark" href="<?=base_url('admin/Main_products/update_products/'.$token.'/'.$parent_Id);?>"><?=$get_parentProduct['itemname']?></a></span>
+        <span class="font-weight-bold"><a class="text-dark" href="<?=base_url('admin/Main_products/update_products/'.$token.'/'.$parent_Id);?>"><?=$get_parentProduct['name']?></a></span>
         &nbsp;<span class="fa fa-chevron-right"></span>&nbsp;
         <span class="font-weight-regular">Add Variant</span>
         
@@ -57,7 +57,7 @@
                                                     <div class="alert alert-secondary" role="alert">
                                                         <div class="form-group">
                                                             <a style="width:100%;" href="<?=base_url('admin/Main_products/update_variants/'.$token.'/'.$row['Id'].'/'.$parent_Id);?>">
-                                                                <?=$row['itemname']?>
+                                                                <?=$row['name']?>
                                                             </a>
                                                         </div>
                                                     </div>
@@ -363,7 +363,7 @@
                                             <!-- <?php foreach($getVariantsOption as $row){?>
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label for="f_itemname" class="control-label"><?=$row['variant_type']?></label>
+                                                        <label for="f_name" class="control-label"><?=$row['variant_type']?></label>
                                                         <input type="text" class="form-control" name="f_variant_name[]" id="f_variant_name">
                                                     </div>
                                                 </div>
@@ -450,7 +450,7 @@
                                             <?php if(ini() == 'jcww'){ ?>
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label for="f_itemname" class="control-label">Delivery Areas*</label>
+                                                        <label for="f_name" class="control-label">Delivery Areas*</label>
                                                         <select class="select2 form-control form-control-sm form-state taginput-field" name="f_delivery_areas[]" id="f_delivery_areas" multiple="multiple">
                                                             <?php foreach($get_province as $prov){ ?>
                                                                 <option value="<?=$prov['provCode']?>"><?=$prov['provDesc']?></option>
@@ -680,7 +680,7 @@
                 <p>List of Featured Products.</p>
                 <ol class="list-group">
                 <?php foreach ($featured_products as $products): ?>
-                    <li class="list-group-item"><?=$products['set_product_arrangement'];?>.<?=$products['itemname'];?></li>
+                    <li class="list-group-item"><?=$products['set_product_arrangement'];?>.<?=$products['name'];?></li>
                 <?php endforeach ?>
                 </ol>
             </div>

@@ -54,6 +54,7 @@ $(function(){
         var files = $(this).prop("files");
         var names = $.map(files, function(val) { return val.name; });
 
+        $( ".imagepreview2" ).empty();
         $.each(names, function( index, value ) {
             if (!hasExtension(value, ['.jpg', '.jpeg', '.png','.JPG','.PNG','.JPEG'])) {
                 type_checker = 1;
@@ -262,10 +263,10 @@ $(function(){
                         $('#change-product-image').hide();
                     }
 
-                    $('#f_id').val(json_data.message.Id);
-                    $('#f_member_shop').val(json_data.message.sys_shop);
+                    $('#f_id').val(json_data.message.id);
+                    $('#f_member_shop').val(1);
                     $('#f_category').val(json_data.message.cat_id);
-                    $('#f_itemname').val(json_data.message.itemname);
+                    $('#f_itemname').val(json_data.message.name);
                     $('#f_itemid').val(json_data.message.itemid);
                     $('#f_otherinfo').val(json_data.message.otherinfo);
                     $('#f_uom').val(json_data.message.uom);

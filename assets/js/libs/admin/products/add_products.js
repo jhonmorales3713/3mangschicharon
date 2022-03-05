@@ -156,30 +156,8 @@ $(function(){
             form_data.append(textinputs[i].name, textinputs[i].value);
         }
 
-        if(ini == 'toktokmall'){
-       
-            if($("#f_admin_isset").prop('checked')){
-                var save = 1;
-                var f_disc_rate = $('#f_disc_rate').val() / 100;
-                var f_disc_rate = (f_disc_rate * 90) * 0.01;
-                var f_startup = $('#f_startup').val() / 100;
-                var f_jc      = $('#f_jc').val() / 100;
-                var f_mcjr    = $('#f_mcjr').val() / 100;
-                var f_mc      = $('#f_mc').val() / 100;
-                var f_mcsuper = $('#f_mcsuper').val() / 100;
-                var f_mcmega  = $('#f_mcmega').val() / 100;
-                var f_others  = $('#f_others').val() / 100;
-                if(f_startup > f_disc_rate || f_jc > f_disc_rate || f_mcjr > f_disc_rate || f_mc > f_disc_rate || f_mcsuper > f_disc_rate || f_mcmega > f_disc_rate || f_others > f_disc_rate){
-                    var save = 0;
-                }
-            }
-            else{
-                var save = 1;
-            }
-        }
-        else{
             var save = 1;
-        }
+        
         if(save == 1){
             $.ajax({
                 type: 'post',

@@ -115,86 +115,6 @@ $(function(){
         }
     };
 
-    function imageExists(filename, shopcode){
-        /// png format
-        result = false;
-
-        imageCounter = 0;
-        filename  = filename;
-        imageExtention = filename;
-        image_url_orig = filename;
-        for(i = 0; 6 > i; i++){
-            imageExtention = imageExtention;
-            image_url = i+'-'+imageExtention+".png";
-            image_url_2 = i+'-'+imageExtention+"png";
-
-            var http = new XMLHttpRequest();
-            http.open('HEAD', shop_url + 'assets/uploads/products/'+ filename+'/' + image_url+"?"+Math.random(), false);
-            http.send();
-            result = http.status != 404;
-
-            if(result == true){
-                $('<div class="closediv p-1 bd-highlight img'+image_url_2+'">'+'<li class="ui-state-default" data-id="'+i+'" ><img id="product_preview" class="ui-state-default img'+image_url_2+'" src="'+shop_url + 'assets/img/'+shopcode+'/products/'+ filename+'/'+ image_url+"?"+Math.random()+'"></li><span class="deleteimg" data-value="'+image_url_2+'" data-format="'+image_url+'" data-noformat="'+i+'-'+filename+'">x</span></div>').appendTo('.imagepreview2');
-                $('<font>&nbsp;</font>').appendTo('.imagepreview2');
-                $('#current_product_url').val(image_url_orig);
-                $('#upload_checker').val(image_url_orig);
-                imageCounter++;
-            }
-        }
-        
-        //// jpg format
-        // imageCounter = 0;
-        filename  = filename;
-        imageExtention = filename;
-        image_url_orig = filename;
-        for(i = 0; 6 > i; i++){
-            imageExtention = imageExtention;
-            image_url = i+'-'+imageExtention+".jpg";
-            image_url_2 = i+'-'+imageExtention+"jpg";
-
-            var http = new XMLHttpRequest();
-            http.open('HEAD', shop_url + 'assets/img/'+shopcode+'/products/' + filename+'/'+ image_url+"?"+Math.random(), false);
-            http.send();
-            result = http.status != 404;
-
-            if(result == true){
-                $('<div class="closediv p-1 bd-highlight img'+image_url_2+'">'+'<li class="ui-state-default" data-id="'+i+'" ><img id="product_preview" class="ui-state-default img'+image_url_2+'" src="'+shop_url + 'assets/img/'+shopcode+'/products/'+ filename+'/'+ image_url+"?"+Math.random()+'"></li><span class="deleteimg" data-value="'+image_url_2+'" data-format="'+image_url+'" data-noformat="'+i+'-'+filename+'">x</span></div>').appendTo('.imagepreview2');
-                $('<font>&nbsp;</font>').appendTo('.imagepreview2');
-                $('#current_product_url').val(image_url_orig);
-                $('#upload_checker').val(image_url_orig);
-                imageCounter++;
-            }
-        }
-        
-
-        //// jpeg format
-        // imageCounter = 0;
-        filename  = filename;
-        imageExtention = filename;
-        image_url_orig = filename;
-        for(i = 0; 6 > i; i++){
-            imageExtention = imageExtention;
-            image_url = i+'-'+imageExtention+".jpeg";
-            image_url_2 = i+'-'+imageExtention+"jpeg";
-
-            var http = new XMLHttpRequest();
-            http.open('HEAD', shop_url + 'assets/img/'+shopcode+'/products/'+ filename+'/' + image_url+"?"+Math.random(), false);
-            http.send();
-            result = http.status != 404;
-
-            if(result == true){
-                $('<div class="closediv p-1 bd-highlight img'+image_url_2+'">'+'<li class="ui-state-default" data-id="'+count+'" ><img id="product_preview" class="ui-state-default img'+image_url_2+'" src="'+shop_url + 'assets/img/'+shopcode+'/products/'+ filename+'/'+ image_url+"?"+Math.random()+'"></li><span class="deleteimg" data-value="'+image_url_2+'" data-format="'+image_url+'" data-noformat="'+i+'-'+filename+'">x</span></div>').appendTo('.imagepreview2');
-                $('<font>&nbsp;</font>').appendTo('.imagepreview2');
-                $('#current_product_url').val(image_url_orig);
-                $('#upload_checker').val(image_url_orig);
-                imageCounter++;
-            }
-
-        }
-        $('.imagepreview').show('slow');
-        console.clear();
-    }
-
     function imageExistsSpec(id, filename, shopcode, count){
         result = false;
         imageCounter = 0;
@@ -209,7 +129,8 @@ $(function(){
 
         // if(result == true){
             filename_2 = filename.split('.').join("");
-            $('<div class="closediv p-1 bd-highlight img'+filename_2+'">'+'<li class="ui-state-default" data-id="'+count+'" data-directory="'+base_url + 'assets/uploads/products/'+ filename+"?"+Math.random()+'" data-imagename="'+filename+'" ><img id="product_preview" width=100% class="img'+filename_2+'" src="'+base_url + 'assets/uploads/products/'+ filename+"?"+Math.random()+'"></li><span class="deleteimg" data-value="'+filename_2+'" data-format="'+filename+'" data-noformat="'+filename+'">x</span></div>').appendTo('.imagepreview2');
+            filename_2=(filename_2.split('=').join("."));
+            $('<div class="closediv p-1 bd-highlight img'+filename_2+'">'+'<li class="ui-state-default" data-id="'+count+'" data-directory="'+base_url + 'assets/uploads/products/'+ filename+"?"+Math.random()+'" data-imagename="'+filename+'" ><img id="product_preview" width=100% class="img'+filename_2+'" src="'+base_url + 'assets/uploads/products/'+ filename_2+"?"+Math.random()+'"></li><span class="deleteimg" data-value="'+filename_2+'" data-format="'+filename+'" data-noformat="'+filename+'">x</span></div>').appendTo('.imagepreview2');
             $('<font>&nbsp;</font>').appendTo('.imagepreview2');
             $('#current_product_url').val(filename);
             $('#upload_checker').val(filename);
@@ -269,11 +190,11 @@ $(function(){
                     }
 
                     $('#f_id').val(json_data.message.Id);
-                    console.log(json_data.message.Id);
+                    console.log(json_data.message.id);
                     $('#f_member_shop').val(json_data.message.sys_shop);
-                    $('#f_category').val(json_data.message.cat_id);
-                    $('#f_itemname').val(json_data.message.itemname);
-                    $('#f_itemid').val(json_data.message.itemid);
+                    $('#f_category').val(json_data.message.category_id);
+                    $('#f_itemname').val(json_data.message.name);
+                    $('#f_itemid').val(json_data.message.id);
                     $('#f_otherinfo').val(json_data.message.otherinfo);
                     $('#f_uom').val(json_data.message.uom);
                     $('#f_price').val(json_data.message.price);
@@ -287,9 +208,7 @@ $(function(){
                     json_data.message.max_qty_isset == 1 ? $( "#f_max_qty_isset" ).prop( "checked", true ) : $( "#f_max_qty_isset" ).prop( "checked", false );
                     json_data.message.max_qty_isset == 1 ? '' : $('.maxqtydiv').hide(250);
                     json_data.message.tq_isset == 1 ? $( "#f_tq_isset" ).prop( "checked", true ) : $( "#f_tq_isset" ).prop( "checked", false );
-                    json_data.message.tq_isset == 1 && parseFloat(branchid) == parseFloat(0) ? '' : $('.contsellingdiv, .nostocksdiv').hide(250);
-                    json_data.message.tq_isset == 0 && parseFloat(branchid) != parseFloat(0) ? $('.nostocksdiv').show(250) : '';
-                    json_data.message.tq_isset == 1 && parseFloat(branchid) != parseFloat(0) ? $('.nostocksdiv').show(250) : '';
+                    json_data.message.tq_isset == 1 && parseFloat(branchid) == parseFloat(0) ? '' : $('.contsellingdiv, .nostocksdiv').css('display','none');
                     json_data.message.cont_selling_isset == 1 ? $( "#f_cont_selling_isset" ).prop( "checked", true ) : $( "#f_cont_selling_isset" ).prop( "checked", false );
                     $('#f_no_of_stocks').val(json_data.message.no_of_stocks);
                     $('#f_max_qty').val(json_data.message.max_qty);

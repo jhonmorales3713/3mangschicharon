@@ -279,8 +279,8 @@ class Main_products extends CI_Controller {
             $member_id = $this->session->userdata('sys_users_id');
             $branchid  = $this->session->userdata('branchid');
             $sys_shop = $this->session->userdata('sys_shop_id');
-            $prev_product = $this->model_products->get_prev_product_per_shop($this->model_products->get_productdetails($Id)['itemname'], $sys_shop);
-            $next_product = $this->model_products->get_next_product_per_shop($this->model_products->get_productdetails($Id)['itemname'], $sys_shop);
+            $prev_product = $this->model_products->get_prev_product_per_shop($this->model_products->get_productdetails($Id)['name'], $sys_shop);
+            $next_product = $this->model_products->get_next_product_per_shop($this->model_products->get_productdetails($Id)['name'], $sys_shop);
             
             $content_url = $this->uri->segment(1) . '/' . $this->uri->segment(2) . '/';
             $main_nav_id = $this->views_restriction($content_url);
@@ -299,7 +299,7 @@ class Main_products extends CI_Controller {
                 'categories'          => $this->model_products->get_category_options(),
                 'get_productdetails'  => $this->model_products->get_productdetails($Id),
                 'get_parentProduct'   => $this->model_products->get_productdetails($parent_Id),
-                'itemname'            => $this->model_products->get_productdetails($Id)['itemname'],
+                'itemname'            => $this->model_products->get_productdetails($Id)['name'],
                 //'get_branchdetails'   => $this->model_products->get_sys_branch_profile($this->model_products->get_productdetails($Id)['sys_shop'], $Id, $branchid),
                 'branchid'            => $branchid,
                 'featured_products'   => $this->model_products->getFeaturedProduct(),
@@ -674,11 +674,11 @@ class Main_products extends CI_Controller {
                 die();
             }
 
-            $shopcode = $this->model_products->get_shopcode_via_shopid($this->input->post('f_member_shop'));
+            //$shopcode = $this->model_products->get_shopcode_via_shopid($this->input->post('f_member_shop'));
 
             // $this->makedirImage($f_id, $shopcode);
 
-            $directory    = 'assets/uploads/';
+            $directory    = 'assets/uploads/products/';
             if (!is_dir( 'assets/uploads/')) {
                 mkdir( 'assets/uploads/', 0777, true);
             }
@@ -695,9 +695,7 @@ class Main_products extends CI_Controller {
                         $_FILES['userfile']['error']    = $_FILES['product_image']['error'][$i];
                         $_FILES['userfile']['size']     = $_FILES['product_image']['size'][$i];
 
-                        $file_name   = $i.'-'.$f_id;
-                        $file_names3 = $i.'-'.$f_id;
-                        
+                        $file_name = en_dec('en', $_FILES['userfile']['name']).'.'. pathinfo($_FILES['userfile']['name'], PATHINFO_EXTENSION);
                         $config = array(
                             'file_name'     => $file_name,
                             'allowed_types' => '*',
@@ -721,9 +719,6 @@ class Main_products extends CI_Controller {
                             );
                             echo json_encode($response);
                             die();
-                        }else {
-                            copy($_FILES['userfile']['tmp_name'], 'assets/uploads/products/'. en_dec('en', $_FILES['userfile']['name']).'.'. pathinfo($_FILES['userfile']['name'], PATHINFO_EXTENSION));
-                                
                         }
                     }
                 }
@@ -813,7 +808,7 @@ class Main_products extends CI_Controller {
     	}else{
             $featured_product =  $this->input->post('featured_prod_isset');
             $featured_product_arrangment =  $this->input->post('entry-feat-product-arrangement');
-    		$success = $this->model_products->save_variant($this->input->post(), $f_id, $imgArr,$featured_product,$featured_product_arrangment, $delivery_areas_str);
+    		$success = $this->model_products->save_variant($this->input->post(), $imgArr,$featured_product,$featured_product_arrangment);
             $this->model_products->updateParentProductInventoryQty($this->input->post('f_parent_product_id'));
             $response['success'] = $success;
             $response['message'] = "Variant created successfully.";
@@ -912,21 +907,9 @@ class Main_products extends CI_Controller {
             echo json_encode($response);
             die();
         }else{
-            if($this->input->post('f_member_shop') == ''){
-                $response = array(
-                    'success'      => false,
-                    'environment' => ENVIRONMENT,
-                    'message'     => 'Please select a shop.'
-                );
-                echo json_encode($response);
-                die();
-            }
-
-            $shopcode = $this->model_products->get_shopcode_via_shopid($this->input->post('f_member_shop'));
-
             // $this->makedirImage($f_id, $shopcode);
 
-            $directory    = 'assets/uploads/';
+            $directory    = 'assets/uploads/products';
             if (!is_dir( 'assets/uploads/')) {
                 mkdir( 'assets/uploads/', 0777, true);
             }
@@ -943,7 +926,7 @@ class Main_products extends CI_Controller {
                         $_FILES['userfile']['error']    = $_FILES['product_image']['error'][$i];
                         $_FILES['userfile']['size']     = $_FILES['product_image']['size'][$i];
 
-                        $file_name   = $i.'-'.$f_id;
+                        $file_name = en_dec('en', $_FILES['userfile']['name']).'.'. pathinfo($_FILES['userfile']['name'], PATHINFO_EXTENSION);
                         
                         $config = array(
                             'file_name'     => $file_name,
@@ -956,7 +939,6 @@ class Main_products extends CI_Controller {
                             =>  $directory
                         );
 
-                        $file_name = en_dec('en', $_FILES['userfile']['name']).'.'. pathinfo($_FILES['userfile']['name'], PATHINFO_EXTENSION);
                         $imgArr[] = $file_name;
                         $this->upload->initialize($config);
                         if ( ! $this->upload->do_upload()) {
@@ -968,9 +950,6 @@ class Main_products extends CI_Controller {
                             );
                             echo json_encode($response);
                             die();
-                        }else {
-                            copy($_FILES['userfile']['tmp_name'], 'assets/uploads/products/'. en_dec('en', $_FILES['userfile']['name']).'.'. pathinfo($_FILES['userfile']['name'], PATHINFO_EXTENSION));
-                                
                         }
                     }
                 }
@@ -1029,7 +1008,7 @@ class Main_products extends CI_Controller {
     	}else{
             $featured_product =  $this->input->post('featured_prod_isset');
             $featured_product_arrangment =  $this->input->post('entry-feat-product-arrangement');
-    		$success = $this->model_products->save_product($this->input->post(), $f_id, $imgArr,$featured_product,$featured_product_arrangment);
+    		$success = $this->model_products->save_product($this->input->post(), $imgArr,$featured_product,$featured_product_arrangment);
             if($variants_isset == 1){
                 $variants_count = count($var_option_name);
                 for($i = 0; $i < $variants_count; $i++) { 
@@ -1048,6 +1027,8 @@ class Main_products extends CI_Controller {
                     }
                 }
             }
+            // print_r($success);
+            // die();
             
             // $Get_shop_details = $this->model_products->getSysShopsDetails($this->input->post('f_member_shop'));
             // $Get_email_settings = $this->model_products->get_email_settings();
@@ -1063,10 +1044,9 @@ class Main_products extends CI_Controller {
             
             // $this->sendProductNewlyCreatedEmail($data_email);
             // $this->sendProductForApprovalEmail($data_email);
-
-            $response['success']    = $success;
+            $response['success']    = $success['success'];
             $response['message']    = "Product created successfully.";
-            $response['product_id'] = $f_id;
+            $response['product_id'] = $success['id'];
             $this->audittrail->logActivity('Product List', $this->input->post('f_itemname').' successfully added to Products.', 'add', $this->session->userdata('username'));
         }
         echo json_encode($response);
@@ -1158,11 +1138,11 @@ class Main_products extends CI_Controller {
         $upload_string   = "\n";
         //$this->load->library('s3_upload');
 
-        if(empty($this->input->post('f_member_shop')) || empty($this->input->post('f_category'))){
+        if(empty($this->input->post('f_category'))){
             $response = [
                 'environment' => ENVIRONMENT,
                 'success'     => false,
-                'message'     => 'No shop or category selected.'
+                'message'     => 'No category selected.'
             ];
 
             echo json_encode($response);
@@ -1270,7 +1250,7 @@ class Main_products extends CI_Controller {
         // }
 
         error_reporting(1);
-        $id = $this->input->post('f_id');
+        $id = $this->input->post('f_itemid');
         $is_unique = '';
         if($this->model_products->get_productdetails($id)['itemname'] != $this->input->post('f_itemname')){
             $is_unique = '|is_unique[sys_products.itemname]';
@@ -1287,16 +1267,16 @@ class Main_products extends CI_Controller {
             $this->form_validation->set_rules($value[0],$value[1],$value[2], (count($value) > 3 ? $value[3] : ''));
         }
 
-        if($id == ''){
-            $response = [
-                'environment' => ENVIRONMENT,
-                'success'     => false,
-                'message'     => $this->response->message('error')
-            ];
+        // if($id == ''){
+        //     $response = [
+        //         'environment' => ENVIRONMENT,
+        //         'success'     => false,
+        //         'message'     => $this->response->message('error')
+        //     ];
 
-            echo json_encode($response);
-            die();
-        }
+        //     echo json_encode($response);
+        //     die();
+        // }
 
         // $check_itemid = $this->model_products->check_products_itemid($this->input->post('f_itemid'), $this->input->post('f_member_shop'));
         $check_id = $this->model_products->check_products_id($id);
@@ -1346,16 +1326,16 @@ class Main_products extends CI_Controller {
             die();
         }
 
-        if($this->form_validation->run() == FALSE){
-            $response = [
-                'environment' => ENVIRONMENT,
-                'success'     => validation_errors(),
-                'message'     => $this->response->message('error')
-            ];
+        // if($this->form_validation->run() == FALSE){
+        //     $response = [
+        //         'environment' => ENVIRONMENT,
+        //         'success'     => validation_errors(),
+        //         'message'     => $this->response->message('error')
+        //     ];
 
-            echo json_encode($response);
-            die();
-    	}else{
+        //     echo json_encode($response);
+        //     die();
+    	// }else{
             // $prev_nostock = $this->model_products->getProductTotalStocks($id)->row()->no_of_stocks;
             $get_product = $this->model_products->check_products($id)->row();
             $featured_product =  $this->input->post('featured_prod_isset');
@@ -1426,7 +1406,7 @@ class Main_products extends CI_Controller {
             //     exec($wishlist);
             // }
             
-        }   
+        //}   
         echo json_encode($response);
     }
     public function update_products($token = '', $Id)
@@ -1437,8 +1417,8 @@ class Main_products extends CI_Controller {
             $member_id = $this->session->userdata('sys_users_id');
             $branchid  = $this->session->userdata('branchid');
             $sys_shop = $this->session->userdata('sys_shop_id');
-            $prev_product = $this->model_products->get_prev_product_per_shop($this->model_products->get_productdetails($Id)['itemname'], $sys_shop);
-            $next_product = $this->model_products->get_next_product_per_shop($this->model_products->get_productdetails($Id)['itemname'], $sys_shop);
+            $prev_product = $this->model_products->get_prev_product_per_shop($this->model_products->get_productdetails($Id)['name'], $sys_shop);
+            $next_product = $this->model_products->get_next_product_per_shop($this->model_products->get_productdetails($Id)['name'], $sys_shop);
             
             $content_url = $this->uri->segment(1) . '/' . $this->uri->segment(2) . '/';
             $main_nav_id = $this->views_restriction($content_url);
@@ -1455,7 +1435,7 @@ class Main_products extends CI_Controller {
                 'shops'               => $this->model_products->get_shop_options(),
                 'categories'          => $this->model_products->get_category_options(),
                 'get_productdetails'  => $this->model_products->get_productdetails($Id),
-                'itemname'            => $this->model_products->get_productdetails($Id)['itemname'],
+                'itemname'            => $this->model_products->get_productdetails($Id)['name'],
                 //'get_branchdetails'   => $this->model_products->get_sys_branch_profile($this->model_products->get_productdetails($Id)['sys_shop'], $Id, $branchid),
                 'branchid'            => $branchid,
                 'featured_products'   => $this->model_products->getFeaturedProduct(),

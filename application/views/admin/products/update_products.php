@@ -538,7 +538,7 @@
 
                                         </div> -->
 
-                                        <div class="col-md-6 nostocksdiv" id="nostocksdiv2">
+                                        <div class="col-md-6 nostocksdiv" id="nostocksdiv">
                                             <div class="form-group divnostock" id="div_no_of_stocks_0">
                                                 <label>Available quantity</label>
                                                 <input type="number" class="form-control parentProductStock" name="f_no_of_stocks" id="f_no_of_stocks" placeholder="Number of stocks" >
@@ -823,27 +823,27 @@
                                             ?>
 
                                             <?php foreach($getVariants as $row){?>
-                                                <tr class="variant_tr_<?=$row['Id']?>">
-                                                    <td class="variant_tr_<?=$row['Id']?>"><span class="variant_id<?=$row['Id']?>"><?=$row['itemname']?></span><input type="hidden" name="variant_id[]" value="<?=$row['Id']?>"><input type="hidden" class="variant_id<?=$row['Id']?>" name="variant_name[]" value="<?=$row['itemname']?>" data-variant_id="<?=$row['Id']?>"></td>
-                                                    <td class="variant_tr_<?=$row['Id']?>"><input type="text" class="form-control allownumericwithdecimal" name="variant_price[]" value="<?=$row['price']?>" <?=$readonly;?>></td>
-                                                    <td class="variant_tr_<?=$row['Id']?>"><input type="text" class="form-control" name="variant_sku[]" value="<?=$row['inv_sku']?>" <?=$readonly;?>></td>
+                                                <tr class="variant_tr_<?=$row['id']?>">
+                                                    <td class="variant_tr_<?=$row['id']?>"><span class="variant_id<?=$row['id']?>"><?=$row['name']?></span><input type="hidden" name="variant_id[]" value="<?=$row['id']?>"><input type="hidden" class="variant_id<?=$row['id']?>" name="variant_name[]" value="<?=$row['name']?>" data-variant_id="<?=$row['id']?>"></td>
+                                                    <td class="variant_tr_<?=$row['id']?>"><input type="text" class="form-control allownumericwithdecimal" name="variant_price[]" value="<?=$row['price']?>" <?=$readonly;?>></td>
+                                                    <td class="variant_tr_<?=$row['id']?>"><input type="text" class="form-control" name="variant_sku[]" value="<?=$row['inv_sku']?>" <?=$readonly;?>></td>
                                                     <?php $variant_status = ($row['enabled'] == 1) ? 'Active' : 'Inactive';?>
-                                                    <td class="variant_tr_<?=$row['Id']?>"><span class="variant_status_label_<?=$row['Id']?>"><?=$variant_status;?></span><input type="hidden" class="form-control variant_status_<?=$row['Id']?>" name="variant_status[]" value="<?=$row['enabled']?>" <?=$readonly;?>></td>
-                                                    <td style="width:25%;"class="td-center variant_tr_<?=$row['Id']?>">
+                                                    <td class="variant_tr_<?=$row['id']?>"><span class="variant_status_label_<?=$row['id']?>"><?=$variant_status;?></span><input type="hidden" class="form-control variant_status_<?=$row['id']?>" name="variant_status[]" value="<?=$row['enabled']?>" <?=$readonly;?>></td>
+                                                    <td style="width:25%;"class="td-center variant_tr_<?=$row['id']?>">
                                                         <?php if($this->loginstate->get_access()['products']['update'] == 1){ ?>
-                                                            <a  href="<?=base_url('admin/Main_products/update_variants/'.$token.'/'.$row['Id'].'/'.$Id);?>" class='btn btn-primary' data-value='<?=$row['Id']?>'><i class='fa fa-pencil'></i></a>&nbsp;
+                                                            <a  href="<?=base_url('admin/Main_products/update_variants/'.$token.'/'.$row['id'].'/'.$Id);?>" class='btn btn-primary' data-value='<?=$row['id']?>'><i class='fa fa-pencil'></i></a>&nbsp;
                                                         <?php }?>
                                                         <?php if($this->loginstate->get_access()['products']['delete'] == 1){ ?>
-                                                            <button type='button' id='removeVariantSpec' class='btn btn-danger' data-value='<?=$row['Id']?>'><i class='fa fa-trash'></i></button>
+                                                            <button type='button' id='removeVariantSpec' class='btn btn-danger' data-value='<?=$row['id']?>'><i class='fa fa-trash'></i></button>
                                                         <?php }?>
                                                         <?php if($this->loginstate->get_access()['products']['disable'] == 1){ ?>
                                                             <?php if($row['enabled'] == 1){ ?>
-                                                                <button type='button' id='enableVariant' class='btn btn-success enableVariant<?=$row['Id']?>' data-value='<?=$row['Id']?>' style='display:none;'><i class='fa fa-check-circle'></i></button>
-                                                                <button type='button' id='disableVariant' class='btn btn-warning disableVariant<?=$row['Id']?>' data-value='<?=$row['Id']?>'><i class='fa fa-times-circle'></i></button>
+                                                                <button type='button' id='enableVariant' class='btn btn-success enableVariant<?=$row['id']?>' data-value='<?=$row['id']?>' style='display:none;'><i class='fa fa-check-circle'></i></button>
+                                                                <button type='button' id='disableVariant' class='btn btn-warning disableVariant<?=$row['id']?>' data-value='<?=$row['id']?>'><i class='fa fa-times-circle'></i></button>
 
                                                             <?php } else{?>
-                                                                <button type='button' id='disableVariant' class='btn btn-warning disableVariant<?=$row['Id']?>' data-value='<?=$row['Id']?>' style='display:none;'><i class='fa fa-times-circle'></i></button>
-                                                                <button type='button' id='enableVariant' class='btn btn-success enableVariant<?=$row['Id']?>' data-value='<?=$row['Id']?>'><i class='fa fa-check-circle'></i></button>
+                                                                <button type='button' id='disableVariant' class='btn btn-warning disableVariant<?=$row['id']?>' data-value='<?=$row['id']?>' style='display:none;'><i class='fa fa-times-circle'></i></button>
+                                                                <button type='button' id='enableVariant' class='btn btn-success enableVariant<?=$row['id']?>' data-value='<?=$row['id']?>'><i class='fa fa-check-circle'></i></button>
                                                             <?php }?>
                                                         <?php }?>
                                                     </td>

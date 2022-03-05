@@ -59,7 +59,7 @@
         &nbsp;<span class="fa fa-chevron-right"></span>&nbsp;
         <span class="font-weight-bold"><a class="text-dark" href="<?=base_url('admin/Main_products/products/'.$token);?>">Products List</a></span>
         &nbsp;<span class="fa fa-chevron-right"></span>&nbsp;
-        <span class="font-weight-bold"><a class="text-dark" href="<?=base_url('admin/Main_products/update_products/'.$token.'/'.$parent_Id);?>"><?=$get_parentProduct['itemname']?></a></span>
+        <span class="font-weight-bold"><a class="text-dark" href="<?=base_url('admin/Main_products/update_products/'.$token.'/'.$parent_Id);?>"><?=$get_parentProduct['name']?></a></span>
         &nbsp;<span class="fa fa-chevron-right"></span>&nbsp;
         <span class="font-weight-regular">Update Variant</span>
         
@@ -86,9 +86,9 @@
                                                     <div class="alert alert-secondary" role="alert">
                                                         <a style="width:100%;" href="<?=base_url('Main_products/update_variants/'.$token.'/'.$row['Id'].'/'.$parent_Id);?>">
                                                             <?php if($Id == $row['Id']){?>
-                                                                <b><?=$row['itemname']?></b>
+                                                                <b><?=$row['name']?></b>
                                                             <?php } else{?>
-                                                                <?=$row['itemname']?>
+                                                                <?=$row['name']?>
                                                             <?php }?>
                                                         </a>
                                                     </div>
@@ -407,7 +407,7 @@
                                                 
                                                 <?php 
                                                     $variant_counter = 0;
-                                                    $variant_names   = explode("/", $get_productdetails['itemname'])
+                                                    $variant_names   = explode("/", $get_productdetails['name'])
                                                 ?>
                                                 
                                                 <!-- <?php foreach($getVariantsOption as $row){?>
@@ -1134,7 +1134,7 @@
                 <p>List of Featured Products.</p>
                 <ol class="list-group">
                 <?php foreach ($featured_products as $products): ?>
-                    <li class="list-group-item"><?=$products['set_product_arrangement'];?>.<?=$products['itemname'];?></li>
+                    <li class="list-group-item"><?=$products['set_product_arrangement'];?>.<?=$products['name'];?></li>
                 <?php endforeach ?>
                 </ol>
             </div>
