@@ -12,7 +12,7 @@
             <div class="card ">
                 <div class="card-header py-2">
                     <div class="row">
-                        <div class="col d-flex align-items-center">
+                        <div class="col d-flex align-items-center text-white">
                             Product List
                         </div>
                         <div class="col d-flex justify-content-end align-items-center">
