@@ -1,6 +1,3 @@
-<link rel="stylesheet" href="<?=base_url('assets/css/libs/bootstrap-tagsinput.css');?>">
-<link rel="stylesheet" href="<?=base_url('assets/css/libs/app.css');?>">
-
 <style>
 /* .imageprevies{
     width: 100%;
@@ -41,17 +38,18 @@
     text-align: center; 
     }
 
+.varoptionDiv2 {
+    display:none;
+}
+.varoptionDiv3 {
+    display:none;
+}
 .parentVariantDiv {
     display:none;
 }
-.parentVariantDiv2 {
-    display:none;
-}
-.bootstrap-tagsinput input {
-    width:100%;
-}
-.td-center{
-    text-align: center;
+.alert {
+  position: relative;
+  display:block;
 }
 </style>
 
@@ -61,97 +59,290 @@
         &nbsp;<span class="fa fa-chevron-right"></span>&nbsp;
         <span class="font-weight-bold"><a class="text-dark" href="<?=base_url('admin/Main_products/products/'.$token);?>">Products List</a></span>
         &nbsp;<span class="fa fa-chevron-right"></span>&nbsp;
-        <span class="font-weight-bold">Update Products</span>
+        <span class="font-weight-bold"><a class="text-dark" href="<?=base_url('admin/Main_products/update_products/'.$token.'/'.$parent_Id);?>"><?=$get_parentProduct['itemname']?></a></span>
         &nbsp;<span class="fa fa-chevron-right"></span>&nbsp;
-        <span class="font-weight-regular">
-            
-        <?=$itemname?>
-            <!-- <?php if($prev_product != ''){?>
-                <a href="<?=base_url('admin/Main_products/update_products/'.$token.'/'.$prev_product)?>" type="button" class="prevBtn mx-3" id="prevBtn"><i class="fa fa-arrow-left"></i><?=$prev_product?></a>
-            <?php }else if($next_product != ''){?>
-                <a href="<?=base_url('admin/Main_products/update_products/'.$token.'/'.$next_product)?>" type="button" class="nextBtn mx-3" id="nextBtn"><i class="fa fa-arrow-right"></i><?=$prev_product?></a>
-            <?php } else {?> -->
-            <!-- <?php } ?> -->
-        </span>
+        <span class="font-weight-regular">Update Variant</span>
         
     </div>
 </div>
-<!-- Modal -->
-
-<div class="modal fade" id="show_feature_prod_modal" tabindex="-1" data-backdrop="static" data-keyboard="false"  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-md">
-        <div class="modal-content">
-            <div class="modal-header secondary-bg white-text d-flex align-items-center">
-            <h3 class="modal-title" id="exampleModalLabel"> Set as featured product</h3>
-            </div>
-            <div class="modal-body">
-                <p>Are you sure you want to set this as featured products?</p>
-                <br>
-                <p>List of Featured Products.</p>
-                <ol class="list-group">
-                <?php foreach ($featured_products as $products): ?>
-                    <li class="list-group-item"><?=$products['set_product_arrangement'];?>.<?=$products['itemname'];?><?=$products['itemname'];?></li>
-                <?php endforeach ?>
-                </ol>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary" id="uncheck_rabutton" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="check_rabutton" >Confirm</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="deleteVariantModal" tabindex="-1" data-backdrop="static" data-keyboard="false"  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-md">
-        <div class="modal-content">
-            <div class="modal-header secondary-bg white-text d-flex align-items-center">
-            <h3 class="modal-title" id="exampleModalLabel"> Delete Variant</h3>
-            </div>
-            <div class="modal-body">
-                <p>Are you sure you want to delete this variant? This action cannot be reversed.</p>
-                <input type="hidden" id="deleteVariantId">
-                <br>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary" id="uncheck_rabutton" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="deleteVariantConfirm" data-dismiss="modal">Confirm</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="deleteVariantOptModal" tabindex="-1" data-backdrop="static" data-keyboard="false"  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-md">
-        <div class="modal-content">
-            <div class="modal-header secondary-bg white-text d-flex align-items-center">
-            <h3 class="modal-title" id="exampleModalLabel"> Delete Variant Option</h3>
-            </div>
-            <div class="modal-body">
-                <p>Are you sure you want to delete this variant option? This action cannot be reversed.</p>
-                <input type="hidden" id="deleteVariantOptionId">
-                <br>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary" id="uncheck_rabutton" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="removeVariantOptBtn" data-dismiss="modal">Confirm</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<div class="col-12 " id="pageActive" data-num="3" data-namecollapse="" data-labelname="Products"> 
-    <div class="container-fluid ml-3">
+<div class="col-12">
+<form id="form_update" enctype="multipart/form-data" method="post">
+<div class="container-fluid">
         <div class="row">
-            <div class="col-md-12 text-right mb-3 d-md-none">
-                <?php if($prev_product != '0'){?>
-                    <a href="<?=base_url('Main_products/update_products/'.$token.'/'.$prev_product)?>" type="button" class="prevBtn mx-3" id="prevBtn"><i class="fa fa-arrow-left"></i></a>
-                <?php } ?>
-                <?php if($next_product != '0'){?>
-                    <a href="<?=base_url('Main_products/update_products/'.$token.'/'.$next_product)?>" type="button" class="nextBtn mx-3" id="nextBtn"><i class="fa fa-arrow-right"></i></a>
-                <?php } ?>
+            
+            <div class="col-lg-5">
+                <div class="row">
+                    <?php if(!empty($getVariants)){?>
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Variants</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <?php foreach($getVariants as $row){?>
+                                                    <div class="alert alert-secondary" role="alert">
+                                                        <a style="width:100%;" href="<?=base_url('Main_products/update_variants/'.$token.'/'.$row['Id'].'/'.$parent_Id);?>">
+                                                            <?php if($Id == $row['Id']){?>
+                                                                <b><?=$row['itemname']?></b>
+                                                            <?php } else{?>
+                                                                <?=$row['itemname']?>
+                                                            <?php }?>
+                                                        </a>
+                                                    </div>
+                                                <?php }?>
+                                                <br>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php }?>
+        
+                    <?php if($shopid == 0){?>
+                        <div class="col-lg-12">&nbsp;</div>
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Admin Settings</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+
+                                    <div class="col-12">
+                                            <div class="form-group">
+                                                <input type="hidden" name="featured_prod_isset" value="0">
+                                                   <?php if($get_productdetails['featured_prod_isset'] == 0) {?>
+                                                       <input type="checkbox" class="form-control-input" id="featured_prod_isset" name="featured_prod_isset" value="1">
+                                                    <?php }else{?>
+                                                       <input type="checkbox" class="form-control-input" id="featured_prod_isset" checked name="featured_prod_isset" value="1">
+                                                    <?php }?>
+                                                <label class="form-control-label" for="featured_prod_isset">Set as featured Products</label>
+                                                <br>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 contsellingdiv">
+                                                <div class="form-group">  
+                                        <?php if ($get_productdetails['featured_prod_isset'] > 0) {?>  
+                                                    <select class="select2 form-control required_fields" id="entry-feat-product-arrangement" name="entry-feat-product-arrangement" data-reqselect2="yes">     
+                                            <?php }else{?>        
+                                                    <select class="select2 form-control  required_fields " id="entry-feat-product-arrangement" name="entry-feat-product-arrangement" data-reqselect2="yes">     
+                                        <?php }?>       
+                                                       <option  selected value=" <?php echo $get_productdetails['set_product_arrangement'] ?>">  <?php echo $get_productdetails['set_product_arrangement'] ?></option>
+                                                        <option value="">Select Arrangement</option>
+                                                        <option value="1">1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                        <option value="5">5</option>
+                                                        <option value="6">6</option>
+                                                        <option value="7">7</option>
+                                                    </select>
+                                                </div>
+                                        </div>
+                                          
+                                                 
+                                         
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <input type="hidden" name="f_admin_isset" value="0">
+                                                <input type="checkbox" class="form-control-input" id="f_admin_isset" name="f_admin_isset" value="1">
+                                                <label class="form-control-label" for="f_admin_isset">Enable Commission Rate</label>
+                                                <br>
+                                            </div>
+                                        </div>
+    
+                                        <?php if(ini() != 'toktokmall'){?>
+                                            <div class="col-12 adminsettings_div">
+                                                <div class="form-group">
+                                                    <label for="f_ratetype" class="control-label">Discount Rate Type</label>
+                                                    <select style="height:42px;" type="text" name="f_disc_ratetype" id="f_disc_ratetype" class="form-control">
+                                                        <option value="p">Percentage</option>
+                                                        <option value="f">Fixed Amount</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 adminsettings_div">
+                                                <div class="form-group">
+                                                    <label for="f_rate" class="control-label">Discount Rate</label> 
+                                                    <!-- <span class="badge badge-primary" data-toggle="tooltip" data-placement="top" title="Maximum rate is 1.0 if the rate type is percentage and any amount if the rate type is fixed amount.">?</span> -->
+                                                    <input type="number" placeholder="1.0" step="0.01" min="0" max="1" class="form-control allownumericwithdecimal" name="f_disc_rate" id="f_disc_rate" >
+                                                    <div class="note">
+                                                        Maximum rate is 1.0 if the rate type is percentage and any amount if the rate type is fixed amount.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <?php } else{?>
+                                            <div class="col-12" style="display:none;">
+                                                <div class="form-group">
+                                                    <label for="f_ratetype" class="control-label">Discount Rate Type</label>
+                                                    <select style="height:42px;" type="text" name="f_disc_ratetype" id="f_disc_ratetype" class="form-control">
+                                                        <option value="p" selected>Percentage</option>
+                                                        <!-- <option value="f">Fixed Amount</option> -->
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <!-- <div class="col-12 adminsettings_div">
+                                                <div class="form-group">
+                                                    <label for="f_rate" class="control-label">Discount Rate</label> 
+                                                    <span class="badge badge-primary" data-toggle="tooltip" data-placement="top" title="Maximum rate is 1.0 if the rate type is percentage and any amount if the rate type is fixed amount.">?</span>
+                                                    <input type="number"class="form-control allownumericwithdecimal" name="f_disc_rate" id="f_disc_rate" >
+                                                </div>
+                                            </div> -->
+
+                                            <div class="col-12 adminsettings_div">
+                                                <div class="form-group">
+                                                    <label for="f_rate" class="control-label">Merchant Commission Rate</label> 
+                                                    <div class="input-group mb-3">
+                                                        <input type="text" class="form-control allownumericwithdecimal commcapping" name="f_disc_rate" id="f_disc_rate" onkeypress="return isNumberKey(event)">
+                                                        <div class="input-group-append">
+                                                            <span class="input-group-text">%</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <?php }?>
+    
+                                        <div class="col-sm-8">
+                                            <div class="form-group">
+                                                <label for="f_itemid" class="control-label">Referral Commission ItemID</label>
+                                                <input type="text" class="form-control" name="f_itemid" id="f_itemid" >
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                            <label class="control-label">&nbsp; </label>
+                                            <label class="control-label">&nbsp; </label>
+                                                <button type="button" class="btn btn-primary" style="width:100%;" id="generateItemIDBtn" >Generate</button>
+                                                <input type="hidden" class="form-control" name="f_company_initial" id="f_company_initial" value="<?=company_initial()?>">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-md-12">
+                                            <div class="form-group">
+                                                <label for="f_rate" class="control-label"> Account Type Commission Rate</label> 
+                                            </div>
+                                        </div>
+
+                                        <div class="col-4 col-md-6">
+                                            <div class="form-group">
+                                                <label for="f_rate" class="control-label">Startup</label> 
+                                                <div class="input-group mb-3">
+                                                    <input type="text" class="form-control allownumericwithdecimal" name="f_startup" id="f_startup" onkeypress="return isNumberKey(event)">
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text">%</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-4 col-md-6">
+                                            <div class="form-group">
+                                                <label for="f_rate" class="control-label">JC</label> 
+                                                <div class="input-group mb-3">
+                                                    <input type="text" class="form-control allownumericwithdecimal" name="f_jc" id="f_jc" onkeypress="return isNumberKey(event)">
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text">%</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-4 col-md-6">
+                                            <div class="form-group">
+                                                <label for="f_rate" class="control-label">MCJR</label> 
+                                                <div class="input-group mb-3">
+                                                    <input type="text" class="form-control allownumericwithdecimal" name="f_mcjr" id="f_mcjr" onkeypress="return isNumberKey(event)">
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text">%</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-4 col-md-6">
+                                            <div class="form-group">
+                                                <label for="f_rate" class="control-label">MC</label> 
+                                                <div class="input-group mb-3">
+                                                    <input type="text" class="form-control allownumericwithdecimal" name="f_mc" id="f_mc" onkeypress="return isNumberKey(event)">
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text">%</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-4 col-md-6">
+                                            <div class="form-group">
+                                                <label for="f_rate" class="control-label">MCSUPER</label> 
+                                                <div class="input-group mb-3">
+                                                    <input type="text" class="form-control allownumericwithdecimal" name="f_mcsuper" id="f_mcsuper" onkeypress="return isNumberKey(event)">
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text">%</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-4 col-md-6">
+                                            <div class="form-group">
+                                                <label for="f_rate" class="control-label">MCMEGA</label> 
+                                                <div class="input-group mb-3">
+                                                    <input type="text" class="form-control allownumericwithdecimal" name="f_mcmega" id="f_mcmega" onkeypress="return isNumberKey(event)">
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text">%</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-4 col-md-6">
+                                            <div class="form-group">
+                                                <label for="f_rate" class="control-label">Others</label> 
+                                                <div class="input-group mb-3">
+                                                    <input type="text" class="form-control allownumericwithdecimal" name="f_others" id="f_others" onkeypress="return isNumberKey(event)">
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text">%</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-md-12">
+                                            <div class="form-group">
+                                                <div class="alert alert-warning" role="alert">
+                                                    Percentage of Account Type Commission Rate should not be more than 50% of Merchant Commission Rate.
+                                                </div>
+                                            </div>
+                                        </div>
+    
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php }else{ ?>
+                        <input type="hidden" class="hidden" value="0" name="f_disc_ratetype" id="f_disc_ratetype">
+                        <input type="hidden" class="hidden" value="0" name="f_disc_rate" id="f_disc_rate">
+                        <input type="hidden" class="hidden" value="" name="f_itemid" id="f_itemid">
+                        <input type="hidden" class="hidden" value="0" name="f_admin_isset" id="f_admin_isset">
+                        <input type="hidden" class="hidden" value="0" name="f_startup" id="f_startup">
+                        <input type="hidden" class="hidden" value="0" name="f_jc" id="f_jc">
+                        <input type="hidden" class="hidden" value="0" name="f_mcjr" id="f_mcjr">
+                        <input type="hidden" class="hidden" value="0" name="f_mc" id="f_mc">
+                        <input type="hidden" class="hidden" value="0" name="f_mcsuper" id="f_mcsuper">
+                        <input type="hidden" class="hidden" value="0" name="f_mcmega" id="f_mcmega">
+                        <input type="hidden" class="hidden" value="0" name="f_others" id="f_others">
+                    <?php }?>
+
+                </div>
             </div>
+
             <div class="col-lg-7">
                 <div class="row">
                     <div class="col-12 mb-3">
@@ -159,7 +350,6 @@
                             <div class="card-header">
                                 <h3 class="card-title">Details </h3>
                             </div>
-                            <form id="form_update" enctype="multipart/form-data" method="post">
                             <?php if($branchid == 0){?>
                                 <div class="card-body">
                                     <div class="row">
@@ -200,31 +390,48 @@
                                                         </div>
                                                     </div>
                                                 <?php }?>
-                                                <div class="col-md-6">
+                                                <div class="col-md-6" style="display:none;">
                                                     <div class="form-group" id="category_field">
                                                         <label>Category*</label>
                                                         <select style="height:42px;" type="text" name="f_category" id="f_category" class="form-control">
-                                                            <option value="">-- Select Category --</option>
-                                                            <?php
-                                                                foreach ($categories as $category) {
-                                                                    ?>
-                                                                        <option value="<?= $category['id']; ?>"><?= $category['category_name']; ?></option>
-                                                                    <?php
-                                                                }
-                                                            ?>
+                                                            <option value="0" selected>-- Select Category --</option>
                                                         </select>
                                                     </div>
                                                 </div>
 
+                                                <div class="col-md-12" style="display:none;">
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control" name="f_parent_product_id" id="f_parent_product_id" value="<?=$parent_Id?>">
+                                                    </div>
+                                                </div>
+                                                
+                                                <?php 
+                                                    $variant_counter = 0;
+                                                    $variant_names   = explode("/", $get_productdetails['itemname'])
+                                                ?>
+                                                
+                                                <!-- <?php foreach($getVariantsOption as $row){?>
+                                                    <?php if($row['variant_type'] != ""){?>
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label for="f_itemname" class="control-label"><?=$row['variant_type']?></label>
+                                                                <input type="text" class="form-control" name="f_variant_name[]" id="f_variant_name" value="<?=(!empty($variant_names[$variant_counter])) ? $variant_names[$variant_counter] : "";?>">
+                                                            </div>
+                                                        </div>
+                                                        <?php $variant_counter++ ?>
+                                                    <?php }?>
+                                                <?php }?> -->
+
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label for="f_itemname" class="control-label">Product Name*</label>
+                                                        <label for="f_itemname" class="control-label">Variant Name*</label>
                                                         <input type="text" class="form-control" name="f_itemname" id="f_itemname">
                                                     </div>
                                                 </div>
-                                                <div class="col-md-12">
+
+                                                <div class="col-md-12" hidden>
                                                     <div class="form-group">
-                                                        <label for="f_summary" class="control-label">Product Summary</label>
+                                                        <label for="f_summary" class="control-label">Variant Summary</label>
                                                         <textarea style="height: 106px;" class="form-control" name="f_summary" id="f_summary" rows="3"></textarea>
                                                     </div>
                                                 </div>
@@ -264,10 +471,10 @@
                                                     </div>
                                                 </div>
                                                 
-                                                <div class="col-md-6 f_otherinfodiv">
+                                                <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="f_otherinfo" class="control-label">Other Info (Packing/Variations)*</label>
-                                                        <input type="text" class="form-control" name="f_otherinfo" id="f_otherinfo" placeholder="250g/pack, Small Size" >
+                                                        <input type="text" class="form-control" name="f_otherinfo" id="f_otherinfo" placeholder="250g/pack, Small Size" value="none">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
@@ -290,15 +497,28 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-12 hidden">
+                                                <?php if(ini() == 'jcww'){ ?>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label for="f_itemname" class="control-label">Delivery Areas*</label>
+                                                            <select class="select2 form-control form-control-sm form-state taginput-field" name="f_delivery_areas[]" id="f_delivery_areas" multiple="multiple">
+                                                                <?php foreach($get_province as $prov){ ?>
+                                                                    <option value="<?=$prov['provCode']?>"><?=$prov['provDesc']?></option>
+                                                                <?php } ?>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                <?php } ?>
+
+                                                <div class="col-md-12" style="display:none;">
                                                     <div class="form-group">
                                                         <input type="hidden" name="f_age_restriction_isset" value="0">
                                                         <input type="checkbox" class="form-control-input" id="f_age_restriction_isset" name="f_age_restriction_isset" value="1" checked>
-                                                        <label class="form-control-label" for="max_qty_isset">With age restriction</label>
+                                                        <label class="form-control-label" for="f_age_restriction_isset">With age restriction</label>
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-6">
+                                                <div class="col-md-6" style="display:none;">
                                                     <div class="form-group">
                                                         <label for="f_arrangement" class="control-label">Arrangement</label>
                                                         <input type="text" class="form-control allownumericwithdecimal" name="f_arrangement" id="f_arrangement">
@@ -324,7 +544,7 @@
                                             </div>
                                             <div class="row">
                                                 <?php if($shopid == 0){?>
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-6" hidden>
                                                         <div class="form-group" id="shop_field">
                                                             <label>Shop Name*</label>
                                                             <select style="height:42px;" type="text" name="f_member_shop" id="f_member_shop" class="form-control" disabled>
@@ -349,18 +569,11 @@
                                                         </div>
                                                     </div>
                                                 <?php }?>
-                                                <div class="col-md-6" hidden>
+                                                <div class="col-md-6" style="display:none;">
                                                     <div class="form-group" id="category_field">
                                                         <label>Category*</label>
                                                         <select style="height:42px;" type="text" name="f_category" id="f_category" class="form-control">
-                                                            <option value="">-- Select Category --</option>
-                                                            <?php
-                                                                foreach ($categories as $category) {
-                                                                    ?>
-                                                                        <option value="<?= $category['id']; ?>"><?= $category['category_name']; ?></option>
-                                                                    <?php
-                                                                }
-                                                            ?>
+                                                            <option value="0" selected>-- Select Category --</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -406,10 +619,10 @@
                                                         <textarea style="height: 106px;" class="form-control" name="f_summary" id="f_summary" rows="3" readonly></textarea>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6 f_otherinfodiv">
+                                                <div class="col-md-6" style="display:none;">
                                                     <div class="form-group">
                                                         <label for="f_otherinfo" class="control-label">Other Info (Packing/Variations)*</label>
-                                                        <input type="text" class="form-control f_otherinfo" name="f_otherinfo" id="f_otherinfo" placeholder="250g/pack, Small Size" readonly>
+                                                        <input type="text" class="form-control" name="f_otherinfo" id="f_otherinfo" placeholder="250g/pack, Small Size" value="none" readonly>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
@@ -432,11 +645,11 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-12">
+                                                <div class="col-md-12" style="display:none;">
                                                     <div class="form-group">
                                                         <input type="hidden" name="f_age_restriction_isset" value="0">
                                                         <input type="checkbox" class="form-control-input" id="f_age_restriction_isset" name="f_age_restriction_isset" value="1" checked>
-                                                        <label class="form-control-label" for="max_qty_isset">With age restriction</label>
+                                                        <label class="form-control-label" for="f_age_restriction_isset">With age restriction</label>
                                                     </div>
                                                 </div>
 
@@ -446,6 +659,19 @@
                                                         <input type="text" class="form-control allownumericwithdecimal" name="f_arrangement" id="f_arrangement">
                                                     </div>
                                                 </div>
+
+                                                <?php if(ini() == 'jcww'){ ?>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label for="f_itemname" class="control-label">Delivery Areas</label>
+                                                            <select class="select2 form-control form-control-sm form-state taginput-field" name="f_delivery_areas[]" id="f_delivery_areas" multiple="multiple">
+                                                                <?php foreach($get_province as $prov){ ?>
+                                                                    <option value="<?=$prov['provCode']?>"><?=$prov['provDesc']?></option>
+                                                                <?php } ?>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                <?php } ?>
             
                                             </div>
                                         </div>
@@ -457,7 +683,7 @@
                     </div>
 
                     <?php if($branchid == 0){?>                                    
-                        <div class="col-12 mb-3 parentInvDiv">
+                        <div class="col-12 mb-3">
                             <div class="card">
                                 <div class="card-header">
                                     <h3 class="card-title">Inventory</h3>
@@ -513,7 +739,7 @@
                                             </div>
                                         </div>
         
-                                        <!-- <div class="col-md-6 nostocksdiv hidden">
+                                        <!-- <div class="col-md-6 nostocksdiv">
                                         
                                             <?php if($branchid == 0){?>
                                                 <div class="form-group">
@@ -539,18 +765,53 @@
                                         </div> -->
 
                                         <div class="col-md-6 nostocksdiv" id="nostocksdiv2">
-                                            <div class="form-group divnostock" id="div_no_of_stocks_0">
-                                                <label>Available quantity</label>
-                                                <input type="number" class="form-control parentProductStock" name="f_no_of_stocks" id="f_no_of_stocks" placeholder="Number of stocks" >
-                                            </div>
+
+                                        <div class="form-group divnostock" id="div_no_of_stocks_0">
+                                                    <label>Available quantity</label>
+                                                    <input type="number" class="form-control" name="f_no_of_stocks" id="f_no_of_stocks" placeholder="Number of stocks" value="<?=$get_productdetails['no_of_stocks']?>">
+                                                    <input type="hidden" name="hidden_f_no_of_stocks_0" id="hidden_f_no_of_stocks_0" value="<?=$get_productdetails['no_of_stocks']?>">
+                                                </div>
                                         </div>
+                                        <!-- <div class="col-md-6 nostocksdiv">
+                                            <?php if($branchid == 0){?>
+                                                <div class="form-group divnostock" id="div_no_of_stocks_0">
+                                                    <label>Available quantity(Main Branch)</label>
+                                                    <input type="number" class="form-control" name="f_no_of_stocks_0" id="f_no_of_stocks_0" placeholder="Number of stocks" value="<?=$get_productdetails['inv_qty']?>">
+                                                    <input type="hidden" name="hidden_f_no_of_stocks_0" id="hidden_f_no_of_stocks_0" value="<?=$get_productdetails['inv_qty']?>">
+                                                </div>
+
+                                                <?php if($get_branchdetails != false){?>
+                                                    <?php foreach($get_branchdetails as $row){?>
+                                                        <?php $input_name = 'f_no_of_stocks_0'?>
+                                                        <?php $hidden_input_name = 'hidden_f_no_of_stocks_0'?>
+                                                        <?php $div_name = 'div_no_of_stocks_0'?>
+                                                        <div class="form-group divnostock" id="<?=$div_name?>" style="display:none">
+                                                            <label>Available quantity(<?=$row['branchname']?>)</label>
+                                                            <input type="number" class="form-control" name="<?=$input_name?>" id="<?=$input_name?>" placeholder="Number of stocks" value="<?=$row['inv_qty']?>">
+                                                            <input type="hidden" name="<?=$hidden_input_name?>" id="<?=$hidden_input_name?>" value="<?=$row['inv_qty']?>">
+                                                        </div>
+                                                    <?php }?>
+                                                <?php }?>
+                                            <?php }else{?>
+                                                <?php if($get_branchdetails != false){?>
+                                                    <?php foreach($get_branchdetails as $row){?>
+                                                        <?php $input_name = 'f_no_of_stocks_0'?>
+                                                        <?php $div_name = 'div_no_of_stocks_0'?>
+                                                        <div class="form-group divnostock" id="<?=$div_name?>">
+                                                            <label>Available quantity(<?=$row['branchname']?>)</label>
+                                                            <input type="number" class="form-control" name="<?=$input_name?>" id="<?=$input_name?>" placeholder="Number of stocks" value="<?=$row['inv_qty']?>">
+                                                        </div>
+                                                    <?php }?>
+                                                <?php }?>
+                                            <?php }?>
+                                        </div> -->
 
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    <?php }else{ ?>
-                        <div class="col-12 mb-3 parentInvDiv">
+                    <?php }else{?>
+                        <div class="col-12 mb-3">
                             <div class="card">
                                 <div class="card-header">
                                     <h3 class="card-title">Inventory</h3>
@@ -637,31 +898,31 @@
                                             <?php if($branchid == 0){?>
                                                 <div class="form-group divnostock" id="div_no_of_stocks_0">
                                                     <label>Available quantity(Main Branch)</label>
-                                                    <input type="number" class="form-control parentProductStock" name="f_no_of_stocks_0" id="f_no_of_stocks_0" placeholder="Number of stocks" value="<?=$get_productdetails['inv_qty']?>">
+                                                    <input type="number" class="form-control" name="f_no_of_stocks_0" id="f_no_of_stocks_0" placeholder="Number of stocks" value="<?=$get_productdetails['inv_qty']?>">
                                                 </div>
 
                                                 <?php if($get_branchdetails != false){?>
                                                     <?php foreach($get_branchdetails as $row){?>
-                                                        <?php $input_name = 'f_no_of_stocks_'.$row['id']; ?>
-                                                        <?php $div_name = 'div_no_of_stocks_'.$row['id']; ?>
+                                                        <?php $input_name = 'f_no_of_stocks_0'?>
+                                                        <?php $div_name = 'div_no_of_stocks_0'?>
                                                         <div class="form-group divnostock" id="<?=$div_name?>" style="display:none">
                                                             <label>Available quantity(<?=$row['branchname']?>)</label>
-                                                            <input type="number" class="form-control parentProductStock" name="<?=$input_name?>" id="<?=$input_name?>" placeholder="Number of stocks" value="<?=$row['inv_qty']?>">
+                                                            <input type="number" class="form-control" name="<?=$input_name?>" id="<?=$input_name?>" placeholder="Number of stocks" value="<?=$row['inv_qty']?>">
                                                         </div>
                                                     <?php }?>
                                                 <?php }?>
                                             <?php }else{?>
                                                 <?php if($get_branchdetails != false){?>
                                                     <?php foreach($get_branchdetails as $row){?>
-                                                        <?php $input_name = 'f_no_of_stocks_'.$row['id']; ?>
-                                                        <?php $div_name = 'div_no_of_stocks_'.$row['id']; ?>
+                                                        <?php $input_name = 'f_no_of_stocks_0'?>
+                                                        <?php $div_name = 'div_no_of_stocks_0'?>
                                                         <div class="form-group divnostock" id="<?=$div_name?>">
                                                             <label>Available quantity(<?=$row['branchname']?>)</label>
                                                             <?php if(ini() == 'jcww'){?>
-                                                                <input type="number" class="form-control parentProductStock" placeholder="Number of stocks" value="<?=$row['inv_qty']?>" readonly>
+                                                                <input type="number" class="form-control" placeholder="Number of stocks" value="<?=$row['inv_qty']?>" readonly>
                                                                 <input type="hidden" class="form-control" name="<?=$input_name?>" id="<?=$input_name?>" placeholder="Number of stocks" value="<?=$row['inv_qty']?>">
                                                             <?php }else{?>
-                                                                <input type="number" class="form-control parentProductStock" name="<?=$input_name?>" id="<?=$input_name?>" placeholder="Number of stocks" value="<?=$row['inv_qty']?>">
+                                                                <input type="number" class="form-control" name="<?=$input_name?>" id="<?=$input_name?>" placeholder="Number of stocks" value="<?=$row['inv_qty']?>">
                                                             <?php }?>
                                                         </div>
                                                     <?php }?>
@@ -674,200 +935,6 @@
                             </div>
                         </div>
                     <?php }?>
-
-                    <div class="col-12 mb-3">
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">Variants</h3>
-                            </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <!-- <div class="form-group"> -->
-                                            <input type="hidden" name="f_variants_isset" value="0">
-                                            <input type="checkbox" class="form-control-input" id="f_variants_isset" name="f_variants_isset" value="1">
-                                            <label class="form-control-label" for="f_variants_isset">This product has multiple options, like different sizes or colors</label>
-                                        <!-- </div> -->
-                                    </div>
-
-                                    <div class="col-12 parentVariantDiv2">
-                                        <div class="border-bottom w-100"></div>
-                                    </div>
-
-                                    <div class="col-12 parentVariantDiv2">
-                                        <label class="form-control-label">&nbsp;</label>
-                                    </div>
-
-                                    <div class="col-md-12 parentVariantDiv2">
-                                        <label class="form-control-label font-weight-bold">Variation</label>
-                                    </div>
-
-                                    <?php 
-                                        $getVariantsOption[0]['variant_type'] = (!empty($getVariantsOption[0]['variant_type'])) ? $getVariantsOption[0]['variant_type'] : "";
-                                        $getVariantsOption[0]['variant_list'] = (!empty($getVariantsOption[0]['variant_list'])) ? $getVariantsOption[0]['variant_list'] : "";
-                                        $getVariantsOption[1]['variant_type'] = (!empty($getVariantsOption[1]['variant_type'])) ? $getVariantsOption[1]['variant_type'] : "";
-                                        $getVariantsOption[1]['variant_list'] = (!empty($getVariantsOption[1]['variant_list'])) ? $getVariantsOption[1]['variant_list'] : "";
-                                        $getVariantsOption[2]['variant_type'] = (!empty($getVariantsOption[2]['variant_type'])) ? $getVariantsOption[2]['variant_type'] : "";
-                                        $getVariantsOption[2]['variant_list'] = (!empty($getVariantsOption[2]['variant_list'])) ? $getVariantsOption[2]['variant_list'] : "";
-                                    ?>
-
-                                    <div class="col-md-12 parentVariantDiv2">
-                                        <label class="form-control-label font-weight-normal">Variation 1</label>
-                                    </div>
-
-                                    <div class="col-md-3 parentVariantDiv2">
-                                        <input type="text" class="form-control" name="f_var_option_name[]" id="f_var_option_name" placeholder="Type" value="<?=$getVariantsOption[0]['variant_type']?>">
-                                    </div>
-
-                                    <div class="col-md-7 parentVariantDiv2">
-                                        <input type="text" class="form-control taginputVariant f_var_option_list1" name="f_var_option_list[]" id="f_var_option_list" data-role="tagsinput" placeholder="<?=($getVariantsOption[0]['variant_list'] == '') ? "Press enter to separate":""?>" value="<?=$getVariantsOption[0]['variant_list']?>" ></input>
-                                    </div>
-
-                                    <div class="col-12 parentVariantDiv2">
-                                        <label class="form-control-label">&nbsp;</label>
-                                    </div>
-
-                                    <div class="col-md-12 parentVariantDiv2 varoptionDiv2">
-                                        <label class="form-control-label font-weight-normal">Variation 2</label>
-                                    </div>
-
-                                    <div class="col-md-3 parentVariantDiv2 varoptionDiv2">
-                                        <input type="text" class="form-control varoption2" name="f_var_option_name[]" id="f_var_option_name" placeholder="Type" value="<?=$getVariantsOption[1]['variant_type']?>">
-                                    </div>
-
-                                    <div class="col-md-7 parentVariantDiv2 varoptionDiv2">
-                                        <input type="text" class="form-control taginputVariant varoption2 f_var_option_list2" name="f_var_option_list[]" id="f_var_option_list" data-role="tagsinput" placeholder="<?=($getVariantsOption[1]['variant_list'] == '') ? "Press enter to separate":""?>" value="<?=$getVariantsOption[1]['variant_list']?>" ></input>
-                                    </div>
-
-                                    <!-- <div class="col-md-2 parentVariantDiv varoptionDiv2">
-                                        <u><a href="javascript:void(0)" class="removeVariantBtn" data-value="2">Remove</a></u>
-                                    </div> -->
-
-                                    <div class="col-12 parentVariantDiv2 varoptionDiv2">
-                                        <label class="form-control-label">&nbsp;</label>
-                                    </div>
-
-                                    <div class="col-md-12 parentVariantDiv2 varoptionDiv3">
-                                        <label class="form-control-label font-weight-normal">Variation 3</label>
-                                    </div>
-
-                                    <div class="col-md-3 parentVariantDiv2 varoptionDiv3">
-                                        <input type="text" class="form-control varoption3" name="f_var_option_name[]" id="f_var_option_name" placeholder="Type" value="<?=$getVariantsOption[2]['variant_type']?>">
-                                    </div>
-
-                                    <div class="col-md-7 parentVariantDiv2 varoptionDiv3">
-                                        <input type="text" class="form-control taginputVariant varoption3 f_var_option_list3" name="f_var_option_list[]" id="f_var_option_list" data-role="tagsinput" placeholder="<?=($getVariantsOption[2]['variant_list'] == '') ? "Press enter to separate":""?>" value="<?=$getVariantsOption[2]['variant_list']?>"></input>
-                                    </div>
-
-                                    <!-- <div class="col-md-2 parentVariantDiv varoptionDiv3">
-                                        <u><a href="javascript:void(0)" class="removeVariantBtn" data-value="3">Remove</a></u>
-                                    </div> -->
-
-                                    <!-- ////// -->
-                                    <div class="col-12 parentVariantDiv2">
-                                        <label class="form-control-label">&nbsp;</label>
-                                    </div>
-
-                                    <div class="col-12 parentVariantDiv2">
-                                        <div class="border-bottom w-100"></div>
-                                    </div>
-
-                                    <div class="col-12 parentVariantDiv2">
-                                        <label class="form-control-label">&nbsp;</label>
-                                    </div>
-
-                                    <?php if($this->loginstate->get_access()['products']['create'] == 1){ ?>
-                                        <div class="col-3 parentVariantDiv">
-                                            <a href="<?=base_url('admin/Main_products/add_variant/'.$token.'/'.$Id)?>" class="btn btn-primary">Add variant</a>
-                                        </div>
-                                    <?php } ?>
-                                
-                                    
-
-                                    <!-- <div class="col-9 parentVariantDiv">
-                                        <button type="button" id="addOptionVariantBtn" class="btn btn-primary" style="color:white;<?=($getVariantsOption[2]['variant_type'] == "") ? null : "display:none;"?>">Add another option</button>
-                                    </div>
-                               -->
-
-                                    
-
-                                    <div class="col-12 parentVariantDiv">
-                                        <label class="form-control-label">&nbsp;</label>
-                                    </div>
-
-                                    <div class="col-12 parentVariantDiv">
-                                        <div class="alert alert-warning" role="alert">
-                                            Any changes you made above will not affect or reflect on    the variant table below.
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-12 table-responsive parentVariantDiv">
-                                        <table class='table table-striped table-hover table-bordered table-grid display nowrap'>
-                                            <thead>
-                                                <tr>
-                                                    <th scope='col'><b>Variant</b></th>
-                                                    <th scope='col'><b>Price</b></th>
-                                                    <th scope='col'><b>SKU</b></th>
-                                                    <th scope='col'><b>Status</b></th>
-                                                    <th scope='col'></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id='tbody_variants' class='tbody_variants'>
-                                            <?php 
-                                                if($branchid != 0){
-                                                    $readonly = 'readonly';
-                                                }
-                                                else{
-                                                    $readonly = '';
-                                                }
-                                            ?>
-
-                                            <?php foreach($getVariants as $row){?>
-                                                <tr class="variant_tr_<?=$row['Id']?>">
-                                                    <td class="variant_tr_<?=$row['Id']?>"><span class="variant_id<?=$row['Id']?>"><?=$row['itemname']?></span><input type="hidden" name="variant_id[]" value="<?=$row['Id']?>"><input type="hidden" class="variant_id<?=$row['Id']?>" name="variant_name[]" value="<?=$row['itemname']?>" data-variant_id="<?=$row['Id']?>"></td>
-                                                    <td class="variant_tr_<?=$row['Id']?>"><input type="text" class="form-control allownumericwithdecimal" name="variant_price[]" value="<?=$row['price']?>" <?=$readonly;?>></td>
-                                                    <td class="variant_tr_<?=$row['Id']?>"><input type="text" class="form-control" name="variant_sku[]" value="<?=$row['inv_sku']?>" <?=$readonly;?>></td>
-                                                    <?php $variant_status = ($row['enabled'] == 1) ? 'Active' : 'Inactive';?>
-                                                    <td class="variant_tr_<?=$row['Id']?>"><span class="variant_status_label_<?=$row['Id']?>"><?=$variant_status;?></span><input type="hidden" class="form-control variant_status_<?=$row['Id']?>" name="variant_status[]" value="<?=$row['enabled']?>" <?=$readonly;?>></td>
-                                                    <td style="width:25%;"class="td-center variant_tr_<?=$row['Id']?>">
-                                                        <?php if($this->loginstate->get_access()['products']['update'] == 1){ ?>
-                                                            <a  href="<?=base_url('admin/Main_products/update_variants/'.$token.'/'.$row['Id'].'/'.$Id);?>" class='btn btn-primary' data-value='<?=$row['Id']?>'><i class='fa fa-pencil'></i></a>&nbsp;
-                                                        <?php }?>
-                                                        <?php if($this->loginstate->get_access()['products']['delete'] == 1){ ?>
-                                                            <button type='button' id='removeVariantSpec' class='btn btn-danger' data-value='<?=$row['Id']?>'><i class='fa fa-trash'></i></button>
-                                                        <?php }?>
-                                                        <?php if($this->loginstate->get_access()['products']['disable'] == 1){ ?>
-                                                            <?php if($row['enabled'] == 1){ ?>
-                                                                <button type='button' id='enableVariant' class='btn btn-success enableVariant<?=$row['Id']?>' data-value='<?=$row['Id']?>' style='display:none;'><i class='fa fa-check-circle'></i></button>
-                                                                <button type='button' id='disableVariant' class='btn btn-warning disableVariant<?=$row['Id']?>' data-value='<?=$row['Id']?>'><i class='fa fa-times-circle'></i></button>
-
-                                                            <?php } else{?>
-                                                                <button type='button' id='disableVariant' class='btn btn-warning disableVariant<?=$row['Id']?>' data-value='<?=$row['Id']?>' style='display:none;'><i class='fa fa-times-circle'></i></button>
-                                                                <button type='button' id='enableVariant' class='btn btn-success enableVariant<?=$row['Id']?>' data-value='<?=$row['Id']?>'><i class='fa fa-check-circle'></i></button>
-                                                            <?php }?>
-                                                        <?php }?>
-                                                    </td>
-                                                </tr>
-
-                                           <?php }?>
-                                            <?php if(empty($getVariants)){?>
-                                                <tr>
-                                                    <td colspan="5" class="td-center">No existing variant.</td>
-                                                </tr>
-                                            <?php }?>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-            
-            <div class="col-lg-5">
-                <div class="row">
 
                     <?php if($branchid == 0){?> 
                         <div class="col-12">
@@ -933,6 +1000,7 @@
                                         <div class="col-12 weightdiv">
                                             <div class="note">Please fill out the fields accurately. This is used to calculate the shipping rates at checkout and label prices during fulfillment. Exceeding the maximum weight (20kg) and dimension (20"x20”x20") for the default toktok rates can still be catered but the shipping fee will depend on the amount you've provided in the Shipping and Delivery Settings Tab.</div>
                                         </div>
+
 
                                     </div>
                                 </div>
@@ -1008,198 +1076,32 @@
                             </div>
                         </div>
                     <?php }?>
-        
-                    <?php if($shopid == 0){?>
-                        <div class="col-lg-12">&nbsp;</div>
-                        <div class="col-lg-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h3 class="card-title">Admin Settings</h3>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row">
 
-                                    <div class="col-12">
-                                            <div class="form-group">
-                                                <input type="hidden" name="featured_prod_isset" value="0">
-                                                   <?php if($get_productdetails['featured_prod_isset'] == 0) {?>
-                                                       <input type="checkbox" class="form-control-input" id="featured_prod_isset" name="featured_prod_isset" value="1">
-                                                    <?php }else{?>
-                                                       <input type="checkbox" class="form-control-input" id="featured_prod_isset" checked name="featured_prod_isset" value="1">
-                                                    <?php }?>
-                                                <label class="form-control-label" for="featured_prod_isset">Set as featured Products</label>
-                                                <br>
-                                            </div>
-                                        </div>
-
-
-                                        <div class="col-12 contsellingdiv">
-                                                <div class="form-group">  
-                                        <?php if ($get_productdetails['featured_prod_isset'] > 0) {?>  
-                                                    <select class="select2 form-control required_fields" id="entry-feat-product-arrangement" name="entry-feat-product-arrangement" data-reqselect2="yes">     
-                                            <?php }else{?>        
-                                                    <select class="select2 form-control  required_fields " id="entry-feat-product-arrangement" name="entry-feat-product-arrangement" data-reqselect2="yes">     
-                                        <?php }?>       
-                                                       <option  selected value=" <?php echo $get_productdetails['set_product_arrangement'] ?>">  <?php echo $get_productdetails['set_product_arrangement'] ?></option>
-                                                        <option value="">Select Arrangement</option>
-                                                        <option value="1">1</option>
-                                                        <option value="2">2</option>
-                                                        <option value="3">3</option>
-                                                        <option value="4">4</option>
-                                                        <option value="5">5</option>
-                                                        <option value="6">6</option>
-                                                        <option value="7">7</option>
-                                                    </select>
-                                                </div>
-                                        </div>
-                                          
-                                                 
-                                         
-                                        <div class="col-12">
-                                            <div class="form-group">
-                                                <input type="hidden" name="f_admin_isset" value="0">
-                                                <input type="checkbox" class="form-control-input" id="f_admin_isset" name="f_admin_isset" value="1">
-                                                <label class="form-control-label" for="f_admin_isset">Enable Commission Rate</label>
-                                                <br>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-8">
-                                            <div class="form-group">
-                                                <label for="f_itemid" class="control-label">Referral Commission ItemID</label>
-                                                <input type="text" class="form-control" name="f_itemid" id="f_itemid" >
-                                            </div>
-                                        </div>
-
-                                        <!-- <div class="col-sm-4">
-                                            <div class="form-group">
-                                            <label class="control-label">&nbsp; </label>
-                                            <label class="control-label">&nbsp; </label>
-                                                <button type="button" class="btn btn-primary" style="width:100%;" id="generateItemIDBtn" >Generate</button>
-                                                <input type="hidden" class="form-control" name="f_company_initial" id="f_company_initial" value="<?=company_initial()?>">
-                                            </div>
-                                        </div>
-
-                                        <div class="col-12 col-md-12">
-                                            <div class="form-group">
-                                                <label for="f_rate" class="control-label"> Account Type Commission Rate</label> 
-                                            </div>
-                                        </div>
-                                       
-                                        <div class="col-4 col-md-6">
-                                            <div class="form-group">
-                                                <label for="f_rate" class="control-label">Startup</label> 
-                                                <div class="input-group mb-3">
-                                                    <input type="text" class="form-control allownumericwithdecimal" name="f_startup" id="f_startup" onkeypress="return isNumberKey(event)">
-                                                    <div class="input-group-append">
-                                                        <span class="input-group-text">%</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-4 col-md-6">
-                                            <div class="form-group">
-                                                <label for="f_rate" class="control-label">JC</label> 
-                                                <div class="input-group mb-3">
-                                                    <input type="text" class="form-control allownumericwithdecimal" name="f_jc" id="f_jc" onkeypress="return isNumberKey(event)">
-                                                    <div class="input-group-append">
-                                                        <span class="input-group-text">%</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-4 col-md-6">
-                                            <div class="form-group">
-                                                <label for="f_rate" class="control-label">MCJR</label> 
-                                                <div class="input-group mb-3">
-                                                    <input type="text" class="form-control allownumericwithdecimal" name="f_mcjr" id="f_mcjr" onkeypress="return isNumberKey(event)">
-                                                    <div class="input-group-append">
-                                                        <span class="input-group-text">%</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-4 col-md-6">
-                                            <div class="form-group">
-                                                <label for="f_rate" class="control-label">MC</label> 
-                                                <div class="input-group mb-3">
-                                                    <input type="text" class="form-control allownumericwithdecimal" name="f_mc" id="f_mc" onkeypress="return isNumberKey(event)">
-                                                    <div class="input-group-append">
-                                                        <span class="input-group-text">%</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-4 col-md-6">
-                                            <div class="form-group">
-                                                <label for="f_rate" class="control-label">MCSUPER</label> 
-                                                <div class="input-group mb-3">
-                                                    <input type="text" class="form-control allownumericwithdecimal" name="f_mcsuper" id="f_mcsuper" onkeypress="return isNumberKey(event)">
-                                                    <div class="input-group-append">
-                                                        <span class="input-group-text">%</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-4 col-md-6">
-                                            <div class="form-group">
-                                                <label for="f_rate" class="control-label">MCMEGA</label> 
-                                                <div class="input-group mb-3">
-                                                    <input type="text" class="form-control allownumericwithdecimal" name="f_mcmega" id="f_mcmega" onkeypress="return isNumberKey(event)">
-                                                    <div class="input-group-append">
-                                                        <span class="input-group-text">%</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-4 col-md-6">
-                                            <div class="form-group">
-                                                <label for="f_rate" class="control-label">Others</label> 
-                                                <div class="input-group mb-3">
-                                                    <input type="text" class="form-control allownumericwithdecimal" name="f_others" id="f_others" onkeypress="return isNumberKey(event)">
-                                                    <div class="input-group-append">
-                                                        <span class="input-group-text">%</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div> -->
-
-                                        <div class="col-12 col-md-12">
-                                            <div class="form-group">
-                                                <div class="alert alert-warning" role="alert">
-                                                    Percentage of Account Type Commission Rate should not be more than 50% of Merchant Commission Rate.
-                                                </div>
-                                            </div>
-                                        </div>
-    
+                    <div class="col-12 mb-3" style="display:none;">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Variants</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <!-- <div class="form-group"> -->
+                                            <input type="hidden" name="f_variants_isset" value="0">
+                                        <!-- </div> -->
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    <?php }else{ ?>
-                        <input type="hidden" class="hidden" value="0" name="f_disc_ratetype" id="f_disc_ratetype">
-                        <input type="hidden" class="hidden" value="0" name="f_disc_rate" id="f_disc_rate">
-                        <input type="hidden" class="hidden" value="" name="f_itemid" id="f_itemid">
-                        <input type="hidden" class="hidden" value="0" name="f_admin_isset" id="f_admin_isset">
-                        <input type="hidden" class="hidden" name="f_startup" id="f_startup">
-                        <input type="hidden" class="hidden" name="f_jc" id="f_jc">
-                        <input type="hidden" class="hidden" name="f_mcjr" id="f_mcjr">
-                        <input type="hidden" class="hidden" name="f_mc" id="f_mc">
-                        <input type="hidden" class="hidden" name="f_mcsuper" id="f_mcsuper">
-                        <input type="hidden" class="hidden" name="f_mcmega" id="f_mcmega">
-                        <input type="hidden" class="hidden" name="f_others" id="f_others">
-                    <?php }?>
+                    </div>
+
                 </div>
             </div>
 
 
         </div>
         <div class="row">
+        <div class="col-12 col-lg-12 text-right">&nbsp;</div>
+        <div class="col-12 col-lg-5 text-right"></div>
             <div class="col-12 col-lg-7 text-right">
                 <div class="card">
                     <div class="card-body">
@@ -1217,12 +1119,35 @@
         </div>
     </form>
 </div>
+
+<!-- Modal -->
+
+<div class="modal fade" id="show_feature_prod_modal" tabindex="-1" data-backdrop="static" data-keyboard="false"  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header secondary-bg white-text d-flex align-items-center">
+            <h3 class="modal-title" id="exampleModalLabel"> Set as featured product</h3>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to set this as featured products?</p>
+                <br>
+                <p>List of Featured Products.</p>
+                <ol class="list-group">
+                <?php foreach ($featured_products as $products): ?>
+                    <li class="list-group-item"><?=$products['set_product_arrangement'];?>.<?=$products['itemname'];?></li>
+                <?php endforeach ?>
+                </ol>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" id="uncheck_rabutton" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="check_rabutton" >Confirm</button>
+            </div>
+        </div>
+    </div>
 </div>
+
 
 <input type="hidden" name="branchid" id="branchid" value="<?=$branchid?>">
 <!-- start - load the footer here and some specific js -->
-<script type="text/javascript" src="<?=base_url('assets/js/libs/admin/products/update_products.js');?>"></script>
+<script type="text/javascript" src="<?=base_url('assets/js/libs/admin/products/update_variants.js');?>"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js" integrity="sha512-0bEtK0USNd96MnO4XhH8jhv3nyRF0eK87pJke6pkYf3cM0uDIhNJy9ltuzqgypoIFXw3JSuiy04tVk4AjpZdZw==" crossorigin="anonymous"></script>
-
-<script src="<?=base_url('assets/js/libs/bootstrap-tagsinput.min.js');?>"></script>s
-<script src="<?=base_url('assets/js/libs/app.js');?>"></script>

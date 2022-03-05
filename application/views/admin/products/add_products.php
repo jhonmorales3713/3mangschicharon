@@ -278,7 +278,7 @@
                                         <div class="col-md-6 nostocksdiv" id="nostocksdiv2">
                                             <div class="form-group divnostock" id="div_no_of_stocks_0">
                                                 <label>Available quantity</label>
-                                                <input type="number" class="form-control parentProductStock" name="f_no_of_stocks_0" id="f_no_of_stocks_0" placeholder="Number of stocks" value="0">
+                                                <input type="number" class="form-control parentProductStock" name="f_no_of_stocks" id="f_no_of_stocks" placeholder="Number of stocks" value="0">
                                             </div>
                                         </div>
 

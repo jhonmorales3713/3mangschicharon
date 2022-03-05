@@ -34,16 +34,14 @@
                                 </div>
                             </div>
                             <div class="col-md-6 col-lg-3">
-                                <?php if($shopid == 0){?> 
                                     <div class="form-group">
                                         <select name="_categories" class="form-control material_josh form-control-sm search-input-text enter_search">
                                             <option value="">All Category</option>
                                             <?php foreach ($categories as $category): ?>
-                                                <option value="<?=$category['id'];?>"><?=$category['category_code'];?></option>
+                                                <option value="<?=$category['id'];?>"><?=$category['category_name'];?></option>
                                             <?php endforeach ?>
                                         </select>
                                     </div>
-                                <?php } ?>
                             </div>
                             <div class="col-md-6 col-lg-3">
                                 <div class="form-group">
@@ -100,7 +98,6 @@
                                 <th>Category</th>
                                 <th>Price</th>
                                 <th>No of Stock</th>
-                                <th>Shop Name</th>
                                 <th>Status</th>
                                 <th width="30">Action</th>
                             </tr>

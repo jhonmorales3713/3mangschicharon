@@ -28,9 +28,9 @@
     <div class="alert alert-secondary ml-4 color-dark" role="alert">
         <span class="font-weight-bold"><a class="text-dark" href="<?=base_url('admin/Main_products/products_home/Products');?>"><?=$active_page?></a></span>
         &nbsp;<span class="fa fa-chevron-right"></span>&nbsp;
-        <span class="font-weight-bold"><a class="text-dark" href="<?=base_url('Main_products/products/'.$token);?>">Products List</a></span>
+        <span class="font-weight-bold"><a class="text-dark" href="<?=base_url('admin/Main_products/products/'.$token);?>">Products List</a></span>
         &nbsp;<span class="fa fa-chevron-right"></span>&nbsp;
-        <span class="font-weight-bold"><a class="text-dark" href="<?=base_url('Main_products/update_products/'.$token.'/'.$parent_Id);?>"><?=$get_parentProduct['itemname']?></a></span>
+        <span class="font-weight-bold"><a class="text-dark" href="<?=base_url('admin/Main_products/update_products/'.$token.'/'.$parent_Id);?>"><?=$get_parentProduct['itemname']?></a></span>
         &nbsp;<span class="fa fa-chevron-right"></span>&nbsp;
         <span class="font-weight-regular">Add Variant</span>
         
@@ -543,7 +543,7 @@
                                     <div class="col-md-6 nostocksdiv" id="nostocksdiv2">
                                             <div class="form-group divnostock" id="div_no_of_stocks_0">
                                                 <label>Available quantity</label>
-                                                <input type="number" class="form-control parentProductStock" name="f_no_of_stocks_0" id="f_no_of_stocks_0" placeholder="Number of stocks" >
+                                                <input type="number" class="form-control parentProductStock" name="f_no_of_stocks" id="f_no_of_stocks" placeholder="Number of stocks" >
                                             </div>
                                         </div>
 

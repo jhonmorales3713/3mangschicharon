@@ -40,32 +40,27 @@ class Login extends CI_Controller {
                         'role' => 'admin',
                         'access_nav' => $user_info->access_nav,
                         'access_content_nav' => $user_info->access_content_nav,
-                        'sys_shop' => $user_info->sys_shop,
+                        'sys_shop' => 1,
                         'fname' => $user_info->fname,
                         'mname' => $user_info->mname,
                         'lname' => $user_info->lname,
                         'email' => $user_info->email,
                         'mobile_number' => $user_info->mobile_number,
-                        'comm_type' => $user_info->comm_type,
-                        'branchid' => $user_info->branchid,
-                        'shopcode' => $user_info->shopcode == null ? 0 : $user_info->shopcode,
-                        'shopname' => $user_info->shopname == null ? 0 : $user_info->shopname,
                         'shop_logo' => $user_info->logo == null ? 0 : $user_info->logo,
                         'shop_url' => $user_info->shopurl == null ? 0 : $user_info->shopurl,
                         'sys_users_id' => $user_info->sys_users_id,
-                        'app_members_id' => $user_info->app_members_id,
-                        'sys_shop_id' => $user_info->sys_shop_id,                        
+                        'sys_shop_id' => 1,                        
                         'isLoggedIn' => true,
     
                         // 'get_position_access' => $this->model->get_position_details_access($user_info->position_id)->row(),
                     );
     
                     // Record time of log in of merchant
-                    if ($userData['shopname'] != '') {
-                        $this->model->log_seller_time_activity($userData['sys_users_id'], $userData['sys_shop'], 'in');
-                    }
+                    // if ($userData['shopname'] != '') {
+                    //     $this->model->log_seller_time_activity($userData['sys_users_id'], $userData['sys_shop'], 'in');
+                    // }
     
-                    $first_login = ($user_info->first_login == 1) ? 1:0;
+                    //$first_login = ($user_info->first_login == 1) ? 1:0;
                     // $checkIfFirstLogin = $this->model->checkIfFirstLogin($user_info->sys_users_id);
                     
                     // if($checkIfFirstLogin > 0){
@@ -94,19 +89,18 @@ class Login extends CI_Controller {
                         $is_dashboard = 0;
                     }
     
-                    $this->audittrail->logActivity('Login', $this->input->post('username').' successfully logged in.', 'login', $this->input->post('username'));
+                    // $this->audittrail->logActivity('Login', $this->input->post('username').' successfully logged in.', 'login', $this->input->post('username'));
                     $data = array(
                         'success' => 1,
                         'response' => 'Login successfully',
                         'token_session' => $token,
                         'is_dashboard' => $is_dashboard,
-                        'first_login' => $first_login,
                         'code_isset' => $code_isset,
                         'username' => $this->input->post('username'),
                         'md5_sys_users_id' => md5($user_info->sys_users_id)
                     );
     
-                    ($first_login == 1) ? $this->session->sess_destroy():'';
+                    //($first_login == 1) ? $this->session->sess_destroy():'';
                     ($code_isset == 1) ? $this->session->sess_destroy():'';
                     ($code_isset == 1) ? null:$this->resetLoginAttempts($user_info->sys_users_id);
                     echo json_encode($data);
@@ -125,10 +119,10 @@ class Login extends CI_Controller {
     }
 
     public function resetLoginAttempts($user_id){
-        $ip_address   = $this->getClientIP();
-        $date_created = date('Y-m-d H:i:s');
+        //$ip_address   = $this->getClientIP();
+        //$date_created = date('Y-m-d H:i:s');
 
-        $attempt = $this->model->resetLoginAttempts($user_id, $ip_address, $date_created);
+        $attempt = $this->model->resetLoginAttempts($user_id);
        
     }
     public function getClientIP(){      

@@ -100,7 +100,7 @@ $(function(){
 
                 reader.onload = function(event) {
                     filename = input.files[count].name;
-                    $('<li class="ui-state-default" data-id="'+count+'"  data-directory="'+event.target.result+'" data-filename="'+filename+'"><img id="product_preview" src="'+event.target.result+'"></li>').appendTo(placeToInsertImagePreview);
+                    $('<li class="ui-state-default" data-id="'+count+'"  data-directory="'+event.target.result+'" data-filename="'+filename+'"><img id="product_preview" width=100% src="'+event.target.result+'"></li>').appendTo(placeToInsertImagePreview);
                     $('<font>&nbsp;</font>').appendTo(placeToInsertImagePreview)
                     if(count == 0){
                         setPrimaryPhoto(event.target.result);
@@ -180,7 +180,6 @@ $(function(){
         else{
             var save = 1;
         }
-
         if(save == 1){
             $.ajax({
                 type: 'post',

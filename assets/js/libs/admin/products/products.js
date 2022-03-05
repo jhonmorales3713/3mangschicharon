@@ -22,8 +22,8 @@ $(function(){
 				"infoFiltered": ""
 			},
 			"columnDefs": [
-				{ targets: 7, orderable: false, "sClass":"text-center"},
-				{ responsivePriority: 1, targets: 7 },
+				{ targets: 6, orderable: false, "sClass":"text-center"},
+				{ responsivePriority: 1, targets: 6 },
 			],
 			"ajax":{
 				type: "post",
