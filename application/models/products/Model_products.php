@@ -579,15 +579,20 @@ class Model_products extends CI_Model {
                 LEFT JOIN sys_shops b ON 1 = b.id AND b.status > 0
 				LEFT JOIN sys_product_category c ON a.category_id = c.id AND c.status > 0
 				LEFT JOIN sys_shops code ON 1 = code.id";
+			$sql = "SELECT a.*, code.shopcode, c.category_name, no_of_stocks,img.filename FROM sys_products a 
+                LEFT JOIN sys_shops b ON 1 = b.id AND b.status > 0
+				LEFT JOIN sys_product_category c ON a.category_id = c.id AND c.status > 0
+				LEFT JOIN sys_shops code ON 1 = code.id 
+				LEFT JOIN sys_products_images img ON a.id = img.product_id";
 				// LEFT JOIN sys_products_images d ON a.Id = d.product_id AND d.arrangement = 1 AND d.status = 1";
 		}
 		else{
-			$sql = "SELECT a.*, code.shopcode, c.category_name, no_of_stocks FROM sys_products a 
+			$sql = "SELECT a.*, code.shopcode, c.category_name, no_of_stocks,img.filename FROM sys_products a 
                 LEFT JOIN sys_shops b ON 1 = b.id AND b.status > 0
 				LEFT JOIN sys_product_category c ON a.category_id = c.id AND c.status > 0
-				LEFT JOIN sys_shops code ON 1 = code.id";
+				LEFT JOIN sys_shops code ON 1 = code.id 
+				LEFT JOIN sys_products_images img ON a.id = img.product_id";
 		}
-		
 		// start - for default search
 		if ($_record_status == 1) {
 			$sql.=" WHERE a.enabled = " . $this->db->escape($_record_status) . "";
@@ -634,7 +639,7 @@ class Model_products extends CI_Model {
 		$get_s3_imgpath_upload = get_s3_imgpath_upload();
 		foreach( $query->result_array() as $row ) {  // preparing an array for table tbody
 			$nestedData=array(); 
-			$nestedData[] = (!$exportable) ? '<img class="img-thumbnail" style="width: 50px;" src="'.$get_s3_imgpath_upload.'assets/img/'.$row['shopcode'].'/products-250/'.$row['id'].'/'.removeFileExtension($row['img']).'.jpg?'.rand().'">' : '';;
+			$nestedData[] = (!$exportable) ? '<img class="img-thumbnail" style="width: 50px;" src="'.base_url('assets/uploads/products/'.$row['filename'].'?'.rand()).'">' : '';;
 			// $nestedData[] = (!$exportable) ?'<u><a href="'.base_url('Main_products/view_products/'.$token.'/'.$row['id']).'" style="color:blue;">'.$row["name"].'</a></u>':$row["name"];
 			$nestedData[] = $row["name"];
 			$nestedData[] = $row["category_name"];

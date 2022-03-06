@@ -32,19 +32,21 @@
                                     <!-- <label class="form-control-label col-form-label-sm">Customer Type</label> -->
                                     <select id="search_type" class="form-control material_josh form-control-sm search-input-text">
                                         <option value="">All Customer Type</option>
-                                        <option value="2">Verified</option>
-                                        <option value="3">Guest</option>
+                                        <option value="1">Verified</option>
+                                        <option value="2">Guest</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="col-md-6 col-lg-3">
                                 <div class="form-group">
                                     <!-- <label class="form-control-label col-form-label-sm">City</label> -->
-                                    <select id="search_city" class="form-control material_josh form-control-sm search-input-text">
-                                        <option value="">All Cities</option>
-                                        <?php foreach ($get_cities as $city): ?>
+                                    <select id="search_status" class="form-control material_josh form-control-sm search-input-text">
+                                        <option value="">All Status</option>
+                                        <option value="0">Active</option>
+                                        <option value="1">Declined</option>
+                                        <!-- <?php foreach ($get_cities as $city): ?>
                                             <option><?=$city['name']?></option>
-                                        <?php endforeach ?>
+                                        <?php endforeach ?> -->
                                     </select>
                                 </div>
                             </div>
@@ -75,9 +77,9 @@
                         <thead>
                             <tr>
                                 <th>Customer</th>
-                                <th>City</th>
-                                <th>Order History</th>
-                                <th>Account</th>
+                                <th>Account Type</th>
+                                <th>Status</th>
+                                <th>Date Created</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -153,12 +155,15 @@
                         <!-- 6th Row -->
                         <div class="form-group row">
                         <div class="col-md-12">
-                            <label class="form-control-label">City <span class="asterisk"></span></label>
+                            <label class="form-control-label">Account Status <span class="asterisk"></span></label>
                             <select id="add_city" class="form-control material_josh form-control-sm search-input-text">
-                                <option value="">--Select City--</option>
-                                <?php foreach ($get_cities as $city): ?>
+                                <option value="">--Select Status--</option>
+                                
+                                <option value="0">Active</option>
+                                <option value="1">Declined</option>
+                                <!-- <?php foreach ($get_cities as $city): ?>
                                     <option value="<?=$city['id']?>"><?=$city['name']?></option>
-                                <?php endforeach ?>
+                                <?php endforeach ?> -->
                             </select>
                         </div>
                     </div>

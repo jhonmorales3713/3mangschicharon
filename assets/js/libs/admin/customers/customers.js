@@ -73,7 +73,7 @@ $(document).ready(function () {
 	function fillDatatable() {
 		var _type = $("#search_type").val();
 		var _name = $("#search_name").val();
-		var _city = $("#search_city").val();
+		var _status = $("#search_status").val();
 
 		var dataTable = $("#table-grid").DataTable({
 			processing: false,
@@ -91,7 +91,7 @@ $(document).ready(function () {
 				data: {
 					_type: _type,
 					_name: _name,
-					_city: _city,
+					_status: _status,
 				}, // serialized dont work, idkw
 				beforeSend: function (data) {
 					$.LoadingOverlay("show");
@@ -143,7 +143,28 @@ $(document).ready(function () {
 
 		$("#card-header_search").slideToggle("slow");
 	});
-
+//dummy data
+	$(document).on("click", ".btn_sendemail", function () {
+		let id = $(this).data("id");
+		$.ajax({
+		  type: 'post',
+		  url: base_url+'admin/Main_customer/sendEmail',
+		  data: {
+			'tblname': 'jci_program_attendees att',
+			'where': 'chapter_id = "'+chapterid+'" OR chapter_id = 0',
+			'join': 'join jci_events ev on att.event_id=ev.id',
+			'columns': 'ev.id as "event_id",title,program_datetime,program_desc,user_id,chapter_id,att.id as "id",img_proof,att.status as "status"'
+		  },
+		  dataType:"JSON",
+		  beforeSend: function (data) {
+			  $.LoadingOverlay("show");
+		  },
+		  complete: function(attendees) { 
+			$.LoadingOverlay("hide");
+		  }
+		});
+	});
+//end dummy data
 	$(document).on("click", "#search_clear_btn", function () {
 		$("#search_name").val("");
 		$('#search_city option[value=""]').prop("selected", true);
@@ -151,9 +172,8 @@ $(document).ready(function () {
 		fillDatatable();
 	});
 
-	$(document).on("click", "#btnSearch", function () {
-		console.log("click");
-		// e.preventDefault();
+	$(document).on("click", "#btnSearch", function (e) {
+		e.preventDefault();
 		fillDatatable();
 	});
 	// end - for search purposes

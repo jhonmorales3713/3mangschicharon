@@ -39,7 +39,7 @@ class Main_customers extends CI_Controller {
     public function index(){
 
         $this->isLoggedIn();
-        
+
         $data = array(
             'active_page' => $this->session->userdata('active_page'),
             'subnav' => true, //for highlight the navigation,
@@ -192,19 +192,6 @@ class Main_customers extends CI_Controller {
     }
 
 
-    public function product_table()
-    {
-        $this->isLoggedIn();
-        $request = $_REQUEST;
-        $member_id = $this->session->userdata('id');
-        $sys_shop = $this->session->userdata('sys_shop_id');
-        
-        $query = $this->model_products->product_table($sys_shop, $request);
-        
-        
-        generate_json($query);
-    }
-    
     public function view_products($token = '', $Id)
     {
         $this->isLoggedIn();
@@ -246,35 +233,6 @@ class Main_customers extends CI_Controller {
         }
     }
 
-    public function add_products($token = '')
-    {
-        $this->isLoggedIn();
-        if($this->loginstate->get_access()['overall_access'] == 1 || $this->loginstate->get_access()['products']['create'] == 1) {
-            $member_id = $this->session->userdata('sys_users_id');
-            $branchid  = $this->session->userdata('branchid');
-
-            $content_url = $this->uri->segment(1) . '/' . $this->uri->segment(2) . '/';
-            $main_nav_id = $this->views_restriction($content_url);
-
-            $data_admin = array(
-                'token'               => $token,
-                'branchid'            => $branchid,
-                'main_nav_id'         => $main_nav_id, //for highlight the navigation
-                'main_nav_categories' => $this->model_dev_settings->main_nav_categories()->result(),
-                'shopid'              => $this->session->userdata('sys_shop_id'),
-                'categories'          => $this->model_products->get_category_options(),
-                'featured_products'   => $this->model_products->getFeaturedProduct(),
-            );
-
-            $data_admin['active_page'] =  $this->session->userdata('active_page');
-            $data_admin['subnav'] = false;
-            $data_admin['page_content'] = $this->load->view('admin/products/add_products',$data_admin,TRUE);
-            $this->load->view('admin_template',$data_admin,'',TRUE);
-        }else{
-            $this->load->view('error_404');
-        }
-    }
-
     
 	public function get_cities(){
 		$this->isLoggedIn();
@@ -283,15 +241,42 @@ class Main_customers extends CI_Controller {
     
 	public function get_customers(){
 		$this->isLoggedIn();
-
+        // Set to, from, message, etc.
+        
+        print_r($this->email->print_debugger());
         $_type = sanitize($this->input->post('_type'));
         $_name = sanitize($this->input->post('_name'));
-        $_city = sanitize($this->input->post('_city'));
+        $_status = sanitize($this->input->post('_status'));
 
-		$query = $this->Model_customers->get_customers($_type, $_name, $_city, $_REQUEST);
-
+		$query = $this->Model_customers->get_customers($_type, $_name, $_status, $_REQUEST);
+        
         generate_json($query);
 	}
+
+    public function send_email(){
+        $config = Array(
+            'protocol' => 'smtp',
+            'smtp_host' => 'ssl://smtp.googlemail.com',
+            'smtp_port' => 465,
+            'smtp_user' => 'teeseriesphilippines@gmail.com',
+            'smtp_pass' => 'teeseriesph',
+            'charset' => 'utf-8',
+            'newline'   => "\r\n",
+            'mailtype' => 'html'
+        );
+        $this->email->initialize($config);
+        $this->email->set_newline("\r\n");  
+        $this->email->from('ulul@gmail.com');
+        $this->email->to('moralesjhon03@gmail.com');
+        $this->email->subject('testing lang');
+        $this->email->message('tanginaka');
+        $this->email->send();
+        
+        // Set to, from, message, etc.
+        
+        print_r($this->email->print_debugger());
+    }
+    
     public function save_product()
     {
      

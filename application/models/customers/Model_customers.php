@@ -66,41 +66,37 @@ class Model_customers extends CI_Model {
 
     return $json_data;
   }
-  public function get_customers($_type, $_name, $_city, $requestData, $exportable = false){
+  public function get_customers($_type, $_name, $_status, $requestData, $exportable = false){
 
     $columns = array(
     // datatable column index  => database column name for sorting
-        0 => 'name',
-        1 => 'city',
-        2 => 'city',
-        3 => 'userid',
+        0 => 'full_name',
+        1 => 'user_type_id',
+        2 => 'status_id',
+        3 => 'date_created',
     );
 
-    $sql = "SELECT CONCAT(a.first_name,' ', a.last_name) as name, a.status as status, a.user_id as userid,b.name as city,
-        '' as shop_ids
-        FROM app_customers as a
-        LEFT JOIN sys_delivery_areas as b ON a.areaid = b.id
-        WHERE b.status = 1 ";
+    $sql = "SELECT * from sys_customers WHERE user_type_id != 0";
 
     // getting records as per search parameters
     if($_type != ""){
-        if($_type == 2){
-            $sql .= " AND e.userid != 0 ";
-        } else if($_type == 3){
-            $sql .= " AND e.userid = 0 ";
+       if($_type == 3){
+            $sql .= " AND user_type_id = 0 ";
+        }else{
+            $sql .= " AND user_type_id = $_type";
         }
     }
+
     if($_name != ""){
-        $sql .= " AND e.name LIKE '%".$_name."%'";
+        $sql .= " AND full_name LIKE '%".$_name."%'";
     }
-    if($_city != ""){
-        $sql .= " AND e.city LIKE '%".$_city."%'";
+    if($_status != ""){
+        $sql .= " AND status_id = ".$_status;
     }
 
     $query = $this->db->query($sql);
     $totalData = $query->num_rows();
     $totalFiltered = $totalData;
-
     $sql.=" ORDER BY ". $columns[$requestData['order'][0]['column']]." ".$requestData['order'][0]['dir']." ";
     if (!$exportable) {
     $sql.=" LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
@@ -111,44 +107,73 @@ class Model_customers extends CI_Model {
     foreach( $query->result_array() as $row ) {
         //$history = $this->get_customer_history($row["id"],$row["userid"]);
 
-        //dummy
-        $history = array('amount'=>0,'count'=>0);
-        //end dummy
-        $spent = "0.00";
-        // if($history["payment_status"] == 1){
-        $spent = number_format($history["amount"],2);
-        // }
+        // //dummy
+        // $history = array('amount'=>0,'count'=>0);
+        // //end dummy
+        // $spent = "0.00";
+        // // if($history["payment_status"] == 1){
+        // $spent = number_format($history["amount"],2);
+        // // }
 
         
         $nestedData = array();
-        $nestedData[] = $row["name"];
-        $nestedData[] = $row["city"];
-        $nestedData[] = $history["count"].' order(s) with '.$spent.' spent';
+        $nestedData[] = $row["full_name"];
+        //$nestedData[] = $row["city"];
+        //$nestedData[] = $history["count"].' order(s) with '.$spent.' spent';
 
-        if($row["userid"] != 0 ) {
+        if($row["status_id"] != 0 ) {
             $nestedData[] = (!$exportable) ? "<label class='badge badge-success'> Verified</label>":"Verified";
         }else{
             $nestedData[] = (!$exportable) ? "<label class='badge badge-info'> Guest</label>":"Guest";
         }
-        if($row['userid'] != 0){
+        if($row["status_id"] == 0){
+
+            $nestedData[] = 'Inactive';
+        }else{
+            
+            $nestedData[] ='Active';
+        }
+        
+        $nestedData[] = date('m-d-Y',strtotime($row["date_created"]));
             $nestedData[] =
             '
             <div class="dropdown text-center">
                 <i class="fa fa-ellipsis-v fa-lg" id="dropdown_menu_button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-hidden="true"></i>
                 <div class="dropdown-menu" aria-labelledby="dropdown_menu_button">
                     <a class="dropdown-item btn_history"
-                      data-id="'.en_dec('en', $row['userid']).'"
-                      data-total_amount = "'.$history["amount"].'"
-                      data-name = "'.$row['name'].'"
+                    data-id="'.en_dec('en', $row['id']).'"
+                    data-name = "'.$row['full_name'].'"
                     >
-                      <i class="fa fa-ye" aria-hidden="true"></i> Order History
+                    <i class="fa fa-ye" aria-hidden="true"></i> Order History
+                    </a>
+                    <a class="dropdown-item btn_sendemail"
+                    data-id="'.en_dec('en', $row['id']).'"
+                    data-name = "'.$row['full_name'].'"
+                    >
+                    <i class="fa fa-ye" aria-hidden="true"></i> Send Email
                     </a>
                 </div>
             </div>
             ';
-        }else{
-            $nestedData[] = '<center>---</center>';
-        }
+        // if($row['userid'] != 0){
+        //     $nestedData[] =
+        //     '
+        //     <div class="dropdown text-center">
+        //         <i class="fa fa-ellipsis-v fa-lg" id="dropdown_menu_button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-hidden="true"></i>
+        //         <div class="dropdown-menu" aria-labelledby="dropdown_menu_button">
+        //             <a class="dropdown-item btn_history"
+        //               data-id="'.en_dec('en', $row['id']).'"
+        //               data-total_amount = "'.$history["amount"].'"
+        //               data-name = "'.$row['name'].'"
+        //             >
+        //               <i class="fa fa-ye" aria-hidden="true"></i> Order History
+        //             </a>
+        //         </div>
+        //     </div>
+        //     ';
+        // }else{
+        //     $nestedData[] = '<center>---</center>';
+        // }
 
         $data[] = $nestedData;
     }
