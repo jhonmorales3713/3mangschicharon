@@ -241,9 +241,6 @@ class Main_customers extends CI_Controller {
     
 	public function get_customers(){
 		$this->isLoggedIn();
-        // Set to, from, message, etc.
-        
-        print_r($this->email->print_debugger());
         $_type = sanitize($this->input->post('_type'));
         $_name = sanitize($this->input->post('_name'));
         $_status = sanitize($this->input->post('_status'));
@@ -262,6 +259,7 @@ class Main_customers extends CI_Controller {
             'smtp_pass' => 'teeseriesph',
             'charset' => 'utf-8',
             'newline'   => "\r\n",
+            'wordwrap'=> TRUE,
             'mailtype' => 'html'
         );
         $this->email->initialize($config);
@@ -269,7 +267,9 @@ class Main_customers extends CI_Controller {
         $this->email->from('ulul@gmail.com');
         $this->email->to('moralesjhon03@gmail.com');
         $this->email->subject('testing lang');
-        $this->email->message('tanginaka');
+        $data['email']='moralesjhonpogi';
+        $view = $this->load->view('email/templates/email_template',$data,true);
+        $this->email->message($view);
         $this->email->send();
         
         // Set to, from, message, etc.
