@@ -25,7 +25,7 @@ function set_cart_data(cart_data){
         summary_string += '</div>';
 
         sub_total += (parseFloat(cart_data[key]['amount']) * parseInt(cart_data[key]['quantity']));
-
+        $('#sub_total').val(sub_total);
     });
 
     $('#cart_div').html(cart_item_string);

@@ -9,6 +9,7 @@ class Cart extends CI_Controller {
         $this->load->model('user/model_cart');
         $this->load->model('user/model_products');
         $this->load->model('user/model_address');
+        $this->load->model('user/model_orders');
     }
 
     public function index()
@@ -144,7 +145,85 @@ class Cart extends CI_Controller {
     }
 
     public function place_order(){
+
+        $data = $this->input->post();
+
+        $customer_id = en_dec('dec',$_SESSION['customer_id']);
+        $order_data = $_SESSION['cart'];
         
+        $payment_data = array(
+            'payment_method_id:' => 1,
+            'payment_method_name' => 'COD',
+            'amount' => $data['total_amount'],
+            'status_id' => 1, //pending
+        );
+
+        $rider = array(
+            'name' => '3Mang Rider',
+            'contact_no' => '09091901632',
+            'vehicle_type' => 'motorcycle'
+        );
+        
+        $data['shipping_data']['rider'] = $rider;
+
+        $shipping_data = $data['shipping_data'];
+
+        $deliver_amount = $data['delivery_amount'];
+        $total_amount = $data['total_amount'];
+    
+        $customer_shipping_address = $this->model_address->get_shipping_address($customer_id);
+
+        //if($customer_shipping_address){
+            //
+        //}
+        //else{
+            $this->form_validation->validation_data = $data['shipping_data'];
+
+            //declaration of form validations
+            $this->form_validation->set_rules('address_category_id','Address Type','required');
+            $this->form_validation->set_rules('full_name','Full Name','required');
+            $this->form_validation->set_rules('contact_no','Contact Number','required');
+            $this->form_validation->set_rules('province','Province','required');
+            $this->form_validation->set_rules('city','City / Municipality','required');
+            $this->form_validation->set_rules('barangay','Barangay','required');
+            $this->form_validation->set_rules('zip_code','Zip Code','required');
+            $this->form_validation->set_rules('address','Street Address','required');
+
+            if($this->form_validation->run() == FALSE) {
+                $response = array(
+                'success'      => false,
+                'message'      => 'Please check for field errors',
+                'field_errors' => $this->form_validation->error_array(),              
+                );
+
+                generate_json($response);
+                die();            
+            }
+        //}        
+
+        $order = array(
+            'customer_id' => $customer_id,
+            'order_data' => json_encode($order_data),
+            'payment_data' => json_encode($payment_data),
+            'shipping_data' => json_encode($shipping_data),
+            'total_amount' => floatval($data['total_amount']),
+            'delivery_amount' => floatval($data['delivery_amount'])            
+        );
+
+        $order_id = $this->model_orders->insert_order($order);
+
+        $this->clear_cart();
+        $response['success'] = true;
+        $response['message'] = 'Order successful';
+        $response['order_id'] = $order_id;
+
+        generate_json($response);
+    }
+
+    private function shipping_address_validation(){
+        $validation = array(
+
+        );
     }
     
 }

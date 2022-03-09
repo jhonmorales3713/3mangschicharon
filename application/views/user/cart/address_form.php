@@ -19,13 +19,13 @@
         <div class="col-lg-6 col-md-6 col-sm-12">
             <div class="form-group">
                 <small for="">Full Name</small>
-                <input type="text" id="province" class="form-control form-control-sm">            
+                <input type="text" id="full_name" class="form-control form-control-sm">            
             </div>        
         </div>        
         <div class="col-lg-6 col-md-6 col-sm-12">
             <div class="form-group">
                 <small for="">Contact Number</small>
-                <input type="text" id="province" class="form-control form-control-sm">            
+                <input type="text" id="contact_no" class="form-control form-control-sm">            
             </div>        
         </div> 
     </div>
@@ -63,13 +63,13 @@
         <div class="col-lg-12 col-md-12 col-sm-12">
             <div class="form-group">
                 <small for="">Notes</small>
-                <textarea type="text" id="address" class="form-control form-control-sm"/></textarea>       
+                <textarea type="text" id="notes" class="form-control form-control-sm"/></textarea>       
             </div>        
         </div>
         <div class="col-lg-6 col-md-6 col-sm-12"></div>
         <div class="col-lg-6 col-md-6 col-sm-12">
             <div class="form-group">                
-                <button type="button" class="btn btn-sm btn-primary form-control">SAVE</button>
+                <button type="button" class="btn btn-sm btn-primary form-control" id="save_address_btn">SAVE</button>
             </div>        
         </div>
     </div>

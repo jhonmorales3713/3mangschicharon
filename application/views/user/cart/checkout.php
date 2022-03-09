@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" id="checkout_container">
     <div class="row">
         <div class="col-lg-8 col-md-6 col-sm-12">            
             <b>Shipping Address</b>
@@ -18,3 +18,4 @@
 </div>
 
 <script src="<?= base_url('assets/js/libs/user/cart/cart.js') ?>"></script>
+<script src="<?= base_url('assets/js/libs/user/cart/checkout.js') ?>"></script>

@@ -56,14 +56,15 @@
     </div>
 </div>
 
-    <div class="col-12">
-        <br><br>
-        <hr>
-        <button class="btn btn-primary form-control" id="btn_checkout">PLACE ORDER</button>
-    </div>
-    <div class="col-12">
-        <hr>
-        <a href="<?= base_url('shop'); ?>">Back to shopping</a>
-    </div>
+<div class="col-12">
+    <br><br>
+    <hr>
+    <input type="hidden" id="sub_total" value='0'>
+    <button type="button" class="btn btn-primary form-control" id="btn_place_order">PLACE ORDER</button>
+</div>
+<div class="col-12">
+    <hr>
+    <a href="<?= base_url('shop'); ?>">Back to shopping</a>
+</div>
 
     
