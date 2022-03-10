@@ -14,7 +14,7 @@ class Signup extends CI_Controller {
         $data['page_content'] = $this->load->view('user/signup/index','',TRUE);     
 		$this->load->view('landing_template',$data,'',TRUE);        
     }
-
+    
     public function signup(){
         $customer_data = $this->input->post();        
 

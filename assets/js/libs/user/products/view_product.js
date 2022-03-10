@@ -7,8 +7,8 @@ $(function(){
 
     $('.add-to-cart').click(function(){
 
-        var size = check_size_selected();
-        if(size == ''){
+        var variant = check_variant_selected();
+        if(Object.keys(variant).length === 0){
             sys_toast_error('Please select size');
             return;
         }
@@ -21,10 +21,12 @@ $(function(){
             type: 'POST',
             data: {
                 product_id: product_id,
-                size: size,
-                quantity: qty,
+                size: variant.size,
+                variant_id: variant.variant_id,
+                quantity: qty              
             },
             success: function(response){
+                console.log(response)
                 if(response.success){
                     $('.cart-items').text(response.cart_items);
                     sys_toast_success(response.message);
@@ -36,20 +38,23 @@ $(function(){
         });
     });
 
-    function check_size_selected(){
+    function check_variant_selected(){
         var element = $('.size-select');        
-        var size = '';
+        var variant = {};
+        var variant_id = '';
         if(element.length > 0){
             $.each(element,function(index, value){
                 if($(value).hasClass('selected')){
-                    size = $(value).data('size');
+                    variant.size = $(value).data('size');
+                    variant.variant_id = $(value).data('variant_id');
                 }
             });
         }
         else{            
             size = 'R';
         }
-        return size;
+        console.log(variant)
+        return variant;
     }
 
 });

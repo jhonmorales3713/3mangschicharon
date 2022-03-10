@@ -18,7 +18,8 @@ class Shop extends CI_Controller {
         $products = $this->model_products->get_products();
 
         $view_data['products'] = array();
-        foreach($products as $product){            
+        foreach($products as $product){
+            $product['variants'] = $this->model_products->get_variants($product['id']);
             $product['id'] = en_dec('en',$product['id']);
             array_push($view_data['products'],$product);
         }

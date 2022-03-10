@@ -6,7 +6,7 @@
                     $image_path = base_url('assets/img/favicon.png');
                 }
                 else{                                
-                    $image_path = base_url('uploads/products/').$product['img'];
+                    $image_path = base_url('assets/uploads/products/').$product['img'];
                 }
             ?>
             <div class="product-img2" style="background-image: url(<?= $image_path; ?>); background-position: center; background-size: contain; background-repeat: no-repeat;" data-product_id="<?= $product['id'] ?>"></div>
@@ -24,17 +24,9 @@
                 
                 <hr>
 
-                <?php if($product['price'] > 0){ ?>
-                    &#8369; <?= number_format($product['price'],2); ?>
-                <?php } else { ?>
-                    <small>Select Size:</small><br>
-                    <?php if($product['price_small'] > 0){ ?>                        
-                        <span class="badge badge-info size-select" data-size="S">Small</span> &#8369; <?= number_format($product['price_small'],2); ?><br>
-                    <?php }?>
-                    <?php if($product['price_large'] > 0){ ?>
-                        <span class="badge badge-primary size-select" data-size="L">Large</span> &#8369; <?= number_format($product['price_large'],2); ?>
-                    <?php }?>
-                <?php }?>  
+                <?php foreach($product['variants'] as $variant){ ?>
+                    <span class="badge badge-info size-select" data-variant_id="<?= en_dec('en',$variant['id']); ?>" data-size="<?= $variant['name']; ?>"><?= $variant['name']; ?></span> <span>&#8369; <?= number_format($variant['price'],2); ?></span><br>
+                <?php } ?>
 
                 <br><br>
                 <small>Quantity</small><br>

@@ -24,22 +24,17 @@ class Cart extends CI_Controller {
         
         $en_product_id = $data['product_id'];
         $product_id = en_dec('dec',$data['product_id']);
-        $product = $this->model_products->get_product_info($product_id);        
+        $en_variant_id = $data['variant_id'];
+        $variant_id = en_dec('dec',$data['variant_id']);
+        $product = $this->model_products->get_product_info($product_id);
+        $variant = $this->model_products->get_product_info($variant_id);
         unset($product['id']);
         
-        $key = $en_product_id.$data['size'];
+        $key = $en_variant_id;        
         $product['size'] = $data['size'];
         $product['qty'] = $data['quantity'];
-
-        if($data['size'] == 'S'){
-            $product['amount'] = $product['price_small'];
-        }
-        else if($data['size'] == 'L'){
-            $product['amount'] = $product['price_large'];
-        }
-        else{
-            $product['amount'] = $product['price'];
-        }        
+        $product['variant_id'] = $en_variant_id;
+        $product['amount'] = $variant['price'];             
 
         if(!isset($_SESSION['cart'])){
             $_SESSION['cart'] = [];
@@ -55,13 +50,15 @@ class Cart extends CI_Controller {
         else{
             $_SESSION['cart'][$key] = $product;
             $_SESSION['cart'][$key]['quantity'] = intval($data['quantity']);            
-        }        
+        }    
 
         $total_qty = 0;
         foreach($_SESSION['cart'] as $key => $value){
             $total_qty += intval($_SESSION['cart'][$key]['quantity']);
         }
         $_SESSION['cart_items'] = $total_qty;
+
+        
 
         $response['success'] = true;
         $response['cart_items'] = $_SESSION['cart_items'];
