@@ -19,6 +19,25 @@ class Model extends CI_Model {
 		return $this->db->query($sql,$data);
 	}
 	
+	public function first_validate_username_md5($username){ // validate email if exist and get the info
+		// $sql = "SELECT * FROM jcw_users WHERE company_code = ? AND username = ? LIMIT 1";
+		$sql = "SELECT * FROM sys_users
+				WHERE md5(username) = ?
+				AND active = 1
+				LIMIT 1";
+
+		$data = array($username);
+		return $this->db->query($sql, $data);
+	}
+	
+	public function checkIfFirstReset($email){
+		$query="SELECT * FROM sys_users WHERE md5(username) = ? AND login_code = 1";
+		$argument = array(
+			$email
+		);
+
+		return $this->db->query($query,$argument);
+	}
 	public function get_cities($sys_shop = null) {
 		if ($sys_shop == null) {
 			$query="SELECT * FROM sys_delivery_areas WHERE status = 1";

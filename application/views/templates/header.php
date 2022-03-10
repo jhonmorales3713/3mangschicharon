@@ -49,7 +49,7 @@
         <link rel="stylesheet" href="<?=base_url('assets/css/libs/jquery-ui.css')?>">        
         <link rel="stylesheet" href="<?=base_url();?>assets/css/libs/bootstrap-4.1.3.min.css">
         <link rel="stylesheet" href="<?=base_url();?>assets/css/libs/owl-carousel.min.css">   
-        <?php if($this->session->userdata('role')!='admin'){?>
+        <?php if($this->session->userdata('role')!='admin' && strpos($_SERVER['REQUEST_URI'],'admin') == false && !isset($adminstyle)){?>
                 <link rel="stylesheet" href="<?=base_url('assets/css/libs/header_styles.css')?>">
                 <link rel="stylesheet" href="<?=base_url('assets/css/libs/content_styles.css')?>">
         <?php }else{?>

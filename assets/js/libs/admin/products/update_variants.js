@@ -54,7 +54,6 @@ $(function(){
         var files = $(this).prop("files");
         var names = $.map(files, function(val) { return val.name; });
 
-        $( ".imagepreview2" ).empty();
         $.each(names, function( index, value ) {
             if (!hasExtension(value, ['.jpg', '.jpeg', '.png','.JPG','.PNG','.JPEG'])) {
                 type_checker = 1;

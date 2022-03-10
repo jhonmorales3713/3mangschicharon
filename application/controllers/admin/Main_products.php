@@ -409,7 +409,7 @@ class Main_products extends CI_Controller {
                             $_FILES['userfile']['error']    = $_FILES['product_image']['error'][$i];
                             $_FILES['userfile']['size']     = $_FILES['product_image']['size'][$i];
 
-                            $file_name   = en_dec('en', $_FILES['userfile']['name']).'.'. pathinfo($_FILES['userfile']['name'], PATHINFO_EXTENSION);
+                            $file_name   = en_dec('en', $_FILES['userfile']['name']).'.'.pathinfo($_FILES['userfile']['name'], PATHINFO_EXTENSION);
                             
                         $imgArr[] = $file_name;
                             $config = array(

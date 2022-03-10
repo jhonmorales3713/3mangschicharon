@@ -32,6 +32,19 @@ function get_tag_line(){
 	return (cs_clients_info()) ? cs_clients_info()->tag_line : "";
 }
 
+function fb_link(){
+	return (cs_clients_info()) ? cs_clients_info()->facebook_link : "";
+}
+function youtube_link(){
+	return (cs_clients_info()) ? cs_clients_info()->youtube_link : "";
+}
+function ig_link(){
+	return (cs_clients_info()) ? cs_clients_info()->instagram_link : "";
+}
+function faqs_link(){
+	return (cs_clients_info()) ? cs_clients_info()->c_faqs : "";
+}
+
 function get_company_email(){
 	return (cs_clients_info()) ? cs_clients_info()->c_email : "";
 }

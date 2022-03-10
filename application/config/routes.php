@@ -72,10 +72,12 @@ $route['cart'] = 'user/cart/index';
 //admin side
 $route['admin'] = 'admin/login/index';
 $route['admin/signout'] = 'admin/login/signout';
+$route['Account/setfirstpassword']    = 'Main/setfirstpassword';
 $route['admin/dashboard'] = 'admin/dashboard/index';
 $route['products_home/(:any)'] = 'admin/Main_products/products_home/$1';
 $route['customers_home/(:any)'] = 'admin/Main_customers/customers_home/$1';
-$route['Main_cusstomers/cusstomers/(:any)'] = 'admin/Main_customers/customers/$1';
+$route['settings_home/(:any)'] = 'admin/Main_settings/settings_home/$1';
+$route['Main_cusstomers/customers/(:any)'] = 'admin/Main_customers/customers/$1';
 $route['Main_products/products/(:any)'] = 'admin/Main_products/products/$1';
 $route['Main_products/add_products/(:any)'] = 'admin/Main_products/add_products/$1';
 $route['Main_products/update_products/(:any)'] = 'admin/Main_products/update_products/$1';

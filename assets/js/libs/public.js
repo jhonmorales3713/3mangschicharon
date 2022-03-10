@@ -83,6 +83,17 @@ $(document).ready(function(){
 	hideCover();
 
 
+	validate_strong_password = function (password) {
+		var regex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$");
+	
+		if (regex.test(password)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+
 	draw_transaction_status = function(status){
 		var element = "";
 		if(status =='1')
