@@ -173,10 +173,10 @@ class Cart extends CI_Controller {
     
         $customer_shipping_address = $this->model_address->get_shipping_address($customer_id);
 
-        //if($customer_shipping_address){
+        if($customer_shipping_address){
             //
-        //}
-        //else{
+        }
+        else{
             $this->form_validation->validation_data = $data['shipping_data'];
 
             //declaration of form validations
@@ -199,7 +199,7 @@ class Cart extends CI_Controller {
                 generate_json($response);
                 die();            
             }
-        //}        
+        }        
 
         $order = array(
             'customer_id' => $customer_id,

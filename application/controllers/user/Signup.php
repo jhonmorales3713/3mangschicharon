@@ -23,7 +23,7 @@ class Signup extends CI_Controller {
         //declaration of form validations      
         $this->form_validation->set_rules('full_name','Full Name','required');
         $this->form_validation->set_rules('mobile','Mobile Number','required|regex_match[/^[0-9]{11}$/]');
-        $this->form_validation->set_rules('email','Email Address','required|valid_email|is_unique[users.email]');
+        $this->form_validation->set_rules('email','Email Address','required|valid_email|is_unique[sys_customers.email]');
         $this->form_validation->set_rules('password','Password','required');
         $this->form_validation->set_rules('password2','Confirm Password','required');
         $this->form_validation->set_message('is_unique','{field} is already in use');        

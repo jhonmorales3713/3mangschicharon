@@ -30,7 +30,8 @@ class Login extends CI_Controller {
                 );
                 
             }
-            if(password_verify($this->input->post('password'),$hash_password)){
+            //if(password_verify($this->input->post('password'),$hash_password)){
+            if(en_dec('en',$this->input->post('password')) == $hash_password){
                 if($user_status == 1){
                     $userData = array( // store in array
                         'id' => $user_info->sys_users_id,
