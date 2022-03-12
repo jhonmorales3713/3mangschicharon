@@ -163,7 +163,7 @@ class Main_products extends CI_Controller {
 
     public function products($token = ''){
         $this->isLoggedIn();
-        if($this->loginstate->get_access()['overall_access'] == 1 || $this->loginstate->get_access()['products']['view'] == 1) {
+        if($this->loginstate->get_access()['products'] == 1 || $this->loginstate->get_access()['products']['view'] == 1) {
             $content_url = $this->uri->segment(1) . '/' . $this->uri->segment(2) . '/';
             $main_nav_id = $this->views_restriction($content_url);
 
@@ -203,7 +203,7 @@ class Main_products extends CI_Controller {
     {
         $this->isLoggedIn();
         $this->checkProductStatus($Id);
-        if($this->loginstate->get_access()['overall_access'] == 1 || $this->loginstate->get_access()['products']['view'] == 1) {
+        if($this->loginstate->get_access()['products']['view'] == 1) {
             $member_id = $this->session->userdata('sys_users_id');
             $sys_shop = $this->session->userdata('sys_users_id');
             
@@ -228,7 +228,6 @@ class Main_products extends CI_Controller {
                 'itemname'            => $this->model_products->get_productdetails($Id)['itemname'],
                 //'get_branchdetails'   => $this->model_products->get_sys_branch_profile($this->model_products->get_productdetails($Id)['sys_shop'], $Id, $branchid),
                 'branchid'            => $branchid,
-                'featured_products'   => $this->model_products->getFeaturedProduct(),
                 'getVariants'         => $this->model_products->getVariants($Id)
             );
             $data_admin['active_page'] =  $this->session->userdata('active_page');
@@ -243,7 +242,7 @@ class Main_products extends CI_Controller {
     public function add_products($token = '')
     {
         $this->isLoggedIn();
-        if($this->loginstate->get_access()['overall_access'] == 1 || $this->loginstate->get_access()['products']['create'] == 1) {
+        if($this->loginstate->get_access()['products']['create'] == 1) {
             $member_id = $this->session->userdata('sys_users_id');
             $branchid  = $this->session->userdata('branchid');
 
@@ -256,8 +255,7 @@ class Main_products extends CI_Controller {
                 'main_nav_id'         => $main_nav_id, //for highlight the navigation
                 'main_nav_categories' => $this->model_dev_settings->main_nav_categories()->result(),
                 'shopid'              => $this->session->userdata('sys_shop_id'),
-                'categories'          => $this->model_products->get_category_options(),
-                'featured_products'   => $this->model_products->getFeaturedProduct(),
+                'categories'          => $this->model_products->get_category_options()
             );
 
             $data_admin['active_page'] =  $this->session->userdata('active_page');
@@ -274,7 +272,7 @@ class Main_products extends CI_Controller {
     {
         $this->isLoggedIn();
         $this->checkProductStatus($Id);
-        if($this->loginstate->get_access()['overall_access'] == 1 || $this->loginstate->get_access()['products']['update'] == 1) {
+        if($this->loginstate->get_access()['products']['update'] == 1) {
             
             $member_id = $this->session->userdata('sys_users_id');
             $branchid  = $this->session->userdata('branchid');
@@ -302,8 +300,7 @@ class Main_products extends CI_Controller {
                 'itemname'            => $this->model_products->get_productdetails($Id)['name'],
                 //'get_branchdetails'   => $this->model_products->get_sys_branch_profile($this->model_products->get_productdetails($Id)['sys_shop'], $Id, $branchid),
                 'branchid'            => $branchid,
-                'featured_products'   => $this->model_products->getFeaturedProduct(),
-                'getVariants'         => $this->model_products->getVariants($Id)
+                'getVariants'         => $this->model_products->getVariants($parent_Id)
 
             );
             $data_admin['active_page'] =  $this->session->userdata('active_page');
@@ -388,16 +385,20 @@ class Main_products extends CI_Controller {
                 //     echo json_encode($response);
                 //     die();
                 // }
-                $shopcode = $this->model_products->get_shopcode_via_shopid($this->session->userdata('sys_shop_id'));
-
-                // $this->makedirImage($f_id, $shopcode);
-
-                $directory    = 'assets/uploads/products/';
+                $directory    = 'assets/uploads/products';
                 if (!is_dir( 'assets/uploads/')) {
                     mkdir( 'assets/uploads/', 0777, true);
                 }
                 if (!is_dir( 'assets/uploads/products/')) {
                     mkdir( 'assets/uploads/products/', 0777, true);
+                }
+                $shopcode = $this->model_products->get_shopcode_via_shopid($this->session->userdata('sys_shop_id'));
+
+                $images = $this->model_products->getImageByFileName('',true,$f_id);
+                foreach($images->result_array() as $image){
+                    if(file_exists('assets/uploads/products/'.str_replace('==','',$image['filename']))){
+                        unlink(('assets/uploads/products/'.str_replace('==','',$image['filename'])));
+                    }
                 }
             
                 // foreach($reorder_image as $val){
@@ -411,7 +412,7 @@ class Main_products extends CI_Controller {
 
                             $file_name   = en_dec('en', $_FILES['userfile']['name']).'.'.pathinfo($_FILES['userfile']['name'], PATHINFO_EXTENSION);
                             
-                        $imgArr[] = $file_name;
+                            $imgArr[] =  str_replace('===.','==.',str_replace('.','==.',$file_name));
                             $config = array(
                                 'file_name'     => $file_name,
                                 'allowed_types' => '*',
@@ -433,9 +434,6 @@ class Main_products extends CI_Controller {
                                 );
                                 echo json_encode($response);
                                 die();
-                            }else {
-                                copy($_FILES['userfile']['tmp_name'], 'assets/uploads/products/'. en_dec('en', $_FILES['userfile']['name']).'.'. pathinfo($_FILES['userfile']['name'], PATHINFO_EXTENSION));
-                                    
                             }
                         // }
                     }
@@ -577,6 +575,7 @@ class Main_products extends CI_Controller {
             // $prev_nostock = $this->model_products->getProductTotalStocks($id)->row()->no_of_stocks;
             $featured_product =  $this->input->post('featured_prod_isset');
             $featured_product_arrangment =  $this->input->post('entry-feat-product-arrangement');
+            
             $main = $this->model_products->update_variant($this->input->post(), $id, $save_promo_log, $imgArr,$featured_product,$featured_product_arrangment, $delivery_areas_str);
             // $new_nostock = $this->model_products->getProductTotalStocks($id)->row()->no_of_stocks;
             // $this->db = $this->load->database('vouchers', TRUE);
@@ -624,16 +623,7 @@ class Main_products extends CI_Controller {
         $reorder_image    = $this->input->post('reorder_image');
         $f_delivery_areas = $this->input->post('f_delivery_areas');
 
-        if($this->input->post('f_member_shop') == ""){
-            $response = [
-                'environment' => ENVIRONMENT,
-                'success'     => false,
-                'message'     => 'No shop or category selected.'
-            ];
-
-            echo json_encode($response);
-            die();
-        }
+       
 
         if(in_array("", $_FILES['product_image']['name'])){
             $response = [
@@ -664,15 +654,7 @@ class Main_products extends CI_Controller {
             echo json_encode($response);
             die();
         }else{
-            if($this->input->post('f_member_shop') == ''){
-                $response = array(
-                    'success'      => false,
-                    'environment' => ENVIRONMENT,
-                    'message'     => 'Please select a shop.'
-                );
-                echo json_encode($response);
-                die();
-            }
+            
 
             //$shopcode = $this->model_products->get_shopcode_via_shopid($this->input->post('f_member_shop'));
 
@@ -685,17 +667,31 @@ class Main_products extends CI_Controller {
             if (!is_dir( 'assets/uploads/products/')) {
                 mkdir( 'assets/uploads/products/', 0777, true);
             }
-           
-            foreach($reorder_image as $val){
+            //clean not related file
+            if ($handle = opendir($directory)) {
+                while (false !== ($file = readdir($handle))) {
+                    if ('.' === $file) continue;
+                    if ('..' === $file) continue;
+                    //print_r($this->model_products->getImageByFileName(str_replace('.','==.',$file))->num_rows().'///');
+                    if($this->model_products->getImageByFileName(str_replace('.','==.',$file))->num_rows() == 0){
+                        unlink('assets/uploads/products/'.$file);
+                    }
+                    //print_r($file);
+                    // do something with the file
+                }
+                closedir($handle);
+            }
+
+            //foreach($reorder_image as $val){
                 for($i = 0; $i < $count_upload; $i++) { 
-                    if($val == $_FILES['product_image']['name'][$i]){
+                    //if($val == $_FILES['product_image']['name'][$i]){
                         $_FILES['userfile']['name']     = $_FILES['product_image']['name'][$i];
                         $_FILES['userfile']['type']     = $_FILES['product_image']['type'][$i];
                         $_FILES['userfile']['tmp_name'] = $_FILES['product_image']['tmp_name'][$i];
                         $_FILES['userfile']['error']    = $_FILES['product_image']['error'][$i];
                         $_FILES['userfile']['size']     = $_FILES['product_image']['size'][$i];
 
-                        $file_name = en_dec('en', $_FILES['userfile']['name']).'.'. pathinfo($_FILES['userfile']['name'], PATHINFO_EXTENSION);
+                        $file_name = en_dec('en',$f_id).'.'. pathinfo($_FILES['userfile']['name'], PATHINFO_EXTENSION);
                         $config = array(
                             'file_name'     => $file_name,
                             'allowed_types' => '*',
@@ -706,8 +702,6 @@ class Main_products extends CI_Controller {
                             'upload_path'
                             =>  $directory
                         );
-
-                        $file_name = en_dec('en', $_FILES['userfile']['name']).'.'. pathinfo($_FILES['userfile']['name'], PATHINFO_EXTENSION);
                         $imgArr[] = $file_name;
                         $this->upload->initialize($config);
                         if ( ! $this->upload->do_upload()) {
@@ -720,13 +714,13 @@ class Main_products extends CI_Controller {
                             echo json_encode($response);
                             die();
                         }
-                    }
-                }
+                    //}
+            //    }
             } 
         }
 
         $validation = array(
-            array('f_member_shop','Shop Name','required|max_length[100]|min_length[1]'),
+            //array('f_member_shop','Shop Name','required|max_length[100]|min_length[1]'),
             array('f_itemname','Product Name','required|max_length[255]|min_length[2]'),
             array('f_price','Price','required|max_length[10]|min_length[1]'),
     	);
@@ -916,7 +910,21 @@ class Main_products extends CI_Controller {
             if (!is_dir( 'assets/uploads/products/')) {
                 mkdir( 'assets/uploads/products/', 0777, true);
             }
-           
+            //clean not related file
+            if ($handle = opendir($directory)) {
+                while (false !== ($file = readdir($handle))) {
+                    if ('.' === $file) continue;
+                    if ('..' === $file) continue;
+                    //print_r($this->model_products->getImageByFileName(str_replace('.','==.',$file))->num_rows().'///');
+                    if($this->model_products->getImageByFileName(str_replace('.','==.',$file))->num_rows() == 0){
+                        unlink('assets/uploads/products/'.$file);
+                    }
+                    //print_r($file);
+                    // do something with the file
+                }
+                closedir($handle);
+            }
+            
             foreach($reorder_image as $val){
                 for($i = 0; $i < $count_upload; $i++) { 
                     if($val == $_FILES['product_image']['name'][$i]){
@@ -926,7 +934,7 @@ class Main_products extends CI_Controller {
                         $_FILES['userfile']['error']    = $_FILES['product_image']['error'][$i];
                         $_FILES['userfile']['size']     = $_FILES['product_image']['size'][$i];
 
-                        $file_name = en_dec('en', $_FILES['userfile']['name']).'.'. pathinfo($_FILES['userfile']['name'], PATHINFO_EXTENSION);
+                        $file_name = en_dec('en',$f_id).'.'. pathinfo($_FILES['userfile']['name'], PATHINFO_EXTENSION);
                         
                         $config = array(
                             'file_name'     => $file_name,
@@ -1070,7 +1078,7 @@ class Main_products extends CI_Controller {
     public function add_variant($token = '', $parent_Id)
     {
         $this->isLoggedIn();
-        if($this->loginstate->get_access()['overall_access'] == 1 || $this->loginstate->get_access()['products']['create'] == 1) {
+        if($this->loginstate->get_access()['products']['create'] == 1) {
 
 
             
@@ -1088,7 +1096,6 @@ class Main_products extends CI_Controller {
                 'main_nav_id'         => $main_nav_id,
                 'parent_Id'           => $parent_Id,
                 'categories'          => $this->model_products->get_category_options(),
-                'featured_products'   => $this->model_products->getFeaturedProduct(),
                 'get_parentProduct'   => $this->model_products->get_productdetails($parent_Id),
                 'getVariants'         => $this->model_products->getVariants($parent_Id),
               //  'getVariantsOption'   => $this->model_products->getVariantsOption($parent_Id)->result_array()
@@ -1192,18 +1199,27 @@ class Main_products extends CI_Controller {
                 if (!is_dir( 'assets/uploads/products/')) {
                     mkdir( 'assets/uploads/products/', 0777, true);
                 }
-                //print_r($_FILES['product_image']['name'][0]);
-                //die();
-                //foreach($reorder_image as $val){
+                $shopcode = $this->model_products->get_shopcode_via_shopid($this->session->userdata('sys_shop_id'));
+
+                $images = $this->model_products->getImageByFileName('',true, $this->input->post('f_id'));
+                foreach($images->result_array() as $image){
+                    if(file_exists('assets/uploads/products/'.str_replace('==','',$image['filename']))){
+                        unlink(('assets/uploads/products/'.str_replace('==','',$image['filename'])));
+                    }
+                }
+            
+                // foreach($reorder_image as $val){
                     for($i = 0; $i < $count_upload; $i++) { 
-                        if($_FILES['product_image']['name'][$i]){
+                        // if($val == $_FILES['product_image']['name'][$i]){
                             $_FILES['userfile']['name']     = $_FILES['product_image']['name'][$i];
                             $_FILES['userfile']['type']     = $_FILES['product_image']['type'][$i];
                             $_FILES['userfile']['tmp_name'] = $_FILES['product_image']['tmp_name'][$i];
                             $_FILES['userfile']['error']    = $_FILES['product_image']['error'][$i];
                             $_FILES['userfile']['size']     = $_FILES['product_image']['size'][$i];
-    
-                            $file_name = en_dec('en', $_FILES['userfile']['name']).'.'. pathinfo($_FILES['userfile']['name'], PATHINFO_EXTENSION);
+
+                            $file_name   = en_dec('en', $_FILES['userfile']['name']).'.'.pathinfo($_FILES['userfile']['name'], PATHINFO_EXTENSION);
+                            
+                            $imgArr[] =  str_replace('===.','==.',str_replace('.','==.',$file_name));
                             $config = array(
                                 'file_name'     => $file_name,
                                 'allowed_types' => '*',
@@ -1214,8 +1230,6 @@ class Main_products extends CI_Controller {
                                 'upload_path'
                                 =>  $directory
                             );
-    
-                            $imgArr[] = $file_name;
                             $this->upload->initialize($config);
                             if ( ! $this->upload->do_upload()) {
                                 $error = array('error' => $this->upload->display_errors());
@@ -1228,7 +1242,7 @@ class Main_products extends CI_Controller {
                                 die();
                             }
                         }
-                    }
+                    
                 //} 
             } 
  
@@ -1250,7 +1264,7 @@ class Main_products extends CI_Controller {
         // }
 
         error_reporting(1);
-        $id = $this->input->post('f_itemid');
+        $id = $this->input->post('f_id');
         $is_unique = '';
         if($this->model_products->get_productdetails($id)['itemname'] != $this->input->post('f_itemname')){
             $is_unique = '|is_unique[sys_products.itemname]';
@@ -1337,6 +1351,7 @@ class Main_products extends CI_Controller {
         //     die();
     	// }else{
             // $prev_nostock = $this->model_products->getProductTotalStocks($id)->row()->no_of_stocks;
+            
             $get_product = $this->model_products->check_products($id)->row();
             $featured_product =  $this->input->post('featured_prod_isset');
             $featured_product_arrangment =  $this->input->post('entry-feat-product-arrangement');
@@ -1409,11 +1424,89 @@ class Main_products extends CI_Controller {
         //}   
         echo json_encode($response);
     }
+
+    
+    public function delete_modal_confirm()
+    {
+        $this->isLoggedIn();
+
+        $delete_id        = sanitize($this->input->post('delete_id'));
+        $get_product      = $this->model_products->check_products($delete_id)->row();
+        $checkOrderActive = $this->model_products->checkOrderActive($delete_id)->num_rows();
+
+        if ($delete_id === 0) {
+            $data = array("success" => 0, 'message' => "Something went wrong, Please Try again!");
+            $this->audittrail->logActivity('Product List', $get_product->name.' failed to delete.', "delete", $this->session->userdata('username'));
+        }
+        else if($checkOrderActive > 0){
+            $data = array("success" => 0, 'message' => "Cannot delete ".$get_product->name." due to pending orders.");
+        } 
+        
+        else {
+            $query = $this->model_products->delete_modal_confirm($delete_id);
+            $this->model_products->delete_modal_confirm2($delete_id); // for variants only/also...
+
+            if ($query == 1) {
+                $data = array("success" => 1, 'message' => "Product deleted successfully!");
+                $this->audittrail->logActivity('Product List', $get_product->name.' successfully deleted.', "delete", $this->session->userdata('username'));
+            } else {
+                $data = array("success" => 0, 'message' => "Something went wrong, Please Try again!");
+                $this->audittrail->logActivity('Product List', $get_product->name.' failed to delete.', "delete", $this->session->userdata('username'));
+            }
+
+        }
+
+        generate_json($data);
+    }
+
+    public function disable_modal_confirm()
+    {
+        $this->isLoggedIn();
+ 
+        $disable_id = sanitize($this->input->post('disable_id'));
+        $record_status = sanitize($this->input->post('record_status'));
+
+        if ($record_status == 1) {
+            $record_status = 2;
+            $record_text = "disabled";
+        } else if ($record_status == 2) {
+            $record_status = 1;
+            $record_text = "enabled";
+        } else {
+            $record_status = 0;
+        }
+        // $checkOrderActive = $this->model_products->checkOrderActive($disable_id)->num_rows();
+      
+        // if($checkOrderActive > 0 && $record_status == 2){
+        //     $get_product = $this->model_products->check_products($disable_id)->row();
+        //     $data = array("success" => 0, 'message' => "Cannot disable ".$get_product->itemname." due to pending orders.");
+        // } 
+        // else
+         if ($record_status > 0) {
+            $query = $this->model_products->disable_modal_confirm($disable_id, $record_status);
+            $get_product = $this->model_products->check_products($disable_id)->row();
+
+            if ($query == 1) {
+                $data = array("success" => 1, 'message' => "Product " . $record_text . " successfully!");
+                $this->audittrail->logActivity('Product List', $get_product->name.' has been successfully '.$record_text, $record_text, $this->session->userdata('username'));
+            }
+            else {
+                $data = array("success" => 0, 'message' => "Something went wrong, Please Try again!");
+                $this->audittrail->logActivity('Product List', 'Failed to '.$record_text.' '.$get_product->name, $record_text, $this->session->userdata('username'));
+            }
+        } else {
+            $data = array("success" => 0, 'message' => "Something went wrong, Please Try again!");
+        }
+
+        generate_json($data);
+    }
+
+
     public function update_products($token = '', $Id)
     {
         $this->isLoggedIn();
         $this->checkProductStatus($Id);
-        if($this->loginstate->get_access()['overall_access'] == 1 || $this->loginstate->get_access()['products']['update'] == 1) {
+        if($this->loginstate->get_access()['products']['update'] == 1) {
             $member_id = $this->session->userdata('sys_users_id');
             $branchid  = $this->session->userdata('branchid');
             $sys_shop = $this->session->userdata('sys_shop_id');
@@ -1438,7 +1531,6 @@ class Main_products extends CI_Controller {
                 'itemname'            => $this->model_products->get_productdetails($Id)['name'],
                 //'get_branchdetails'   => $this->model_products->get_sys_branch_profile($this->model_products->get_productdetails($Id)['sys_shop'], $Id, $branchid),
                 'branchid'            => $branchid,
-                'featured_products'   => $this->model_products->getFeaturedProduct(),
                 'getVariants'         => $this->model_products->getVariants($Id)
 
             );

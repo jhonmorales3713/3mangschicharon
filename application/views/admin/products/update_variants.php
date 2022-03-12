@@ -67,7 +67,7 @@
 </div>
 <div class="col-12">
 <form id="form_update" enctype="multipart/form-data" method="post">
-<div class="container-fluid">
+    <div class="container-fluid">
         <div class="row">
             
             <div class="col-lg-5">
@@ -84,8 +84,8 @@
                                             <div class="form-group">
                                                 <?php foreach($getVariants as $row){?>
                                                     <div class="alert alert-secondary" role="alert">
-                                                        <a style="width:100%;" href="<?=base_url('Main_products/update_variants/'.$token.'/'.$row['Id'].'/'.$parent_Id);?>">
-                                                            <?php if($Id == $row['Id']){?>
+                                                        <a style="width:100%;" href="<?=base_url('admin/Main_products/update_variants/'.$token.'/'.$row['id'].'/'.$parent_Id);?>">
+                                                            <?php if($Id == $row['id']){?>
                                                                 <b><?=$row['name']?></b>
                                                             <?php } else{?>
                                                                 <?=$row['name']?>
@@ -470,26 +470,26 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                
+<!--                                                 
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="f_otherinfo" class="control-label">Other Info (Packing/Variations)*</label>
                                                         <input type="text" class="form-control" name="f_otherinfo" id="f_otherinfo" placeholder="250g/pack, Small Size" value="none">
                                                     </div>
-                                                </div>
+                                                </div> -->
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="f_price" class="control-label">Price*</label>
                                                         <input type="text" class="form-control allownumericwithdecimal" name="f_price" id="f_price" >
                                                     </div>
-                                                </div>
-                                                <div class="col-md-6">
+                                                 </div>
+                                                <!--<div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="f_promo_price" class="control-label">Compared at Price</label>
                                                         <input type="text" class="form-control allownumericwithdecimal" name="f_compare_at_price" id="f_compare_at_price" value="0">
                                                     </div>
-                                                </div>
-                                                <div class="col-md-12">
+                                                </div> -->
+                                                <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="f_price" class="control-label">Product Tags</label><br/>
                                                         <!-- <small>List tags separated by comma (,)</small> -->
@@ -680,402 +680,98 @@
                             <input type="hidden" id="u_id" value="<?=$Id?>">
                             <?php }?>
                         </div>
+                    </div>                                  
+                    <div class="col-12 mb-3">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Inventory</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <input type="hidden" name="f_max_qty_isset" value="0">
+                                            <input type="checkbox" class="form-control-input" id="f_max_qty_isset" name="f_max_qty_isset" value="1" checked>
+                                            <label class="form-control-label" for="max_qty_isset">Max quantity per checkout</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <!-- <label>Max quantity per checkout</label> -->
+                                            <input type="number" class="form-control" name="f_max_qty" id="f_max_qty" placeholder="Max quantity" value="1">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 mt-3">
+                                    <div class="form-group divnostock" id="div_no_of_stocks_0">
+                                                <label>Available quantity</label>
+                                                <input type="number" class="form-control" name="f_no_of_stocks" id="f_no_of_stocks" placeholder="Number of stocks" value="<?=$get_productdetails['no_of_stocks']?>">
+                                                <input type="hidden" name="hidden_f_no_of_stocks_0" id="hidden_f_no_of_stocks_0" value="<?=$get_productdetails['no_of_stocks']?>">
+                                            </div>
+                                    </div>
+    
+                                    <!-- <div class="col-md-6 nostocksdiv">
+                                    
+                                        <?php if($branchid == 0){?>
+                                            <div class="form-group">
+                                                <label>Shop Branch:</label>
+                                                <select class="form-control" name="f_delivery_location" id="f_delivery_location">
+                                                    <option value="0" selected>Main</option>
+                                                    <?php foreach($get_branchdetails as $row){?>
+                                                        <option value="<?=$row['id']?>"><?=$row['branchname']?></option>
+                                                    <?php }?>
+                                                </select>
+                                            </div>
+                                        <?php }else{?>
+                                            <div class="form-group">
+                                                <label>Shop Branch:</label>
+                                                <select class="form-control" name="f_delivery_location" id="f_delivery_location">
+                                                    <?php foreach($get_branchdetails as $row){?>
+                                                        <option value="<?=$row['id']?>"><?=$row['branchname']?></option>
+                                                    <?php }?>
+                                                </select>
+                                            </div>
+                                        <?php }?>
+
+                                    </div> -->
+
+                                    <!-- <div class="col-md-6 nostocksdiv">
+                                        <?php if($branchid == 0){?>
+                                            <div class="form-group divnostock" id="div_no_of_stocks_0">
+                                                <label>Available quantity(Main Branch)</label>
+                                                <input type="number" class="form-control" name="f_no_of_stocks_0" id="f_no_of_stocks_0" placeholder="Number of stocks" value="<?=$get_productdetails['inv_qty']?>">
+                                                <input type="hidden" name="hidden_f_no_of_stocks_0" id="hidden_f_no_of_stocks_0" value="<?=$get_productdetails['inv_qty']?>">
+                                            </div>
+
+                                            <?php if($get_branchdetails != false){?>
+                                                <?php foreach($get_branchdetails as $row){?>
+                                                    <?php $input_name = 'f_no_of_stocks_0'?>
+                                                    <?php $hidden_input_name = 'hidden_f_no_of_stocks_0'?>
+                                                    <?php $div_name = 'div_no_of_stocks_0'?>
+                                                    <div class="form-group divnostock" id="<?=$div_name?>" style="display:none">
+                                                        <label>Available quantity(<?=$row['branchname']?>)</label>
+                                                        <input type="number" class="form-control" name="<?=$input_name?>" id="<?=$input_name?>" placeholder="Number of stocks" value="<?=$row['inv_qty']?>">
+                                                        <input type="hidden" name="<?=$hidden_input_name?>" id="<?=$hidden_input_name?>" value="<?=$row['inv_qty']?>">
+                                                    </div>
+                                                <?php }?>
+                                            <?php }?>
+                                        <?php }else{?>
+                                            <?php if($get_branchdetails != false){?>
+                                                <?php foreach($get_branchdetails as $row){?>
+                                                    <?php $input_name = 'f_no_of_stocks_0'?>
+                                                    <?php $div_name = 'div_no_of_stocks_0'?>
+                                                    <div class="form-group divnostock" id="<?=$div_name?>">
+                                                        <label>Available quantity(<?=$row['branchname']?>)</label>
+                                                        <input type="number" class="form-control" name="<?=$input_name?>" id="<?=$input_name?>" placeholder="Number of stocks" value="<?=$row['inv_qty']?>">
+                                                    </div>
+                                                <?php }?>
+                                            <?php }?>
+                                        <?php }?>
+                                    </div> -->
+
+                                </div>
+                            </div>
+                        </div>
                     </div>
-
-                    <?php if($branchid == 0){?>                                    
-                        <div class="col-12 mb-3">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h3 class="card-title">Inventory</h3>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="f_inv_sku" class="control-label">SKU (Stock Keeping Unit)</label>
-                                                <input type="text" class="form-control" name="f_inv_sku" id="f_inv_sku">
-                                            </div>
-                                        </div>
-        
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="f_inv_barcode" class="control-label">Barcode (ISBN, UPC, GTIN, etc.)</label>
-                                                <input type="text" class="form-control" name="f_inv_barcode" id="f_inv_barcode">
-                                            </div>
-                                        </div>
-        
-                                        <div hidden class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="f_uom" class="control-label">UOM ID</label>
-                                                <input type="text" class="form-control" name="f_uom" id="f_uom" value="0">
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-12">
-                                            <!-- <div class="form-group"> -->
-                                                <input type="hidden" name="f_max_qty_isset" value="0">
-                                                <input type="checkbox" class="form-control-input" id="f_max_qty_isset" name="f_max_qty_isset" value="1" checked>
-                                                <label class="form-control-label" for="max_qty_isset">Max quantity per checkout</label>
-                                            <!-- </div> -->
-                                        </div>
-
-                                        <div class="col-md-6 maxqtydiv">
-                                            <div class="form-group">
-                                                <!-- <label>Max quantity per checkout</label> -->
-                                                <input type="number" class="form-control" name="f_max_qty" id="f_max_qty" placeholder="Max quantity" value="1">
-                                            </div>
-                                        </div>
-        
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <input type="hidden" name="f_tq_isset" value="0">
-                                                <input type="checkbox" class="form-control-input" id="f_tq_isset" name="f_tq_isset" value="1" checked>
-                                                <label class="form-control-label" for="f_tq_isset">Track quantity</label>
-                                                <br>
-                                                <input type="hidden" name="f_cont_selling_isset" value="0">
-                                                <input type="checkbox" class="form-control-input contsellingdiv" id="f_cont_selling_isset" name="f_cont_selling_isset" value="1">
-                                                <label class="form-control-label contsellingdiv" for="f_cont_selling_isset">Continue selling when out of stock</label>
-                                                
-                                            </div>
-                                        </div>
-        
-                                        <!-- <div class="col-md-6 nostocksdiv">
-                                        
-                                            <?php if($branchid == 0){?>
-                                                <div class="form-group">
-                                                    <label>Shop Branch:</label>
-                                                    <select class="form-control" name="f_delivery_location" id="f_delivery_location">
-                                                        <option value="0" selected>Main</option>
-                                                        <?php foreach($get_branchdetails as $row){?>
-                                                            <option value="<?=$row['id']?>"><?=$row['branchname']?></option>
-                                                        <?php }?>
-                                                    </select>
-                                                </div>
-                                            <?php }else{?>
-                                                <div class="form-group">
-                                                    <label>Shop Branch:</label>
-                                                    <select class="form-control" name="f_delivery_location" id="f_delivery_location">
-                                                        <?php foreach($get_branchdetails as $row){?>
-                                                            <option value="<?=$row['id']?>"><?=$row['branchname']?></option>
-                                                        <?php }?>
-                                                    </select>
-                                                </div>
-                                            <?php }?>
-
-                                        </div> -->
-
-                                        <div class="col-md-6 nostocksdiv" id="nostocksdiv2">
-
-                                        <div class="form-group divnostock" id="div_no_of_stocks_0">
-                                                    <label>Available quantity</label>
-                                                    <input type="number" class="form-control" name="f_no_of_stocks" id="f_no_of_stocks" placeholder="Number of stocks" value="<?=$get_productdetails['no_of_stocks']?>">
-                                                    <input type="hidden" name="hidden_f_no_of_stocks_0" id="hidden_f_no_of_stocks_0" value="<?=$get_productdetails['no_of_stocks']?>">
-                                                </div>
-                                        </div>
-                                        <!-- <div class="col-md-6 nostocksdiv">
-                                            <?php if($branchid == 0){?>
-                                                <div class="form-group divnostock" id="div_no_of_stocks_0">
-                                                    <label>Available quantity(Main Branch)</label>
-                                                    <input type="number" class="form-control" name="f_no_of_stocks_0" id="f_no_of_stocks_0" placeholder="Number of stocks" value="<?=$get_productdetails['inv_qty']?>">
-                                                    <input type="hidden" name="hidden_f_no_of_stocks_0" id="hidden_f_no_of_stocks_0" value="<?=$get_productdetails['inv_qty']?>">
-                                                </div>
-
-                                                <?php if($get_branchdetails != false){?>
-                                                    <?php foreach($get_branchdetails as $row){?>
-                                                        <?php $input_name = 'f_no_of_stocks_0'?>
-                                                        <?php $hidden_input_name = 'hidden_f_no_of_stocks_0'?>
-                                                        <?php $div_name = 'div_no_of_stocks_0'?>
-                                                        <div class="form-group divnostock" id="<?=$div_name?>" style="display:none">
-                                                            <label>Available quantity(<?=$row['branchname']?>)</label>
-                                                            <input type="number" class="form-control" name="<?=$input_name?>" id="<?=$input_name?>" placeholder="Number of stocks" value="<?=$row['inv_qty']?>">
-                                                            <input type="hidden" name="<?=$hidden_input_name?>" id="<?=$hidden_input_name?>" value="<?=$row['inv_qty']?>">
-                                                        </div>
-                                                    <?php }?>
-                                                <?php }?>
-                                            <?php }else{?>
-                                                <?php if($get_branchdetails != false){?>
-                                                    <?php foreach($get_branchdetails as $row){?>
-                                                        <?php $input_name = 'f_no_of_stocks_0'?>
-                                                        <?php $div_name = 'div_no_of_stocks_0'?>
-                                                        <div class="form-group divnostock" id="<?=$div_name?>">
-                                                            <label>Available quantity(<?=$row['branchname']?>)</label>
-                                                            <input type="number" class="form-control" name="<?=$input_name?>" id="<?=$input_name?>" placeholder="Number of stocks" value="<?=$row['inv_qty']?>">
-                                                        </div>
-                                                    <?php }?>
-                                                <?php }?>
-                                            <?php }?>
-                                        </div> -->
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    <?php }else{?>
-                        <div class="col-12 mb-3">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h3 class="card-title">Inventory</h3>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-md-6" hidden>
-                                            <div class="form-group">
-                                                <label for="f_inv_sku" class="control-label">SKU (Stock Keeping Unit)</label>
-                                                <input type="text" class="form-control" name="f_inv_sku" id="f_inv_sku">
-                                            </div>
-                                        </div>
-        
-                                        <div class="col-md-6" hidden>
-                                            <div class="form-group">
-                                                <label for="f_inv_barcode" class="control-label">Barcode (ISBN, UPC, GTIN, etc.)</label>
-                                                <input type="text" class="form-control" name="f_inv_barcode" id="f_inv_barcode">
-                                            </div>
-                                        </div>
-        
-                                        <div hidden class="col-md-6" hidden>
-                                            <div class="form-group">
-                                                <label for="f_uom" class="control-label">UOM ID</label>
-                                                <input type="text" class="form-control" name="f_uom" id="f_uom" value="0">
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-12" hidden>
-                                            <!-- <div class="form-group"> -->
-                                                <input type="hidden" name="f_max_qty_isset" value="0">
-                                                <input type="checkbox" class="form-control-input" id="f_max_qty_isset" name="f_max_qty_isset" value="1" checked>
-                                                <label class="form-control-label" for="max_qty_isset">Max quantity per checkout</label>
-                                            <!-- </div> -->
-                                        </div>
-
-                                        <div class="col-md-6 maxqtydiv" hidden>
-                                            <div class="form-group">
-                                                <label>Max quantity per checkout</label>
-                                                <input type="number" class="form-control" name="f_max_qty" id="f_max_qty" placeholder="Max quantity" value="1">
-                                            </div>
-                                        </div>
-        
-                                        <div class="col-md-12" hidden>
-                                            <div class="form-group">
-                                                <input type="hidden" name="f_tq_isset" value="0">
-                                                <input type="checkbox" class="form-control-input" id="f_tq_isset" name="f_tq_isset" value="1" checked>
-                                                <label class="form-control-label" for="f_tq_isset">Track quantity</label>
-                                                <br>
-                                                <input type="hidden" name="f_cont_selling_isset" value="0">
-                                                <input type="checkbox" class="form-control-input contsellingdiv" id="f_cont_selling_isset" name="f_cont_selling_isset" value="1">
-                                                <label class="form-control-label contsellingdiv" for="f_cont_selling_isset">Continue selling when out of stock</label>
-                                                
-                                            </div>
-                                        </div>
-
-
-        
-                                        <div class="col-md-6 nostocksdiv">
-                                        
-                                            <?php if($branchid == 0){?>
-                                                <div class="form-group">
-                                                    <label>Shop Branch:</label>
-                                                    <select class="form-control" name="f_delivery_location" id="f_delivery_location">
-                                                        <option value="0" selected>Main</option>
-                                                        <?php foreach($get_branchdetails as $row){?>
-                                                            <option value="<?=$row['id']?>"><?=$row['branchname']?></option>
-                                                        <?php }?>
-                                                    </select>
-                                                </div>
-                                            <?php }else{?>
-                                                <div class="form-group">
-                                                    <label>Shop Branch:</label>
-                                                    <select class="form-control" name="f_delivery_location" id="f_delivery_location">
-                                                        <?php foreach($get_branchdetails as $row){?>
-                                                            <option value="<?=$row['id']?>"><?=$row['branchname']?></option>
-                                                        <?php }?>
-                                                    </select>
-                                                </div>
-                                            <?php }?>
-
-                                        </div>
-
-                                        <div class="col-md-6 nostocksdiv">
-                                            <?php if($branchid == 0){?>
-                                                <div class="form-group divnostock" id="div_no_of_stocks_0">
-                                                    <label>Available quantity(Main Branch)</label>
-                                                    <input type="number" class="form-control" name="f_no_of_stocks_0" id="f_no_of_stocks_0" placeholder="Number of stocks" value="<?=$get_productdetails['inv_qty']?>">
-                                                </div>
-
-                                                <?php if($get_branchdetails != false){?>
-                                                    <?php foreach($get_branchdetails as $row){?>
-                                                        <?php $input_name = 'f_no_of_stocks_0'?>
-                                                        <?php $div_name = 'div_no_of_stocks_0'?>
-                                                        <div class="form-group divnostock" id="<?=$div_name?>" style="display:none">
-                                                            <label>Available quantity(<?=$row['branchname']?>)</label>
-                                                            <input type="number" class="form-control" name="<?=$input_name?>" id="<?=$input_name?>" placeholder="Number of stocks" value="<?=$row['inv_qty']?>">
-                                                        </div>
-                                                    <?php }?>
-                                                <?php }?>
-                                            <?php }else{?>
-                                                <?php if($get_branchdetails != false){?>
-                                                    <?php foreach($get_branchdetails as $row){?>
-                                                        <?php $input_name = 'f_no_of_stocks_0'?>
-                                                        <?php $div_name = 'div_no_of_stocks_0'?>
-                                                        <div class="form-group divnostock" id="<?=$div_name?>">
-                                                            <label>Available quantity(<?=$row['branchname']?>)</label>
-                                                            <?php if(ini() == 'jcww'){?>
-                                                                <input type="number" class="form-control" placeholder="Number of stocks" value="<?=$row['inv_qty']?>" readonly>
-                                                                <input type="hidden" class="form-control" name="<?=$input_name?>" id="<?=$input_name?>" placeholder="Number of stocks" value="<?=$row['inv_qty']?>">
-                                                            <?php }else{?>
-                                                                <input type="number" class="form-control" name="<?=$input_name?>" id="<?=$input_name?>" placeholder="Number of stocks" value="<?=$row['inv_qty']?>">
-                                                            <?php }?>
-                                                        </div>
-                                                    <?php }?>
-                                                <?php }?>
-                                            <?php }?>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    <?php }?>
-
-                    <?php if($branchid == 0){?> 
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h3 class="card-title">Shipping</h3>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <div class="form-group">
-                                                <input type="hidden" name="f_shipping_isset" value="0">
-                                                <input type="checkbox" class="form-control-input" id="f_shipping_isset" name="f_shipping_isset" value="1" checked>
-                                                <label class="form-control-label" for="f_shipping_isset">This is a physical product</label>
-                                                <br>
-                                            </div>
-                                        </div>
-        
-                                        <div class="col-12 weightdiv">
-                                            <div class="form-group">
-                                                <label for="f_itemid" class="control-label">Weight</label><br>
-                                                <div class="input-group mb-3">
-                                                    <input type="text" class="form-control allownumericwithdecimal" name="f_weight" id="f_weight" placeholder="0.0" value="0.0">
-                                                    <div class="input-group-append">
-                                                        <span class="input-group-text">grams</span>
-                                                    </div>
-                                                </div>
-                                                <!-- <div class="note">Used to calculate shipping rates at checkout and label prices during fulfillment.</div> -->
-                                            </div>
-                                        </div>
-
-                                        <div class="col-12 weightdiv">
-                                            <label for="f_length" class="control-label">Parcel Size</label>
-                                        </div>
-
-                                        <div class="col-6 weightdiv">
-                                            <div class="input-group mb-3">
-                                                <input type="text" class="form-control allownumericwithdecimal" name="f_length" id="f_length" placeholder="Length" value="0.0">
-                                                <div class="input-group-append">
-                                                    <span class="input-group-text">inches</span>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-6 weightdiv">
-                                            <div class="input-group mb-3">
-                                                <input type="text" class="form-control allownumericwithdecimal" name="f_width" id="f_width" placeholder="Width" value="0.0">
-                                                <div class="input-group-append">
-                                                    <span class="input-group-text">inches</span>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-6 weightdiv">
-                                            <div class="input-group mb-3">
-                                                <input type="text" class="form-control allownumericwithdecimal" name="f_height" id="f_height" placeholder="Height" value="0.0">
-                                                <div class="input-group-append">
-                                                    <span class="input-group-text">inches</span>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-12 weightdiv">
-                                            <div class="note">Please fill out the fields accurately. This is used to calculate the shipping rates at checkout and label prices during fulfillment. Exceeding the maximum weight (20kg) and dimension (20"x20”x20") for the default toktok rates can still be catered but the shipping fee will depend on the amount you've provided in the Shipping and Delivery Settings Tab.</div>
-                                        </div>
-
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    <?php }else{?>
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h3 class="card-title">Shipping</h3>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <div class="form-group" hidden>
-                                                <input type="hidden" name="f_shipping_isset" value="0">
-                                                <input type="checkbox" class="form-control-input" id="f_shipping_isset" name="f_shipping_isset" value="1" checked>
-                                                <label class="form-control-label" for="f_shipping_isset">This is a physical product</label>
-                                                <br>
-                                            </div>
-                                        </div>
-        
-                                        <div class="col-12 weightdiv">
-                                            <div class="form-group">
-                                                <label for="f_itemid" class="control-label">Weight</label><br>
-                                                <div class="input-group mb-3">
-                                                    <input type="text" class="form-control allownumericwithdecimal" name="f_weight" id="f_weight" placeholder="0.0" value="0.0" readonly>
-                                                    <div class="input-group-append">
-                                                        <span class="input-group-text">grams</span>
-                                                    </div>
-                                                </div>
-                                                <!-- <div class="note">Used to calculate shipping rates at checkout and label prices during fulfillment.</div> -->
-                                            </div>
-                                        </div>
-
-                                        <div class="col-12 weightdiv">
-                                            <label for="f_length" class="control-label">Parcel Size</label>
-                                        </div>
-
-                                        <div class="col-6 weightdiv">
-                                            <div class="input-group mb-3">
-                                                <input type="text" class="form-control allownumericwithdecimal" name="f_length" id="f_length" placeholder="Length" value="0.0" readonly>
-                                                <div class="input-group-append">
-                                                    <span class="input-group-text">inches</span>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-6 weightdiv">
-                                            <div class="input-group mb-3">
-                                                <input type="text" class="form-control allownumericwithdecimal" name="f_width" id="f_width" placeholder="Width" value="0.0" readonly>
-                                                <div class="input-group-append">
-                                                    <span class="input-group-text">inches</span>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-6 weightdiv">
-                                            <div class="input-group mb-3">
-                                                <input type="text" class="form-control allownumericwithdecimal" name="f_height" id="f_height" placeholder="Height" value="0.0" readonly>
-                                                <div class="input-group-append">
-                                                    <span class="input-group-text">inches</span>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-12 weightdiv">
-                                            <div class="note">Please fill out the fields accurately. This is used to calculate the shipping rates at checkout and label prices during fulfillment. Exceeding the maximum weight (20kg) and dimension (20"x20”x20") for the default toktok rates can still be catered but the shipping fee will depend on the amount you've provided in the Shipping and Delivery Settings Tab.</div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    <?php }?>
 
                     <div class="col-12 mb-3" style="display:none;">
                         <div class="card">

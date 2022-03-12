@@ -108,7 +108,7 @@
                                             <tbody>
                                                 <tr>
                                                     <td style="padding: 16px 0px 0 0">
-                                                        <h3 style="color:#F6841F; margin-top: 0; font-size: 18px; font-family: 'Fira Sans', sans-serif;">Good day, ka-toktok!</h3>
+                                                        <h3 style="color:#F6841F; margin-top: 0; font-size: 18px; font-family: 'Fira Sans', sans-serif;">Good day, ka-chicharon!</h3>
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -193,7 +193,7 @@
                                             <tbody>
                                                 <tr>
                                                     <td>
-                                                        <p style="color: #fff; margin-bottom: 0; margin-top: 0; text-align: center; font-size: 14px"><b>CONNECT PEOPLE THROUGH DOOR-TO-DOOR DELIVERIES AND PROMOTE EASIER ONLINE SHOPPING.</b></p>
+                                                        <p style="color: #fff; margin-bottom: 0; margin-top: 0; text-align: center; font-size: 14px"><b>MAS MASARAP, MAS MABILIS.</b></p>
                                                         <a href="<?= faqs_link() ?>" style="color: #fff; margin-top: 0; text-decoration: underline; text-align:center; display: block; margin-top: 3px;">Help Centre</a>
                                                     </td>
                                                 </tr>

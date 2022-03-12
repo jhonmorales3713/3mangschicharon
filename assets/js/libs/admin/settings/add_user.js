@@ -107,7 +107,7 @@ $(function () {
     function add_record(form, mode = "add") {
 		let form_url = form.attr("action");
 		if (mode == "update") {
-			form_url = base_url + 'settings/user_list/update_data';
+			form_url = base_url + 'admin/settings/user_list/update_data';
 		}
 		postdata = new FormData(form[0]);
 		postdata.append('item_image', imageBlob);
@@ -126,7 +126,7 @@ $(function () {
 				if(json_data.success == true) {
 					//showToast('success', json_data.message);
 					sys_toast_success(json_data.message);
-					window.location.assign(base_url+"settings/user_list/view/"+token);
+					window.location.assign(base_url+"admin/settings/user_list/view/"+token);
 				} else {
 					//showToast('note', json_data.message);
 					sys_toast_info(json_data.message);

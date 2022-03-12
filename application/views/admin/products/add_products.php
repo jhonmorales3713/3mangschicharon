@@ -31,7 +31,7 @@
 }
 </style>
 <div class="col-12">
-    <div class="alert alert-secondary ml-4 color-dark" role="alert">
+    <div class="alert alert-secondary ml-3 color-dark" role="alert">
         <span class="font-weight-bold"><a class="text-dark" href="<?=base_url('admin/Main_products/products_home/Products');?>"><?=$active_page?></a></span>
         &nbsp;<span class="fa fa-chevron-right"></span>&nbsp;
         <span class="font-weight-bold"><a class="text-dark" href="<?=base_url('Main_products/products/'.$token);?>">Products List</a></span>
@@ -41,12 +41,12 @@
     </div>
 </div>
 <div class="col-12 " id="pageActive" data-num="3" data-namecollapse="" data-labelname="Products"> 
-    <div class="container-fluid ml-3">
+    <div class="container-fluid col-lg-auto-ml-3">
             <div class="row">
-                <div class="col-lg-7">
+                <div class="col-lg-12">
                     <div class="row">
-                        <div class="col-12 mb-3">
-                        <!-- <h1> Add Products</h1> -->
+                        <div class="col-12 col-lg-7 mb-3">
+                            <!-- <h1> Add Products</h1> -->
                             <div class="card">
                                 <div class="card-header">
                                     <h3 class="card-title m-0">
@@ -54,6 +54,7 @@
                                     </h3>
                                 </div>
                                 <form id="form_save" enctype="multipart/form-data" method="post">
+                                <input hidden id="f_itemid" name="f_itemid">
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-12">
@@ -122,7 +123,7 @@
                                                     </div>
                                                 </div>
                                                 
-                                                <div class="col-12 mb-3">
+                                                <div class="col-12">
                                                     <div class="image-upload-card">
                                                         <div class="form-group">
                                                             <label>Product Image <small>(520x520 minimum width x height | JPG, PNG & JPEG | Total of 6 images)</small></label><br/>
@@ -151,25 +152,25 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                
+                                            <!--                                                 
                                                 <div class="col-md-6 f_otherinfodiv">
                                                     <div class="form-group">
                                                         <label for="f_otherinfo" class="control-label">Other Info (Packing/Variations)*</label>
                                                         <input type="text" class="form-control" name="f_otherinfo" id="f_otherinfo" placeholder="ex. 250g/pack, Small Size" >
                                                     </div>
-                                                </div>
+                                                </div> -->
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="f_price" class="control-label">Price*</label>
                                                         <input type="text" class="form-control allownumericwithdecimal" name="f_price" id="f_price">
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6">
+                                                <!-- <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="f_promo_price" class="control-label">Compared at Price</label>
                                                         <input type="text" class="form-control allownumericwithdecimal" name="f_compare_at_price" id="f_compare_at_price" value="0" placeholder="Compared at Price">
                                                     </div>
-                                                </div>
+                                                </div> -->
                                                 <div class="col-md-6" style="display: none;">
                                                     <div class="form-group">
                                                         <label for="f_promo_price" class="control-label">Status</label>
@@ -179,7 +180,7 @@
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <div class="col-12">
+                                                <div class="col-6">
                                                     <div class="form-group">
                                                         <label for="f_price" class="control-label">Product Tags (Optional)</label><br/>
                                                         <small></small>
@@ -187,20 +188,20 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-12 hidden">
+                                                <!-- <div class="col-md-12 hidden">
                                                     <div class="form-group">
                                                         <input type="hidden" name="f_age_restriction_isset" value="0">
                                                         <input type="checkbox" class="form-control-input" id="f_age_restriction_isset" name="f_age_restriction_isset" value="1">
                                                         <label class="form-control-label" for="max_qty_isset">With age restriction</label>
                                                     </div>
-                                                </div>
+                                                </div> -->
 
-                                                <div class="col-md-6">
+                                                <!-- <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="f_arrangement" class="control-label">Arrangement</label>
                                                         <input type="text" class="form-control allownumericwithdecimal" name="f_arrangement" id="f_arrangement">
                                                     </div>
-                                                </div>
+                                                </div> -->
 
                                                 
                 
@@ -210,14 +211,15 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-12 mb-3 parentInvDiv">
-                            <div class="card">
+                        <div class="col-12 col-lg-5 ">
+
+                            <div class="card row mb-3 parentInvDiv">
                                 <div class="card-header">
                                     <h3 class="card-title">Inventory</h3>
                                 </div>
                                 <div class="card-body">
                                     <div class="row">
-                                        <div class="col-md-6">
+                                        <!-- <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="f_inv_sku" class="control-label">SKU (Stock Keeping Unit)</label>
                                                 <input type="text" class="form-control" name="f_inv_sku" id="f_inv_sku">
@@ -236,7 +238,7 @@
                                                 <label for="f_uom" class="control-label">UOM ID</label>
                                                 <input type="text" class="form-control" name="f_uom" id="f_uom" value="0" placeholder="UOM ID">
                                             </div>
-                                        </div>
+                                        </div> -->
 
                                         <div class="col-md-12">
                                             <!-- <div class="form-group"> -->
@@ -253,7 +255,7 @@
                                             </div>
                                         </div>
             
-                                        <div class="col-md-12">
+                                        <!-- <div class="col-md-12">
                                             <div class="form-group">
                                                 <input type="hidden" name="f_tq_isset" value="0">
                                                 <input type="checkbox" class="form-control-input" id="f_tq_isset" name="f_tq_isset" value="1" checked>
@@ -264,7 +266,7 @@
                                                 <label class="form-control-label contsellingdiv" for="f_cont_selling_isset">Continue selling when out of stock</label>
                                                 
                                             </div>
-                                        </div>
+                                        </div> -->
                                         
                                        <!-- <div class="col-md-6 nostocksdiv hidden" id="nostocksdiv">
                                             <div class="form-group">
@@ -285,11 +287,9 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-12 mb-3">
-                            <div class="card">
+                            <div class="card row">
                                 <div class="card-header">
-                                    <h3 class="card-title">Variants</h3>
+                                    <h3 class="card-title">Sizes</h3>
                                 </div>
                                 <div class="card-body">
                                     <div class="row">
@@ -408,9 +408,11 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-12 mb-3">
+                        </div>
                     </div>
                 </div>
-                <div class="col-lg-5">
+                <!-- <div class="col-lg-5">
                     <div class="row">
                         <div class="col-12 mb-3">
                             <div class="card">
@@ -437,7 +439,7 @@
                                                         <span class="input-group-text">grams</span>
                                                     </div>
                                                 </div>
-                                                <!-- <div class="note">Used to calculate shipping rates at checkout and label prices during fulfillment.</div> -->
+                                                 <div class="note">Used to calculate shipping rates at checkout and label prices during fulfillment.</div>
                                             </div>
                                         </div>
 
@@ -527,17 +529,17 @@
                                                         <label for="f_ratetype" class="control-label">Discount Rate Type</label>
                                                         <select style="height:42px;" type="text" name="f_disc_ratetype" id="f_disc_ratetype" class="form-control">
                                                             <option value="p" selected>Percentage</option>
-                                                            <!-- <option value="f">Fixed Amount</option> -->
+                                                             <option value="f">Fixed Amount</option> 
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <!-- <div class="col-12 adminsettings_div">
+                                                <div class="col-12 adminsettings_div">
                                                     <div class="form-group">
                                                         <label for="f_rate" class="control-label">Discount Rate</label> 
                                                         <span class="badge badge-primary" data-toggle="tooltip" data-placement="top" title="Maximum rate is 1.0 if the rate type is percentage and any amount if the rate type is fixed amount.">?</span>
                                                         <input type="number"class="form-control allownumericwithdecimal" name="f_disc_rate" id="f_disc_rate" >
                                                     </div>
-                                                </div> -->
+                                                </div> 
 
                                                 <div class="col-12 hidden adminsettings_div">
                                                     <div class="form-group">
@@ -552,7 +554,7 @@
                                                 </div>
         
 
-                                            <!--<div class="col-sm-4">
+                                            <div class="col-sm-4">
                                                 <div class="form-group">
                                                 <label class="control-label">&nbsp; </label>
                                                 <label class="control-label">&nbsp; </label>
@@ -579,7 +581,7 @@
 
                         <?php }?>
                     </div>
-                </div>
+                </div> -->
 
             </div>
             <div class="row">

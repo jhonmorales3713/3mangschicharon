@@ -63,13 +63,14 @@
 		<div class="">
 			<div class="nav nav-tabs p-0 row" id="v-pills-tab">
 				<a class="nav-link col active" id="v-pills-dashboard-tab" data-toggle="pill" href="#v-pills-dashboard" role="tab" aria-controls="v-pills-dashboard" aria-selected="true">Dashboard <span class="check-count badge-success rounded text-xs rounded-lg px-1 bg-teal-500 text-light">0</span></a>
-				<a class="nav-link col" id="v-pills-order-headers-tab" data-toggle="pill" href="#v-pills-order-headers" role="tab" aria-controls="v-pills-order-headers" aria-selected="false" class="row m-0">Orders <span class="check-count badge-success rounded text-xs rounded-lg px-1 bg-teal-500 text-light">0</span></a>
-				<a class="nav-link col" id="v-pills-shops-tab" data-toggle="pill" href="#v-pills-shops" role="tab" aria-controls="v-pills-shops" aria-selected="false">Shops <span class="check-count badge-success rounded text-xs rounded-lg px-1 bg-teal-500 text-light">0</span></a>
+				<!-- <a class="nav-link col" id="v-pills-order-headers-tab" data-toggle="pill" href="#v-pills-order-headers" role="tab" aria-controls="v-pills-order-headers" aria-selected="false" class="row m-0">Orders <span class="check-count badge-success rounded text-xs rounded-lg px-1 bg-teal-500 text-light">0</span></a> -->
+				<a class="nav-link col" id="v-pills-products-tab" data-toggle="pill" href="#v-pills-products" role="tab" aria-controls="v-pills-products" aria-selected="false" class="row m-0">Products <span class="check-count badge-success rounded text-xs rounded-lg px-1 bg-teal-500 text-light">0</span></a>
+				<!-- <a class="nav-link col" id="v-pills-shops-tab" data-toggle="pill" href="#v-pills-shops" role="tab" aria-controls="v-pills-shops" aria-selected="false">Shops <span class="check-count badge-success rounded text-xs rounded-lg px-1 bg-teal-500 text-light">0</span></a>
 				<a class="nav-link col" id="v-pills-customers-tab" data-toggle="pill" href="#v-pills-customers" role="tab" aria-controls="v-pills-customers" aria-selected="false">Customers <span class="check-count badge-success rounded text-xs rounded-lg px-1 bg-teal-500 text-light">0</span></a>
 				<a class="nav-link col" id="v-pills-accounts-tab" data-toggle="pill" href="#v-pills-accounts" role="tab" aria-controls="v-pills-accounts" aria-selected="false">Accounts <span class="check-count badge-success rounded text-xs rounded-lg px-1 bg-teal-500 text-light">0</span></a>
-				<a class="nav-link col" id="v-pills-reports-tab" data-toggle="pill" href="#v-pills-reports" role="tab" aria-controls="v-pills-reports" aria-selected="false">Reports <span class="check-count badge-success rounded text-xs rounded-lg px-1 bg-teal-500 text-light">0</span></a>
+				<a class="nav-link col" id="v-pills-reports-tab" data-toggle="pill" href="#v-pills-reports" role="tab" aria-controls="v-pills-reports" aria-selected="false">Reports <span class="check-count badge-success rounded text-xs rounded-lg px-1 bg-teal-500 text-light">0</span></a> -->
 				<a class="nav-link col" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">Settings <span class="check-count badge-success rounded text-xs rounded-lg px-1 bg-teal-500 text-light">0</span></a>
-				<a class="nav-link col" id="v-pills-dev_settings-tab" data-toggle="pill" href="#v-pills-dev_settings" role="tab" aria-controls="v-pills-dev_settings" aria-selected="false">Developer Settings <span class="check-count badge-success rounded text-xs rounded-lg px-1 bg-teal-500 text-light">0</span></a>
+				<!-- <a class="nav-link col" id="v-pills-dev_settings-tab" data-toggle="pill" href="#v-pills-dev_settings" role="tab" aria-controls="v-pills-dev_settings" aria-selected="false">Developer Settings <span class="check-count badge-success rounded text-xs rounded-lg px-1 bg-teal-500 text-light">0</span></a> -->
 			</div>
 			<div class="tab-content" id="v-pills-tabContent">
 				<div class="tab-pane fade show active w-100 online_ordering parent_section has-seller-access has-seller-branch-access has-food-hub-access" id="v-pills-dashboard" role="tabpanel" aria-labelledby="v-pills-dashboard-tab">
@@ -158,31 +159,31 @@
 						<div class="col-12 mt-2">
 							<h4 class="font-semibold">Orders</h4>
 							<div class="row">
-								<div class="col-6 col-sm-3">
+								<!-- <div class="col-6 col-sm-3">
 									<label>
 										<input type="checkbox" id="ac_transactions_view" name="ac_transactions_view" class="checkbox-template m-r-xs mr-2">
 										View
 									</label>
-								</div>
+								</div> -->
 								<!-- <div class="col-6 col-sm-3">
 									<label>
 										<input type="checkbox" id="ac_transactions_create" name="ac_transactions_create" class="checkbox-template m-r-xs mr-2">
 										Create
 									</label>
 								</div> -->
-								<div class="col-6 col-sm-3 hidden">
+								<!-- <div class="col-6 col-sm-3 hidden">
 									<label>
 										<input type="checkbox" id="ac_transactions_update" name="ac_transactions_update" class="checkbox-template m-r-xs mr-2">
 										Update
 									</label>
-								</div>
+								</div> -->
 								<!-- <div class="col-6 col-sm-3">
 									<label>
 										<input type="checkbox" id="ac_transactions_delete" name="ac_transactions_delete" class="checkbox-template m-r-xs mr-2">
 										Delete
 									</label>
 								</div> -->
-								<div class="col-6 col-sm-3" style="display:none;">
+								<!-- <div class="col-6 col-sm-3" style="display:none;">
 									<label>
 										<input type="checkbox" id="ac_transactions_reassign" name="ac_transactions_reassign" class="checkbox-template m-r-xs mr-2">
 										Re-assign
@@ -236,7 +237,7 @@
 										Re-Deliver Order
 									</label>
 								</div>
-								<div class="col-6 col-sm-3"><!-- 080220 -->
+								<div class="col-6 col-sm-3">
 									<label>
 										<input type="checkbox" name="ac_transactions_shipped" class="ac_transactions_shipped checkbox-template m-r-xs mr-2 order_list_ac_fxns">
 										Item Delivered
@@ -253,10 +254,10 @@
 										<input type="checkbox" name="ac_merchant_ol_view" class="ac_merchant_ol_view checkbox-template m-r-xs mr-2 order_list_ac_fxns">
 										Merchant Order List
 									</label>
-								</div>
+								</div> -->
 							</div>
 						</div>
-						<div class="col-12 mt-2">
+						<!-- <div class="col-12 mt-2">
 							<h4 class="font-semibold">Cancelled Orders</h4>
 							<div class="row">
 								<div class="col-6 col-sm-3">
@@ -266,7 +267,7 @@
 									</label>
 								</div>
 							</div>
-						</div>
+						</div> -->
 						<!-- <div class="col-12 mt-2">
 							<h4 class="font-semibold">Pending Order List</h4>
 							<div class="row">
@@ -533,7 +534,7 @@
 							</label>
 						</div>
 						<div class="col-12 mt-2">
-							<h4 class="font-semibold">Menu List</h4>
+							<h4 class="font-semibold">Products List</h4>
 							<div class="row">
 								<div class="col-6 col-sm-3">
 									<label>
@@ -568,77 +569,77 @@
 							</div>
 						</div>
 						<div class="col-12 mt-2">
-							<h4 class="font-semibold">Menu Plan</h4>
+							<h4 class="font-semibold">Product Variant</h4>
 							<div class="row">
 								<div class="col-6 col-sm-3">
 									<label>
-										<input type="checkbox" id="ac_menu_plan_view" name="ac_menu_plan_view" class="checkbox-template m-r-xs mr-2">
+										<input type="checkbox" id="ac_variants_view" name="ac_variants_view" class="checkbox-template m-r-xs mr-2">
 										View
 									</label>
 								</div>
 								<div class="col-6 col-sm-3">
 									<label>
-										<input type="checkbox" id="ac_menu_plan_create" name="ac_menu_plan_create" class="checkbox-template m-r-xs mr-2">
+										<input type="checkbox" id="ac_variants_create" name="ac_variants_create" class="checkbox-template m-r-xs mr-2">
 										Create
 									</label>
 								</div>
 								<div class="col-6 col-sm-3">
 									<label>
-										<input type="checkbox" id="ac_menu_plan_update" name="ac_menu_plan_update" class="checkbox-template m-r-xs mr-2">
+										<input type="checkbox" id="ac_variants_update" name="ac_variants_update" class="checkbox-template m-r-xs mr-2">
 										Update
 									</label>
 								</div>
 								<div class="col-6 col-sm-3">
 									<label>
-										<input type="checkbox" id="ac_menu_plan_disable" name="ac_menu_plan_disable" class="checkbox-template m-r-xs mr-2">
+										<input type="checkbox" id="ac_variants_disable" name="ac_variants_disable" class="checkbox-template m-r-xs mr-2">
 										Disable
 									</label>
 								</div>
 								<div class="col-6 col-sm-3">
 									<label>
-										<input type="checkbox" id="ac_menu_plan_delete" name="ac_menu_plan_delete" class="checkbox-template m-r-xs mr-2">
+										<input type="checkbox" id="ac_variants_delete" name="ac_variants_delete" class="checkbox-template m-r-xs mr-2">
 										Delete
 									</label>
 								</div>
 							</div>
 						</div>
 						<div class="col-12 mt-2">
-							<h4 class="font-semibold">Menu Category</h4>
+							<h4 class="font-semibold">Product Category</h4>
 							<div class="row">
 								<div class="col-6 col-sm-3">
 									<label>
-										<input type="checkbox" id="ac_settings_category_view" name="ac_settings_category_view" class="checkbox-template m-r-xs mr-2">
+										<input type="checkbox" id="ac_products_category_view" name="ac_products_category_view" class="checkbox-template m-r-xs mr-2">
 										View
 									</label>
 								</div>
 								<div class="col-6 col-sm-3">
 									<label>
-										<input type="checkbox" id="ac_settings_category_create" name="ac_settings_category_create" class="checkbox-template m-r-xs mr-2">
+										<input type="checkbox" id="ac_products_category_create" name="ac_products_category_create" class="checkbox-template m-r-xs mr-2">
 										Create
 									</label>
 								</div>
 								<div class="col-6 col-sm-3">
 									<label>
-										<input type="checkbox" id="ac_settings_category_update" name="ac_settings_category_update" class="checkbox-template m-r-xs mr-2">
+										<input type="checkbox" id="ac_products_category_update" name="ac_products_category_update" class="checkbox-template m-r-xs mr-2">
 										Update
 									</label>
 								</div>
 								<div class="col-6 col-sm-3">
 									<label>
-										<input type="checkbox" id="ac_settings_category_disable" name="ac_settings_category_disable" class="checkbox-template m-r-xs mr-2">
+										<input type="checkbox" id="ac_products_category_disable" name="ac_products_category_disable" class="checkbox-template m-r-xs mr-2">
 										Disable
 									</label>
 								</div>
 								<div class="col-6 col-sm-3">
 									<label>
-										<input type="checkbox" id="ac_settings_category_delete" name="ac_settings_category_delete" class="checkbox-template m-r-xs mr-2">
+										<input type="checkbox" id="ac_products_category_delete" name="ac_products_category_delete" class="checkbox-template m-r-xs mr-2">
 										Delete
 									</label>
 								</div>
 							</div>
 						</div>
                         
-						<div class="col-12 mt-2">
+						<!-- <div class="col-12 mt-2">
 							<h4 class="font-semibold">Menu waiting for approval</h4>
 							<div class="row">
 								<div class="col-6 col-sm-3">
@@ -752,12 +753,12 @@
 									</label>
 								</div>
 							</div>
-						</div>
+						</div> -->
 
 
 					</div>
 				</div>
-				<div class="tab-pane fade w-100 online_ordering parent_section" id="v-pills-shops" role="tabpanel" aria-labelledby="v-pills-shops-tab">
+				<!-- <div class="tab-pane fade w-100 online_ordering parent_section" id="v-pills-shops" role="tabpanel" aria-labelledby="v-pills-shops-tab">
 					<div class="py-3 px-4 row m-0 mb-1">
 						<div class="col-6 col-sm-3">
 							<label> 
@@ -1347,7 +1348,6 @@
 								</div>
 							</div>
 						</div>
-						<!-- new reports -->
 						<div class="col-md-4 mt-2">
 							<h4 class="font-semibold">Top Products Sold Report</h4>
 							<div class="row">
@@ -1415,7 +1415,7 @@
 							</div>
 						</div>
 					</div>
-				</div>
+				</div>-->
 				<div class="tab-pane fade w-100 parent_section" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
 					<div class="py-3 px-4 row m-0 mb-1">
 						<div class="col-6 col-sm-3">
@@ -1425,7 +1425,7 @@
 								All
 							</label>
 						</div>
-						<div class="col-12 mt-2">
+						<!-- <div class="col-12 mt-2">
 							<h4 class="font-semibold">Announcement</h4>
 							<div class="row">
 								<div class="col-6 col-sm-3">
@@ -1546,7 +1546,7 @@
 									</label>
 								</div>
 							</div>
-						</div>
+						</div> -->
 						<div class="col-12 mt-2">
 							<h4 class="font-semibold">Admin User List</h4>
 							<div class="row">
@@ -1581,7 +1581,7 @@
 									</label>
 								</div>
 							</div>
-						</div>
+						</div><!--
 						<div class="col-12 mt-2" hidden>
 							<h4 class="font-semibold">Payment Types</h4>
 							<div class="row">
@@ -1979,7 +1979,7 @@
 								</div>
 							</div>
 						</div>
-						<div id="void-record" hidden class="col-12 mt-2"><!-- 080220 -->
+						<div id="void-record" hidden class="col-12 mt-2">=
 							<h4 class="font-semibold">Void Record</h4>
 							<div class="row">
 								<div class="col-6 col-sm-3">
@@ -1990,7 +1990,7 @@
 								</div>
 							</div>
 						</div>
-						<div id="void-record-list" hidden class="col-12 mt-2"><!-- 080220 -->
+						<div id="void-record-list" hidden class="col-12 mt-2">
 							<h4 class="font-semibold">Void Record List</h4>
 							<div class="row">
 								<div class="col-6 col-sm-3">
@@ -2001,7 +2001,7 @@
 								</div>
 							</div>
 						</div>
-						<div id="void-record-list" hidden class="col-12 mt-2"><!-- 080220 -->
+						<div id="void-record-list" hidden class="col-12 mt-2">
 							<h4 class="font-semibold">Bank List</h4>
 							<div class="row">
 								<div class="col-6 col-sm-3">
@@ -2116,7 +2116,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="col-12"><!-- 080220 -->
+						<div class="col-12">
 							<h4 class="font-semibold">Manual Order</h4>
 							<div class="row">
 								<div class="col-6 col-sm-3">
@@ -2525,7 +2525,7 @@
 						</div>
 					
 					</div>
-				</div>
+				</div> -->
 			</div>
 		</div>
 	</div>

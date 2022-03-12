@@ -133,14 +133,15 @@ $(function(){
 		e.preventDefault();
 		$.ajax({
 			type:'post',
-			url:base_url+'products/Main_products/delete_modal_confirm',
+			url:base_url+'admin/Main_products/delete_modal_confirm',
 			data:{'delete_id':delete_id},
 			success:function(data){
 				var res = data.result;
 				if (data.success == 1){
 					fillDatatable(); //refresh datatable
 
-					showCpToast("success", "Success!", data.message);
+					sys_toast_success(data.message);
+					//showCpToast("success", "Success!", data.message);
           			setTimeout(function(){location.reload()}, 2000);
 					// $.toast({
 					//     heading: 'Success',
@@ -156,7 +157,9 @@ $(function(){
 					// });
 					$('#delete_modal').modal('toggle'); //close modal
 				}else{
-					showCpToast("info", "Note!", data.message);
+					
+					sys_toast_info(data.message);
+					//showCpToast("info", "Note!", data.message);
 					// $.toast({
 					//     heading: 'Note',
 					//     text: data.message,
@@ -178,15 +181,15 @@ $(function(){
 		$('#disable_modal_confirm_btn').prop('disabled', true);
 		$.ajax({
 			type:'post',
-			url:base_url+'products/Main_products/disable_modal_confirm',
+			url:base_url+'admin/Main_products/disable_modal_confirm',
 			data:{'disable_id':disable_id, 'record_status':record_status},
 			success:function(data){
 				var res = data.result;
 				if (data.success == 1){
 					$.LoadingOverlay("hide");
 					fillDatatable(); //refresh datatable
-					//sys_toast_success(data.message);
-					showCpToast("success", "Success!", data.message);
+					sys_toast_success(data.message);
+					//sys_toast("success", "Success!", data.message);
           			setTimeout(function(){location.reload()}, 2000);
 					$('#disable_modal_confirm_btn').prop('disabled', false);
 					$('#disable_modal').modal('toggle'); //close modal

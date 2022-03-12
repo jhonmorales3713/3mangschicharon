@@ -152,6 +152,7 @@ $(function(){
             result = http.status != 404;
 
             if(result == true){
+
                 $('<div class="closediv p-1 bd-highlight img'+image_url_2+'">'+'<li class="ui-state-default" data-id="'+i+'" ><img id="product_preview" class="ui-state-default img'+image_url_2+'" src="'+shop_url + 'assets/img/'+shopcode+'/products/'+ filename+'/'+ image_url+"?"+Math.random()+'"></li><span class="deleteimg" data-value="'+image_url_2+'" data-format="'+image_url+'" data-noformat="'+i+'-'+filename+'">x</span></div>').appendTo('.imagepreview2');
                 $('<font>&nbsp;</font>').appendTo('.imagepreview2');
                 $('#current_product_url').val(image_url_orig);
@@ -160,31 +161,6 @@ $(function(){
             }
         }
         
-
-        //// jpeg format
-        // imageCounter = 0;
-        filename  = filename;
-        imageExtention = filename;
-        image_url_orig = filename;
-        for(i = 0; 6 > i; i++){
-            imageExtention = imageExtention;
-            image_url = i+'-'+imageExtention+".jpeg";
-            image_url_2 = i+'-'+imageExtention+"jpeg";
-
-            var http = new XMLHttpRequest();
-            http.open('HEAD', shop_url + 'assets/img/'+shopcode+'/products/'+ filename+'/' + image_url+"?"+Math.random(), false);
-            http.send();
-            result = http.status != 404;
-
-            if(result == true){
-                $('<div class="closediv p-1 bd-highlight img'+image_url_2+'">'+'<li class="ui-state-default" data-id="'+count+'" ><img id="product_preview" class="ui-state-default img'+image_url_2+'" src="'+shop_url + 'assets/img/'+shopcode+'/products/'+ filename+'/'+ image_url+"?"+Math.random()+'"></li><span class="deleteimg" data-value="'+image_url_2+'" data-format="'+image_url+'" data-noformat="'+i+'-'+filename+'">x</span></div>').appendTo('.imagepreview2');
-                $('<font>&nbsp;</font>').appendTo('.imagepreview2');
-                $('#current_product_url').val(image_url_orig);
-                $('#upload_checker').val(image_url_orig);
-                imageCounter++;
-            }
-
-        }
         $('.imagepreview').show('slow');
         console.clear();
     }
@@ -201,9 +177,14 @@ $(function(){
         // http.send();
         // result = http.status != 404;
 
+        filename_2 = filename.split('.').join("");
+        filename_2=(filename_2.split('==').join("."));
+        if(filename_2.includes('=')){
+            filename_2=(filename_2.split('=').join("."));
+        }
+        console.log(filename_2);
         // if(result == true){
-            filename_2 = filename.split('.').join("");
-            $('<div class="closediv p-1 bd-highlight img'+filename_2+'">'+'<li class="ui-state-default" data-id="'+count+'" data-directory="'+base_url + 'assets/img/'+shopcode+'/products/'+ id+'/'+ filename+"?"+Math.random()+'" data-imagename="'+filename+'" ><img width=100% id="product_preview" class="img'+filename_2+'" src="'+base_url + 'assets/uploads/products/'+ filename+"?"+Math.random()+'"></li><span class="deleteimg" data-value="'+filename_2+'" data-format="'+filename+'" data-noformat="'+filename+'">x</span></div>').appendTo('.imagepreview2');
+            $('<div class="closediv p-1 bd-highlight img'+filename_2+'">'+'<li class="ui-state-default" data-id="'+count+'" data-directory="'+base_url + 'assets/img/products/'+ filename_2+"?"+Math.random()+'" data-imagename="'+filename_2+'" ><img width=100% id="product_preview" class="img'+filename_2+'" src="'+base_url + 'assets/uploads/products/'+ filename_2+"?"+Math.random()+'"></li><span class="deleteimg" data-value="'+filename_2+'" data-format="'+filename_2+'" data-noformat="'+filename_2+'">x</span></div>').appendTo('.imagepreview2');
             $('<font>&nbsp;</font>').appendTo('.imagepreview2');
             $('#current_product_url').val(filename);
             $('#upload_checker').val(filename);
@@ -254,7 +235,12 @@ $(function(){
                         $.each(json_data.images, function(key, value) {
                             imageExistsSpec(json_data.message.Id, value.filename, json_data.message.shopcode, value.arrangement);
                             if(value.arrangement == 1){
-                                setPrimaryPhoto(base_url + 'assets/uploads/products/'+ value.filename+"?"+Math.random());
+                                filename_2 = value.filename.split('.').join("");
+                                filename_2=(filename_2.split('==').join("."));
+                                if(filename_2.includes('=')){
+                                    filename_2=(filename_2.split('=').join("."));
+                                }
+                                setPrimaryPhoto(base_url + 'assets/uploads/products/'+ filename_2+"?"+Math.random());
                             }
                         });
                     } else {

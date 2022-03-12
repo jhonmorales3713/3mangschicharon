@@ -51,7 +51,7 @@
                             <span class="align-end">
                                 <div class="row no-gutters">
                                     <div class="col-12 col-md-auto px-1 mb-3 mr-1">
-                                        <?php if ($this->loginstate->get_access()['users']['create']== 1): ?>
+                                        <?php if ($this->loginstate->get_access()['aul']['create']== 1): ?>
                                             <!-- <button data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#user_modal" class="btn-mobile-w-100 mx-0 mx-sm-2 btn btn-outline-danger btnClickAddRecord d-flex align-items-center justify-content-center btn-block mb-3" id="addBtn">Add</button> -->
                                             <a class="btn-mobile-w-100 mx-0 mx-sm-2 btn btn-primary d-flex align-items-center justify-content-center btn-block mb-3" href="<?=base_url()."admin/settings/user_list/add_user/".$token?>" id="addBtn">Add</a>
                                         <?php endif ?>

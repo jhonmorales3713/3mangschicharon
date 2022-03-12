@@ -34,7 +34,7 @@ $(function(){
 					if (data.success == 1) {
                         sys_toast_success(data.message);
 						setTimeout(function(){  
-							window.location.href = ''+base_url+'Main';
+							window.location.href = ''+base_url+'admin';
 						}, 3000);
 					}else{
 						$.LoadingOverlay("hide");

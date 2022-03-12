@@ -103,6 +103,9 @@ $(function(){
 						if(data.hasOwnProperty('redirect_url')){
 							window.location.href = data.redirect_url;
 						}else{
+							
+								window.location.href = ''+base_url+'Main/home/'+token;
+							//
 							if(code_isset == 1){
 								sendCodeEmailLoginAttempts(username);
 								setTimeout(function(){ 

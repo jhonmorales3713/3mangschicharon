@@ -26,7 +26,7 @@
 
     <div class="card mb-4">
         <form method="POST" action="<?php echo base_url() . 'admin/settings/user_list/create_data'; ?>" id="record_form" enctype='multipart/form-data' class="card-body">
-            <input type="password" id="f_id" name="f_id" class="form-control hidden" value="<?=$id?>" >
+            <input type="password" id="f_id" name="f_id" class="form-control" hidden autocomplete='new-password' value="<?=$id?>" >
             <div class="row">
                 <div class="col-md-6 col-lg-3 div_avatar">
                     <div class="form-group">

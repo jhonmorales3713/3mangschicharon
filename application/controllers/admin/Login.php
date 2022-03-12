@@ -31,6 +31,7 @@ class Login extends CI_Controller {
                 
             }
             //if(password_verify($this->input->post('password'),$hash_password)){
+            //    echo en_dec('dec',$hash_password);//OXRKRmlJbll4UHNmWGdNdGhlTVlRZz09
             if(en_dec('en',$this->input->post('password')) == $hash_password){
                 if($user_status == 1){
                     $userData = array( // store in array

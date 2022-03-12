@@ -245,7 +245,7 @@ class user_list extends CI_Controller {
         $this->email->to($email);
         
         $this->email->subject(get_company_name()." | Password Set Up");
-        $data['email']='moralesjhonpogi';
+        $data['email']=$email;
         $data['resetpasslink'] = $resetpasslink;
         $view = $this->load->view('email/templates/verify_email',$data,true);
         $this->email->message($view);
@@ -259,7 +259,7 @@ class user_list extends CI_Controller {
     public function view($token = '')
     {   
         $this->isLoggedIn();
-        if ($this->loginstate->get_access()['users']['view'] == 1) {
+        if ($this->loginstate->get_access()['aul']['view'] == 1) {
     		//start - for restriction of views
         	$content_url = $this->uri->segment(1).'/'.$this->uri->segment(2).'/'.$this->uri->segment(3).'/'.$this->uri->segment(4).'/';
         	$main_nav_id = $this->views_restriction($content_url);
@@ -288,7 +288,7 @@ class user_list extends CI_Controller {
 	public function add_user($token = '')
 	{
 		$this->isLoggedIn();
-        if ($this->loginstate->get_access()['users']['create'] == 1) {
+        if ($this->loginstate->get_access()['aul']['create'] == 1) {
         	$content_url = $this->uri->segment(1).'/'.$this->uri->segment(2).'/'.$this->uri->segment(3).'/'.$this->uri->segment(4).'/';
         	$main_nav_id = $this->views_restriction($content_url);
             // start - data to be used for views

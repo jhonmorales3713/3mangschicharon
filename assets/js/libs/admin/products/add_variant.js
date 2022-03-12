@@ -121,40 +121,6 @@ $(function(){
             success:function(data){
                 $.LoadingOverlay("hide");
                 var json_data = JSON.parse(data);
-                if(json_data.success){
-
-                    json_data.message.admin_isset == 1 ? $( "#f_admin_isset" ).prop( "checked", true ) : $( "#f_admin_isset" ).prop( "checked", false );
-                    json_data.message.admin_isset == 1 ? '' : $('.adminsettings_div').hide(250);
-                    if(shop_id != 0){
-                        $( "#f_admin_isset" ).val(json_data.message.admin_isset);
-                    }
-                    $('#f_disc_ratetype').val(json_data.message.disc_ratetype).change();
-                    if(ini == 'toktokmall'){
-                        $('#f_disc_rate').val((json_data.message.disc_rate*100).toFixed(2));
-                    }
-                    else{
-                        $('#f_disc_rate').val(json_data.message.disc_rate);
-                    }
-                    $('#f_startup').val((json_data.message.refstartup*100).toFixed(2));
-                    $('#f_jc').val((json_data.message.refjc*100).toFixed(2));
-                    $('#f_mcjr').val((json_data.message.refmcjr*100).toFixed(2));
-                    $('#f_mc').val((json_data.message.refmc*100).toFixed(2));
-                    $('#f_mcsuper').val((json_data.message.refmcsuper*100).toFixed(2));
-                    $('#f_mcmega').val((json_data.message.refmcmega*100).toFixed(2));
-                    $('#f_others').val((json_data.message.refothers*100).toFixed(2));
-                }else{
-                    //showCpToast("info", "Note!", json_data.message);  
-                    // $.toast({
-                    //     heading: 'Note',
-                    //     text: json_data.message,
-                    //     icon: 'info',
-                    //     loader: false,   
-                    //     stack: false,
-                    //     position: 'top-center',  
-                    //     bgColor: '#FFA500',
-                    //     textColor: 'white'        
-                    // });
-                }
             },
             error: function(error){
                 $.LoadingOverlay("hide");

@@ -9,18 +9,18 @@ $(function(){
     var branchid     = $("#branchid").val();
 
     
-    $('#f_tq_isset').click(function(){
-        if($(this).is(':checked')){
-            $('.contsellingdiv, .nostocksdiv').show(250);
-        }else{
-            $('.contsellingdiv, .nostocksdiv').hide(250);
-            $('.contsellingdiv').prop('checked', false)
-        }
-    });
+    // $('#f_tq_isset').click(function(){
+    //     if($(this).is(':checked')){
+    //         $('.contsellingdiv, .nostocksdiv').show(250);
+    //     }else{
+    //        // $('.contsellingdiv, .nostocksdiv').hide(250);
+    //         $('.contsellingdiv').prop('checked', false)
+    //     }
+    // });
 
-    if($('#f_tq_isset').is(':checked')){
-        $('.contsellingdiv').show(250);
-    }
+    // if($('#f_tq_isset').is(':checked')){
+    //     $('.contsellingdiv').show(250);
+    // }
 
     $('#f_max_qty_isset').click(function(){
         if($(this).is(':checked')){
@@ -129,7 +129,7 @@ $(function(){
 
         // if(result == true){
             filename_2 = filename.split('.').join("");
-            filename_2=(filename_2.split('=').join("."));
+            filename_2=(filename_2.split('==').join("."));
             $('<div class="closediv p-1 bd-highlight img'+filename_2+'">'+'<li class="ui-state-default" data-id="'+count+'" data-directory="'+base_url + 'assets/uploads/products/'+ filename+"?"+Math.random()+'" data-imagename="'+filename+'" ><img id="product_preview" width=100% class="img'+filename_2+'" src="'+base_url + 'assets/uploads/products/'+ filename_2+"?"+Math.random()+'"></li><span class="deleteimg" data-value="'+filename_2+'" data-format="'+filename+'" data-noformat="'+filename+'">x</span></div>').appendTo('.imagepreview2');
             $('<font>&nbsp;</font>').appendTo('.imagepreview2');
             $('#current_product_url').val(filename);
@@ -141,6 +141,8 @@ $(function(){
 
     function setPrimaryPhoto(src){
         $('#primary_product').fadeOut(500);
+        src=src.split('.').join("");
+        src=src.split('==').join(".");
         $('#primary_product').attr("src", src);
         $('#primary_product').fadeIn(2000);
     }
@@ -189,8 +191,7 @@ $(function(){
                         $('#change-product-image').hide();
                     }
 
-                    $('#f_id').val(json_data.message.Id);
-                    console.log(json_data.message.id);
+                    $('#f_id').val(Id);
                     $('#f_member_shop').val(json_data.message.sys_shop);
                     $('#f_category').val(json_data.message.category_id);
                     $('#f_itemname').val(json_data.message.name);
@@ -207,8 +208,8 @@ $(function(){
                     $('#f_inv_barcode').val(json_data.message.inv_barcode);
                     json_data.message.max_qty_isset == 1 ? $( "#f_max_qty_isset" ).prop( "checked", true ) : $( "#f_max_qty_isset" ).prop( "checked", false );
                     json_data.message.max_qty_isset == 1 ? '' : $('.maxqtydiv').hide(250);
-                    json_data.message.tq_isset == 1 ? $( "#f_tq_isset" ).prop( "checked", true ) : $( "#f_tq_isset" ).prop( "checked", false );
-                    json_data.message.tq_isset == 1 && parseFloat(branchid) == parseFloat(0) ? '' : $('.contsellingdiv, .nostocksdiv').css('display','none');
+                    // json_data.message.tq_isset == 1 ? $( "#f_tq_isset" ).prop( "checked", true ) : $( "#f_tq_isset" ).prop( "checked", false );
+                    // json_data.message.tq_isset == 1 && parseFloat(branchid) == parseFloat(0) ? '' : $('.contsellingdiv, .nostocksdiv').css('display','none');
                     json_data.message.cont_selling_isset == 1 ? $( "#f_cont_selling_isset" ).prop( "checked", true ) : $( "#f_cont_selling_isset" ).prop( "checked", false );
                     $('#f_no_of_stocks').val(json_data.message.no_of_stocks);
                     $('#f_max_qty').val(json_data.message.max_qty);
@@ -216,32 +217,12 @@ $(function(){
                     if(branchid == 0){
                         json_data.message.shipping_isset == 1 ? '' : $('.weightdiv').hide(250);
                     }
-                    $('#f_weight').val(json_data.message.weight);
-                    $('#f_uom_id').val(json_data.message.uom_id).change();
-                    $('#f_length').val(json_data.message.length);
-                    $('#f_width').val(json_data.message.width);
-                    $('#f_height').val(json_data.message.height);
                     json_data.message.admin_isset == 1 ? $( "#f_admin_isset" ).prop( "checked", true ) : $( "#f_admin_isset" ).prop( "checked", false );
                     json_data.message.admin_isset == 1 ? '' : $('.adminsettings_div').hide(250);
 
                     if(shop_id != 0){
                         $( "#f_admin_isset" ).val(json_data.message.admin_isset);
                     }
-
-                    $('#f_disc_ratetype').val(json_data.message.disc_ratetype).change();
-                    if(ini == 'toktokmall'){
-                        $('#f_disc_rate').val((json_data.message.disc_rate*100).toFixed(2));
-                    }
-                    else{
-                        $('#f_disc_rate').val(json_data.message.disc_rate);
-                    }
-                    $('#f_startup').val((json_data.message.refstartup*100).toFixed(2));
-                    $('#f_jc').val((json_data.message.refjc*100).toFixed(2));
-                    $('#f_mcjr').val((json_data.message.refmcjr*100).toFixed(2));
-                    $('#f_mc').val((json_data.message.refmc*100).toFixed(2));
-                    $('#f_mcsuper').val((json_data.message.refmcsuper*100).toFixed(2));
-                    $('#f_mcmega').val((json_data.message.refmcmega*100).toFixed(2));
-                    $('#f_others').val((json_data.message.refothers*100).toFixed(2));
                     displayVariantDivs( json_data.message.variant_isset);
                 }else{
                     // $.toast({
@@ -340,7 +321,6 @@ $(function(){
                 processData:false,
                 success:function(data){
                     $.LoadingOverlay("hide");
-                    console.log(data);
                     var json_data = JSON.parse(data);
                     if(json_data.success) {
                         sys_toast_success(json_data.message);
@@ -736,52 +716,6 @@ $(function(){
         return (new RegExp('(' + exts.join('|').replace(/\./g, '\\.') + ')$')).test(fileName);
     }
     
-    if(ini == 'toktokmall'){
-        $("#f_disc_rate").keyup(function(e) { 
-            rate = $(this).val();
-            refcomratePopulate(rate);
-        });
-    
-        function refcomratePopulate(rate){
-            c_startup = $('#c_startup').val();
-            c_jc      = $('#c_jc').val();
-            c_mcjr    = $('#c_mcjr').val();
-            c_mc      = $('#c_mc').val();
-            c_mcsuper = $('#c_mcsuper').val();
-            c_mcmega  = $('#c_mcmega').val();
-            c_others  = $('#c_others').val();
-            c_ofps    = $('#c_ofps').val();
-
-            f_startup = (rate/100) * c_ofps;
-            f_startup = parseFloat((f_startup * c_startup) * 100);
-
-            f_jc = (rate/100) * c_ofps;
-            f_jc = parseFloat((f_jc * c_jc) * 100);
-
-            f_mcjr = (rate/100) * c_ofps;
-            f_mcjr = parseFloat((f_mcjr * c_mcjr) * 100);
-
-            f_mc = (rate/100) * c_ofps;
-            f_mc = parseFloat((f_mc * c_mc) * 100);
-
-            f_mcsuper = (rate/100) * c_ofps;
-            f_mcsuper = parseFloat((f_mcsuper * c_mcsuper) * 100);
-
-            f_mcmega = (rate/100) * c_ofps;
-            f_mcmega = parseFloat((f_mcmega * c_mcmega) * 100);
-
-            f_others = (rate/100) * c_ofps;
-            f_others = parseFloat((f_others * c_others) * 100);
-
-            $('#f_startup').val(f_startup.toFixed(2));
-            $('#f_jc').val(f_jc.toFixed(2));
-            $('#f_mcjr').val(f_mcjr.toFixed(2));
-            $('#f_mc').val(f_mc.toFixed(2));
-            $('#f_mcsuper').val(f_mcsuper.toFixed(2));
-            $('#f_mcmega').val(f_mcmega.toFixed(2));
-            $('#f_others').val(f_others.toFixed(2));
-        }
-    }
 });
 
 
