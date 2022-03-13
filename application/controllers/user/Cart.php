@@ -228,6 +228,7 @@ class Cart extends CI_Controller {
 
         $order = array(
             'customer_id' => $customer_id,
+            'product_id' => json_encode($product_id),
             'order_data' => json_encode($order_data),
             'payment_data' => json_encode($payment_data),
             'shipping_data' => json_encode($shipping_data),
