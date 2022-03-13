@@ -63,8 +63,12 @@
     color: #333 !important;
 }
 
+.p3{
+    padding: 3px !important;
+}
+
 .p5{
-    padding: 10px !important;
+    padding: 5px !important;
 }
 
 .p10{
@@ -77,6 +81,11 @@
 
 .p30{
     padding: 30px !important;
+}
+
+.plr7{
+    padding-left: 7px !important;
+    padding-right: 7px !important;
 }
 
 .h50{

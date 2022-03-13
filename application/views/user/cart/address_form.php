@@ -1,4 +1,4 @@
-<div id="address_form">
+<div id="address_form" style="display: none;">
     <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-12">
             <div class="form-group">
@@ -67,9 +67,9 @@
             </div>        
         </div>
         <div class="col-lg-6 col-md-6 col-sm-12"></div>
-        <div class="col-lg-6 col-md-6 col-sm-12">
+        <div class="col-lg-6 col-md-6 col-sm-12 clearfix">
             <div class="form-group">                
-                <button type="button" class="btn btn-sm btn-primary form-control" id="save_address_btn">SAVE</button>
+                <button type="button" class="btn btn-sm btn-primary float-right" id="save_address_btn">Save Address</button>
             </div>        
         </div>
     </div>

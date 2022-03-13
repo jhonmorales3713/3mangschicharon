@@ -49,6 +49,10 @@ $('#save_address_btn').click(function(){
     save_shipping_address(address);
 });
 
+$('#new_address').click(function(){
+    $('#address_form').slideToggle(400);
+});
+
 function save_shipping_address(address){
     $.ajax({
         url: base_url + 'user/shipping/save_shipping_address',
@@ -58,11 +62,11 @@ function save_shipping_address(address){
             if(response.success){
                 clearFormErrors();
                 sys_toast_success(response.message);
+                $('#address_form').show(300);
             }
             else{
-                clearFormErrors();
-                sys_toast_error(response.message);
-                show_errors(response,$('#address_form'));
+                clearFormErrors();                
+                show_errors(response,$('#address_form'));                
             }
         },
         error: function(){
@@ -71,5 +75,12 @@ function save_shipping_address(address){
     });
 }
 
+function set_addresses(){
+
+}
+
+function set_address_select(){
+
+}
 
 });
