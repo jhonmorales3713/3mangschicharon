@@ -19,22 +19,23 @@ class Cart extends CI_Controller {
 		$this->load->view('landing_template',$data,'',TRUE);
 	}
 
-    public function add_to_cart($en_product_id = '',$en_variant_id = '', $size = '', $quantity = ''){ //accepst product id an variant if order now
+    public function add_to_cart($p_product_id = '',$p_variant_id = '', $size = '', $quantity = ''){ //accepst product id an variant if order now
         
-        if($en_product_id == ''){
+        if($p_product_id == ''){
             $data = $this->input->post();
         }
         else{
-            $data['product_id'] = $en_product_id;
-            $data['variant_id'] = $en_variant_id; 
+            $data['product_id'] = $p_product_id;
+            $data['variant_id'] = $p_variant_id; 
             $data['size'] = $size;
-            $data['quantity'] = $quantity;
+            $data['quantity'] = $quantity;            
         }        
         
         $en_product_id = $data['product_id'];
-        $product_id = en_dec('dec',$data['product_id']);
         $en_variant_id = $data['variant_id'];
+        $product_id = en_dec('dec',$data['product_id']);        
         $variant_id = en_dec('dec',$data['variant_id']);
+
         $product = $this->model_products->get_product_info($product_id);
         $variant = $this->model_products->get_product_info($variant_id);
         unset($product['id']);
@@ -72,12 +73,9 @@ class Cart extends CI_Controller {
         $response['cart_items'] = $_SESSION['cart_items'];
         $response['message'] = 'Successfully added to cart';    
         
-        if($en_product_id == ''){
+        if($p_product_id == ''){
             generate_json($response);
         }
-        else{
-            return $response;
-        }        
     }
 
     public function modify_quantity(){

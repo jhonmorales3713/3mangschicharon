@@ -17,7 +17,7 @@ $(function(){
         var qty = $('#qty').val();
           
         $.ajax({
-            url: base_url + 'user/cart/add_to_cart',
+            url: base_url + 'user/cart/add_to_cart/',
             type: 'POST',
             data: {
                 product_id: product_id,
@@ -25,8 +25,7 @@ $(function(){
                 variant_id: variant.variant_id,
                 quantity: qty              
             },
-            success: function(response){
-                console.log(response)
+            success: function(response){                
                 if(response.success){
                     $('.cart-items').text(response.cart_items);
                     sys_toast_success(response.message);
