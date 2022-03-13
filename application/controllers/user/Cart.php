@@ -34,7 +34,8 @@ class Cart extends CI_Controller {
         $product['size'] = $data['size'];
         $product['qty'] = $data['quantity'];
         $product['variant_id'] = $en_variant_id;
-        $product['amount'] = $variant['price'];             
+        $product['amount'] = $variant['price'];    
+        $product['is_included'] = 1;
 
         if(!isset($_SESSION['cart'])){
             $_SESSION['cart'] = [];
@@ -86,6 +87,25 @@ class Cart extends CI_Controller {
         $response['cart_data'] = $_SESSION['cart'];   
 
         generate_json($response);        
+    }
+
+    public function modify_included(){
+        $data = $this->input->post();
+        
+        $key = $data['target'];
+        
+
+        $is_included = 0;
+        if($data['value'] == 'true'){
+            $is_included = 1;
+        }             
+        
+        $_SESSION['cart'][$key]['is_included'] = $is_included;
+        
+        $response['success'] = true;          
+        $response['cart_data'] = $_SESSION['cart'];   
+
+        generate_json($response);       
     }
 
     public function remove_from_cart(){
@@ -146,7 +166,14 @@ class Cart extends CI_Controller {
         $data = $this->input->post();
 
         $customer_id = en_dec('dec',$_SESSION['customer_id']);
-        $order_data = $_SESSION['cart'];
+        $order_data = array();        
+
+        foreach($_SESSION['cart'] as $key => $value){
+            if($value['is_included'] == 1){
+                $order_data[$key] = $value;
+                unset($_SESSION['cart'][$key]);
+            }
+        }
         
         $payment_data = array(
             'payment_method_id:' => 1,
@@ -209,10 +236,21 @@ class Cart extends CI_Controller {
 
         $order_id = $this->model_orders->insert_order($order);
 
-        $this->clear_cart();
+        $total_qty = 0;
+        if(sizeof($_SESSION['cart']) > 0){
+            foreach($_SESSION['cart'] as $key => $value){
+                $total_qty += intval($_SESSION['cart'][$key]['quantity']);
+            }
+            $_SESSION['cart_items'] = $total_qty;
+        }
+        else{
+            $this->clear_cart();
+        }
+
         $response['success'] = true;
         $response['message'] = 'Order successful';
         $response['order_id'] = $order_id;
+        $response['cart_items'] = $total_qty;
 
         generate_json($response);
     }

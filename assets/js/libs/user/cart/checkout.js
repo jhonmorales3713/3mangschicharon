@@ -1,10 +1,8 @@
 $(function(){
 
-
-
 $('#btn_place_order').click(function(){    
     var data = {
-        total_amount: $('#sub_total').val(),
+        total_amount: $('#total_amount').val(),
         delivery_amount: 50,   
         shipping_data: get_shipping_details()     
     };   
@@ -29,7 +27,8 @@ $('#btn_place_order').click(function(){
         success: function(response){
             if(response.success){
                 sys_toast_success(response.message);
-                $('.cart-items').text('0');
+                $('.cart-items').text(response.cart_items);
+                window.location.href = base_url + 'shop';
             }
             else{
                 clearFormErrors();

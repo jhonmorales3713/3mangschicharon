@@ -23,14 +23,16 @@
 <?php $total_amount = 0; ?>
 <?php foreach($_SESSION['cart'] as $key => $value){ ?>
     <div class="row">
-        <div class="col-7">
-            <small><strong><?= $_SESSION['cart'][$key]['name'] ?> (<?= $_SESSION['cart'][$key]['size']; ?>)</strong> <b>x</b> <?= $_SESSION['cart'][$key]['quantity'] ?></small><br>
-        </div>
-        <div class="col-5 text-right">
-            <?php $amount = floatval($_SESSION['cart'][$key]['amount']) * intval($_SESSION['cart'][$key]['quantity']); ?>
-            <?php $total_amount += $amount; ?>
-            <span><?= number_format($amount,2); ?></span>
-        </div>           
+        <?php if($value['is_included'] == 1){ ?>
+            <div class="col-7">
+                <small><strong><?= $_SESSION['cart'][$key]['name'] ?> (<?= $_SESSION['cart'][$key]['size']; ?>)</strong> <b>x</b> <?= $_SESSION['cart'][$key]['quantity'] ?></small><br>
+            </div>
+            <div class="col-5 text-right">
+                <?php $amount = floatval($_SESSION['cart'][$key]['amount']) * intval($_SESSION['cart'][$key]['quantity']); ?>
+                <?php $total_amount += $amount; ?>
+                <span><?= number_format($amount,2); ?></span>
+            </div>    
+        <?php } ?>       
     </div>         
 <?php } ?>
 
@@ -52,14 +54,14 @@
         <b>Sub Total</b>
     </div>
     <div class="col-5 text-right">
-        <strong id="sub_total">&#8369; <?= number_format($total_amount,2); ?></strong>
+        <strong id="sub_total">&#8369; <?= number_format($total_amount,2); ?></strong>        
     </div>
 </div>
 
 <div class="col-12">
     <br><br>
     <hr>
-    <input type="hidden" id="sub_total" value='0'>
+    <input type="hidden" id="total_amount" value="<?= $total_amount; ?>">
     <button type="button" class="btn btn-primary form-control" id="btn_place_order">PLACE ORDER</button>
 </div>
 <div class="col-12">

@@ -2,6 +2,7 @@ $(function(){
 
 set_remove_item_click();
 set_qty_change();
+set_is_included_change();
 
 //cart set items
 function set_cart_data(cart_data){
@@ -11,8 +12,11 @@ function set_cart_data(cart_data){
 
     Object.keys(cart_data).forEach(function(key){
 
+        var is_included = cart_data[key]['is_included'] == 1 ? 'checked' : '';
+
         cart_item_string += '<div class="row p5"> ';
-        cart_item_string += '<div class="col-6"><strong>' + cart_data[key]['name'] + '(' + cart_data[key]['size'] + ')</strong></div>';
+        cart_item_string += '<div class="col-1"><input type="checkbox" data-product_id="' + key +'" ' + is_included + ' class="is_included"/></div>';
+        cart_item_string += '<div class="col-5"><strong>' + cart_data[key]['name'] + '(' + cart_data[key]['size'] + ')</strong></div>';
         cart_item_string += '<div class="col-3"><input type="number" min="1" max="1000" class="qty" data-target="' + key + '" value="' + cart_data[key]['quantity'] + '" /> </div>';
         cart_item_string += '<div class="col-3"><span class="remove-item a" data-target="' + key + '"><i class="fa fa-times" aria-hidden="true"></i></span> </div>';
         cart_item_string += '</div>';
@@ -20,12 +24,15 @@ function set_cart_data(cart_data){
         var cur_amount = parseFloat(cart_data[key]['amount']) * parseInt(cart_data[key]['quantity']);
 
         summary_string += '<div class="row">';
-        summary_string += '<div class="col-7"><small><strong>' + cart_data[key]['name'] + '</strong> (' + cart_data[key]['size'] + ') <b>x</b> ' + cart_data[key]['quantity'] + '</small></div>';
-        summary_string += '<div class="col-5 text-right"><span>' + format_number(cur_amount,2) + '</span></div>';
-        summary_string += '</div>';
 
-        sub_total += (parseFloat(cart_data[key]['amount']) * parseInt(cart_data[key]['quantity']));
-        $('#sub_total').val(sub_total);
+        if(cart_data[key]['is_included'] == 1){
+            summary_string += '<div class="col-7"><small><strong>' + cart_data[key]['name'] + '</strong> (' + cart_data[key]['size'] + ') <b>x</b> ' + cart_data[key]['quantity'] + '</small></div>';
+            summary_string += '<div class="col-5 text-right"><span>' + format_number(cur_amount,2) + '</span></div>';
+            sub_total += (parseFloat(cart_data[key]['amount']) * parseInt(cart_data[key]['quantity']));
+        }        
+
+        summary_string += '</div>';        
+        $('#total_amount').val(sub_total)
     });
 
     $('#cart_div').html(cart_item_string);
@@ -34,6 +41,7 @@ function set_cart_data(cart_data){
 
     set_remove_item_click();
     set_qty_change();
+    set_is_included_change();
 }
 
 $('#remove_from_cart').click(function(){  
@@ -113,5 +121,28 @@ $('.payment-method-select').click(function(){
     $('.payment-method-select').removeClass('method-selected');
     $(this).addClass('method-selected');
 });
+
+function set_is_included_change(){
+    $('.is_included').on('change',function(){
+        var target = $(this).data('product_id');
+        var value = $(this).prop('checked');
+        $.ajax({
+            url: base_url + 'user/cart/modify_included',
+            type: 'POST',
+            data: {
+                target: target,
+                value: value,
+            },
+            success: function(response){
+                if(response.success){                    
+                    set_cart_data(response.cart_data);
+                }                
+            },
+            error: function(){
+    
+            }
+        });
+    });
+}
 
 });

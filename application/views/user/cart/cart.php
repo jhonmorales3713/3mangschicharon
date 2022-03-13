@@ -22,7 +22,7 @@
                             <?php $total_amount = 0; ?>
                             <?php foreach($_SESSION['cart'] as $key => $value){ ?>
                                 <div class="row">
-                                    <div class="col-7">
+                                    <div class="col-7">                                        
                                         <small><strong><?= $_SESSION['cart'][$key]['name'] ?> (<?= $_SESSION['cart'][$key]['size']; ?>)</strong> <b>x</b> <?= $_SESSION['cart'][$key]['quantity'] ?></small><br>
                                     </div>
                                     <div class="col-5 text-right">

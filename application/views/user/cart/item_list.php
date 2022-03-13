@@ -10,7 +10,10 @@
         <div class="col-12" id="cart_div">                  
             <?php foreach($_SESSION['cart'] as $key => $value){ ?>
                 <div class="row p5" id="<?= $key; ?>"> 
-                    <div class="col-6">                                
+                    <div class="col-1" id="is_included_container">                        
+                        <input type="checkbox" data-product_id="<?= $key; ?>" class="is_included" <?= $_SESSION['cart'][$key]['is_included'] == 1 ? "checked" : ""; ?>/>
+                    </div>
+                    <div class="col-5">                            
                         <strong><?= $_SESSION['cart'][$key]['name'] ?> (<?= $_SESSION['cart'][$key]['size']; ?>)</strong> <br>
                     </div>
                     <div class="col-3">                            
