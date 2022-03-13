@@ -57,9 +57,7 @@ class Cart extends CI_Controller {
         foreach($_SESSION['cart'] as $key => $value){
             $total_qty += intval($_SESSION['cart'][$key]['quantity']);
         }
-        $_SESSION['cart_items'] = $total_qty;
-
-        
+        $_SESSION['cart_items'] = $total_qty;        
 
         $response['success'] = true;
         $response['cart_items'] = $_SESSION['cart_items'];
@@ -98,12 +96,12 @@ class Cart extends CI_Controller {
         $is_included = 0;
         if($data['value'] == 'true'){
             $is_included = 1;
-        }             
+        }
         
         $_SESSION['cart'][$key]['is_included'] = $is_included;
         
         $response['success'] = true;          
-        $response['cart_data'] = $_SESSION['cart'];   
+        $response['cart_data'] = $_SESSION['cart'];
 
         generate_json($response);       
     }
@@ -168,10 +166,13 @@ class Cart extends CI_Controller {
         $customer_id = en_dec('dec',$_SESSION['customer_id']);
         $order_data = array();        
 
+        $product_id = array();
+
         foreach($_SESSION['cart'] as $key => $value){
             if($value['is_included'] == 1){
                 $order_data[$key] = $value;
                 unset($_SESSION['cart'][$key]);
+                array_push($product_id,en_dec('dec',$key));
             }
         }
         

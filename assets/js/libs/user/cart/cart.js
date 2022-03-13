@@ -16,7 +16,7 @@ function set_cart_data(cart_data){
 
         cart_item_string += '<div class="row p5"> ';
         cart_item_string += '<div class="col-1"><input type="checkbox" data-product_id="' + key +'" ' + is_included + ' class="is_included"/></div>';
-        cart_item_string += '<div class="col-5"><strong>' + cart_data[key]['name'] + '(' + cart_data[key]['size'] + ')</strong></div>';
+        cart_item_string += '<div class="col-5"><strong>' + cart_data[key]['name'] + ' (' + cart_data[key]['size'] + ')</strong></div>';
         cart_item_string += '<div class="col-3"><input type="number" min="1" max="1000" class="qty" data-target="' + key + '" value="' + cart_data[key]['quantity'] + '" /> </div>';
         cart_item_string += '<div class="col-3"><span class="remove-item a" data-target="' + key + '"><i class="fa fa-times" aria-hidden="true"></i></span> </div>';
         cart_item_string += '</div>';
@@ -31,13 +31,13 @@ function set_cart_data(cart_data){
             sub_total += (parseFloat(cart_data[key]['amount']) * parseInt(cart_data[key]['quantity']));
         }        
 
-        summary_string += '</div>';        
-        $('#total_amount').val(sub_total)
+        summary_string += '</div>';
     });
 
     $('#cart_div').html(cart_item_string);
     $('#summary_div').html(summary_string);
     $('#sub_total').html(php_money(sub_total));    
+    $('#total_amount').val(sub_total)
 
     set_remove_item_click();
     set_qty_change();
