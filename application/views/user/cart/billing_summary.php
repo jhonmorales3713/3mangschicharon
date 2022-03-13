@@ -21,7 +21,8 @@
 
 <b>Order Summary</b>   
 <?php $total_amount = 0; ?>
-<div class="p20" id="summary_div">
+<div class="p20">
+<div id="summary_div">
 <?php foreach($_SESSION['cart'] as $key => $value){ ?>
     <div class="row">
         <?php if($value['is_included'] == 1){ ?>
@@ -36,6 +37,7 @@
         <?php } ?>       
     </div>         
 <?php } ?>
+</div>
 
 
 <?php if($sub_active_page == 'checkout'){ ?>
@@ -50,6 +52,7 @@
     </div>
 <?php } ?>
 </div>
+
 
 <hr>        
 <div class="row">
