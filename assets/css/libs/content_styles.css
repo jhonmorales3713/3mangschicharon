@@ -42,7 +42,7 @@
 .main-content{
     min-height: 700px; /* 689 */
     padding: 30px;
-    padding-top: 140px !important;
+    padding-top: 120px !important;
     z-index: 2;
 }
 

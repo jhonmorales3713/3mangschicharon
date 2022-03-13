@@ -38,6 +38,22 @@ $(function(){
         });
     });
 
+    $('.order-now').click(function(e){ //order now redirects to checkout with product id
+        e.preventDefault(); 
+
+        var variant = check_variant_selected();
+        if(Object.keys(variant).length === 0){
+            sys_toast_error('Please select size');
+            return;
+        }
+
+        var product_id = $(this).data('product_id');
+        var qty = $('#qty').val();
+
+        window.location.href = base_url + 'user/cart/checkout/'+product_id+'/'+variant.variant_id+'/'+variant.size + '/' +qty;
+        
+    });
+
     function check_variant_selected(){
         var element = $('.size-select');        
         var variant = {};
