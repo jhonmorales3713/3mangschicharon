@@ -7,6 +7,30 @@ $(function () {
 		$('#avatar_image').val('');
 		$('#avatar_image').click();
     });	
+
+	$(document).ready( function () {
+		if ($("input#f_id").val() !== "") {
+			//change_user_modal('edit');
+			getUser($("input#f_id").val());
+		}
+	});
+	
+	function getUser (id) {
+		$.ajax({
+			type:'post',
+			url:base_url+'admin/settings/user_list/get_data_admin',
+			data:{'id':id},
+			beforeSend:function() {
+				$.LoadingOverlay("show"); 
+				$("#record_form").find('input').prop('checked', false);
+			},
+			success:function(data){
+				const res = data[0];
+				populate_edit_user_form(res);				
+				$.LoadingOverlay("hide");
+			}
+		});
+	}
     
     $('#avatar_image').change(function() {
 		var fileInput = $(this);

@@ -75,6 +75,7 @@ $route['admin/signout'] = 'admin/login/signout';
 $route['Account/setfirstpassword']    = 'Main/setfirstpassword';
 $route['admin/dashboard'] = 'admin/dashboard/index';
 $route['products_home/(:any)'] = 'admin/Main_products/products_home/$1';
+$route['orders_home/(:any)'] = 'admin/Main_orders/orders_home/$1';
 $route['customers_home/(:any)'] = 'admin/Main_customers/customers_home/$1';
 $route['settings_home/(:any)'] = 'admin/Main_settings/settings_home/$1';
 $route['Main_cusstomers/customers/(:any)'] = 'admin/Main_customers/customers/$1';

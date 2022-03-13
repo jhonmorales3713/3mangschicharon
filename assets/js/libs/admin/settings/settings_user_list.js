@@ -74,6 +74,7 @@ $(function(){
         window.location.assign(base_url+"settings/user_list/add_user/"+token);
 	})
 
+	
 	// start - disable function
 	let disable_id;
 	let record_status;
@@ -94,19 +95,20 @@ $(function(){
 		$.LoadingOverlay("show");
 		$.ajax({
 			type:'post',
-			url:base_url+'settings/user_list/disable_data',
+			url:base_url+'admin/settings/user_list/disable_data',
 			data:{'disable_id':disable_id, 'record_status':record_status},
 			success:function(data){
 				var res = data.result;
 				if (data.success == 1){
 					fillDatatable(); //refresh datatable
 					//showToast('success', data.message);
-					showCpToast("success", "Success!", data.message);
+					sys_toast_success(data.message);
 					$('#disable_modal').modal('toggle'); //close modal
 					$.LoadingOverlay("hide");
+					$(".modal-backdrop").remove();
 				}else{
 					//showToast('note', data.message);
-					showCpToast("info", "Note!", data.message);
+					sys_toast_info(data.message);
 				}
 			}
 		});
@@ -124,19 +126,19 @@ $(function(){
 		$.LoadingOverlay("show");
 		$.ajax({
 			type:'post',
-			url:base_url+'settings/user_list/delete_data',
+			url:base_url+'admin/settings/user_list/delete_data',
 			data:{'delete_id':delete_id},
 			success:function(data){
 				var res = data.result;
 				if (data.success == 1){
 					fillDatatable(); //refresh datatable
 					//showToast('success', data.message);
-					showCpToast("success", "Success!", data.message);
+					sys_toast_success(data.message);
 					$('#delete_modal').modal('toggle'); //close modal
 					$.LoadingOverlay("hide");
 				}else{
 					//showToast('note', data.message);
-					showCpToast("info", "Note!", data.message);
+					sys_toast_info(data.message);
 				}
 			}
 		});

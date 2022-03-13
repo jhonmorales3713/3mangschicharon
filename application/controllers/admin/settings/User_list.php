@@ -66,12 +66,20 @@ class user_list extends CI_Controller {
             mkdir( 'assets/uploads/avatars/', 0777, true);
         }
     
-    	$mct =  microtime('get_as_float');
-    	$mct = str_replace('.', '', $mct);
-		//$this->makedirImage();
+		$images = $this->model_user_list->getImageByFileName($this->input->post('f_email'));
+		foreach($images->result_array() as $image){
+			if(file_exists('assets/uploads/avatars/'.str_replace('==','',$image['avatar']))){
+				unlink(('assets/uploads/avatars/'.str_replace('==','',$image['avatar'])));
+			}
+		}
+	
+    	// $mct =  microtime('get_as_float');
+    	// $mct = str_replace('.', '', $mct);
+		// //$this->makedirImage();
 		
+		$file_name = en_dec('en',$this->upload->data()['file_name']).'.'.pathinfo($_FILES['userfile']['name'], PATHINFO_EXTENSION);
     	$config = array(
-    		'file_name'     => $mct.$_FILES['userfile']['name'],
+    		'file_name'     => $file_name,
     		'allowed_types' => 'jpg|jpeg|png|pdf',
     		'max_size'      => 3000,
     		'overwrite'     => FALSE,
@@ -91,7 +99,6 @@ class user_list extends CI_Controller {
     		die();
     	}
     	else {
-			$file_name = $this->upload->data()['file_name'];
 			
 			// $directory = './assets/uploads/avatars';
 			// $fileTempName    = $_FILES['userfile']['tmp_name'];
@@ -127,6 +134,74 @@ class user_list extends CI_Controller {
     	}
 	}
     
+	
+
+    public function disable_data()
+    {
+    	$this->isLoggedIn();
+
+    	$disable_id = sanitize($this->input->post('disable_id'));
+    	$record_status = sanitize($this->input->post('record_status'));
+
+        // print_r($disable_id);
+        // print_r('<br>');
+        // print_r($record_status);
+        // die();
+
+    	if ($record_status == 1) {
+    		$record_status = 2;
+    		$record_text = "disabled";
+    	}else if ($record_status == 2) {
+    		$record_status = 1;
+    		$record_text = "enabled";
+    	}else{
+    		$record_status = 0;
+		}
+		
+		//get category data using disable_id
+		$user_data = $this->model_user_list->get_data($disable_id);
+		$remarks = $user_data[0]['username']." has been successfully ".$record_text;
+
+    	if ($disable_id > 0 && $record_status > 0) {
+    		if ($this->model_user_list->disable_data($disable_id, $record_status)) {
+				$data = array("success" => 1, 'message' => "Record ".$record_text." successfully!");
+				$this->audittrail->logActivity('User List', $remarks, $record_text, $this->session->userdata('username'));
+    		}
+    		else {
+    			$data = array("success" => 0, 'message' => "Something went wrong, Please Try again!");
+    		}
+    	}
+    	else {
+    		$data = array("success" => 0, 'message' => "Something went wrong, Please Try again!");
+    	}
+    	generate_json($data);
+    }
+
+    public function delete_data()
+    {
+    	$this->isLoggedIn();
+		$delete_id = sanitize($this->input->post('delete_id'));
+		
+		//get category data using delete_id
+		$user_data = $this->model_user_list->get_data($delete_id);
+		$remarks = $user_data[0]['username']." has been successfully deleted";
+
+    	if ($delete_id > 0) {
+    		if ($this->model_user_list->delete_data($delete_id,$user_data)) {
+				$data = array("success" => 1, 'message' => "Record deleted successfully!");
+				$this->audittrail->logActivity('User List', $remarks, 'deleted', $this->session->userdata('username'));
+    		}
+    		else {
+    			$data = array("success" => 0, 'message' => "Something went wrong, Please Try again!");
+    		}
+    	}
+    	else {
+    		$data = array("success" => 0, 'message' => "Something went wrong, Please Try again!");
+    	}
+
+    	generate_json($data);
+    }
+
     public function create_data()
     {
     	$file_name = (!empty($this->input->post('current_avatar_url'))) ? $this->input->post('current_avatar_url') : "";
@@ -297,6 +372,125 @@ class user_list extends CI_Controller {
 				'type'  => 'New User',
                 'main_nav_id' => $main_nav_id,
 				'id'	=> '',
+			);
+			// end - data to be used for views
+
+            // start - load all the views synchronously
+            $data_admin['active_page'] =  $this->session->userdata('active_page');
+            $data_admin['subnav'] = false;
+            $data_admin['page_content'] = $this->load->view('admin/settings/add_user',$data_admin,TRUE);
+            $this->load->view('admin_template',$data_admin,'',TRUE);
+            // end - load all the views synchronously
+        }else{
+            $this->load->view('error_404');
+        }
+	}
+    public function get_data_admin()
+    {
+        $this->isLoggedIn();
+        $id = sanitize($this->input->post('id'));
+        $result = $this->model_user_list->get_data($id);
+        generate_json($result);
+    }
+	
+    public function update_data()
+    {
+    	$file_name = (!empty($this->input->post('current_avatar_url'))) ? $this->input->post('current_avatar_url') : "";
+    	//if there is a file, upload it first and take note of the file name
+    	if(count($_FILES)>1){
+    		$file_name = $this->f_upload_file();
+    	}
+		$file_name = str_replace('==.','.',$file_name);
+
+    	//secondary validation
+        //username should be unique
+    	$user_check = $this->model_user_list->check_username(
+    		$this->input->post('f_email'),
+    		$this->input->post('f_id')
+    	);
+
+    	if ($user_check == FALSE){
+    		$response = array(
+    			'success'      => false,
+    			'environment' => ENVIRONMENT,
+    			'message'     => 'Username doesnt exist',
+    			'csrf_name'   => $this->security->get_csrf_token_name(),
+    			'csrf_hash'   => $this->security->get_csrf_hash()
+    		);
+
+            //remove uploaded image
+    		// if($file_name!=""){
+    		// 	unlink('./assets/uploads/avatars/'.$file_name);
+    		// }
+    		echo json_encode($response);
+    	}
+    	else {
+    		//generate functions json
+    		$functions = $this->model_access_control->generate_functions($this->input->post());
+    		$response = array(
+    			'success'     => true,
+    			'environment' => ENVIRONMENT,
+    			'csrf_name'   => $this->security->get_csrf_token_name(),
+    			'csrf_hash'   => $this->security->get_csrf_hash()
+			);
+			
+			$user_data = $this->model_user_list->get_data($this->input->post('f_id'));
+			
+			$prev_val = [
+				'f_email' => $user_data[0]['username'],
+				'f_password' => en_dec('dec',$user_data[0]['password']),
+				'avatar' => $user_data[0]['avatar'],
+				//'functions' => $user_data[0]['functions'],
+			];			
+
+    		$this->model_user_list->update_user(
+    			$this->input->post('f_email'),
+    			$this->input->post('f_password'),
+    			$file_name,
+    			$functions,
+    			$this->input->post('f_id')
+    		);              
+    		// if (!empty($this->input->post('f_password')))
+			// 	$this->notification->change_password($this->input->post('f_id'));
+
+			$cur_val = [
+				'f_email' => $this->input->post('f_email'),
+				'f_password' => $this->input->post('f_password'),
+				'avatar' => $file_name,
+				//'functions' => $functions				
+			];
+
+			$audit_string = "";
+			$pre_func = json_decode($user_data[0]['functions'],true);
+			$cur_func = json_decode($functions,true);
+			$cur_arr = [];
+			$pre_arr = [];
+
+			
+           if($pre_func  != $cur_func){
+		  	 $audit_string .= $this->audittrail->UserListString($pre_func,$cur_func);
+             $this->audittrail->logActivity('User List', 'User List'." has been updated successfully. \nChanges: \n".$audit_string, 'update', $this->session->userdata('username'));
+		   }
+		
+			$response['message'] = 'User updated';
+			$response['cur_arr'] = $cur_arr;
+			$response['pre_arr'] = $pre_arr;
+    		echo json_encode($response);
+    		die();
+    	}
+    }
+	public function edit_user($token = '', $id = "")
+	{
+		$this->isLoggedIn();
+        if ($this->loginstate->get_access()['aul']['update'] == 1) {
+        	$content_url = $this->uri->segment(1).'/'.$this->uri->segment(2).'/'.$this->uri->segment(3).'/'.$this->uri->segment(4).'/';
+        	$main_nav_id = $this->views_restriction($content_url);
+            // start - data to be used for views
+        	$data_admin = array(
+				'token' => $token,
+				'type'  => 'Edit User',
+                'main_nav_id' => $main_nav_id,
+				'id'	=> $id,
 			);
 			// end - data to be used for views
 

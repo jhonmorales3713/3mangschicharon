@@ -35,8 +35,8 @@
 ?>
 <div class="admin-nav bg-light"style="
   overflow-y: scroll;">
-    <div class="row">
-        <div class="col-12">
+    <div class="row mt-5">
+        <div class="col-12 mt-2">
             <img class="logo_login" src="<?=base_url('assets/img/'.$c_main_logo);?>" width=100%>
         </div>
         <div class="col-12" >

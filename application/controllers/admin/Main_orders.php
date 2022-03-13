@@ -3,7 +3,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 
-class Main_settings extends CI_Controller {
+class Main_orders extends CI_Controller {
 
 
     public function __construct() {
@@ -21,8 +21,8 @@ class Main_settings extends CI_Controller {
         }
     }
 
-    public function settings_home($labelname = null){
-        header('location:'.base_url('admin/Main_settings/'));
+    public function orders_home($labelname = null){
+        header('location:'.base_url('admin/Main_orders/'));
         $this->session->set_userdata('active_page',$labelname);
     }    
 
@@ -54,7 +54,6 @@ class Main_settings extends CI_Controller {
         $data['page_content'] = $this->load->view('admin/dashboard/index',$data,TRUE);
 		$this->load->view('admin_template',$data,'',TRUE);
     }
-
     
     public function user_list($action = '',$token = ''){
 
