@@ -39,11 +39,12 @@
 }
 
 /* minimum height for page content is 689px */
-.main-content{
+.content{
     min-height: 700px; /* 689 */
     padding: 30px;
     padding-top: 120px !important;
     z-index: 2;
+    margin: 0 !important;
 }
 
 .a{

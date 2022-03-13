@@ -10,7 +10,7 @@
     </div>
 </div>
 
-<div class="main-content">    
+<div class="content">    
     <?= $page_content; ?>
 </div>
 
