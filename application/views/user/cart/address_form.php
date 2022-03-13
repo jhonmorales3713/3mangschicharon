@@ -13,7 +13,7 @@
         <div class="col-lg-6 col-md-6 col-sm-12">
             <div class="form-group">
                 <small for="">Alias </small>
-                <input type="text" id="alias" class="form-control form-control-sm"> 
+                <input type="text" id="address_alias" class="form-control form-control-sm"> 
             </div>
         </div>
         <div class="col-lg-6 col-md-6 col-sm-12">

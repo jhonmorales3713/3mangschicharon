@@ -5,20 +5,7 @@ $('#btn_place_order').click(function(){
         total_amount: $('#total_amount').val(),
         delivery_amount: 50,   
         shipping_data: get_shipping_details()     
-    };   
-
-    /*
-    data.address_category_id = $('#address_category_id').val();
-    data.alias = $('#alias').val();
-    data.full_name = $('#full_name').val();
-    data.contact_no = $('#contact_no').val();
-    data.province = $('#province').val();
-    data.city = $('#city').val();
-    data.barangay = $('#barangay').val();
-    data.zip_code = $('#zip_code').val();
-    data.address = $('#address').val();   
-    data.notes = $('#notes').val();
-    */
+    };    
 
     $.ajax({
         url: base_url + 'user/cart/place_order',
@@ -38,13 +25,13 @@ $('#btn_place_order').click(function(){
         error: function(){
 
         }
-    })
+    });
 });
 
 function get_shipping_details(){
     var data = {
         address_category_id: $('#address_category_id').val(),
-        alias: $('#alias').val(),
+        address_alias: $('#alias').val(),
         full_name: $('#full_name').val(),
         contact_no: $('#contact_no').val(),
         province: $('#province').val(),
@@ -55,6 +42,33 @@ function get_shipping_details(){
         notes: $('#notes').val()
     }   
     return data; 
+}
+
+$('#save_address_btn').click(function(){
+    var address = get_shipping_details();
+    save_shipping_address(address);
+});
+
+function save_shipping_address(address){
+    $.ajax({
+        url: base_url + 'user/shipping/save_shipping_address',
+        type: 'POST',
+        data: address,
+        success: function(response){
+            if(response.success){
+                clearFormErrors();
+                sys_toast_success(response.message);
+            }
+            else{
+                clearFormErrors();
+                sys_toast_error(response.message);
+                show_errors(response,$('#address_form'));
+            }
+        },
+        error: function(){
+
+        }
+    });
 }
 
 

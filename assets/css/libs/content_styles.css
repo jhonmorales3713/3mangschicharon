@@ -272,6 +272,7 @@
 
 .payment-method-select:hover, .method-selected{
     border: 1px solid #873e23;
+    background: lightgray;
 }
 
 @media only screen and (max-width: 548px) {

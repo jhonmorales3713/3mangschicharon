@@ -91,8 +91,7 @@ class Cart extends CI_Controller {
         }
         $_SESSION['cart_items'] = $total_qty;
         
-        $response['success'] = true;
-        
+        $response['success'] = true;        
         $response['cart_items'] = $_SESSION['cart_items'];
         $response['cart_data'] = $_SESSION['cart'];   
 

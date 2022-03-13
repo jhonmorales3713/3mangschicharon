@@ -60,7 +60,7 @@ $('#remove_from_cart').click(function(){
                     }
                     else{
                         set_cart_data(response.cart_data);
-                        $('.cart-items').text(response.cart_items);    
+                        $('#cart-items').text(response.cart_items);    
                         $('#remove_item_modal').modal('hide');
                     }                    
                 }
@@ -101,10 +101,10 @@ function set_qty_change(){
                 quantity: quantity,
             },
             success: function(response){
-                if(response.success){
-                    $('#cart_items').text(response.cart_items);
+                if(response.success){                    
+                    $('#cart-items').text(response.cart_items);    
                     set_cart_data(response.cart_data);
-                }                
+                }
             },
             error: function(){
     
