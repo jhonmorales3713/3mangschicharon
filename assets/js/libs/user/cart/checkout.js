@@ -15,7 +15,7 @@ $('#btn_place_order').click(function(){
             if(response.success){
                 sys_toast_success(response.message);
                 $('.cart-items').text(response.cart_items);
-                window.location.href = base_url + 'shop';
+                window.location.href = base_url + 'user/orders/receipt/'+response.order_id;
             }
             else{
                 clearFormErrors();

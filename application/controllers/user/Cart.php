@@ -249,9 +249,11 @@ class Cart extends CI_Controller {
             }
         }        
 
+        $order_id = $this->generate_order_id();
+
         $order = array(
             'customer_id' => $customer_id,
-            'order_id' => $this->generate_order_id(),
+            'order_id' => $order_id,
             'product_id' => json_encode($product_id),
             'order_data' => json_encode($order_data),
             'payment_data' => json_encode($payment_data),
@@ -260,7 +262,7 @@ class Cart extends CI_Controller {
             'delivery_amount' => floatval($data['delivery_amount'])            
         );
 
-        $order_id = $this->model_orders->insert_order($order);
+        $id = $this->model_orders->insert_order($order);
 
         $total_qty = 0;
         if(sizeof($_SESSION['cart']) > 0){
@@ -275,11 +277,11 @@ class Cart extends CI_Controller {
 
         $response['success'] = true;
         $response['message'] = 'Order successful';
-        $response['order_id'] = $order_id;
+        $response['order_id'] = en_dec('en',$order_id);
         $response['cart_items'] = $total_qty;
 
         generate_json($response);
-    }
+    }    
 
     private function shipping_address_validation(){
         $validation = array(
