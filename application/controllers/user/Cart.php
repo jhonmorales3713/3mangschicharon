@@ -251,6 +251,7 @@ class Cart extends CI_Controller {
 
         $order = array(
             'customer_id' => $customer_id,
+            'order_id' => $this->generate_order_id(),
             'product_id' => json_encode($product_id),
             'order_data' => json_encode($order_data),
             'payment_data' => json_encode($payment_data),
@@ -284,6 +285,18 @@ class Cart extends CI_Controller {
         $validation = array(
 
         );
+    }
+
+    private function generate_order_id(){
+        $order_id = '';
+        do
+        {           
+            $order_id = getToken(9); //generator of alphanumeric characters --see utilities_helper on helpers
+            $order_id = strtoupper($order_id);
+            $res = $this->model_orders->check_unique($order_id);
+        } 
+        while( $res > 0 );
+        return $order_id;
     }
     
 }
