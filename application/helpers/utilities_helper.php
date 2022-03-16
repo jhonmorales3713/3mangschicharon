@@ -154,6 +154,66 @@ function generate_json($data) {
         return $date;
     }
 
+	function format_date_reverse_dash($date) {
+		return date("Y-m-d", strtotime($date));
+	}
+    
+
+	function display_payment_status($payment_status, $payment_method, $export = false){
+
+		if($payment_status == 1 && $payment_method != 'Free Payment' && $payment_method != 'Prepayment') {
+			$label = (!$export) ? "<label class='badge badge-info'> Pending(COD)</label>" : "Pending(COD)";
+		}
+		else if($payment_status == 1) {
+			$label = (!$export) ? "<label class='badge badge-success'> Paid</label>" : "Paid";
+		}
+		else if($payment_status == 3 && $payment_method != 'Free Payment' && $payment_method != 'Prepayment'){
+			$label = (!$export) ? "<label class='badge badge-info'> Pending(COD)</label>" : "Pending(COD)";
+		}
+		else if($payment_status == 0){
+			$label = (!$export) ? "<label class='badge badge-info'> Pending</label>" : "Pending";
+		}
+		else{
+			$label = (!$export) ? "<label class='badge badge-info'> Pending</label>" : "Pending";
+		}
+
+		return $label;
+	}
+
+    
+	function display_order_status($status, $export = false){
+        $value='';
+		if($status == 1){
+            $value = 'Pending';
+		}
+		else if($status == 2){
+            $value = 'Processing';
+		}
+		else if($status == 3){
+            $value = 'Approved';
+		}
+		else if($status == 4){
+            $value = 'Shipped';
+		}
+		else if($status == 5){
+            $value = 'Delivered';
+		}
+		else if($status == 6){
+            $value = 'Cancelled';
+		}
+		else if($status == 7){
+            $value = 'Return';
+		}
+		else if($status == 8){
+            $value = 'Accepted';
+		}
+		else if($status == 9){
+            $value = 'Declined';
+		}
+
+        $label = (!$export) ? "<label class='badge badge-warning'>".$value.'</label>':$value;
+		return $label;
+	}
     function format_datetime_dash_reverse($str){
         $date = date('Y-m-d H:i:s', strtotime($str));
         return $date;

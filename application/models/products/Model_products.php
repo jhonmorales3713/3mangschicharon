@@ -387,9 +387,9 @@ class Model_products extends CI_Model {
 		return $this->db->query($query, $params);
 	}
 	public function getImageByFileName($filename,$update_isset = false,$id='') {
-		$query="SELECT * FROM sys_products_images join sys_products on product_id = sys_products.id WHERE product_id = ".$id;
+		$query="SELECT * FROM sys_products_images join sys_products on product_id = sys_products.id ";
 		if($id != ''){
-			//$query.='WHERE filename = ? and product_id = '.$id.' OR (status = 0 AND filename = ?)';
+			$query.=' WHERE product_id = '.$id;
 		}
 		//print_r($filename);
 		// }else if($update_isset){

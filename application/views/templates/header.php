@@ -48,12 +48,14 @@
         <link rel="stylesheet" href="<?=base_url('assets/css/libs/jquery.toast.css')?>">
         <link rel="stylesheet" href="<?=base_url('assets/css/libs/jquery-ui.css')?>">        
         <link rel="stylesheet" href="<?=base_url();?>assets/css/libs/bootstrap-4.1.3.min.css">
-        <link rel="stylesheet" href="<?=base_url();?>assets/css/libs/owl-carousel.min.css">       
-        <link rel="stylesheet" href="<?=base_url('assets/css/libs/header_styles.css')?>">
-        <link rel="stylesheet" href="<?=base_url('assets/css/libs/content_styles.css')?>">
-        <?php if($this->session->userdata('role')!='admin'){?>
+        <link rel="stylesheet" href="<?=base_url();?>assets/css/libs/owl-carousel.min.css">    
+        <?php if($this->session->userdata('role')=='admin' || strpos($_SERVER['REQUEST_URI'],'admin')){?>
             <link rel="stylesheet" href="<?=base_url('assets/css/admin/admin_styles.css')?>">
-        <?php }?>
+        <?php }else{?>
+               
+            <link rel="stylesheet" href="<?=base_url('assets/css/libs/header_styles.css')?>">
+            <link rel="stylesheet" href="<?=base_url('assets/css/libs/content_styles.css')?>">
+        <?php } ?>
         <link rel="stylesheet" href="<?=base_url('assets/css/libs/error_styles.css')?>">
         <link rel="stylesheet" href="<?=base_url('assets/css/libs/jconfirm.css')?>">
 

@@ -16,7 +16,7 @@
                             Product List
                         </div>
                         <div class="col d-flex justify-content-end align-items-center">
-                            <p class="border-search_hideshow mb-0"><a href="#" id="search_hideshow_btn"><i class="fa fa-chevron-circle-down fa-lg" aria-hidden="true"></i></a></p>
+                            <p class="border-search_hideshow mb-0"><a href="#" id="search_hideshow_btn"><i class="fa fa-chevron-circle-down fa-lg  text-white" aria-hidden="true"></i></a></p>
                         </div>
                     </div>
                 </div>
@@ -25,25 +25,29 @@
                     <form id="form_search">
                         <div class="row ">
                             <div class="col-md-6 col-lg-3">
+                                Date Created
                                 <input type="text" placeholder="Select Date Product Created" autocomplete="false" class="form-control form-control-sm datetimepicker-input" id="date_from" data-toggle="datetimepicker" data-target="#datepicker"/>
         
                             </div>
                             <div class="col-md-6 col-lg-3">
+                                Product Name
                                 <div class="form-group">
                                     <input type="text" name="_name" class="form-control material_josh form-control-sm search-input-text enter_search" placeholder="Name">
                                 </div>
                             </div>
                             <div class="col-md-6 col-lg-3">
-                                    <div class="form-group">
-                                        <select name="_categories" class="form-control material_josh form-control-sm search-input-text enter_search">
-                                            <option value="">All Category</option>
-                                            <?php foreach ($categories as $category): ?>
-                                                <option value="<?=$category['id'];?>"><?=$category['category_name'];?></option>
-                                            <?php endforeach ?>
-                                        </select>
-                                    </div>
+                                Filter By
+                                <div class="form-group">
+                                    <select name="_categories" class="form-control material_josh form-control-sm search-input-text enter_search">
+                                        <option value="">All Category</option>
+                                        <?php foreach ($categories as $category): ?>
+                                            <option value="<?=$category['id'];?>"><?=$category['category_name'];?></option>
+                                        <?php endforeach ?>
+                                    </select>
+                                </div>
                             </div>
                             <div class="col-md-6 col-lg-3">
+                                Status
                                 <div class="form-group">
                                     <select name="_record_status" class="form-control material_josh form-control-sm enter_search" id="_record_status">
                                         <option value="">All Records</option>

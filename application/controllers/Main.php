@@ -42,6 +42,7 @@ class Main extends CI_Controller {
 			switch($main_nav){
 				case 2://orders
 					$url = "Main_orders";
+					$this->session->set_userdata('active_page','Orders');
 				break;
 				case 3://products
 					$url = "Main_products";
