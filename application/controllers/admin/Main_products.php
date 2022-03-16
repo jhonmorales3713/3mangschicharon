@@ -821,28 +821,15 @@ class Main_products extends CI_Controller {
 
         // variants validation if empty
         $variants_isset  = sanitize($this->input->post('f_variants_isset'));
-        $var_option_name = $this->input->post('f_var_option_name');
-        $var_option_list = $this->input->post('f_var_option_list');
         $variant_checker = 0;
-
         if($variants_isset == 1){
-            if($var_option_name[0] == "" && $var_option_list[0] != ""){
-                $variant_checker = 1;
-            }
-            else if($var_option_name[0] != "" && $var_option_list[0] == ""){
-                $variant_checker = 1;
-            }
-            if($var_option_name[1] == "" && $var_option_list[1] != ""){
-                $variant_checker = 1;
-            }
-            else if($var_option_name[1] != "" && $var_option_list[1] == ""){
-                $variant_checker = 1;
-            }
-            if($var_option_name[2] == "" && $var_option_list[2] != ""){
-                $variant_checker = 1;
-            }
-            else if($var_option_name[2] != "" && $var_option_list[2] == ""){
-                $variant_checker = 1;
+            $variant_name   = $this->input->post('variant_name');
+            $variant_price   = $this->input->post('variant_price');
+            $variant_counter = count($variant_name);
+            for($i = 0; $i < $variant_counter; $i++) { 
+                if($variant_name[$i] == "" && $variant_price[$i] != ""){
+                    $variant_checker = 1;
+                }
             }
         }
 
