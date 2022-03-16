@@ -26,9 +26,19 @@ class Model_orders extends CI_Model {
 
     
 	public function get_productinfo($id='') {
-		$query="SELECT * FROM sys_products_images join sys_products on product_id = sys_products.id  WHERE product_id = ".$id;
+		$query="SELECT * FROM sys_products_images join sys_products on product_id = sys_products.id  WHERE status = 1 and product_id = ".$id;
 		return $this->db->query($query)->result_array();
     }
+
+	public function processOrder($reference_num) {
+
+		$sql = "UPDATE `sys_orders` SET status_id = 2 `date_processed` = ? WHERE reference_num = ? ";
+		$bind_data = array(
+			date('Y-m-d H:i:s'),
+			$reference_num
+		);
+		return $this->db->query($sql, $bind_data);
+	}
     
     function order_item_table($reference_num){
         // storing  request (ie, get/post) global array to a variable
@@ -65,21 +75,21 @@ class Model_orders extends CI_Model {
             $order_info = json_decode($row["order_data"]);
             foreach($product_id as $product){
                 $product_info = $this->get_productinfo($product)[0];
-                $product_info_parent = $this->get_productinfo($product)[0]['parent_product_id']!=''?$this->get_productinfo($this->get_productinfo($product)[0]['parent_product_id'])[0]['name']:'';
+                $product_info_parent = $this->get_productinfo($product)[0]['parent_product_id']!=''?$this->get_productinfo($this->get_productinfo($product)[0]['parent_product_id'])[0]['name'].' - ':'';
             }
             foreach($order_info  as $key => $value){
-                print_r(json_decode($order_info[$value]));
-die();
+               //print_r($value);
+                $qty = $value->qty;
+                $amount = $value->price;
             }
 			$nestedData=array();
             
-			$nestedData[] = '<img class="img-thumbnail" style="width: 50px;" src="'.base_url().'assets/uploads/products/'.$product_info['filename'].'?'.rand().'">';
-            $parent_prod  = (!empty($row['parent_product_name'])) ? $row['parent_product_name'].' - ' : '';
+			$nestedData[] = '<img class="img-thumbnail" style="width: 50px;" src="'.base_url().'assets/uploads/products/'.str_replace('==.','.',$product_info['filename']).'?'.rand().'">';
 			$nestedData[] = ucwords($product_info_parent.$product_info["name"]);
-			$nestedData[] = $row["qty"];
+			$nestedData[] = $qty;
 
-            $nestedData[] = number_format($row["amount"], 2);
-            $nestedData[] = number_format($row["total_amount"], 2);
+            $nestedData[] = number_format($amount, 2);
+            $nestedData[] = number_format($amount * $qty, 2);
 
 			$data[] = $nestedData;
 		}

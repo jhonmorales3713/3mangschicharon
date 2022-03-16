@@ -36,5 +36,67 @@ $(function () {
         });
     }
 
+
+    $('#processBtn').click(function(e){
+        ref_num = $(this).data('value');
+        $.LoadingOverlay("show");
+         $('#po_id').val(ref_num);
+         $('#po_header_ref').html('Processing Order for Ref # '+ $('#tm_order_reference_num').html());
+        $('#po_order_date').html(' '+ $('#tm_order_date').html());
+        $('#po_order_reference_num').html(' '+$('#tm_order_reference_num').html());
+         $('#po_amount').html(' '+$('#tm_amount').html());
+        $('#po_order_status').html(' '+$('#tm_order_status').html());
+        $('#po_payment_date').html(' '+$('#tm_payment_date').html());
+        $('#po_payment_ref_num').html(' '+$('#tm_payment_ref_num').html());
+        $('#po_payment_status').html(' '+$('#tm_payment_status').html());
+        $.LoadingOverlay("hide");
+        $('#processOrder_modal').modal();
+
+    });
+
+    
+
+    $('#form_save_process').submit(function(e){
+        e.preventDefault();
+        $.LoadingOverlay("show");
+        var form = $(this);
+        var form_data = new FormData(form[0]);
+        
+        $.ajax({
+            type: form[0].method,
+            url: base_url+"orders/Main_orders/processOrder",
+            data: form_data,
+            contentType: false,   
+            cache: false,      
+            processData:false,
+            success:function(data){
+                $.LoadingOverlay("hide");
+                var json_data = JSON.parse(data);
+                
+                if(json_data.success) {
+                    $('#readyPickup_modal').modal('hide');
+                    //sys_toast_success(json_data.message);
+                    showCpToast("success", "Success!", json_data.message);
+                    // window.location.assign(base_url+"Main_orders/orders_view/"+token+'/'+url_ref_num);
+                    location.reload();
+                }else{
+                    showCpToast("warning", "Warning!", json_data.message);
+                    setTimeout(function(){location.reload()}, 2000);
+                    // sys_toast_warning(json_data.message);
+                    // setInterval(
+                    //     function(){ 
+                    //         location.reload(); 
+                    //     },
+                    // 2000);
+                }
+            },
+            error: function(error){
+                //sys_toast_error('Something went wrong. Please try again.');
+                showCpToast("error", "Error!", 'Something went wrong. Please try again.');
+            }
+        });
+
+    });
+    
     fillDataTableProducts(url_ref_num);
 });

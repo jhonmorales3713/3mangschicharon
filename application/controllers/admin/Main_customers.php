@@ -250,32 +250,6 @@ class Main_customers extends CI_Controller {
         generate_json($query);
 	}
 
-    public function send_email(){
-        $config = Array(
-            'protocol' => 'smtp',
-            'smtp_host' => 'ssl://smtp.googlemail.com',
-            'smtp_port' => 465,
-            'smtp_user' => 'teeseriesphilippines@gmail.com',
-            'smtp_pass' => 'teeseriesph',
-            'charset' => 'utf-8',
-            'newline'   => "\r\n",
-            'wordwrap'=> TRUE,
-            'mailtype' => 'html'
-        );
-        $this->email->initialize($config);
-        $this->email->set_newline("\r\n");  
-        $this->email->from('ulul@gmail.com');
-        $this->email->to('moralesjhon03@gmail.com');
-        $this->email->subject('testing lang');
-        $data['email']='moralesjhonpogi';
-        $view = $this->load->view('email/templates/email_template',$data,true);
-        $this->email->message($view);
-        $this->email->send();
-        
-        // Set to, from, message, etc.
-        
-        print_r($this->email->print_debugger());
-    }
     
     public function save_product()
     {

@@ -18,11 +18,12 @@
 
     $sub_total_converted = 0;
     foreach(json_decode($order_details['order_data']) as $row ){
-        $sub_total_converted.=$row->amount;
+        $sub_total_converted.=$row->price;
     }
     $sub_total_converted=number_format($sub_total_converted, 2);
     $shipping_fee_converted = number_format($order_details['delivery_amount'],2);
     $total_amount_converted = $sub_total_converted + $shipping_fee_converted;
+    $payment_method = json_decode($order_details['payment_data'])->payment_method_name;
     // $special_upper = ["&NTILDE", "&NDASH",'|::PA::|'];
     // $special_format   = ["&Ntilde", "&ndash",''];
     // $order_details['name']= str_replace($special_upper, $special_format, $order_details['name']);
@@ -93,13 +94,13 @@
                                         <label class="" ><i class="fa fa-truck" aria-hidden="true"></i></label>
                                     </div>
                                     <div class="col-11">
-                                        <label id="tm_address"><?=json_decode($order_details['shipping_data'])->address.', Brgy. '.json_decode($order_details['shipping_data'])->barangay?></label>
+                                        <label id="tm_address"><?=json_decode($order_details['shipping_data'])->address.', Brgy. '.json_decode($order_details['shipping_data'])->barangay.' '.json_decode($order_details['shipping_data'])->city.' '.json_decode($order_details['shipping_data'])->zip_code.', '.json_decode($order_details['shipping_data'])->province?></label>
                                     </div>
                                     <div class="col-1 pr-2 d-flex justify-content-center">
                                         <label class="" ><i class="fa fa-sticky-note" aria-hidden="true"></i></label>
                                     </div>
                                     <div class="col-11">
-                                        <label id="tm_landmark"><?=json_decode($order_details['shipping_data'])->city.', '.json_decode($order_details['shipping_data'])->province//str_replace($special_upper, $special_format, $notes);?></label>
+                                        <label id="tm_notes"><?=json_decode($order_details['shipping_data'])->notes//str_replace($special_upper, $special_format, $notes);?></label>
                                     </div>
                                 </div>
                             </div>
@@ -120,21 +121,21 @@
                                     <div class="row grp_payment" id="grp_payment">
                                         <div class="col-12 col-md-12">
                                             <label class="">Payment Date:</label>
-                                            <label id="tm_payment_date" class="green-text font-weight-bold"><?=json_decode($order_details['payment_data'])->payment_method_name=='COD'?'None':json_decode($order_details['payment_data'])->paid_date?></label>
+                                            <label id="tm_payment_date" class="green-text font-weight-bold"><?=$payment_method=='COD'?'None':json_decode($order_details['payment_data'])->paid_date?></label>
                                         </div>
                                         <!-- <div class="col-12 col-md">
                                             
                                         </div> -->
                                         <div class="col-12 col-md-12">
                                             <label class="">Payment Reference No.:</label>
-                                            <label id="tm_payment_ref_num" class="green-text font-weight-bold"><?=json_decode($order_details['payment_data'])->payment_method_name=='COD'?'None':json_decode($order_details['payment_data'])->ref_num?></label>
+                                            <label id="tm_payment_ref_num" class="green-text font-weight-bold"><?=$payment_method=='COD'?'None':json_decode($order_details['payment_data'])->ref_num?></label>
                                         </div>
                                         <!-- <div class="col-12 col-md">
                                             
                                         </div> -->
                                         <div class="col-12 col-md-12">
                                             <label class="">Payment Type:</label>
-                                            <label id="tm_payment_type" class="green-text font-weight-bold"><?=json_decode($order_details['payment_data'])->payment_method_name?></label>
+                                            <label id="tm_payment_type" class="green-text font-weight-bold"><?=$payment_method?></label>
                                         </div>
                                         <!-- <div class="col-12 col-md">
                                             
@@ -151,7 +152,7 @@
                                     <div class="row">
                                         <div class="col-12 col-md-12">
                                             <label class="">Payment Status:</label>
-                                            <label id="tm_payment_status" class="green-text font-weight-bold"><?=json_decode($order_details['payment_data'])->payment_method_name=='COD'?'Pending':json_decode($order_details['payment_data'])->ref_num?></label>
+                                            <label id="tm_payment_status" class="green-text font-weight-bold"><?=$payment_method=='COD'?'Pending':json_decode($order_details['payment_data'])->ref_num?></label>
                                         </div>
                                         <!-- <div class="col-12 col-md">
                                             
@@ -271,7 +272,7 @@
         
                                     <?php if($order_details['status_id'] == 1){ ?> 
 
-                                        <?php if(json_decode($order_details['payment_data'])->payment_method_name!='COD'){?>
+                                        <?php if($payment_method!='COD'){?>
                                             <div class="col-12 col-md-6">
                                                 <label class="">Delivery Status:</label>
                                                 <label class='badge badge-success'>For Pickup</label>
@@ -444,7 +445,7 @@
                             <div class="card-body px-lg-5">
                                 <div class="">
                                     <div class="row">
-                                        <?php if(json_decode($order_details['payment_data'])->payment_method_name=='COD'){?>
+                                        <?php if($payment_method=='COD'){?>
                                                 <?php if($order_details['status_id'] == 3 ){?>
                                                     <div class="col-md-6" style="font-weig ht: normal;padding-top:13px;">
                                                         <span><?=$logs['description']?></span>
@@ -524,10 +525,11 @@
                             <button type="button" class="btn-mobile-w-100 btn btn-success reassignBtn mb-2 mb-md-0" id="reassignBtn" data-value="<?=$mainshopid?>" data-branchid="<?=$branch_id?>" data-reference_num="<?=$reference_num?>">Re-Assign</button>
                         <?php } ?>  -->
 
-                        <!-- <?php if(!empty($order_details['sales_order_status']) && $order_details['sales_order_status'] == 'p' && $this->loginstate->get_access()['transactions']['process_order'] == 1 && $refunded_all == 0){ ?>
-                            <button type="button" class="btn-mobile-w-100 btn btn-info waves-effect waves-light processBtn mb-2 mb-md-0" id="processBtn" data-value="<?=$url_ref_num?>">Process Order</button>
+                       <?php if($order_details['status_id'] == 1){ ?>
+                            <button type="button" class="btn-mobile-w-100 btn btn-info waves-effect waves-light processBtn mb-2 mb-md-0" id="processBtn" data-value="<?=$reference_num?>">Process Order</button>
+                            <button type="button" class="btn-mobile-w-100 btn btn-danger waves-effect waves-light cancelOrderBtn" id="DeclineOrderBtn" data-value="<?=$reference_num?>">Decline Order</button> 
                         <?php } ?>
-                        <?php if(!empty($order_details['sales_order_status']) && $order_details['sales_order_status'] == 'po' && $this->loginstate->get_access()['transactions']['ready_pickup'] == 1 && $this->loginstate->get_access()['transactions']['mark_fulfilled'] == 1 && $refunded_all == 0){ ?>
+                         <!-- <?php if(!empty($order_details['sales_order_status']) && $order_details['sales_order_status'] == 'po' && $this->loginstate->get_access()['transactions']['ready_pickup'] == 1 && $this->loginstate->get_access()['transactions']['mark_fulfilled'] == 1 && $refunded_all == 0){ ?>
                             <button type="button" class="btn-mobile-w-100 btn btn-info waves-effect waves-light readyPickupBtn mb-2 mb-md-0" id="readyPickupBtn" data-value="<?=$url_ref_num?>">Book toktok</button>
                             <button type="button" class="btn-mobile-w-100 btn btn-info waves-effect waves-light fulfillmentBtn mb-2 mb-md-0" id="fulfillmentBtn" data-value="<?=$url_ref_num?>">Mark as Fulfilled</button>
                         <?php }else if(!empty($order_details['sales_order_status']) && $order_details['sales_order_status'] == 'po' && $this->loginstate->get_access()['transactions']['ready_pickup'] == 1 && $refunded_all == 0){ ?>

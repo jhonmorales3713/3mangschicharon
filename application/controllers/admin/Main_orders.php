@@ -27,6 +27,37 @@ class Main_orders extends CI_Controller {
         header('location:'.base_url('admin/Main_orders/'));
     }    
 
+    public function processOrder()
+    {
+        $reference_num = $this->input->post('po_id');
+        $success    = $this->model_orders->processOrder($reference_num);
+        // $items      = $this->model_orders->listShopItems($reference_num, $sys_shop);
+        // $salesOrder = $this->model_orders->getSalesOrder($reference_num, $sys_shop);
+        //$this->model_orders->addOrderHistory($salesOrder->id, 'Order is being prepared for shipping by the seller.', 'Process Order', $this->session->userdata('username'), date('Y-m-d H:i:s'));
+
+        $order = $this->model_orders->orders_details($reference_num);
+        $order["shopItems"] = $shopItems;
+        $order["payment_status"] = "Paid";
+        // $this->sendProcessOrderEmail($order);
+        //customer email
+        $url = get_apiserver_link().'Email/sendProcessOrderEmail';
+        $data = array(
+            'data' => $order
+        );
+        $result = $this->postCURL($url, $data);
+        
+		$subject = get_company_name()." | Password Set Up";
+        $data['email']=$email;
+        $data['resetpasslink'] = $resetpasslink;
+        $message = $this->load->view('email/templates/verify_email',$data,true);
+		send_email($email,$subject,$message);
+
+        $response['success'] = $success;
+        $response['message'] = "Order #".$reference_num." has been tagged as Process Order";
+        $this->audittrail->logActivity('Order List', 'Order #'.$reference_num.' has been tagged as Process Order', 'Process Order', $this->session->userdata('username'));
+        echo json_encode($response);
+    }
+
 	public function views_restriction($content_url){
         //this code is for destroying session and page if they access restricted page
         $access_content_nav = $this->session->userdata('access_content_nav');

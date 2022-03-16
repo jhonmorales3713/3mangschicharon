@@ -284,7 +284,7 @@ class user_list extends CI_Controller {
 			
 			$resetpasslink = base_url().'Main/first_password_reset_form/'.md5($email);
 
-            $this->sendVerificationEmail($email, $password, $resetpasslink);   
+            $this->sendVerificationEmail($email, $resetpasslink);   
             
         	echo json_encode($response);
         }
@@ -302,29 +302,12 @@ class user_list extends CI_Controller {
 	// 	$this->email->send();
 	// }
 
-    public function sendVerificationEmail($email,$password, $resetpasslink){
-        $config = Array(
-            'protocol' => 'smtp',
-            'smtp_host' => 'ssl://smtp.googlemail.com',
-            'smtp_port' => 465,
-            'smtp_user' => 'teeseriesphilippines@gmail.com',
-            'smtp_pass' => 'teeseriesph',
-            'charset' => 'utf-8',
-            'newline'   => "\r\n",
-            'wordwrap'=> TRUE,
-            'mailtype' => 'html'
-        );
-        $this->email->initialize($config);
-        $this->email->set_newline("\r\n");  
-        $this->email->from('ulul@gmail.com',get_company_name());
-        $this->email->to($email);
-        
-        $this->email->subject(get_company_name()." | Password Set Up");
+    public function sendVerificationEmail($email, $resetpasslink){
+		$subject = get_company_name()." | Password Set Up";
         $data['email']=$email;
         $data['resetpasslink'] = $resetpasslink;
-        $view = $this->load->view('email/templates/verify_email',$data,true);
-        $this->email->message($view);
-        $this->email->send();
+        $message = $this->load->view('email/templates/verify_email',$data,true);
+		send_email($email,$subject,$message);
         
         // Set to, from, message, etc.
         
