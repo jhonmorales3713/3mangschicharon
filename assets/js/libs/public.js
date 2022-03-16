@@ -19,6 +19,7 @@ $(document).ready(function(){
 	    
 	}
 
+
 	sys_log = function(env,data){
 		if(env=="development"){
 			console.log(data);

@@ -472,10 +472,16 @@ $(function(){
             }
         }
     });
-
+    count = 1;
     $('#addOptionVariantBtn').click(function(){
         // var index = $(this).data('value');
-        addVariantOption();
+        if(count == 1){
+            
+            $('#tbody_variants').empty();
+        }
+        displayVariants('',count);
+        count++;
+        //addVariantOption();
     });
 
     $('.removeVariantBtn').click(function(){
@@ -486,6 +492,13 @@ $(function(){
     $(document).delegate('#removeVariantSpec','click',function(e){
         var index = $(this).data('value');
         $('.variant_tr_'+index).remove();
+        count = 1;
+        $('.id_key').each(function(index, tr) { 
+           // console.log(tr);
+            tr.innerText=(count);
+            //tr.innerHTML=('2asd');
+            count++;
+        });
 
     });
 
@@ -581,10 +594,11 @@ $(function(){
     function displayVariants(string, key){
         str = "";
         str += "<tr class='variant_tr_"+key+"'>";
-        str += "<td class='variant_tr_"+key+"'>"+string+"<input type='text' name='variant_name[]' value='"+string+"' style='display:none;'></td>";
-        str += "<td class='variant_tr_"+key+"'><input type='number' min='0' class='form-control allownumericwithdecimal' name='variant_price[]' onkeypress='return isNumberKey(event)' placecholder='0.00'></td>";
-        str += "<td class='variant_tr_"+key+"'><input type='text' class='form-control' name='variant_sku[]'></td>";
-        str += "<td class='variant_tr_"+key+"'><input type='text' class='form-control' name='variant_barcode[]'></td>";
+        str += "<td class='variant_tr_"+key+" id_key' >"+key+"<input type='text'  value='"+key+"' style='display:none;'></td>";
+        str += "<td class='variant_tr_"+key+"'>"+"<input type='text' class='form-control' name='variant_name[]' ></td>";
+        str += "<td class='variant_tr_"+key+"'><input type='number' min='0' class='form-control allownumericwithdecimal' name='variant_price[]'  placecholder='0.00'></td>";
+        // str += "<td class='variant_tr_"+key+"'><input type='text' class='form-control' name='variant_sku[]'></td>";
+        // str += "<td class='variant_tr_"+key+"'><input type='text' class='form-control' name='variant_barcode[]'></td>";
         str += "<td class='variant_tr_"+key+"'><button type='button' id='removeVariantSpec' class='btn btn-danger' data-value='"+key+"'><i class='fa fa-trash'></i></button></td>";
         str += "</tr>";
         $('#tbody_variants').append(str);
@@ -597,6 +611,15 @@ $(function(){
         // $('#tbody_variants').append("<td class='variant_tr_"+key+"'><button type='button' id='removeVariantSpec' class='btn btn-danger' data-value='"+key+"'><i class='fa fa-trash'></i></button></td>");
         // $('#tbody_variants').append("</tr>");
     }
+	function isNumberKey(evt)
+	{
+		var charCode = (evt.which) ? evt.which : evt.keyCode;
+		if (charCode != 46 && charCode > 31
+		&& (charCode < 48 || charCode > 57))
+			return false;
+	
+		return true;
+	}
 
     function arrayCompare(_arr1, _arr2) {
         if (

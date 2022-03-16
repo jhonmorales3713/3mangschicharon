@@ -297,10 +297,11 @@
                                             <!-- <div class="form-group"> -->
                                                 <input type="hidden" name="f_variants_isset" value="0">
                                                 <input type="checkbox" class="form-control-input" id="f_variants_isset" name="f_variants_isset" value="1">
-                                                <label class="form-control-label" for="f_variants_isset">This product has multiple options, like different sizes or colors</label>
+                                                <label class="form-control-label" for="f_variants_isset">This product has multiple sizes</label>
                                             <!-- </div> -->
                                         </div>
 
+                                        <!-- 
                                         <div class="col-12 parentVariantDiv">
                                             <div class="border-bottom w-100"></div>
                                         </div>
@@ -308,7 +309,6 @@
                                         <div class="col-12 parentVariantDiv">
                                             <label class="form-control-label">&nbsp;</label>
                                         </div>
-
                                         <div class="col-md-12 parentVariantDiv">
                                             <label class="form-control-label font-weight-bold">Variation</label>
                                         </div>
@@ -363,7 +363,7 @@
 
                                         <div class="col-md-2 parentVariantDiv varoptionDiv3">
                                             <u><a href="javascript:void(0)" class="removeVariantBtn" data-value="3">Remove</a></u>
-                                        </div>
+                                        </div> -->
 
                                         <!-- ////// -->
                                         <div class="col-12 parentVariantDiv">
@@ -379,7 +379,7 @@
                                         </div>
 
                                         <div class="col-12 parentVariantDiv">
-                                            <button type="button" id="addOptionVariantBtn" class="btn btn-primary">Add another option</button>
+                                            <button type="button" id="addOptionVariantBtn" class="btn btn-primary">Add Size</button>
                                         </div>
 
                                         <div class="col-12 parentVariantDiv">
@@ -390,16 +390,17 @@
                                             <table class='table table-striped table-hover table-bordered table-grid display nowrap'>
                                                 <thead>
                                                     <tr>
-                                                        <th scope='col'><b>Variant</b></th>
+                                                        <th scope='col'><b>#</b></th>
+                                                        <th scope='col'><b>Name</b></th>
                                                         <th scope='col'><b>Price</b></th>
-                                                        <th scope='col'><b>SKU</b></th>
-                                                        <th scope='col'><b>Barcode</b></th>
+                                                        <!-- <th scope='col'><b>SKU</b></th>
+                                                        <th scope='col'><b>Barcode</b></th> -->
                                                         <th scope='col'></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody id='tbody_variants' class='tbody_variants'>
                                                     <tr>
-                                                        <td colspan="5" class="td-center">No existing variant.</td>
+                                                        <td colspan="5" class="td-center">No existing size.</td>
                                                     </tr>
                                                 </tbody>
                                             </table>

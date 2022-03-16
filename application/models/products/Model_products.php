@@ -3,7 +3,7 @@ class Model_products extends CI_Model {
 
 	# Start - Products
 
-	public function save_product($args,$imgArr,$featured_product,$featured_product_arrangment) {
+	public function save_product($args,$imgArr) {
 
 		$branchid = $this->session->userdata('branchid');
 		$imgArr[0]         = (!empty($imgArr[0])) ? $imgArr[0] : '';
@@ -405,6 +405,26 @@ class Model_products extends CI_Model {
 		return $this->db->query($query);
 	}
 
+
+	public function save_variants($parent_id,$variant_name, $variant_price, $args, $variant_isset) {
+		
+		$sql = "INSERT INTO sys_products (`name`, `price`, `enabled`, `date_created`, `variant_isset`, `parent_product_id`) VALUES (?,?,?,?,?,?) ";
+
+		$variant_price = ($variant_price == '') ? 0: $variant_price;
+		$bind_data = array(
+			$variant_name,
+			$variant_price,
+			// $variant_sku,
+			// $variant_barcode,
+			2,
+			date('Y-m-d H:i:s'),
+			0,
+			$parent_id
+		);	
+
+		$this->db->query($sql, $bind_data);
+
+	}
 	public function get_productdetails($Id) {
 		$query=" SELECT a.*, d.shopcode, d.shopname
 		FROM sys_products AS a 

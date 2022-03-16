@@ -24,6 +24,12 @@ class Model_orders extends CI_Model {
 		return $this->db->query($query)->result_array();
     }
 
+    
+	public function get_productinfo($id='') {
+		$query="SELECT * FROM sys_products_images join sys_products on product_id = sys_products.id  WHERE product_id = ".$id;
+		return $this->db->query($query)->result_array();
+    }
+    
     function order_item_table($reference_num){
         // storing  request (ie, get/post) global array to a variable
 		$token_session = $this->session->userdata('token_session');
@@ -45,21 +51,31 @@ class Model_orders extends CI_Model {
         $sql = 'SELECT * FROM sys_orders WHERE reference_num = "'.$reference_num.'"';
 
 
-        $query = $this->db2->query($sql);
+        $query = $this->db->query($sql);
         $totalData = $query->num_rows();
 		$totalFiltered = $query->num_rows(); // when there is a search parameter then we have to modify total number filtered rows as per search result.
 
 		$sql.=" ORDER BY ". $columns[$requestData['order'][0]['column']]." ".$requestData['order'][0]['dir']." LIMIT ".$requestData['start']." ,".$requestData['length']."   ";  // adding length
-
-		$query = $this->db2->query($sql);
+        
+		$query = $this->db->query($sql);
 
 		$data = array();
 		foreach( $query->result_array() as $row ) {  // preparing an array for table tbody
+            $product_id = json_decode($row["product_id"]);
+            $order_info = json_decode($row["order_data"]);
+            foreach($product_id as $product){
+                $product_info = $this->get_productinfo($product)[0];
+                $product_info_parent = $this->get_productinfo($product)[0]['parent_product_id']!=''?$this->get_productinfo($this->get_productinfo($product)[0]['parent_product_id'])[0]['name']:'';
+            }
+            foreach($order_info  as $key => $value){
+                print_r(json_decode($order_info[$value]));
+die();
+            }
 			$nestedData=array();
-
-			$nestedData[] = '<img class="img-thumbnail" style="width: 50px;" src="'.get_s3_imgpath_upload().'assets/img/'.$row['shopcode'].'/products-250/'.$row['productid'].'/'.removeFileExtension($row['primary_pic']).'.jpg?'.rand().'">';
+            
+			$nestedData[] = '<img class="img-thumbnail" style="width: 50px;" src="'.base_url().'assets/uploads/products/'.$product_info['filename'].'?'.rand().'">';
             $parent_prod  = (!empty($row['parent_product_name'])) ? $row['parent_product_name'].' - ' : '';
-			$nestedData[] = ucwords($parent_prod.$row["itemname"]);
+			$nestedData[] = ucwords($product_info_parent.$product_info["name"]);
 			$nestedData[] = $row["qty"];
 
             $nestedData[] = number_format($row["amount"], 2);

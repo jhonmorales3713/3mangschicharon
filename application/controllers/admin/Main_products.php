@@ -1014,24 +1014,19 @@ class Main_products extends CI_Controller {
             echo json_encode($response);
             die();
     	}else{
-            $featured_product =  $this->input->post('featured_prod_isset');
-            $featured_product_arrangment =  $this->input->post('entry-feat-product-arrangement');
-    		$success = $this->model_products->save_product($this->input->post(), $imgArr,$featured_product,$featured_product_arrangment);
+    		$success = $this->model_products->save_product($this->input->post(), $imgArr);
             if($variants_isset == 1){
-                $variants_count = count($var_option_name);
-                for($i = 0; $i < $variants_count; $i++) { 
-                  //  $this->model_products->save_variantsummary($f_id, $var_option_name[$i], $var_option_list[$i], $i);
-                }
+                // for($i = 0; $i < $variants_count; $i++) { 
+                //   //  $this->model_products->save_variantsummary($f_id, $var_option_name[$i], $var_option_list[$i], $i);
+                // }
                 $variant_name    = $this->input->post('variant_name');
+                //$variants_count = count($var_option_name);
                 $variant_price   = $this->input->post('variant_price');
-                $variant_sku     = $this->input->post('variant_sku');
-                $variant_barcode = $this->input->post('variant_barcode');
                 $variant_counter = count($variant_name);
-
+                $parent_id = $success['id'];
                 for($i = 0; $i < $variant_counter; $i++) { 
                     if($variant_price[$i] != ''){
-                        $child_product_id = $this->uuid->v4_formatted();
-                        $this->model_products->save_variants($f_id, $child_product_id, $variant_name[$i], $variant_price[$i], $variant_sku[$i], $variant_barcode[$i], $this->input->post(), $variants_isset);
+                        $this->model_products->save_variants($parent_id,$variant_name[$i], $variant_price[$i], $this->input->post(), $variants_isset);
                     }
                 }
             }
