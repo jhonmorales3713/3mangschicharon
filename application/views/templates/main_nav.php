@@ -79,7 +79,7 @@
                         </center>
                     </li>
                     <br>
-                    <li>
+                    <li id="profile">
                     <i class="fa fa-user" aria-hidden="true"></i> <small>Profile</small>
                     </li>
                     <li id="orders">
@@ -171,6 +171,10 @@
 
     $('#orders').click(function(){
         window.location.href = base_url + 'orders';
+    });
+
+    $('#profile').click(function(){
+        window.location.href = base_url + 'profile';
     });
 
 </script>

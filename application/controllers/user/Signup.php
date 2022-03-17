@@ -104,6 +104,7 @@ class Signup extends CI_Controller {
         $_SESSION['has_logged_in'] = true;
         $_SESSION['full_name'] = $customer_data['full_name'];
         $_SESSION['customer_id'] = en_dec('en',$customer_data['id']);
+        $_SESSION['email'] = en_dec('en',$customer_data['id']);
         
         $cart_session = $this->model_customers->get_cart_session($customer_data['id']);     
         if($cart_session){            
