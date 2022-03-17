@@ -7,7 +7,7 @@
     $special_format = ["&Ntilde", "&ndash", ""];
     //transaction['name']= str_replace($special_upper, $special_format, $userObj->fname;);
     //$transaction['address']= str_replace($special_upper, $special_format, $transaction["address"]); 
-    $bg = strpos(base_url(),'localhost')?'https://static.vecteezy.com/system/resources/thumbnails/002/084/149/small/orange-and-yellow-banner-abstract-background-free-vector.jpg':'';
+    $bg = strpos(base_url(),'localhost')?'https://static.vecteezy.com/system/resources/thumbnails/002/084/149/small/orange-and-yellow-banner-abstract-background-free-vector.jpg':base_url('assets/img/banners/email-banner.jpg');
 
 ?>
 <!DOCTYPE html>
@@ -17,7 +17,7 @@
      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;" />
     <meta name="viewport" content="width=600,initial-scale = 2.3,user-scalable=no">
-    <title>TOKTOK PH</title>
+    <title><?=get_company_name()?></title>
      <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
@@ -26,6 +26,7 @@
 <style>
     * {
         border: none;
+        font-family: 'Fira Sans', sans-serif;
         border-collapse: collapse;
     }
     @media only screen and (max-width:768px) {
@@ -142,9 +143,9 @@
                                                 </tr>
                                                 <tr>
                                                     <td style="text-align: center;">
-                                                        <a href="<?= fb_link() ?>" target="_blank"><img style="margin-top: 12px;" src="<?= get_s3_imgpath_upload().'assets/img/email/fb.png'?>"></a>
-                                                        <a href="<?= youtube_link() ?>" target="_blank"><img style="margin-top: 12px; margin-left: 4px" src="<?= get_s3_imgpath_upload().'assets/img/email/youtube.png'?>"></a>
-                                                        <a href="<?= ig_link() ?>" target="_blank"><img style="margin-top: 12px; margin-left: 4px" src="<?= get_s3_imgpath_upload().'assets/img/email/instagram.png'?>"></a>
+                                                        <a href="<?= fb_link() ?>" target="_blank"><img style="margin-top: 12px;height: 40px;" src="<?= base_url().'assets/img/icons/facebook.png'?>"></a>
+                                                        <a href="<?= youtube_link() ?>" target="_blank"><img style="margin-top: 12px; margin-left: 4px;height: 40px;" src="<?= base_url().'assets/img/icons/youtube.png'?>"></a>
+                                                        <a href="<?= ig_link() ?>" target="_blank"><img style="margin-top: 12px; margin-left: 4px;height: 40px;" src="<?= base_url().'assets/img/icons/instagram.png'?>"></a>
                                                     </td>
                                                 </tr>
                                             </tbody>

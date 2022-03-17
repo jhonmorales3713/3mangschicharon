@@ -66,7 +66,7 @@
 <table class="order-status">
         <tbody>
           <tr>
-            <td style="width: 100px; text-align: center;"><img src="<?=get_s3_imgpath_upload().'assets/img/order-status/confirmed-order-done.png';?>" alt="" style="height: 40px;"></td>
+            <td style="width: 100px; text-align: center;"><img src="<?=base_url().'assets/img/icons/confirmed-order-done.png';?>" alt="" style="height: 40px;"></td>
             <td style="width: 100%; color: #222;"><strong>Confirmed Order</strong></td>
           </tr>
         </tbody>
@@ -94,7 +94,7 @@
       <table class="order-status">
         <tbody>
           <tr>
-            <td style="width: 100px; text-align: center"><img src="<?=get_s3_imgpath_upload().'assets/img/order-status/preparing-order.png';?>" alt="" style="height: 40px;"></td>
+            <td style="width: 100px; text-align: center"><img src="<?=base_url().'assets/img/icons/preparing-order.png';?>" alt="" style="height: 40px;"></td>
             <td style="width: 100%;"><strong>Preparing Order</strong></td>
           </tr>
         </tbody>
@@ -119,7 +119,7 @@
       <table class="order-status">
         <tbody>
           <tr>
-            <td style="width: 100px; text-align: center"><img src="<?=get_s3_imgpath_upload().'assets/img/order-status/ready-for-pickup.png';?>" alt="" style="height: 40px;"></td>
+            <td style="width: 100px; text-align: center"><img src="<?=base_url().'assets/img/icons/ready-for-pickup.png';?>" alt="" style="height: 40px;"></td>
             <td style="width: 100%;"><strong>Ready for Pickup</strong></td>
           </tr>
         </tbody>
@@ -144,7 +144,7 @@
       <table class="order-status">
         <tbody>
           <tr>
-            <td style="width: 100px; text-align: center"><img src="<?=get_s3_imgpath_upload().'assets/img/order-status/fulfilled.png';?>" alt="" style="height: 40px;"></td>
+            <td style="width: 100px; text-align: center"><img src="<?=base_url().'assets/img/icons/fulfilled.png';?>" alt="" style="height: 40px;"></td>
             <td style="width: 100%;"><strong>Fulfilled</strong></td>
           </tr>
         </tbody>
@@ -169,7 +169,7 @@
       <table class="order-status">
         <tbody>
           <tr>
-            <td style="width: 100px; text-align: center"><img src="<?=get_s3_imgpath_upload().'assets/img/order-status/delivered.png';?>" alt="" style="height: 40px;"></td>
+            <td style="width: 100px; text-align: center"><img src="<?=base_url().'assets/img/icons/delivered-.png';?>" alt="" style="height: 40px;"></td>
             <td style="width: 100%;"><strong>Delivered</strong></td>
           </tr>
           <tr>

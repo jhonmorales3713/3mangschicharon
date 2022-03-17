@@ -60,6 +60,11 @@ class Main_orders extends CI_Controller {
         $response['message'] = "Order #".$reference_num." has been tagged as Process Order";
         $this->audittrail->logActivity('Order List', 'Order #'.$reference_num.' has been tagged as Process Order', 'Process Order', $this->session->userdata('username'));
         echo json_encode($response);
+
+        //for testing
+        
+        // $data['view'] = $this->load->view('email/order_processing',$data,TRUE);
+        // $this->load->view('email/templates/email_template',$data,'',true);
     }
 
     
