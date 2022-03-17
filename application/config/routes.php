@@ -69,6 +69,7 @@ $route['products/(:any)'] = 'user/products/products/$1';
 
 $route['orders'] = 'user/orders/orders';
 $route['orders/(:any)'] = 'user/orders/orders/$1';
+$route['order_confirmation/(:any)'] = 'user/orders/order_confirmation/$1';
 
 $route['cart'] = 'user/cart/index';
 

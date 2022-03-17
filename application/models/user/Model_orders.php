@@ -8,7 +8,7 @@ class Model_orders extends CI_Model {
     }
 
     public function get_order_info($order_id){
-        $this->db->where('order_id',$order_id);
+        $this->db->where('id',$order_id);
         return $this->db->get('sys_orders')->row_array();
     }
     

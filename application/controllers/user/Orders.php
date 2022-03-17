@@ -51,6 +51,22 @@ class Orders extends CI_Controller {
 		$this->load->view('landing_template',$data,'',TRUE);
     }
 
+    public function order_confirmation($order_id){        
+
+        $id = en_dec('dec',$order_id);
+
+        $order = $this->model_orders->get_order_info($id);
+
+        $view_data['id'] = $order_id;
+        $view_data['order_id'] = $order['order_id'];
+        $view_data['order_data'] = json_decode($order['order_data'],true);
+        $view_data['payment_data'] = json_decode($order['payment_data'],true);
+
+		$data['active_page'] = 'shop';		
+        $data['page_content'] = $this->load->view('user/orders/order_confirmation',$view_data,TRUE);
+		$this->load->view('landing_template',$data,'',TRUE);
+    }
+
     public function receipt($order_id)
 	{	
         $order_id = en_dec('dec',$order_id);

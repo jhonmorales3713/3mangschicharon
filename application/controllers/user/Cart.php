@@ -281,7 +281,8 @@ class Cart extends CI_Controller {
 
         $response['success'] = true;
         $response['message'] = 'Order successful';
-        $response['order_id'] = en_dec('en',$order_id);
+        $response['order_id'] = $order_id;
+        $response['id'] = en_dec('en',$id);
         $response['cart_items'] = $total_qty;
 
         generate_json($response);

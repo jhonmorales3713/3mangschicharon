@@ -84,9 +84,9 @@
                             <b class="float-right">&#8369; <?= $total_amount; ?></b>
                         </div>
                     </div>
-                </div>
+                </div>                
                 <div class="col-lg-6 col-md-6 col-sm-12">
-                    <b>Shipping Details</b> <?= $orders[0]['status_id'] ?>
+                    <b>Shipping Details</b>
                     <hr>
                     <small>Deliver to: </small><br>
                     <strong><?= $shipping_data['full_name']; ?></strong> - <?= $shipping_data['contact_no']; ?><br>
@@ -95,6 +95,8 @@
                         <small>Delivered by: </small><br>
                         <b><?= $shipping_data['rider']['name']; ?></b> - <?= $shipping_data['rider']['contact_no']; ?><br>
                         Via <?= $shipping_data['rider']['vehicle_type']; ?>
+                    <?php } else { ?>
+                    
                     <?php } ?>
                 </div>
             </div>
