@@ -6,7 +6,7 @@
                     $image_path = base_url('assets/img/favicon.png');
                 }
                 else{                                
-                    $image_path = base_url('assets/uploads/products/').$product['img'];
+                    $image_path = base_url('assets/uploads/products/').str_replace('==','',$product['img']);
                 }
             ?>
             <div class="product-img2" style="background-image: url(<?= $image_path; ?>); background-position: center; background-size: contain; background-repeat: no-repeat;" data-product_id="<?= $product['id'] ?>"></div>

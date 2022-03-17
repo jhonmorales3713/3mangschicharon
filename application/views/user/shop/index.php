@@ -35,7 +35,7 @@
                                         $image_path = base_url('assets/img/shop_logo.png');
                                     }
                                     else{                                
-                                        $image_path = base_url('assets/uploads/products/').$product['img'];
+                                        $image_path = base_url('assets/uploads/products/').str_replace('==','',$product['img']);
                                     }
                                 ?>
                                 <div class="product-img" style="background-image: url(<?= $image_path; ?>); width: 100%;" data-product_id="<?= $product['id']; ?>">
