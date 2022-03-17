@@ -1,6 +1,6 @@
 $(function(){
 
-$('#btn_place_order').click(function(){    
+$('#btn_place_order').click(function(){
     var data = {
         total_amount: $('#total_amount').val(),
         delivery_amount: 50,   

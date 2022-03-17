@@ -1,5 +1,5 @@
 <style>
-    .main-content{
+    .content{
         padding-top: 98px !important;
         padding-left: 0 !important;
         padding-right: 0 !important;
