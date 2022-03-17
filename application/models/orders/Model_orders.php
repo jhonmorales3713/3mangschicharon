@@ -226,7 +226,7 @@ class Model_orders extends CI_Model {
 		}
 
 		if($status == ""){
-			$date_string  = ($_name != "") ? "" : "date_created BETWEEN '".$date_from."' AND '".$date_to."'";
+			$date_string  = ($_name != "") ? "" : "date_created >= '".format_date_dash_reverse($date_from)."' AND date_created <= '".format_date_dash_reverse($date_to)."'";
             $sql = "SELECT * FROM sys_orders WHERE ".$date_string;
 
 			// $sql = "SELECT * FROM (

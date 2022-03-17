@@ -82,7 +82,7 @@
                     <li>
                     <i class="fa fa-user" aria-hidden="true"></i> <small>Profile</small>
                     </li>
-                    <li>
+                    <li id="orders">
                         <i class="fa fa-square" aria-hidden="true"></i> <small>Orders</small>
                     </li>
                     <li id="signout">
@@ -167,6 +167,10 @@
 
     $('#close_user_options').click(function(){
         toggle_options('user_options','.user-option','hide');
+    });
+
+    $('#orders').click(function(){
+        window.location.href = base_url + 'orders';
     });
 
 </script>

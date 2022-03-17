@@ -16,5 +16,11 @@ class Account extends CI_Controller {
         $data['page_content'] = $this->load->view('user/home/index','',TRUE);     
 		$this->load->view('landing_template',$data,'',TRUE);
 	}
+
+    public function profile(){
+        $customer_id = en_dec('dec',$this->session->customer_id);
+
+        
+    }
     
 }

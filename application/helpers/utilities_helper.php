@@ -65,6 +65,14 @@ function generate_json($data) {
 
 	// Start of date and time functions
 
+    function is_valid_date($date, $replace_only = false) {
+        $date = str_replace('/', '-', $date);
+        if($replace_only == false){
+            $date = strtotime($date);
+        }
+        return $date;
+    }
+
     function datetime()
     {
         date_default_timezone_set('Asia/Manila');
@@ -157,6 +165,15 @@ function generate_json($data) {
 	function format_date_reverse_dash($date) {
 		return date("Y-m-d", strtotime($date));
 	}
+
+    function format_shortfulldate($date){
+        $date = is_valid_date($date);
+        if (! $date) {
+            return false;
+        }
+    	$datetime = date('M d, Y', $date);
+    	return $datetime;
+    }
     
 
 	function display_payment_status($payment_status, $payment_method, $export = false){
@@ -265,6 +282,34 @@ function getToken($length){
         $token .= $codeAlphabet[crypto_rand_secure(0, $max-1)];
     }
     return $token;
+}
+
+function get_status_ui($status_id){
+    $status_string = "";
+    switch($status_id){
+        case 1:
+            $status_string = '<span class="badge badge-pill badge-warning">Pending</span>';
+        break;
+        case 2:
+            $status_string = '<span class="badge badge-pill badge-primary">Processing</span>';
+        break;
+        case 3:
+            $status_string = '<span class="badge badge-pill badge-info">Approved</span>';
+        break;
+        case 4:
+            $status_string = '<span class="badge badge-pill badge-info">Shipped</span>';
+        break;
+        case 5:
+            $status_string = '<span class="badge badge-pill badge-success">Delivered</span>';
+        break;
+        case 6:
+            $status_string = '<span class="badge badge-pill badge-danger">Cancelled</span>';
+        break;
+        case 7:
+            $status_string = '<span class="badge badge-pill badge-secondary">Returned</span>';
+        break;
+    }
+    return $status_string;
 }
 
 

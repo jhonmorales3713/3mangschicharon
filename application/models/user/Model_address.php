@@ -8,9 +8,19 @@ class Model_address extends CI_Model {
     }
     
     public function get_shipping_address($customer_id){
-        $this->db->where('customer_id',$customer_id);
-        $this->db->where('enabled',1);
-        return $this->db->get('sys_shipping_address')->result_array();
+        $sql = "SELECT
+                    sa.*,
+                    sat.address_type
+                FROM
+                    sys_shipping_address sa
+                LEFT JOIN
+                    sys_shipping_address_types sat
+                ON 
+                    sa.address_category_id = sat.id
+                WHERE
+                    sa.customer_id = ? AND sa.enabled = 1";
+        
+        return $this->db->query($sql,[$customer_id])->result_array();
     }
 
     public function update_shipping_address($customer_id,$shipping_address){

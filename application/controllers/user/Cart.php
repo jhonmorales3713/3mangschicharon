@@ -172,8 +172,12 @@ class Cart extends CI_Controller {
         $data['active_page'] = 'shop'; 
         $view_data['sub_active_page'] = 'checkout';
 
-        $customer_id = isset($_SESSION['customer_id']) ? $_SESSION['customer_id'] : 0;        
-        $view_data['shipping_address'] = $this->model_address->get_shipping_address($customer_id);
+        $view_data['customer_id'] = isset($_SESSION['customer_id']) ? en_dec('dec',$_SESSION['customer_id']) : 0;        
+        $view_data['shipping_address'] = $this->model_address->get_shipping_address($view_data['customer_id']);
+
+        foreach($view_data['shipping_address'] as $key => $value){
+            $view_data[$key]['id'] = en_dec('en',$value['id']); //encrypt ids
+        }
 
         $view_data['payment_methods'] = $this->model_cart->get_payment_methods();
         $view_data['shipping_types'] = $this->model_cart->get_shipping_types();
@@ -277,7 +281,8 @@ class Cart extends CI_Controller {
 
         $response['success'] = true;
         $response['message'] = 'Order successful';
-        $response['order_id'] = en_dec('en',$order_id);
+        $response['order_id'] = $order_id;
+        $response['id'] = en_dec('en',$id);
         $response['cart_items'] = $total_qty;
 
         generate_json($response);
