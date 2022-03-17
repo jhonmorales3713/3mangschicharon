@@ -16,11 +16,11 @@
     // $payment_notes  = ($order_details['payment_notes'] != '') ? $order_details['payment_notes']:'None';
     // $shipping_note  = ($order_details['shipping_note'] != '' || !empty($order_details['shipping_note'])) ? $order_details['shipping_note']:'None';
 
-    $sub_total_converted = 0;
+    $sub_total_converted = 0; ;
     foreach(json_decode($order_details['order_data']) as $row ){
-        $sub_total_converted.=$row->price;
+        $sub_total_converted += floatval($row->price); 
     }
-    $sub_total_converted=number_format($sub_total_converted, 2);
+    $sub_total_converted=number_format($sub_total_converted, 2); 
     $shipping_fee_converted = number_format($order_details['delivery_amount'],2);
     $total_amount_converted = $sub_total_converted + $shipping_fee_converted;
     $payment_method = json_decode($order_details['payment_data'])->payment_method_name;
@@ -458,7 +458,7 @@
                                                     </div>
                                                 <?php }?>
                                                 <div class="col-md-4" style="padding-top:13px;">
-                                                    <span><?=json_decode($order_details['shipping_data'])->alias?> </span>
+                                                    <span><?=json_decode($order_details['shipping_data'])->full_name?> </span>
                                                 </div>
                                                 
                                                 <div class="w-100" style="border-bottom: 1px dotted black;"></div>

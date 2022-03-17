@@ -31,7 +31,7 @@
                                 <img src="<?= base_url('assets/uploads/products/'.$order['img']); ?>" alt="" width="100%">
                             </div>                       
                             <div class="col-5 mt5">
-                                <small><b><?= $order['name']; ?></b></small>
+                                <small><b><?= $order['name']; ?></b> (<?= $order['size']; ?>)</small>
                             </div>       
                             <div class="col-2 mt5">
                                 <small>Qty: <?= $order['quantity']; ?></small>
