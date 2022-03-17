@@ -64,7 +64,7 @@ $(function () {
         
         $.ajax({
             type: form[0].method,
-            url: base_url+"orders/Main_orders/processOrder",
+            url: base_url+"admin/Main_orders/processOrder",
             data: form_data,
             contentType: false,   
             cache: false,      
@@ -75,14 +75,14 @@ $(function () {
                 
                 if(json_data.success) {
                     $('#readyPickup_modal').modal('hide');
-                    //sys_toast_success(json_data.message);
-                    showCpToast("success", "Success!", json_data.message);
+                    sys_toast_success(json_data.message);
+                    //showCpToast("success", "Success!", json_data.message);
                     // window.location.assign(base_url+"Main_orders/orders_view/"+token+'/'+url_ref_num);
                     location.reload();
                 }else{
-                    showCpToast("warning", "Warning!", json_data.message);
+                    //showCpToast("warning", "Warning!", json_data.message);
+                     sys_toast_warning(json_data.message);
                     setTimeout(function(){location.reload()}, 2000);
-                    // sys_toast_warning(json_data.message);
                     // setInterval(
                     //     function(){ 
                     //         location.reload(); 
@@ -97,6 +97,6 @@ $(function () {
         });
 
     });
-    
+
     fillDataTableProducts(url_ref_num);
 });

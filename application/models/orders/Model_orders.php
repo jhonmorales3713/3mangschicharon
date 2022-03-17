@@ -32,7 +32,7 @@ class Model_orders extends CI_Model {
 
 	public function processOrder($reference_num) {
 
-		$sql = "UPDATE `sys_orders` SET status_id = 2 `date_processed` = ? WHERE reference_num = ? ";
+		$sql = "UPDATE `sys_orders` SET status_id = 2, `date_processed` = ? WHERE reference_num = ? ";
 		$bind_data = array(
 			date('Y-m-d H:i:s'),
 			$reference_num

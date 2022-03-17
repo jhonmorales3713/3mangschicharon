@@ -30,33 +30,61 @@ class Main_orders extends CI_Controller {
     public function processOrder()
     {
         $reference_num = $this->input->post('po_id');
+        $reference_num = 'ABCD';
         $success    = $this->model_orders->processOrder($reference_num);
         // $items      = $this->model_orders->listShopItems($reference_num, $sys_shop);
         // $salesOrder = $this->model_orders->getSalesOrder($reference_num, $sys_shop);
         //$this->model_orders->addOrderHistory($salesOrder->id, 'Order is being prepared for shipping by the seller.', 'Process Order', $this->session->userdata('username'), date('Y-m-d H:i:s'));
 
         $order = $this->model_orders->orders_details($reference_num);
-        $order["shopItems"] = $shopItems;
-        $order["payment_status"] = "Paid";
+        $recipient_details = json_decode($order[0]['shipping_data']);
+        $order_details = json_decode($order[0]['order_data']);
         // $this->sendProcessOrderEmail($order);
-        //customer email
-        $url = get_apiserver_link().'Email/sendProcessOrderEmail';
-        $data = array(
-            'data' => $order
-        );
-        $result = $this->postCURL($url, $data);
         
+
 		$subject = get_company_name()." | Password Set Up";
-        $data['email']=$email;
-        $data['resetpasslink'] = $resetpasslink;
-        $message = $this->load->view('email/templates/verify_email',$data,true);
-		send_email($email,$subject,$message);
+        $data = array(
+            'recipient_details' => $recipient_details,
+            'order_data'=> $order_details,
+            'order_data_main'=> $order,
+            'reference_num'=> $reference_num
+        );
+        
+        $data['view'] = $this->load->view('email/order_processing',$data,TRUE);
+        $email = 'moralesjhon03@gmail.com';
+        $subject = "Order #".$reference_num." has been confirmed";
+        $message = $this->load->view('email/templates/email_template',$data,true);
+		$this->send_email($email,$subject,$message);
 
         $response['success'] = $success;
         $response['message'] = "Order #".$reference_num." has been tagged as Process Order";
         $this->audittrail->logActivity('Order List', 'Order #'.$reference_num.' has been tagged as Process Order', 'Process Order', $this->session->userdata('username'));
         echo json_encode($response);
     }
+
+    
+	function send_email($emailto,$subject,$message){
+		
+		$this->load->library('email');
+		$config = Array(
+			'protocol' => 'smtp',
+			'smtp_host' => 'ssl://smtp.googlemail.com',
+			'smtp_port' => 465,
+			'smtp_user' => 'teeseriesphilippines@gmail.com',
+			'smtp_pass' => 'teeseriesph',
+			'charset' => 'utf-8',
+			'newline'   => "\r\n",
+			'wordwrap'=> TRUE,
+			'mailtype' => 'html'
+		);
+		$this->email->initialize($config);
+		$this->email->set_newline("\r\n");  
+		$this->email->from('ulul@gmail.com',get_company_name());
+		$this->email->to($emailto);
+		$this->email->subject($subject);
+		$this->email->message($message);
+		$this->email->send();
+	}
 
 	public function views_restriction($content_url){
         //this code is for destroying session and page if they access restricted page
