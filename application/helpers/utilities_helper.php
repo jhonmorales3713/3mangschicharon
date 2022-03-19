@@ -294,10 +294,10 @@ function get_status_ui($status_id){
             $status_string = '<span class="badge badge-pill badge-primary">Processing</span>';
         break;
         case 3:
-            $status_string = '<span class="badge badge-pill badge-info">Approved</span>';
+            $status_string = '<span class="badge badge-pill badge-info">For Pickup Delivery</span>';
         break;
         case 4:
-            $status_string = '<span class="badge badge-pill badge-info">Shipped</span>';
+            $status_string = '<span class="badge badge-pill badge-info">Fulfilled</span>';
         break;
         case 5:
             $status_string = '<span class="badge badge-pill badge-success">Delivered</span>';
