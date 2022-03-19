@@ -52,7 +52,7 @@ class Main_orders extends CI_Controller {
         );
         
         $data['view'] = $this->load->view('email/order_processing',$data,TRUE);
-        $email = 'moralesjhon03@gmail.com';
+        $email = json_decode($order[0]['shipping_data'])->email;
         $subject = "Order #".$reference_num." has been confirmed";
         $message = $this->load->view('email/templates/email_template',$data,true);
 		$this->send_email($email,$subject,$message);
@@ -91,7 +91,7 @@ class Main_orders extends CI_Controller {
         );
         
         $data['view'] = $this->load->view('email/order_processing',$data,TRUE);
-        $email = 'moralesjhon03@gmail.com';
+        $email = json_decode($order[0]['shipping_data'])->email;
         $subject = "Order #".$reference_num." has been tagged as Fulfilled";
         $message = $this->load->view('email/templates/email_template',$data,true);
 		$this->send_email($email,$subject,$message);
@@ -103,7 +103,7 @@ class Main_orders extends CI_Controller {
     }
     public function confirmOrder(){
         $reference_num = $this->input->post('reference_num');
-        
+        $reason = $this->input->post('f_reason')!=''?$this->input->post('reason_option').','.$this->input->post('f_reason'):$this->input->post('reason_option');
         if($this->input->post('delivery_option') == ''){
             $response = array(
                 'success'      => false,
@@ -113,7 +113,25 @@ class Main_orders extends CI_Controller {
             echo json_encode($response);
             die();
         }
-        $success    = $this->model_orders->confirmOrder($reference_num,$this->input->post('delivery_option'));
+        if($this->input->post('reason_option') == 'Others' && $this->input->post('f_reason') == ''){
+            $response = array(
+                'success'      => false,
+                'environment' => ENVIRONMENT,
+                'message'     => 'Please Input reason for others option.'
+            );
+            echo json_encode($response);
+            die();
+        }
+        if($this->input->post('delivery_option') != 5 && $this->input->post('reason_option') == ''){
+            $response = array(
+                'success'      => false,
+                'environment' => ENVIRONMENT,
+                'message'     => 'Please select reason below.'
+            );
+            echo json_encode($response);
+            die();
+        }
+        $success    = $this->model_orders->confirmOrder($reference_num,$this->input->post('delivery_option'),$reason);
         // $items      = $this->model_orders->listShopItems($reference_num, $sys_shop);
         // $salesOrder = $this->model_orders->getSalesOrder($reference_num, $sys_shop);
         //$this->model_orders->addOrderHistory($salesOrder->id, 'Order is being prepared for shipping by the seller.', 'Process Order', $this->session->userdata('username'), date('Y-m-d H:i:s'));
@@ -131,21 +149,41 @@ class Main_orders extends CI_Controller {
             'order_data_main'=> $order,
             'reference_num'=> $reference_num
         );
-        
+        $status = 'Delivered';
         $delivery_option = $this->input->post('delivery_option');
+        if($delivery_option == 8 || $delivery_option == 9){
+            $status = 'Re-Deliver';
+        }
         $data['delivery_option'] = $delivery_option;
         $data['view'] = $this->load->view('email/order_processing',$data,TRUE);
-        $email = 'moralesjhon03@gmail.com';
-        $subject = "Order #".$reference_num." has been tagged as Delivered";
+        $email = json_decode($order[0]['shipping_data'])->email;
+        $subject = "Order #".$reference_num." has been tagged as ".$status;
         $message = $this->load->view('email/templates/email_template',$data,true);
 		$this->send_email($email,$subject,$message);
         $response['success'] = $success;
-        $response['message'] = "Order #".$reference_num." has been tagged as Delivered";
-        $this->audittrail->logActivity('Order List', 'Order #'.$reference_num.' has been tagged as Delivered', 'Deliver Order', $this->session->userdata('username'));
+        $response['message'] = "Order #".$reference_num." has been tagged as ".$status;
+        $this->audittrail->logActivity('Order List', 'Order #'.$reference_num.' has been tagged as '.$status, $status.' Order', $this->session->userdata('username'));
         echo json_encode($response);
 
     }
 
+    public function readyfordeliveryOrder2(){
+        $reference_num = 'SS5ZRJFOG';
+        $order = $this->model_orders->orders_details($reference_num);
+        $recipient_details = json_decode($order[0]['shipping_data']);
+        $order_details = json_decode($order[0]['order_data']);
+		$subject = get_company_name()." | Password Set Up";
+        $data = array(
+            'recipient_details' => $recipient_details,
+            'order_data'=> $order_details,
+            'order_data_main'=> $order,
+            'reference_num'=> $reference_num
+        );
+        $data['view'] = $this->load->view('email/order_processing',$data,TRUE);
+        $email = json_decode($order[0]['shipping_data'])->email;
+        $subject = "Order #".$reference_num." has been confirmed";
+         $this->load->view('email/templates/email_template',$data,'',true);
+    }
     public function readyfordeliveryOrder(){
         
         $reference_num = $this->input->post('reference_num');
@@ -268,7 +306,7 @@ class Main_orders extends CI_Controller {
             'reference_num'=> $reference_num
         );
         $data['view'] = $this->load->view('email/order_processing',$data,TRUE);
-        $email = 'moralesjhon03@gmail.com';
+        $email = json_decode($order[0]['shipping_data'])->email;
         $subject = "Order #".$reference_num." has been confirmed";
         $message = $this->load->view('email/templates/email_template',$data,true);
 		$this->send_email($email,$subject,$message);
@@ -288,10 +326,10 @@ class Main_orders extends CI_Controller {
 
     }
 
-    
 	function send_email($emailto,$subject,$message){
 		
 		$this->load->library('email');
+        
 		$config = Array(
 			'protocol' => 'smtp',
 			'smtp_host' => 'ssl://smtp.googlemail.com',
@@ -303,13 +341,25 @@ class Main_orders extends CI_Controller {
 			'wordwrap'=> TRUE,
 			'mailtype' => 'html'
 		);
+		// $config = Array(
+		// 	'protocol' => 'smtp',
+		// 	'smtp_host' => get_host(),
+		// 	'smtp_port' => 587,
+		// 	'smtp_user' => get_email(),
+		// 	'smtp_pass' => get_emailpassword(),
+		// 	'charset' => 'utf-8',
+		// 	'newline'   => "\r\n",
+		// 	'wordwrap'=> TRUE,
+		// 	'mailtype' => 'html'
+		// );
 		$this->email->initialize($config);
 		$this->email->set_newline("\r\n");  
-		$this->email->from('ulul@gmail.com',get_company_name());
+		$this->email->from(get_email(),get_company_name());
 		$this->email->to($emailto);
 		$this->email->subject($subject);
 		$this->email->message($message);
 		$this->email->send();
+        
 	}
 
 	public function views_restriction($content_url){

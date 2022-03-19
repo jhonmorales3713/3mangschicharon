@@ -428,7 +428,7 @@
                                             <div class="col-md-4" style="padding-top:13px;">
                                                 <span><?=json_decode($order_details['shipping_data'])->full_name?> </span>
                                             </div>
-                                            <?php if($order_details['status_id'] >= 5 ){?>
+                                            <?php if($order_details['date_delivered'] != '' ){?>
                                                 <div class="w-100" style="border-bottom: 1px dotted black;"></div>
                                                 <div class="col-md-6" style="padding-top:13px;">
                                                     <span>Order is Delivered.</span>
@@ -439,7 +439,55 @@
                                                 <div class="col-md-2" style="padding-top:5px;">
                                                     <span><?=$order_details['date_delivered']?></span>
                                                 </div>
-                                            <?php }if($order_details['status_id'] >= 4 ){?>
+                                            <?php } if($order_details['status_id'] == 0 && $order_details['date_deliveryfailed2'] != ''){?>
+                                                <div class="w-100" style="border-bottom: 1px dotted black;"></div>
+                                                <div class="col-md-6" style="padding-top:13px;">
+                                                    <span>Order is Cancelled.</span><br>
+                                                    <span class="font-weight-bold">Reason:<?=json_decode($order_details['reasons'])->cancel;?></span>
+                                                </div>
+                                                <div class="col-md-4" style="padding-top:13px;">
+                                                    <span></span>
+                                                </div>
+                                                <div class="col-md-2" style="padding-top:5px;">
+                                                    <span><?=$order_details['date_deliveryfailed2']?></span>
+                                                </div>
+                                            <?php } if($order_details['date_deliveryfailed2'] != '' ||$order_details['status_id'] == 0 ){?>
+                                                <div class="w-100" style="border-bottom: 1px dotted black;"></div>
+                                                <div class="col-md-6" style="padding-top:13px;">
+                                                    <span>Order is Re-delivered.</span><br>
+                                                    <span class="font-weight-bold">Reason:<?=json_decode($order_details['reasons'])->redeliver2;?></span>
+                                                </div>
+                                                <div class="col-md-4" style="padding-top:13px;">
+                                                    <span></span>
+                                                </div>
+                                                <div class="col-md-2" style="padding-top:5px;">
+                                                    <span><?=$order_details['date_deliveryfailed2']?></span>
+                                                </div>
+                                            <?php }if($order_details['status_id'] == 0 && $order_details['date_deliveryfailed2'] == ''){?>
+                                                <div class="w-100" style="border-bottom: 1px dotted black;"></div>
+                                                <div class="col-md-6" style="padding-top:13px;">
+                                                    <span>Order is Cancelled.</span><br>
+                                                    <span class="font-weight-bold">Reason:<?=json_decode($order_details['reasons'])->cancel;?></span>
+                                                </div>
+                                                <div class="col-md-4" style="padding-top:13px;">
+                                                    <span></span>
+                                                </div>
+                                                <div class="col-md-2" style="padding-top:5px;">
+                                                    <span><?=$order_details['date_deliveryfailed2']?></span>
+                                                </div>
+                                            <?php }  if($order_details['date_deliveryfailed1'] != ''  ||$order_details['status_id'] == 0){?>
+                                                <div class="w-100" style="border-bottom: 1px dotted black;"></div>
+                                                <div class="col-md-6" style="padding-top:13px;">
+                                                    <span>Order is Re-delivered.</span><br>
+                                                    <span class="font-weight-bold">Reason:<?=json_decode($order_details['reasons'])->redeliver1;?></span>
+                                                </div>
+                                                <div class="col-md-4" style="padding-top:13px;">
+                                                    <span></span>
+                                                </div>
+                                                <div class="col-md-2" style="padding-top:5px;">
+                                                    <span><?=$order_details['date_deliveryfailed1']?></span>
+                                                </div>
+                                            <?php }if($order_details['status_id'] >= 4  ||$order_details['status_id'] == 0){?>
                                                 <div class="w-100" style="border-bottom: 1px dotted black;"></div>
                                                 <div class="col-md-6" style="padding-top:13px;">
                                                     <span>Order is fulfilled.</span>
@@ -450,7 +498,7 @@
                                                 <div class="col-md-2" style="padding-top:5px;">
                                                     <span><?=$order_details['date_fulfilled']?></span>
                                                 </div>
-                                            <?php }if($order_details['status_id'] >= 3 ){?>
+                                            <?php }if($order_details['status_id'] >= 3  ||$order_details['status_id'] == 0 ){?>
                                                 
                                                 <div class="w-100" style="border-bottom: 1px dotted black;"></div>
                                                 <div class="col-md-6" style="padding-top:13px;">
@@ -463,7 +511,7 @@
                                                     <span><?=$order_details['date_readyforpickup']?></span>
                                                     <span data-toggle="modal" data-target="#itemPickedupModal"><u>View Image</u></span>
                                                 </div>
-                                            <?php }if($order_details['status_id'] > 1 ){?>
+                                            <?php }if($order_details['status_id'] > 1  ||$order_details['status_id'] == 0){?>
                                                 <div class="w-100" style="border-bottom: 1px dotted black;"></div>
                                                 <div class="col-md-6" style="padding-top:13px;">
                                                     <span>Order is being processed.</span>
@@ -550,7 +598,7 @@
                     <?php if($order_details['status_id'] == 3){ ?>
                         <button type="button" class="btn-mobile-w-100 btn btn-outline-warning waves-effect waves-light fulfillmentBtn mb-2 mb-md-0" id="fulfillmentBtn" data-value="<?=$reference_num?>">Mark as Fulfilled</button>
                     <?php } ?>
-                    <?php if($order_details['status_id'] == 4){ ?>
+                    <?php if($order_details['status_id'] == 4 || $order_details['status_id'] == 8 || $order_details['status_id'] == 9){ ?>
                         <button type="button" class="btn-mobile-w-100 btn btn-outline-success waves-effect waves-light confirmedBtn mb-2 mb-md-0" id="confirmedBtn" data-value="<?=$reference_num?>">Change Delivery Status</button>
                     <?php } ?>
                         <!-- <?php if(!empty($order_details['sales_order_status']) && $order_details['sales_order_status'] == 'po' && $this->loginstate->get_access()['transactions']['ready_pickup'] == 1 && $this->loginstate->get_access()['transactions']['mark_fulfilled'] == 1 && $refunded_all == 0){ ?>
@@ -748,7 +796,7 @@
                     $form_id='form_save_fulfillment_modal';
                     $header = 'Order Fulfill';
                 }
-                if($order_details['status_id'] == 4){
+                if($order_details['status_id'] == 4 || $order_details['status_id'] == 8 || $order_details['status_id'] == 9){
                     $form_id='form_save_delivery_confirmed';
                     $header = 'Delivery Status';
                 }
@@ -971,7 +1019,7 @@
                                     </div>
                                 </div>
                                 <?php } ?>
-                        <?php }if($order_details['status_id'] == 4){
+                                <?php }if($order_details['status_id'] == 4 || $order_details['status_id'] == 8 || $order_details['status_id'] == 9) {
                                 $redeliver = $order_details['date_deliveryfailed1'] == ''?8:9;
                                 ?>
                              <div class="row">
@@ -981,11 +1029,39 @@
                                 <div class="col">
                                     <input type="radio" name="delivery_option" value="5" text="Delivered">Delivered Success</input>
                                 </div>
+                                <?php if($order_details['date_delivered'] == '' && $order_details['date_deliveryfailed2'] == '' && $order_details['status_id'] <= 9){?>
                                 <div class="col">
-                                    <input type="radio" name="delivery_option" value="<?=$redeliver?>" text="Delivered">Re-Deliver Next Business Day</input>
+                                    <input type="radio"name="delivery_option" value="<?=$redeliver?>" text="Delivered">Re-Deliver Next Business Day</input>
                                 </div>
+                                <?php } if($order_details['date_delivered'] == '' && $order_details['date_deliveryfailed2']!='' && $order_details['date_deliveryfailed2'] != '' && $order_details['status_id'] <= 9){?>
                                 <div class="col">
-                                    <input type="radio" name="delivery_option" value="<?=$redeliver?>" text="Delivered">Delivery Failed</input>
+                                    <input type="radio"name="delivery_option" value="0" text="Delivered">Delivery Failed</input>
+                                </div>
+                                <?php }?>
+                                <div class="col-12 font-weight-bold delivery_reason">
+                                    <label class="">Reason</label>
+                                </div>
+                                <div class="col delivery_reason">
+                                    <input type="radio"name="reason_option" value="Unreachable Number" >Unreachable Number</input>
+                                </div>
+                                <div class="col delivery_reason">
+                                    <input type="radio"name="reason_option" value="Unreachable Area" >Unreachable Area</input>
+                                </div>
+                                
+                                <?php if($order_details['date_delivered'] == ''  && $order_details['date_deliveryfailed2'] == '' && $order_details['status_id'] <= 9){?>
+                                <div class="col delivery_reason">
+                                    <input type="radio"name="reason_option" value="Request to re-deliver by customer" >Request to re-deliver by customer</input>
+                                </div>
+                                <?php }else{?>
+                                <div class="col delivery_reason">
+                                    <input type="radio"name="reason_option" value="Reached maximum re-delivery count" >Reached maximum re-delivery count</input>
+                                </div>
+                                <?php } ?>
+                                <div class="col delivery_reason">
+                                    <input type="radio"name="reason_option" value="Others" >Others</input>
+                                </div>
+                                <div class="col-12 reason_option_others" >
+                                    <textarea class="form-control" name="f_reason" id="f_reason" placeholder="Type reason here"></textarea>
                                 </div>
                                 <div class="col-12 mt-2">
                                     <div class="alert alert-warning" role="alert">
@@ -1009,7 +1085,7 @@
                         <?php if($order_details['status_id'] == 3){?>
                             <button type="submit" id="btn_fulfilled" class=" btn btn-outline-warning waves-effect waves-light" aria-label="Close">Mark as Fulfilled</button>
                         <?php }?>
-                        <?php if($order_details['status_id'] == 4){?>
+                        <?php if($order_details['status_id'] == 4 || $order_details['status_id'] == 8 || $order_details['status_id'] == 9){?>
                             <button type="submit" id="btn_delivered" class=" btn btn-outline-success waves-effect waves-light" aria-label="Close">Proceed</button>
                         <?php }?>
                     </div>

@@ -54,26 +54,81 @@ class Model_orders extends CI_Model {
 		return $this->db->query($sql, $bind_data);
 	}
 
-	public function confirmOrder($reference_num,$order_status) {
+	public function confirmOrder($reference_num,$order_status,$reason = '') {
 
-		$sql = "UPDATE `sys_orders` SET status_id = ".$order_status.", `date_delivered` = ?";
+		$sql = "UPDATE `sys_orders` SET status_id = ?";
 		$bind_data = array(
-			date('Y-m-d H:i:s')
+			$order_status
 		);
-
-        $order_info = $this->orders_details($reference_num)[0]['payment_data'];
-        $order_info = json_decode($order_info);
-        $new_shipping_data = array(
-            'payment_method_id' => $order_info -> payment_method_id,
-            'payment_method_name' => $order_info -> payment_method_name,
-            'amount' => $order_info -> amount,
-            'status_id' => $order_info -> status_id,
-            'paid_date' => date('Y-m-d H:i:s')
-        );
-        //print_r(json_encode($new_shipping_data));
-        
-        $sql .=", payment_data = ? ";
-        array_push($bind_data, json_encode($new_shipping_data));
+		if($order_status == 8){
+			$sql .=", date_deliveryfailed1 = ? ";
+			array_push($bind_data, date('Y-m-d H:i:s'));
+			$order_info = $this->orders_details($reference_num)[0]['reasons'];
+			$reasons = array(
+				'redeliver1' => $reason
+			);
+			$sql .=", reasons = ? ";
+			array_push($bind_data, json_encode($reasons));
+		}else
+		if($order_status == 0){
+			$sql .=", date_declined = ? ";
+			array_push($bind_data, date('Y-m-d H:i:s'));
+			$order_info = $this->orders_details($reference_num)[0]['reasons'];
+			$order_info = json_decode($order_info);
+			$reasons = array(
+				'redeliver1' => $order_info->redeliver1,
+				'redeliver2' => $order_info->redeliver2,
+				'cancel' => $reason
+			);
+			$sql .=", reasons = ? ";
+			array_push($bind_data, json_encode($reasons));
+		}else
+		if($order_status == 9){
+			$order_info_ = $this->orders_details($reference_num);
+			$order_info = json_decode($order_info_[0]['reasons']);
+			//setting to failed if exceeded delivery count
+			if($order_info_[0]['date_deliveryfailed2']!=''){
+				$sql = "UPDATE `sys_orders` SET status_id = ?,date_declined = ?";
+				$bind_data2 = array(
+					0,date('Y-m-d H:i:s')
+				);
+				$bind_data = $bind_data2;
+			}else{
+				$sql .=", date_deliveryfailed2 = ? ";
+				array_push($bind_data, date('Y-m-d H:i:s'));
+			}
+			
+			if($order_info_[0]['date_deliveryfailed2']!=''){
+				$reasons = array(
+					'redeliver1' => $order_info -> redeliver1,
+					'redeliver2' => $order_info -> redeliver2,
+					'cancel' => $reason,
+				);
+			}else{
+				$reasons = array(
+					'redeliver1' => $order_info -> redeliver1,
+					'redeliver2' => $reason
+				);
+			}
+			$sql .=", reasons = ? ";
+			array_push($bind_data, json_encode($reasons));
+		}else{
+			$sql .=", date_delivered = ? ";
+			array_push($bind_data, date('Y-m-d H:i:s'));
+			$order_info = $this->orders_details($reference_num)[0]['payment_data'];
+			$order_info = json_decode($order_info);
+			$new_shipping_data = array(
+				'payment_method_id' => $order_info -> payment_method_id,
+				'payment_method_name' => $order_info -> payment_method_name,
+				'amount' => $order_info -> amount,
+				'status_id' => $order_info -> status_id,
+				'paid_date' => date('Y-m-d H:i:s')
+			);
+			//print_r(json_encode($new_shipping_data));
+			
+			$sql .=", payment_data = ? ";
+			array_push($bind_data, json_encode($new_shipping_data));
+		}
         
         
         $sql .=" WHERE order_id = ? ";

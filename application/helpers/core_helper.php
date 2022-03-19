@@ -52,6 +52,15 @@ function get_company_email(){
 function get_company_phone(){
 	return (cs_clients_info()) ? cs_clients_info()->c_phone : "";
 }
+function get_email(){
+	return (cs_clients_info()) ? cs_clients_info()->c_email : "";
+}
+function get_host(){
+	return (cs_clients_info()) ? cs_clients_info()->c_host : "";
+}
+function get_emailpassword(){
+	return (cs_clients_info()) ? cs_clients_info()->c_password : "";
+}
 
 function cs_clients_info(){
 	$sql = "SELECT * FROM cs_clients_info WHERE id_key = ? LIMIT 1";

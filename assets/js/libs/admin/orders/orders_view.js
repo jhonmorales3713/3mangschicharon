@@ -50,6 +50,22 @@ $(function () {
     $('#confirmedBtn').click(function(e){
         loadinfo();
     });
+    $(".delivery_reason").css('display','none');
+    $(".reason_option_others").css('display','none');
+    $("input[name=delivery_option]").change(function(){
+      if($(this).val()!='5'){
+        $(".delivery_reason").css('display','block');
+      }else{
+        $(".delivery_reason").css('display','none');
+      }
+    });
+    $("input[name=reason_option]").change(function(){
+      if($(this).val()=='Others'){
+        $(".reason_option_others").css('display','block');
+      }else{
+        $(".reason_option_others").css('display','none');
+      }
+    });
     $("#shipping_partner").change(function(){
         if($(this).val()==""){
             $(".note_notinternal").css('display','none');
