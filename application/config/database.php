@@ -96,11 +96,11 @@ $db['default'] = array(
 );
 
 $db['core'] = array(
-	'dsn'	=> 'mysql:host=localhost;dbname=core_projects',
+	'dsn'	=> 'mysql:host=localhost;dbname=3mangschicharon_3',
 	'hostname' => 'localhost',
 	'username' => 'root',
 	'password' => '',
-	'database' => 'core_projects',
+	'database' => '3mangschicharon_3',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,

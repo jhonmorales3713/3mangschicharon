@@ -29,14 +29,15 @@ class Main_orders extends CI_Controller {
 
     public function processOrder()
     {
-        $reference_num = $this->input->post('po_id');
-        $reference_num = 'ABCD';
+        $reference_num = $this->input->post('reference_num');
+        //$reference_num = 'ABCD';
         $success    = $this->model_orders->processOrder($reference_num);
         // $items      = $this->model_orders->listShopItems($reference_num, $sys_shop);
         // $salesOrder = $this->model_orders->getSalesOrder($reference_num, $sys_shop);
         //$this->model_orders->addOrderHistory($salesOrder->id, 'Order is being prepared for shipping by the seller.', 'Process Order', $this->session->userdata('username'), date('Y-m-d H:i:s'));
 
         $order = $this->model_orders->orders_details($reference_num);
+        //print_r($reference_num);
         $recipient_details = json_decode($order[0]['shipping_data']);
         $order_details = json_decode($order[0]['order_data']);
         // $this->sendProcessOrderEmail($order);
@@ -65,6 +66,226 @@ class Main_orders extends CI_Controller {
         
         // $data['view'] = $this->load->view('email/order_processing',$data,TRUE);
         // $this->load->view('email/templates/email_template',$data,'',true);
+    }
+
+    public function fulFillOrder(){
+        $reference_num = $this->input->post('reference_num');
+        
+        $success    = $this->model_orders->fulFillOrder($reference_num);
+        // $items      = $this->model_orders->listShopItems($reference_num, $sys_shop);
+        // $salesOrder = $this->model_orders->getSalesOrder($reference_num, $sys_shop);
+        //$this->model_orders->addOrderHistory($salesOrder->id, 'Order is being prepared for shipping by the seller.', 'Process Order', $this->session->userdata('username'), date('Y-m-d H:i:s'));
+
+        $order = $this->model_orders->orders_details($reference_num);
+        //print_r($reference_num);
+        $recipient_details = json_decode($order[0]['shipping_data']);
+        $order_details = json_decode($order[0]['order_data']);
+        // $this->sendProcessOrderEmail($order);
+        
+
+        $data = array(
+            'recipient_details' => $recipient_details,
+            'order_data'=> $order_details,
+            'order_data_main'=> $order,
+            'reference_num'=> $reference_num
+        );
+        
+        $data['view'] = $this->load->view('email/order_processing',$data,TRUE);
+        $email = 'moralesjhon03@gmail.com';
+        $subject = "Order #".$reference_num." has been tagged as Fulfilled";
+        $message = $this->load->view('email/templates/email_template',$data,true);
+		$this->send_email($email,$subject,$message);
+        $response['success'] = $success;
+        $response['message'] = "Order #".$reference_num." has been tagged as Fulfilled";
+        $this->audittrail->logActivity('Order List', 'Order #'.$reference_num.' has been tagged as Fulfilled', 'Fulfill Order', $this->session->userdata('username'));
+        echo json_encode($response);
+
+    }
+    public function confirmOrder(){
+        $reference_num = $this->input->post('reference_num');
+        
+        if($this->input->post('delivery_option') == ''){
+            $response = array(
+                'success'      => false,
+                'environment' => ENVIRONMENT,
+                'message'     => 'Please select delivery status.'
+            );
+            echo json_encode($response);
+            die();
+        }
+        $success    = $this->model_orders->confirmOrder($reference_num,$this->input->post('delivery_option'));
+        // $items      = $this->model_orders->listShopItems($reference_num, $sys_shop);
+        // $salesOrder = $this->model_orders->getSalesOrder($reference_num, $sys_shop);
+        //$this->model_orders->addOrderHistory($salesOrder->id, 'Order is being prepared for shipping by the seller.', 'Process Order', $this->session->userdata('username'), date('Y-m-d H:i:s'));
+
+        $order = $this->model_orders->orders_details($reference_num);
+        //print_r($reference_num);
+        $recipient_details = json_decode($order[0]['shipping_data']);
+        $order_details = json_decode($order[0]['order_data']);
+        // $this->sendProcessOrderEmail($order);
+        
+
+        $data = array(
+            'recipient_details' => $recipient_details,
+            'order_data'=> $order_details,
+            'order_data_main'=> $order,
+            'reference_num'=> $reference_num
+        );
+        
+        $delivery_option = $this->input->post('delivery_option');
+        $data['delivery_option'] = $delivery_option;
+        $data['view'] = $this->load->view('email/order_processing',$data,TRUE);
+        $email = 'moralesjhon03@gmail.com';
+        $subject = "Order #".$reference_num." has been tagged as Delivered";
+        $message = $this->load->view('email/templates/email_template',$data,true);
+		$this->send_email($email,$subject,$message);
+        $response['success'] = $success;
+        $response['message'] = "Order #".$reference_num." has been tagged as Delivered";
+        $this->audittrail->logActivity('Order List', 'Order #'.$reference_num.' has been tagged as Delivered', 'Deliver Order', $this->session->userdata('username'));
+        echo json_encode($response);
+
+    }
+
+    public function readyfordeliveryOrder(){
+        
+        $reference_num = $this->input->post('reference_num');
+        
+        $this->load->library('upload');
+        $count_upload = count($_FILES['order_attachment']['name']);
+        $shipping_partner = $this->input->post('shipping_partner');
+        $c_reference_num = $this->input->post('c_reference_num');
+        $c_driver_name = $this->input->post('c_driver_name');
+        $c_vehicle_type = $this->input->post('c_vehicle_type');
+        $c_delivery_fee = $this->input->post('c_delivery_fee');
+        $c_contact_number = $this->input->post('c_contact_number');
+        //if($count_upload === '0'){
+            
+        if($count_upload == 0){
+            $response = array(
+                'success'      => false,
+                'environment' => ENVIRONMENT,
+                'message'     => 'No attached image.',
+            );
+            echo json_encode($response);
+            die();
+        
+        }else if($shipping_partner != '' && ($c_reference_num == '' || $c_vehicle_type == '' || $c_driver_name == '' || $c_delivery_fee == '')){
+            
+            $response = array(
+                'success'      => false,
+                'environment' => ENVIRONMENT,
+                'message'     => 'Courier Information is required',
+            );
+            echo json_encode($response);
+            die();
+
+        }else{
+
+            // if($this->input->post('f_member_shop') == ''){
+            //     $response = array(
+            //         'success'      => false,
+            //         'environment' => ENVIRONMENT,
+            //         'message'     => 'Please select a shop.'
+            //     );
+            //     echo json_encode($response);
+            //     die();
+            // }
+            //$shopcode = $this->model_products->get_shopcode_via_shopid($this->session->userdata('sys_shop_id'));
+
+            // $this->makedirImage($f_id, $shopcode);
+
+            $directory    = 'assets/uploads/orders';
+            if (!is_dir( 'assets/uploads/')) {
+                mkdir( 'assets/uploads/', 0777, true);
+            }
+            if (!is_dir( 'assets/uploads/orders/')) {
+                mkdir( 'assets/uploads/orders/', 0777, true);
+            }
+            //$shopcode = $this->model_products->get_shopcode_via_shopid($this->session->userdata('sys_shop_id'));
+
+            $images = $this->model_orders->getImageByFileName($reference_num);
+            foreach($images->result_array() as $image){
+                if(file_exists('assets/uploads/orders/'.str_replace('==','',$image['filename']))){
+                    unlink(('assets/uploads/orders/'.str_replace('==','',$image['filename'])));
+                }
+            }
+        
+            // foreach($reorder_image as $val){
+            for($i = 0; $i < $count_upload; $i++) { 
+                // if($val == $_FILES['product_image']['name'][$i]){
+                    $_FILES['userfile']['name']     = $_FILES['order_attachment']['name'][$i];
+                    $_FILES['userfile']['type']     = $_FILES['order_attachment']['type'][$i];
+                    $_FILES['userfile']['tmp_name'] = $_FILES['order_attachment']['tmp_name'][$i];
+                    $_FILES['userfile']['error']    = $_FILES['order_attachment']['error'][$i];
+                    $_FILES['userfile']['size']     = $_FILES['order_attachment']['size'][$i];
+
+                    $file_name   = en_dec('en', $_FILES['userfile']['name'].rand()).'.'.pathinfo($_FILES['userfile']['name'], PATHINFO_EXTENSION);
+                    
+                    $imgArr[] =  str_replace('===.','==.',str_replace('.','==.',$file_name));
+                    $config = array(
+                        'file_name'     => $file_name,
+                        'allowed_types' => '*',
+                        'max_size'      => 20000,
+                        'overwrite'     => FALSE,
+                        'min_width'     => '1',
+                        'min_height'     => '1',
+                        'upload_path'
+                        =>  $directory
+                    );
+                    $this->upload->initialize($config);
+                    if ( ! $this->upload->do_upload()) {
+                        $error = array('error' => $this->upload->display_errors());
+                        $response = array(
+                            'status'      => false,
+                            'environment' => ENVIRONMENT,
+                            'message'     => $error['error']
+                        );
+                        echo json_encode($response);
+                        die();
+                    }
+                }
+                
+            //} 
+        } 
+        $courier_info = array(
+            'reference_num' => $c_reference_num,
+            'vehicle_type' => $c_vehicle_type,
+            'name' => $c_driver_name,
+            'delivery_fee' =>$c_delivery_fee,
+            'partner' =>$shipping_partner,
+            'contact_no'=> $c_contact_number
+        );
+       // $imgArr = array();
+        $success    = $this->model_orders->readyfordeliveryOrder($reference_num,$imgArr,$courier_info);
+        $order = $this->model_orders->orders_details($reference_num);
+        $recipient_details = json_decode($order[0]['shipping_data']);
+        $order_details = json_decode($order[0]['order_data']);
+		$subject = get_company_name()." | Password Set Up";
+        $data = array(
+            'recipient_details' => $recipient_details,
+            'order_data'=> $order_details,
+            'order_data_main'=> $order,
+            'reference_num'=> $reference_num
+        );
+        $data['view'] = $this->load->view('email/order_processing',$data,TRUE);
+        $email = 'moralesjhon03@gmail.com';
+        $subject = "Order #".$reference_num." has been confirmed";
+        $message = $this->load->view('email/templates/email_template',$data,true);
+		$this->send_email($email,$subject,$message);
+
+        $response['success'] = $success;
+        $response['message'] = "Order #".$reference_num." has been tagged as Ready for Pick Up";
+        if($c_reference_num != ''){
+            $this->audittrail->logActivity('Order List', 'Order #'.$reference_num.' shipping delivery information has changed', 'Shipping Information', $this->session->userdata('username'));
+            
+        }
+        $this->audittrail->logActivity('Order List', 'Order #'.$reference_num.' has been tagged as Ready for Pick Up', 'Ready for Pick Up Order', $this->session->userdata('username'));
+        echo json_encode($response);
+        //for testing
+        
+        // $data['view'] = $this->load->view('email/order_processing',$data,TRUE);
+        // $this->load->view('email/templates/email_template',$data,'',true);
+
     }
 
     
@@ -166,6 +387,7 @@ class Main_orders extends CI_Controller {
             $member_id = $this->session->userdata('sys_users_id');
             $content_url = $this->uri->segment(1) . '/' . $this->uri->segment(2) . '/';
             $main_nav_id = 'Orders';
+            $images = $this->model_orders->getImageByFileName($ref_num);
             //$main_nav_id = $this->views_restriction($content_url);
             $row            = $this->model_orders->orders_details($ref_num)[0];
             //$order_items    = $this->model_orders->order_item_table_print($reference_num, $sys_shop);
@@ -177,6 +399,8 @@ class Main_orders extends CI_Controller {
                 'main_nav_categories' => $this->model_dev_settings->main_nav_categories()->result(),
                 'reference_num'       => $ref_num,
                 'order_details'       => $row,
+                'images'       => $images,
+                'shipping_partners'  => $this->model_dev_settings->get_shipping_partners()->result_array()
             );
 
             $data_admin['active_page'] =  $this->session->userdata('active_page');

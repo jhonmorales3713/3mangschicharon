@@ -31,7 +31,7 @@
     
 ?>
 
-<div class="col-12 alert_div">
+<div class="col-12">
     <div class="alert alert-secondary ml-4 color-dark" role="alert">
         <span class="font-weight-bold"><a class="text-dark" href="<?=base_url('admin/Main_orders/orders_home/Orders');?>"><?=$active_page?></a></span>
         &nbsp;<span class="fa fa-chevron-right"></span>&nbsp;
@@ -41,461 +41,442 @@
         
     </div>
 </div>
-<div class="content-inner ml-4" id="pageActive" data-num="2" data-namecollapse="" data-labelname="Order View"> 
 
-    <div class="container-fluid">
-        <div class="row flex-md-row-reverse">
-            <!-- <div class="col-lg-12">
-                <div class="col-md-12 text-right mb-3">
-                </div>
-                 -->
-            <!-- </div>
-            <div class="col-12 d-md-none mb-3">
-                <div class="text-right">
-                    <?php if($next_order != '-' && $next_order != ''){?>
-                        <a href="<?=base_url('Main_orders/orders_view/'.$token.'/'.$next_order.'/'.$order_status_view)?>" type="button" class="prevBtn mx-3" id="prevBtn"><i class="fa fa-arrow-left"></i></a> 
-                    <?php } ?>
-                    <?php if($prev_order != '-' && $prev_order != ''){?>
-                         <a href="<?=base_url('Main_orders/orders_view/'.$token.'/'.$prev_order.'/'.$order_status_view)?>" type="button" class="nextBtn mx-3" id="nextBtn"><i class="fa fa-arrow-right"></i></a> 
-                    <?php } ?>
-                </div>
-            </div> -->
-            <div class="col-md-4">
-                <div class="row">
-                    <div class="col-12 mb-4">
-                        <div class="card customer-card">
-                            <div class="card-header">
-                                <h3 class="card-title">
-                                    <!-- <i class="fa fa-user no-margin"></i> -->
-                                    Customer
-                                </h3>
-                            </div>
-                            <div class="card-body">
-                                <div class="row no-gutters">
-                                    <div class="col-1 pr-2 d-flex justify-content-center">
-                                        <label class=""><i class="fa fa-user" aria-hidden="true"></i></label>
-                                    </div>
-                                    <div class="col-11">
-                                        <label id="tm_name"><?=json_decode($order_details['shipping_data'])->full_name?></label>
-                                    </div>
-                                    <div class="col-1 pr-2 d-flex justify-content-center">
-                                        <label class=""><i class="fa fa-mobile" aria-hidden="true"></i></label>
-                                    </div>
-                                    <div class="col-11">
-                                        <label id="tm_mobile"><?=json_decode($order_details['shipping_data'])->contact_no?></label>
-                                    </div>
-                                    <div class="col-1 pr-2 d-flex justify-content-center">
-                                        <label class="" ><i class="fa fa-envelope" aria-hidden="true"></i></label>
-                                    </div>
-                                    <div class="col-11">
-                                        <label id="tm_email" ><?=isset(json_decode($order_details['shipping_data'])->email)?json_decode($order_details['shipping_data'])->email:'none';?></label>
-                                    </div>
-                                    <div class="col-1 pr-2 d-flex justify-content-center">
-                                        <label class="" ><i class="fa fa-truck" aria-hidden="true"></i></label>
-                                    </div>
-                                    <div class="col-11">
-                                        <label id="tm_address"><?=json_decode($order_details['shipping_data'])->address.', Brgy. '.json_decode($order_details['shipping_data'])->barangay.' '.json_decode($order_details['shipping_data'])->city.' '.json_decode($order_details['shipping_data'])->zip_code.', '.json_decode($order_details['shipping_data'])->province?></label>
-                                    </div>
-                                    <div class="col-1 pr-2 d-flex justify-content-center">
-                                        <label class="" ><i class="fa fa-sticky-note" aria-hidden="true"></i></label>
-                                    </div>
-                                    <div class="col-11">
-                                        <label id="tm_notes"><?=json_decode($order_details['shipping_data'])->notes//str_replace($special_upper, $special_format, $notes);?></label>
-                                    </div>
+<div class="col ml-3 container-fluid">
+    <div class="row ">
+        <div class="col-md-4  order-md-2">
+            <div class="row">
+                <div class="col-12 mb-4">
+                    <div class="card customer-card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <!-- <i class="fa fa-user no-margin"></i> -->
+                                Customer
+                            </h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row no-gutters">
+                                <div class="col-1 pr-2 d-flex justify-content-center">
+                                    <label class=""><i class="fa fa-user" aria-hidden="true"></i></label>
+                                </div>
+                                <div class="col-11">
+                                    <label id="tm_name"><?=json_decode($order_details['shipping_data'])->full_name?></label>
+                                </div>
+                                <div class="col-1 pr-2 d-flex justify-content-center">
+                                    <label class=""><i class="fa fa-mobile" aria-hidden="true"></i></label>
+                                </div>
+                                <div class="col-11">
+                                    <label id="tm_mobile"><?=json_decode($order_details['shipping_data'])->contact_no?></label>
+                                </div>
+                                <div class="col-1 pr-2 d-flex justify-content-center">
+                                    <label class="" ><i class="fa fa-envelope" aria-hidden="true"></i></label>
+                                </div>
+                                <div class="col-11">
+                                    <label id="tm_email" ><?=isset(json_decode($order_details['shipping_data'])->email)?json_decode($order_details['shipping_data'])->email:'none';?></label>
+                                </div>
+                                <div class="col-1 pr-2 d-flex justify-content-center">
+                                    <label class="" ><i class="fa fa-truck" aria-hidden="true"></i></label>
+                                </div>
+                                <div class="col-11">
+                                    <label id="tm_address"><?=json_decode($order_details['shipping_data'])->address.', Brgy. '.json_decode($order_details['shipping_data'])->barangay.' '.json_decode($order_details['shipping_data'])->city.' '.json_decode($order_details['shipping_data'])->zip_code.', '.json_decode($order_details['shipping_data'])->province?></label>
+                                </div>
+                                <div class="col-1 pr-2 d-flex justify-content-center">
+                                    <label class="" ><i class="fa fa-sticky-note" aria-hidden="true"></i></label>
+                                </div>
+                                <div class="col-11">
+                                    <label id="tm_notes"style="display: inline-block; width: 300px; overflow: hidden"><?=json_decode($order_details['shipping_data'])->notes//str_replace($special_upper, $special_format, $notes);?></label>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <div class="col-12 mb-4">
-                        <div class="card detail-container">
-                            <div class="card-header">
-                                <h3 class="card-title">
-                                    <!-- <i class="fa fa-credit-card no-margin"></i> -->
-                                    Payment Details
-                                </h3>
-                            </div>
-                            <div class="card-body px-lg-5">
-                                <div class="">
-
-                                    <div class="row grp_payment" id="grp_payment">
-                                        <div class="col-12 col-md-12">
-                                            <label class="">Payment Date:</label>
-                                            <label id="tm_payment_date" class="green-text font-weight-bold"><?=$payment_method=='COD'?'None':json_decode($order_details['payment_data'])->paid_date?></label>
-                                        </div>
-                                        <!-- <div class="col-12 col-md">
-                                            
-                                        </div> -->
-                                        <div class="col-12 col-md-12">
-                                            <label class="">Payment Reference No.:</label>
-                                            <label id="tm_payment_ref_num" class="green-text font-weight-bold"><?=$payment_method=='COD'?'None':json_decode($order_details['payment_data'])->ref_num?></label>
-                                        </div>
-                                        <!-- <div class="col-12 col-md">
-                                            
-                                        </div> -->
-                                        <div class="col-12 col-md-12">
-                                            <label class="">Payment Type:</label>
-                                            <label id="tm_payment_type" class="green-text font-weight-bold"><?=$payment_method?></label>
-                                        </div>
-                                        <!-- <div class="col-12 col-md">
-                                            
-                                        </div> -->
-                                        <!-- <div class="col-12 col-md-12">
-                                            <label class="">Payment Notes:</label>
-                                            <label id="tm_payment_note" class="green-text font-weight-bold"><?=$payment_notes;?></label>
-                                        </div> -->
-                                        <!-- <div class="col-12 col-md">
-                                            
-                                        </div> -->
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-12 col-md-12">
-                                            <label class="">Payment Status:</label>
-                                            <label id="tm_payment_status" class="green-text font-weight-bold"><?=$payment_method=='COD'?'Pending':json_decode($order_details['payment_data'])->ref_num?></label>
-                                        </div>
-                                        <!-- <div class="col-12 col-md">
-                                            
-                                        </div> -->
-                                    </div>
-                                            
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
-            </div>
-            <div class="col-md-8">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card mb-4">
-                            <div class="card-header">
-                                <div class="row">
-                                    <div class="col d-flex align-items-center">
-                                        <h3 class="card-title">
-                                            Transaction Reference # <?=$reference_num?>
-                                        </h3>
+
+                <div class="col-12 mb-4">
+                    <div class="card detail-container">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <!-- <i class="fa fa-credit-card no-margin"></i> -->
+                                Payment Details
+                            </h3>
+                        </div>
+                        <div class="card-body px-lg-5">
+                            <div class="">
+
+                                <div class="row grp_payment" id="grp_payment">
+                                    <div class="col-12 col-md-12">
+                                        <label class="">Payment Date:</label>
+                                        <label id="tm_payment_date" class="green-text font-weight-bold"><?=($payment_method=='COD' && $order_details['status_id']==5)?json_decode($order_details['payment_data'])->paid_date:'None'?></label>
+                                    </div>
+                                    <!-- <div class="col-12 col-md">
                                         
+                                    </div> -->
+                                    <div class="col-12 col-md-12">
+                                        <label class="">Payment Reference No.:</label>
+                                        <label id="tm_payment_ref_num" class="green-text font-weight-bold"><?=$payment_method=='COD'?'None':json_decode($order_details['payment_data'])->ref_num?></label>
                                     </div>
-                                    <!-- <div class="col-auto d-none d-md-flex justify-content-end">
-                                        <div>
-                                            <?php if($next_order != '-' && $next_order != ''){?>
-                                                 <a href="<?=base_url('Main_orders/orders_view/'.$token.'/'.$next_order.'/'.$order_status_view)?>" type="button" class="prevBtn mx-3" id="prevBtn"><i class="fa fa-arrow-left"></i></a> 
-                                            <?php } ?>
-                                            <?php if($prev_order != '-' && $prev_order != ''){?>
-                                                <a href="<?=base_url('Main_orders/orders_view/'.$token.'/'.$prev_order.'/'.$order_status_view)?>" type="button" class="nextBtn mx-3" id="nextBtn"><i class="fa fa-arrow-right"></i></a> 
-                                            <?php } ?>
-                                        </div>
+                                    <!-- <div class="col-12 col-md">
+                                        
+                                    </div> -->
+                                    <div class="col-12 col-md-12">
+                                        <label class="">Payment Type:</label>
+                                        <label id="tm_payment_type" class="green-text font-weight-bold"><?=$payment_method?></label>
+                                    </div>
+                                    <!-- <div class="col-12 col-md">
+                                        
+                                    </div> -->
+                                    <!-- <div class="col-12 col-md-12">
+                                        <label class="">Payment Notes:</label>
+                                        <label id="tm_payment_note" class="green-text font-weight-bold"><?=$payment_notes;?></label>
+                                    </div> -->
+                                    <!-- <div class="col-12 col-md">
+                                        
                                     </div> -->
                                 </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="">
-                                    <table class="table wrap-btn-last-td table-striped table-hover table-bordered display nowrap" style="width:100%" id="table-item"  cellpadding="0" cellspacing="0" border="0">
-                                        <thead>
-                                            <tr>
-                                                <th></th>
-                                                <th>Item Name</th>
-                                                <th>Qty</th>
-                                                <th>Amount</th>
-                                                <th>Total Amount</th>
-                                            </tr>
-                                        </thead>
-                                    </table>
+
+                                <div class="row">
+                                    <div class="col-12 col-md-12">
+                                        <label class="">Payment Status:</label>
+                                        <label id="tm_payment_status" class="green-text font-weight-bold"><?=($payment_method=='COD' && $order_details['status_id']==5)?'Paid':'Pending'?></label>
+                                    </div>
+                                    <!-- <div class="col-12 col-md">
+                                        
+                                    </div> -->
                                 </div>
+                                        
                             </div>
                         </div>
                     </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-md-8  order-md-1">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col d-flex align-items-center">
+                                    <h3 class="card-title">
+                                        Transaction Reference # <?=$reference_num?>
+                                    </h3>
+                                    
+                                </div>
+                                <!-- <div class="col-auto d-none d-md-flex justify-content-end">
+                                    <div>
+                                        <?php if($next_order != '-' && $next_order != ''){?>
+                                                <a href="<?=base_url('Main_orders/orders_view/'.$token.'/'.$next_order.'/'.$order_status_view)?>" type="button" class="prevBtn mx-3" id="prevBtn"><i class="fa fa-arrow-left"></i></a> 
+                                        <?php } ?>
+                                        <?php if($prev_order != '-' && $prev_order != ''){?>
+                                            <a href="<?=base_url('Main_orders/orders_view/'.$token.'/'.$prev_order.'/'.$order_status_view)?>" type="button" class="nextBtn mx-3" id="nextBtn"><i class="fa fa-arrow-right"></i></a> 
+                                        <?php } ?>
+                                    </div>
+                                </div> -->
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="">
+                                <table class="table wrap-btn-last-td table-striped table-hover table-bordered display nowrap" style="width:100%" id="table-item"  cellpadding="0" cellspacing="0" border="0">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Item Name</th>
+                                            <th>Qty</th>
+                                            <th>Amount</th>
+                                            <th>Total Amount</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 mb-4">
+                    <div class="card detail-container">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <!-- <i class="fa fa-info mr-3"></i> -->
+                                Order Details</h3>
+                        </div>
+                        <div class="card-body px-lg-5">
+                            <div class="">
+    
+                                <div class="row mb-3">
+                                    <div class="col-12 col-md-6">
+                                        <label class="">Transaction Date:</label>
+                                        <label id="tm_order_date" class="green-text font-weight-bold"><?=$order_details['date_created']?></label>
+                                    </div>
+                                    <!-- <div class="col-12 col-md">
+                                        
+                                    </div> -->
+                                    <div class="col-12 col-md-6">
+                                        <label class="">Transaction Reference No.:</label>
+                                        <label id="tm_order_reference_num" class="green-text font-weight-bold"><?=$order_details['order_id']?></label>
+                                    </div>
+
+                                    <div class="col-12 col-md-6">
+                                        <label class="">Sub-Total:</label>
+                                        <label id="tm_subtotal" class="font-weight-bold"><?=$sub_total_converted;?></label>
+                                    </div> 
+
+                                    <!-- <div class="col-12 col-md-6">
+                                        <label class="">Voucher Total:</label>
+                                        <label id="tm_vouchertotal" class="font-weight-bold"><?=$vouchertotal_converted?></label>
+                                    </div> -->
+
+                                    <div class="col-12 col-md-6">
+                                        <label class="">Shipping:</label>
+                                        <label id="tm_shipping" class="font-weight-bold"><?=$shipping_fee_converted;?></label>
+                                    </div>
+                                    <!-- <div class="col-12 col-md">
+                                        
+                                    </div> -->
+                                    <div class="col-12 col-md-6">
+                                        <label class="">Total Amount:</label>
+                                        <label id="tm_amount" class="green-text font-weight-bold"><?=$total_amount_converted;?></label>
+                                    </div>
+
+                                    <!-- <div class="col-12 col-md-6">
+                                        <label class="">Refunded Amount:</label>
+                                        <label id="tm_amount" class="green-text font-weight-bold"><?=$total_refund_amount_converted;?></label>
+                                    </div> -->
+                                    <!-- <div class="col-12 col-md">
+                                        
+                                    </div> -->
+                                    <div class="col-12 col-md-6">
+                                        <label class="">Order Status:</label>
+                                        <label id="tm_order_status" class="green-text font-weight"><?=get_status_ui($order_details['status_id'])?></label>
+                                    </div>
+                                    
+                                    <!-- <div class="col-12 col-md">
+                                        
+                                    </div> -->
+                                    
+                                
+    
+                                <?php if($order_details['status_id'] == 1){ ?> 
+
+                                    <?php if($payment_method!='COD'){?>
+                                        <div class="col-12 col-md-6">
+                                            <label class="">Delivery Status:</label>
+                                            <label class='badge badge-success'>For Processing</label>
+                                        </div>
+                                    <?php }else{?>
+                                        <div class="col-12 col-md-6">
+                                            <label class="">Estimated Shipping Date:</label>
+                                            <label id="tm_amount" class="green-text font-weight"><?=date("F d, Y", strtotime($order_details['date_created'].' + 1 day'))?></label>
+                                        </div>
+                                    <?php } ?>
+
+                                    <?php if($order_details['date_fulfilled'] != ''){?>
+                                        <div class="col-12 col-md-6">
+                                            <label class="">Actual Shipping Date:</label>
+                                            <label id="tm_amount" class="green-text font-weight"><?=date("F d, Y", strtotime($order_details['shipped_date']))?></label>
+                                        </div>
+                                    <?php }?>
+                                <?php }else{?>
+
+                                    <?php if($payment_method!='COD'){?>
+                                        <div class="col-12 col-md-6">
+                                            <label class="">Delivery Status:</label>
+                                            <label class='badge badge-success'>For Processing</label>
+                                        </div>
+                                    <?php }else{?>
+                                        <div class="col-12 col-md-6">
+                                            <label class="">Estimated Shipping Date:</label>
+                                            <label id="tm_amount" class="green-text font-weight"><?=date("F d, Y", strtotime($order_details['date_created'].' + 1 day'))?></label>
+                                        </div>
+                                    <?php } ?>
+                    
+                                <?php }?>
+
+                                    <div class="col-12">
+                                        <div class="border-bottom w-100"></div>
+                                    </div>
+                                </div>
+    
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <?php if($order_details['date_readyforpickup'] != ''){?>
                     <div class="col-12 mb-4">
                         <div class="card detail-container">
                             <div class="card-header">
                                 <h3 class="card-title">
-                                    <!-- <i class="fa fa-info mr-3"></i> -->
-                                    Order Details</h3>
+                                    Shipping Details
+                                </h3>
                             </div>
                             <div class="card-body px-lg-5">
                                 <div class="">
-        
-                                    <div class="row mb-3">
-                                        <div class="col-12 col-md-6">
-                                            <label class="">Transaction Date:</label>
-                                            <label id="tm_order_date" class="green-text font-weight-bold"><?=$order_details['date_created']?></label>
-                                        </div>
-                                        <!-- <div class="col-12 col-md">
-                                            
-                                        </div> -->
-                                        <div class="col-12 col-md-6">
-                                            <label class="">Transaction Reference No.:</label>
-                                            <label id="tm_order_reference_num" class="green-text font-weight-bold"><?=$order_details['reference_num']?></label>
-                                        </div>
-
-                                        <div class="col-12 col-md-6">
-                                            <label class="">Sub-Total:</label>
-                                            <label id="tm_subtotal" class="font-weight-bold"><?=$sub_total_converted;?></label>
-                                        </div> 
-
-                                        <!-- <div class="col-12 col-md-6">
-                                            <label class="">Voucher Total:</label>
-                                            <label id="tm_vouchertotal" class="font-weight-bold"><?=$vouchertotal_converted?></label>
-                                        </div> -->
-
-                                        <div class="col-12 col-md-6">
-                                            <label class="">Shipping:</label>
-                                            <label id="tm_shipping" class="font-weight-bold"><?=$shipping_fee_converted;?></label>
-                                        </div>
-                                        <!-- <div class="col-12 col-md">
-                                            
-                                        </div> -->
-                                        <div class="col-12 col-md-6">
-                                            <label class="">Total Amount:</label>
-                                            <label id="tm_amount" class="green-text font-weight-bold"><?=$total_amount_converted;?></label>
-                                        </div>
-
-                                        <!-- <div class="col-12 col-md-6">
-                                            <label class="">Refunded Amount:</label>
-                                            <label id="tm_amount" class="green-text font-weight-bold"><?=$total_refund_amount_converted;?></label>
-                                        </div> -->
-                                        <!-- <div class="col-12 col-md">
-                                            
-                                        </div> -->
-                                        <div class="col-12 col-md-6">
-                                            <label class="">Order Status:</label>
-                                            <label id="tm_order_status" class="green-text font-weight"><?=display_order_status($order_details['status_id'])?></label>
-                                        </div>
-                                       
-                                        <!-- <div class="col-12 col-md">
-                                            
-                                        </div> -->
-                                        
-                                    
-        
-                                    <?php if($order_details['status_id'] == 1){ ?> 
-
-                                        <?php if($payment_method!='COD'){?>
-                                            <div class="col-12 col-md-6">
-                                                <label class="">Delivery Status:</label>
-                                                <label class='badge badge-success'>For Pickup</label>
+                                    <?php if(isset((json_decode($order_details['shipping_data'])->rider->partner))){?>
+                                        <div class="row">
+                                            <div class="col-12 font-weight-bold">
+                                                <label class="">Rider Information:</label>
                                             </div>
-                                        <?php }else{?>
-                                            <div class="col-12 col-md-6">
-                                                <label class="">Estimated Shipping Date:</label>
-                                                <label id="tm_amount" class="green-text font-weight"><?=date("F d, Y", strtotime($order_details['date_created'].' + 1 day'))?></label>
+                                            <div class="col-12 col-sm-6">
+                                                <label class="">Shipping Partner:</label>
                                             </div>
-                                        <?php } ?>
-
-                                        <?php if($order_details['date_shipped'] != ''){?>
-                                            <div class="col-12 col-md-6">
-                                                <label class="">Actual Shipping Date:</label>
-                                                <label id="tm_amount" class="green-text font-weight"><?=date("F d, Y", strtotime($order_details['shipped_date']))?></label>
+                                            <div class="col-12 col-sm-6">
+                                                <label id="f_partner_name"><?=($this->model_orders->getshippingpartners(json_decode($order_details['shipping_data'])->rider->partner)[0]['name']);?></label>
                                             </div>
-                                        <?php }?>
+                                            <div class="col-12 col-sm-6">
+                                                <label class="">Rider Name:</label>
+                                            </div>
+                                            <div class="col-12 col-sm-6">
+                                                <label id="f_rider_name"><?=json_decode($order_details['shipping_data'])->rider->name?></label>
+                                            </div>
+                                            <div class="col-12 col-sm-6">
+                                                <label class="">Reference Number:</label>
+                                            </div>
+                                            <div class="col-12 col-sm-6">
+                                                <label id="f_platenum"><?=json_decode($order_details['shipping_data'])->rider->reference_num?></label>
+                                            </div>
+                                            <div class="col-12 col-sm-6">
+                                                <label class="">Contact No.:</label>
+                                            </div>
+                                            <div class="col-12 col-sm-6">
+                                                <label id="f_rider_conno"><?=json_decode($order_details['shipping_data'])->rider->contact_no?></label>
+                                            </div>
+                                            <div class="col-12 col-sm-6">
+                                                <label class="">Vehicle Type:</label>
+                                            </div>
+                                            <div class="col-12 col-sm-6">
+                                                <label id="f_rider_vehicle"><?=json_decode($order_details['shipping_data'])->rider->vehicle_type?></label>
+                                            </div>
+                                            <div class="col-12 col-sm-6">
+                                                <label class="">Delivery Fee:</label>
+                                            </div>
+                                            <div class="col-12 col-sm-6">
+                                                <label id="f_rider_conno"><?=json_decode($order_details['shipping_data'])->rider->delivery_fee?></label>
+                                            </div>
+                                        </div>
                                     <?php }else{?>
+                                        <div class="row">
 
-                                        <?php if (strpos($notes, '|::PA::|') !== false) {?>
-                                            <div class="col-12 col-md-6">
-                                                <label class="">Delivery Status:</label>
-                                                <label class='badge badge-success'>For Pickup</label>
+                                            <div class="col-12 col-sm-6">
+                                                <label class="">Rider Name:</label>
                                             </div>
-                                        <?php }else{?>
-
-                                            <div class="col-12 col-md-6">
-                                                <label class="">Estimated Shipping Date:</label>
-                                                <?php
-                                                    $shipping_date = ($order_details['payment_date'] == '0000-00-00 00:00:00') ? $order_details['date_ordered'] : $order_details['payment_date'];
-                                                ?>
-                                                <?php if($order_details['paid_daystoship'] == $order_details['paid_daystoship_to']){?>
-                                                    <label id="tm_amount" class="green-text font-weight"><?=date("F d, Y", strtotime($shipping_date. ' + '.$order_details['paid_daystoship_to'].' days'))?></label>
-                                                <?php }else{?>
-                                                    <label id="tm_amount" class="green-text font-weight"><?=date("F d", strtotime($shipping_date. ' + '.$order_details['paid_daystoship'].' days'))?> to <?=date("F d, Y", strtotime($shipping_date. ' + '.$order_details['paid_daystoship_to'].' days'))?></label>
-                                                <?php }?>
+                                            <div class="col-12 col-sm-6">
+                                                <label id="f_rider_name"><?=json_decode($order_details['shipping_data'])->rider->name?></label>
                                             </div>
-                                        <?php } ?>
-                        
-                                    <?php }?>
-
-                                        <div class="col-12">
-                                            <div class="border-bottom w-100"></div>
+                                            <div class="col-12 col-sm-6">
+                                                <label class="">Contact No.:</label>
+                                            </div>
+                                            <div class="col-12 col-sm-6">
+                                                <label id="f_rider_conno"><?=json_decode($order_details['shipping_data'])->rider->contact_no?></label>
+                                            </div>
+                                            <div class="col-12 col-sm-6">
+                                                <label class="">Vehicle Type:</label>
+                                            </div>
+                                            <div class="col-12 col-sm-6">
+                                                <label id="f_rider_vehicle"><?=json_decode($order_details['shipping_data'])->rider->vehicle_type?></label>
+                                            </div>
                                         </div>
-                                    </div>
-        
+                                    <?php }?>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <?php if($order_details['date_shipped'] != ''){?>
-                        <div class="col-12 mb-4">
+                <?php }?>
+                
+                <?php if(!empty($refunded_order)){?>
+                    <div class="col-12 mb-4">
                             <div class="card detail-container">
                                 <div class="card-header">
                                     <h3 class="card-title">
-                                        Shipping Details
+                                                Refunded Order
                                     </h3>
                                 </div>
                                 <div class="card-body px-lg-5">
                                     <div class="">
-                                        <?php if($order_details['sales_order_status'] == 'bc' || $order_details['sales_order_status'] == 'f' || $order_details['sales_order_status'] == 's'){?>
-                                            <?php if(!empty($order_details['rider_name'])){?>
-                                                <div class="row">
-                                                    <div class="col-12 col-md-6">
-                                                        <label class="">Rider Name:</label>
-                                                        <label id="tm_rider_name" class="green-text font-weight-bold"><?=$order_details['rider_name']?></label>
+                                        <div class="row">
+
+                                            <?php if(!empty($refunded_order)){?>
+                                                <?php foreach($refunded_order as $refund){?>
+                                                    <div class="col-md-6" style="font-weight: normal">
+                                                        <span><u><?=$refund['name_of_item']?></u></span>
                                                     </div>
-                                                        
-                                                    <div class="col-12 col-md-6">
-                                                        <label class="">Rider Plate Number:</label>
-                                                        <label id="tm_plate_num" class="green-text font-weight-bold"><?=$order_details['rider_platenum']?></label>
+                                                    <div class="col-md-4">
+                                                        <span><?=number_format($refund['quantity'], 2)?></span>
                                                     </div>
-                                                        
-                                                    <div class="col-12 col-md-12">
-                                                        <label class="">Rider Contact No:</label>
-                                                        <label id="tm_payment_type" class="green-text font-weight-bold"><?=$order_details['rider_conno']?></label>
+                                                    <div class="col-md-2">
+                                                        <span><?=number_format($refund['amount'], 2)?></span>
                                                     </div>
-                                                </div>
+                                                    <!-- <div class="w-100" style="border-bottom: 1px dotted black;"></div> -->
+                                                <?php } ?>
                                             <?php }?>
-                                            <?php if($order_details['sales_order_status'] == 'f' || $order_details['sales_order_status'] == 's'){?>
-                                                <div class="row">
-
-                                                    <?php if($order_details['t_deliveryId'] != ''){?>
-                                                        <div class="col-12 col-md-6">
-                                                            <label class="">Delivery ID:</label>
-                                                            <label id="tm_deliveryid" class="green-text font-weight-bold"><?=$order_details['t_deliveryId']?></label>
-                                                        </div>
-                                                    <?php } ?>
-
-                                                    <div class="col-12 col-md-6">
-                                                        <label class="">Shipping Partner:</label>
-                                                        <label id="tm_shipping_partner" class="green-text font-weight-bold"><?=$shippingpartner?></label>
-                                                    </div>
-                                                        
-                                                    <div class="col-12 col-md-6">
-                                                        <label class="">Shipping Reference No:</label>
-                                                        <label id="tm_shipping_ref" class="green-text font-weight-bold"><?=$shipping_ref?></label>
-                                                    </div>
-                                                        
-                                                    <div class="col-12 col-md-6">
-                                                        <label class="">Shipping Notes:</label>
-                                                        <label id="tm_shipping_notes" class="green-text font-weight-bold"><?=$shipping_note?></label>
-                                                    </div>
-                                                    <div class="col-12 col-md-6">
-                                                        <label class="">Actual Shipping Fee:</label>
-                                                        <label id="tm_shipping_notes" class="green-text font-weight-bold"><?=$actual_shipping_fee;?></label>
-                                                    </div>
-                                                </div>
-                                            <?php }else if($order_details['sales_order_status'] == 'bc'){?>
-                                                <div class="row">
-                                                    <div class="col-12 col-md-6">
-                                                        <label class="">Delivery ID:</label>
-                                                        <label id="tm_deliveryid" class="green-text font-weight-bold"><?=$order_details['t_deliveryId']?></label>
-                                                    </div>
-                                                        
-                                                    <div class="col-12 col-md-6">
-                                                        <label class="">Actual Shipping Fee:</label>
-                                                        <label id="tm_shipping_notes" class="green-text font-weight-bold"><?=$actual_shipping_fee;?></label>
-                                                    </div>
-                                                </div>
-                                            <?php }?>
-                                        <?php } ?>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    <?php }?>
-                    
-                    <?php if(!empty($refunded_order)){?>
-                        <div class="col-12 mb-4">
-                                <div class="card detail-container">
-                                    <div class="card-header">
-                                        <h3 class="card-title">
-                                                    Refunded Order
-                                        </h3>
-                                    </div>
-                                    <div class="card-body px-lg-5">
-                                        <div class="">
-                                            <div class="row">
-
-                                                <?php if(!empty($refunded_order)){?>
-                                                    <?php foreach($refunded_order as $refund){?>
-                                                        <div class="col-md-6" style="font-weight: normal">
-                                                            <span><u><?=$refund['name_of_item']?></u></span>
-                                                        </div>
-                                                        <div class="col-md-4">
-                                                            <span><?=number_format($refund['quantity'], 2)?></span>
-                                                        </div>
-                                                        <div class="col-md-2">
-                                                            <span><?=number_format($refund['amount'], 2)?></span>
-                                                        </div>
-                                                        <!-- <div class="w-100" style="border-bottom: 1px dotted black;"></div> -->
-                                                    <?php } ?>
-                                                <?php }?>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                    <?php }?>
+                        </div>
+                <?php }?>
 
-                    <div class="col-12 mb-4">
-                        <div class="card detail-container">
-                            <div class="card-header">
-                                <h3 class="card-title">
-                                    Order Timeline/History
-                                </h3>
-                            </div>
-                            <div class="card-body px-lg-5">
-                                <div class="">
-                                    <div class="row">
-                                        <?php if($payment_method=='COD'){?>
-                                                <?php if($order_details['status_id'] == 3 ){?>
-                                                    <div class="col-md-6" style="font-weig ht: normal;padding-top:13px;">
-                                                        <span><?=$logs['description']?></span>
-                                                        <span data-toggle="modal" data-target="#itemPickedupModal"><u>View Image</u></span>
-                                                    </div>
-                                                <?php }else if($order_details['status_id'] == 4 ){?>
-                                                    <div class="col-md-6" style="font-weight: normal;padding-top:13px;">
-                                                        <span><?=$logs['description']?></span>
-                                                        <span data-toggle="modal" data-target="#itemShippedModal"><u>View Image</u></span>
-                                                    </div>
-                                                <?php }?>
-                                                <div class="col-md-4" style="padding-top:13px;">
-                                                    <span><?=json_decode($order_details['shipping_data'])->full_name?> </span>
+                <div class="col-12 mb-4">
+                    <div class="card detail-container">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                Order Timeline/History
+                            </h3>
+                        </div>
+                        <div class="card-body px-lg-5">
+                            <div class="">
+                                <div class="row">
+                                    <?php if($payment_method=='COD'){?>
+                                            <div class="col-md-4" style="padding-top:13px;">
+                                                <span><?=json_decode($order_details['shipping_data'])->full_name?> </span>
+                                            </div>
+                                            <?php if($order_details['status_id'] >= 5 ){?>
+                                                <div class="w-100" style="border-bottom: 1px dotted black;"></div>
+                                                <div class="col-md-6" style="padding-top:13px;">
+                                                    <span>Order is Delivered.</span>
                                                 </div>
+                                                <div class="col-md-4" style="padding-top:13px;">
+                                                    <span></span>
+                                                </div>
+                                                <div class="col-md-2" style="padding-top:5px;">
+                                                    <span><?=$order_details['date_delivered']?></span>
+                                                </div>
+                                            <?php }if($order_details['status_id'] >= 4 ){?>
+                                                <div class="w-100" style="border-bottom: 1px dotted black;"></div>
+                                                <div class="col-md-6" style="padding-top:13px;">
+                                                    <span>Order is fulfilled.</span>
+                                                </div>
+                                                <div class="col-md-4" style="padding-top:13px;">
+                                                    <span></span>
+                                                </div>
+                                                <div class="col-md-2" style="padding-top:5px;">
+                                                    <span><?=$order_details['date_fulfilled']?></span>
+                                                </div>
+                                            <?php }if($order_details['status_id'] >= 3 ){?>
                                                 
                                                 <div class="w-100" style="border-bottom: 1px dotted black;"></div>
                                                 <div class="col-md-6" style="padding-top:13px;">
-                                                    <span>Order has been placed.</span>
+                                                    <span>Order is ready for pickup.</span>
                                                 </div>
                                                 <div class="col-md-4" style="padding-top:13px;">
                                                     <span></span>
                                                 </div>
                                                 <div class="col-md-2" style="padding-top:5px;">
-                                                    <span><?=$order_details['date_created']?></span>
+                                                    <span><?=$order_details['date_readyforpickup']?></span>
+                                                    <span data-toggle="modal" data-target="#itemPickedupModal"><u>View Image</u></span>
                                                 </div>
-                                            <?php }else{ ?>
-
-                                            <!-- <div class="col-md-6" style="padding-top:13px;">
-                                                <span>Payment for order has been confirmed.</span>
-                                            </div>
-                                            <div class="col-md-4" style="padding-top:13px;">
-                                                <span></span>
-                                            </div>
-                                            <div class="col-md-2" style="padding-top:5px;">
-                                                <span><?=$order_details['payment_date']?></span>
-                                            </div> -->
-
-                                            <?php if($order_details['payment_date'] != '0000-00-00 00:00:00'){?>
-                                                <div class="col-md-6" style="padding-top:13px;">
-                                                    <span>Payment for order has been confirmed.</span>
-                                                </div>
-                                                <div class="col-md-4" style="padding-top:13px;">
-                                                    <span></span>
-                                                </div>
-                                                <div class="col-md-2" style="padding-top:5px;">
-                                                    <span><?=$order_details['payment_date']?></span>
-                                                </div>
+                                            <?php }if($order_details['status_id'] > 1 ){?>
                                                 <div class="w-100" style="border-bottom: 1px dotted black;"></div>
+                                                <div class="col-md-6" style="padding-top:13px;">
+                                                    <span>Order is being processed.</span>
+                                                </div>
+                                                <div class="col-md-4" style="padding-top:13px;">
+                                                    <span></span>
+                                                </div>
+                                                <div class="col-md-2" style="padding-top:5px;">
+                                                    <span><?=$order_details['date_processed']?></span>
+                                                </div>
                                             <?php }?>
-
+                                            
+                                            <div class="w-100" style="border-bottom: 1px dotted black;"></div>
                                             <div class="col-md-6" style="padding-top:13px;">
                                                 <span>Order has been placed.</span>
                                             </div>
@@ -503,11 +484,44 @@
                                                 <span></span>
                                             </div>
                                             <div class="col-md-2" style="padding-top:5px;">
-                                                <span><?=$order_details['date_ordered']?></span>
+                                                <span><?=$order_details['date_created']?></span>
                                             </div>
-                                        <?php } ?>
+                                        <?php }else{ ?>
 
-                                    </div>
+                                        <!-- <div class="col-md-6" style="padding-top:13px;">
+                                            <span>Payment for order has been confirmed.</span>
+                                        </div>
+                                        <div class="col-md-4" style="padding-top:13px;">
+                                            <span></span>
+                                        </div>
+                                        <div class="col-md-2" style="padding-top:5px;">
+                                            <span><?=$order_details['payment_date']?></span>
+                                        </div> -->
+
+                                        <?php if($order_details['payment_date'] != '0000-00-00 00:00:00'){?>
+                                            <div class="col-md-6" style="padding-top:13px;">
+                                                <span>Payment for order has been confirmed.</span>
+                                            </div>
+                                            <div class="col-md-4" style="padding-top:13px;">
+                                                <span></span>
+                                            </div>
+                                            <div class="col-md-2" style="padding-top:5px;">
+                                                <span><?=$order_details['payment_date']?></span>
+                                            </div>
+                                            <div class="w-100" style="border-bottom: 1px dotted black;"></div>
+                                        <?php }?>
+
+                                        <div class="col-md-6" style="padding-top:13px;">
+                                            <span>Order has been placed.</span>
+                                        </div>
+                                        <div class="col-md-4" style="padding-top:13px;">
+                                            <span></span>
+                                        </div>
+                                        <div class="col-md-2" style="padding-top:5px;">
+                                            <span><?=$order_details['date_ordered']?></span>
+                                        </div>
+                                    <?php } ?>
+
                                 </div>
                             </div>
                         </div>
@@ -515,64 +529,67 @@
                 </div>
             </div>
         </div>
-        <div class="row">              
-            <div class="col-lg-12 col-12 text-right col-md-auto px-1 mb-3">
-                <div class="card">
-                    <div class="card-body">
-                        <button type="button" class="btn-mobile-w-100 btn btn-success printBtn mb-2 mb-md-0" id="printBtn" data-reference_num="<?=$reference_num?>">Print</button>
-                        <button type="button" class="btn-mobile-w-100 btn btn-outline-secondary backBtn mb-2 mb-md-0" id="backBtn">Close</button>
-                        <!-- <?php if($order_details['paystatus'] == 1 && $branch_count > 0 && $order_details['sales_order_status'] == 'p' && $this->loginstate->get_access()['transactions']['reassign'] == 1 && $branchid == 0 && $refunded_all == 0){ ?>
-                            <button type="button" class="btn-mobile-w-100 btn btn-success reassignBtn mb-2 mb-md-0" id="reassignBtn" data-value="<?=$mainshopid?>" data-branchid="<?=$branch_id?>" data-reference_num="<?=$reference_num?>">Re-Assign</button>
-                        <?php } ?>  -->
+    </div>
+    <div class="row">              
+        <div class="col-lg-12 col-12 text-right col-md-auto px-1 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <button type="button" class="btn-mobile-w-100 btn btn-success printBtn mb-2 mb-md-0" id="printBtn" data-reference_num="<?=$reference_num?>">Print</button>
+                    <button type="button" class="btn-mobile-w-100 btn btn-outline-secondary backBtn mb-2 mb-md-0" id="backBtn">Close</button>
+                    <!-- <?php if($order_details['paystatus'] == 1 && $branch_count > 0 && $order_details['sales_order_status'] == 'p' && $this->loginstate->get_access()['transactions']['reassign'] == 1 && $branchid == 0 && $refunded_all == 0){ ?>
+                        <button type="button" class="btn-mobile-w-100 btn btn-success reassignBtn mb-2 mb-md-0" id="reassignBtn" data-value="<?=$mainshopid?>" data-branchid="<?=$branch_id?>" data-reference_num="<?=$reference_num?>">Re-Assign</button>
+                    <?php } ?>  -->
 
-                       <?php if($order_details['status_id'] == 1){ ?>
-                            <button type="button" class="btn-mobile-w-100 btn btn-info waves-effect waves-light processBtn mb-2 mb-md-0" id="processBtn" data-value="<?=$reference_num?>">Process Order</button>
-                            <button type="button" class="btn-mobile-w-100 btn btn-danger waves-effect waves-light cancelOrderBtn" id="DeclineOrderBtn" data-value="<?=$reference_num?>">Decline Order</button> 
-                        <?php } ?>
-                         <!-- <?php if(!empty($order_details['sales_order_status']) && $order_details['sales_order_status'] == 'po' && $this->loginstate->get_access()['transactions']['ready_pickup'] == 1 && $this->loginstate->get_access()['transactions']['mark_fulfilled'] == 1 && $refunded_all == 0){ ?>
-                            <button type="button" class="btn-mobile-w-100 btn btn-info waves-effect waves-light readyPickupBtn mb-2 mb-md-0" id="readyPickupBtn" data-value="<?=$url_ref_num?>">Book toktok</button>
-                            <button type="button" class="btn-mobile-w-100 btn btn-info waves-effect waves-light fulfillmentBtn mb-2 mb-md-0" id="fulfillmentBtn" data-value="<?=$url_ref_num?>">Mark as Fulfilled</button>
-                        <?php }else if(!empty($order_details['sales_order_status']) && $order_details['sales_order_status'] == 'po' && $this->loginstate->get_access()['transactions']['ready_pickup'] == 1 && $refunded_all == 0){ ?>
-                            <button type="button" class="btn-mobile-w-100 btn btn-info waves-effect waves-light readyPickupBtn mb-2 mb-md-0" id="readyPickupBtn" data-value="<?=$url_ref_num?>">Book toktok</button>
-                        <?php }else if(!empty($order_details['sales_order_status']) && $order_details['sales_order_status'] == 'po' && $this->loginstate->get_access()['transactions']['mark_fulfilled'] == 1 && $refunded_all == 0){ ?>
-                            <button type="button" class="btn-mobile-w-100 btn btn-info waves-effect waves-light fulfillmentBtn mb-2 mb-md-0" id="fulfillmentBtn" data-value="<?=$url_ref_num?>">Mark as Fulfilled</button>
-                        <?php } ?>
-                        <?php if(!empty($order_details['sales_order_status']) && $order_details['sales_order_status'] == 'rp' && $this->loginstate->get_access()['transactions']['booking_confirmed'] == 1 && $refunded_all == 0){ ?>
-                            <button type="button" class="btn-mobile-w-100 btn btn-danger waves-effect waves-light cancelOrderBtn" id="cancelOrderBtn" data-value="<?=$url_ref_num?>">Cancel Booking</button> -->
-                            <!-- <button type="button" class="btn btn-info waves-effect waves-light bookingConfirmBtn" id="bookingConfirmBtn" data-value="<?=$url_ref_num?>">Booking Confirmed</button> -->
-                        <!-- <?php } ?>
-                        <?php if(!empty($order_details['sales_order_status']) && $order_details['sales_order_status'] == 'bc' && $this->loginstate->get_access()['transactions']['mark_fulfilled'] == 1 && $refunded_all == 0){ ?>
-                            <button type="button" class="btn-mobile-w-100 btn btn-info waves-effect waves-light fulfillmentBtn mb-2 mb-md-0" id="fulfillmentBtn" data-value="<?=$url_ref_num?>">Mark as Fulfilled</button>
-                        <?php } ?>
-                        <?php if(!empty($order_details['sales_order_status']) && $order_details['sales_order_status'] == 'f' && $this->loginstate->get_access()['transactions']['returntosender'] == 1 && $refunded_all == 0){ ?>
-                            <button type="button" class="btn-mobile-w-100 btn btn-warning waves-effect waves-light returntosenderBtn mb-2 mb-md-0" id="returntosenderBtn" data-value="<?=$url_ref_num?>">Return to Sender</button>
-                        <?php } ?>
-                        <?php if(!empty($order_details['sales_order_status']) && $order_details['sales_order_status'] == 'f' && $this->loginstate->get_access()['transactions']['shipped'] == 1 && $refunded_all == 0){ ?>
-                            <button type="button" class="btn-mobile-w-100 btn btn-info waves-effect waves-light shippedBtn mb-2 mb-md-0" id="shippedBtn" data-value="<?=$url_ref_num?>">Mark as Shipped</button>
-                        <?php } ?>
+                    <?php if($order_details['status_id'] == 1){ ?>
+                        <button type="button" class=" btn btn-warning processBtn mb-2 mb-md-0" id="processBtn" data-value="<?=$reference_num?>">Process Order</button>
+                        <button type="button" class="btn-mobile-w-100 btn btn-danger waves-effect waves-light cancelOrderBtn" id="DeclineOrderBtn" data-value="<?=$reference_num?>">Decline Order</button> 
+                    <?php } ?>
+                    <?php if($order_details['status_id'] == 2){ ?>
+                        <button type="button" class="btn-mobile-w-100 btn btn-outline-info waves-effect waves-light readyforpickupBtn mb-2 mb-md-0" id="readyforpickupBtn" data-value="<?=$reference_num?>">Mark as Ready for Pickup</button>
+                    <?php } ?>
+                    <?php if($order_details['status_id'] == 3){ ?>
+                        <button type="button" class="btn-mobile-w-100 btn btn-outline-warning waves-effect waves-light fulfillmentBtn mb-2 mb-md-0" id="fulfillmentBtn" data-value="<?=$reference_num?>">Mark as Fulfilled</button>
+                    <?php } ?>
+                    <?php if($order_details['status_id'] == 4){ ?>
+                        <button type="button" class="btn-mobile-w-100 btn btn-outline-success waves-effect waves-light confirmedBtn mb-2 mb-md-0" id="confirmedBtn" data-value="<?=$reference_num?>">Change Delivery Status</button>
+                    <?php } ?>
+                        <!-- <?php if(!empty($order_details['sales_order_status']) && $order_details['sales_order_status'] == 'po' && $this->loginstate->get_access()['transactions']['ready_pickup'] == 1 && $this->loginstate->get_access()['transactions']['mark_fulfilled'] == 1 && $refunded_all == 0){ ?>
+                        <button type="button" class="btn-mobile-w-100 btn btn-info waves-effect waves-light readyPickupBtn mb-2 mb-md-0" id="readyPickupBtn" data-value="<?=$url_ref_num?>">Book toktok</button>
+                        <button type="button" class="btn-mobile-w-100 btn btn-info waves-effect waves-light fulfillmentBtn mb-2 mb-md-0" id="fulfillmentBtn" data-value="<?=$url_ref_num?>">Mark as Fulfilled</button>
+                    <?php }else if(!empty($order_details['sales_order_status']) && $order_details['sales_order_status'] == 'po' && $this->loginstate->get_access()['transactions']['ready_pickup'] == 1 && $refunded_all == 0){ ?>
+                        <button type="button" class="btn-mobile-w-100 btn btn-info waves-effect waves-light readyPickupBtn mb-2 mb-md-0" id="readyPickupBtn" data-value="<?=$url_ref_num?>">Book toktok</button>
+                    <?php }else if(!empty($order_details['sales_order_status']) && $order_details['sales_order_status'] == 'po' && $this->loginstate->get_access()['transactions']['mark_fulfilled'] == 1 && $refunded_all == 0){ ?>
+                        <button type="button" class="btn-mobile-w-100 btn btn-info waves-effect waves-light fulfillmentBtn mb-2 mb-md-0" id="fulfillmentBtn" data-value="<?=$url_ref_num?>">Mark as Fulfilled</button>
+                    <?php } ?>
+                    <?php if(!empty($order_details['sales_order_status']) && $order_details['sales_order_status'] == 'rp' && $this->loginstate->get_access()['transactions']['booking_confirmed'] == 1 && $refunded_all == 0){ ?>
+                        <button type="button" class="btn-mobile-w-100 btn btn-danger waves-effect waves-light cancelOrderBtn" id="cancelOrderBtn" data-value="<?=$url_ref_num?>">Cancel Booking</button> -->
+                        <!-- <button type="button" class="btn btn-info waves-effect waves-light bookingConfirmBtn" id="bookingConfirmBtn" data-value="<?=$url_ref_num?>">Booking Confirmed</button> -->
+                    <!-- <?php } ?>
+                    <?php if(!empty($order_details['sales_order_status']) && $order_details['sales_order_status'] == 'bc' && $this->loginstate->get_access()['transactions']['mark_fulfilled'] == 1 && $refunded_all == 0){ ?>
+                        <button type="button" class="btn-mobile-w-100 btn btn-info waves-effect waves-light fulfillmentBtn mb-2 mb-md-0" id="fulfillmentBtn" data-value="<?=$url_ref_num?>">Mark as Fulfilled</button>
+                    <?php } ?>
+                    <?php if(!empty($order_details['sales_order_status']) && $order_details['sales_order_status'] == 'f' && $this->loginstate->get_access()['transactions']['returntosender'] == 1 && $refunded_all == 0){ ?>
+                        <button type="button" class="btn-mobile-w-100 btn btn-warning waves-effect waves-light returntosenderBtn mb-2 mb-md-0" id="returntosenderBtn" data-value="<?=$url_ref_num?>">Return to Sender</button>
+                    <?php } ?>
+                    <?php if(!empty($order_details['sales_order_status']) && $order_details['sales_order_status'] == 'f' && $this->loginstate->get_access()['transactions']['shipped'] == 1 && $refunded_all == 0){ ?>
+                        <button type="button" class="btn-mobile-w-100 btn btn-info waves-effect waves-light shippedBtn mb-2 mb-md-0" id="shippedBtn" data-value="<?=$url_ref_num?>">Mark as Shipped</button>
+                    <?php } ?>
 
-                        <?php if(!empty($order_details['sales_order_status']) && $order_details['sales_order_status'] == 'rs' && $this->loginstate->get_access()['transactions']['redeliver'] == 1 && $refunded_all == 0){ ?>
-                            <button type="button" class="btn-mobile-w-100 btn btn-info waves-effect waves-light redeliverBtn mb-2 mb-md-0" id="redeliverBtn" data-value="<?=$url_ref_num?>">Re-Deliver Order</button>
-                        <?php } ?>
+                    <?php if(!empty($order_details['sales_order_status']) && $order_details['sales_order_status'] == 'rs' && $this->loginstate->get_access()['transactions']['redeliver'] == 1 && $refunded_all == 0){ ?>
+                        <button type="button" class="btn-mobile-w-100 btn btn-info waves-effect waves-light redeliverBtn mb-2 mb-md-0" id="redeliverBtn" data-value="<?=$url_ref_num?>">Re-Deliver Order</button>
+                    <?php } ?>
 
-                        <?php if(!empty($order_details['sales_order_status']) && $order_details['sales_order_status'] == 's' && $this->loginstate->get_access()['transactions']['confirmed'] == 1 && $order_details['isconfirmed'] == 0){ ?>
-                            <button type="button" class="btn-mobile-w-100 btn btn-info waves-effect waves-light confirmedBtn mb-2 mb-md-0" id="confirmedBtn" data-value="<?=$url_ref_num?>">Delivery Confirmed</button>
-                        <?php } ?>
-                        
-                        <?php if($order_details['paystatus'] != 1 && $this->loginstate->get_access()['transactions']['mark_as_paid'] == 1 && $refunded_all == 0 && $shopid == 0){ ?>
-                            <button type="button" class="btn-mobile-w-100 btn btn-success payBtn mb-2 mb-md-0" id="payBtn" data-value="<?=$url_ref_num?>">Mark as Paid</button>
-                        <?php } ?> -->
-                    </div>
+                    <?php if(!empty($order_details['sales_order_status']) && $order_details['sales_order_status'] == 's' && $this->loginstate->get_access()['transactions']['confirmed'] == 1 && $order_details['isconfirmed'] == 0){ ?>
+                        <button type="button" class="btn-mobile-w-100 btn btn-info waves-effect waves-light confirmedBtn mb-2 mb-md-0" id="confirmedBtn" data-value="<?=$url_ref_num?>">Delivery Confirmed</button>
+                    <?php } ?>
+                    
+                    <?php if($order_details['paystatus'] != 1 && $this->loginstate->get_access()['transactions']['mark_as_paid'] == 1 && $refunded_all == 0 && $shopid == 0){ ?>
+                        <button type="button" class="btn-mobile-w-100 btn btn-success payBtn mb-2 mb-md-0" id="payBtn" data-value="<?=$url_ref_num?>">Mark as Paid</button>
+                    <?php } ?> -->
                 </div>
             </div>
         </div>
     </div>
-        
-
-        <div class="footer">
-            <div class="col-md-1">&nbsp;</div>
-        </div>
-    </form>
 </div>
 
 
@@ -715,88 +732,295 @@
 </div>
 
 <!-- Process Order Modal-->
-<div id="processOrder_modal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
+<div id="order_modal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
     <div role="document" class="modal-dialog modal-md">
         <div class="modal-content">
-            <form id="form_save_process" enctype="multipart/form-data" method="post" action="" >
-            <div class="modal-header">
-                <div class="col-md-12">
-                    <h4 id="tm_header_ref" class="modal-title" style="color:black;">Process Order</h4>
-                </div>
-            </div>
-            <div class="modal-body">
-                <div class="col-12">
-                <div class="row">
-                    <div class="col-12 mb-2">
-                        <i class="fa fa-info no-margin">
-                        </i> Order Summary
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label class="">Transaction Date:</label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label id="po_order_date"></label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label class="">Transaction Reference #:</label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label id="po_order_reference_num" class="green-text"></label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label class="">Payment Date</label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label id="po_payment_date"></label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label class="">Payment Reference No.</label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label id="po_payment_ref_num" class="green-text"></label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label class="">Total Amount:</label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label id="po_amount" class="green-text"></label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label class="">Payment Status</label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label id="po_payment_status"></label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label class="">Order Status:</label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label id="po_order_status"></label>
+            <?php $form_id = 'form_save_process';
+                $header = 'Process Order';
+                if($order_details['status_id'] == 1){
+                    $form_id='form_save_process';
+                }
+                if($order_details['status_id'] == 2 || $order_details['status_id'] >7){
+                    $form_id='form_save_ready_pickup';
+                    $header = 'Order Ready for Pickup';
+                }
+                if($order_details['status_id'] == 3){
+                    $form_id='form_save_fulfillment_modal';
+                    $header = 'Order Fulfill';
+                }
+                if($order_details['status_id'] == 4){
+                    $form_id='form_save_delivery_confirmed';
+                    $header = 'Delivery Status';
+                }
+            ?>
+            <form id="<?=$form_id?>" enctype="multipart/form-data" method="post" action="" >
+                <div class="modal-header">
+                    <div class="col-md-12">
+                        <h4 id="tm_header_ref" class="modal-title" style="color:black;"><?=$header?></h4>
                     </div>
                 </div>
-                <div class="row hidden">
+                <div class="modal-body">
+                    <input type="text" class="hidden" name="reference_num" id="reference_num" value="<?=$reference_num?>" hidden>
                     <div class="col-12">
-                        <div class="form-group">
-                            <label>ID</label>
-                            <input type="text" name="po_id" id="po_id" class="form-control" value="0" >
+                        <div class="row">
+                            <div class="col-12 mb-2">
+                                <i class="fa fa-info no-margin">
+                                </i> Order Summary
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <label class="">Transaction Date:</label>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <label class="order_date"></label>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <label class="">Transaction Reference #:</label>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <label class="order_reference_num" class="green-text"></label>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <label class="">Payment Date</label>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <label id="payment_date"></label>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <label class="">Payment Reference No.</label>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <label class="payment_ref_num" class="green-text"></label>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <label class="">Total Amount:</label>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <label class="amount" class="green-text"></label>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <label class="">Payment Status</label>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <label class="payment_status"></label>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <label class="">Order Status:</label>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <label class="order_status"></label>
+                            </div>
                         </div>
+                        <div class="row hidden">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label>ID</label>
+                                    <input type="text" name="order_id" id="order_id" class="form-control" value="<?$reference_num?>" >
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <?php if($order_details['status_id'] == 2){?>
+                        <div class="row">
+                            <div class="col-12 col-sm-6">
+                                <label class="">Shipping Partner:</label>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <select class="form-control" id="shipping_partner" name="shipping_partner">
+                                        <option value="">Internal</option>
+                                        <?php foreach($shipping_partners as $row){?>
+                                            <option value="<?=$row['id']?>"><?=$row['name']?></option>
+                                        <?php }?>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 col-sm-6">
+                                <label class="">Notes:</label>
+                            </div>
+                            
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <textarea type="text" class="form-control" name="rp_notes" id="rp_notes" placeholder="Enter notes"><?=strtoupper(htmlspecialchars_decode(strtolower((json_decode($order_details['shipping_data'])->notes))));?></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 col-sm-12">
+                                <div id="pac-container">
+                                    <label for="">Order Photo <span class="asterisk"></span></label>
+                                    <br>
+                                    <small>Attachment (optional) | Allowed format (jpg, jpeg, png) | Max size: 2mb</small>
+                                    <input type="file" id = "order_attachment" name = "order_attachment[]" class="form-control" placeholder="Attachment" multiple>
+                                    
+                                    <!-- <label id="tm_address font-weight-bold h3"><?=json_decode($order_details['shipping_data'])->address.', Brgy. '.json_decode($order_details['shipping_data'])->barangay.' '.json_decode($order_details['shipping_data'])->city.' '.json_decode($order_details['shipping_data'])->zip_code.', '.json_decode($order_details['shipping_data'])->province?></label> -->
+                                </div>
+                            </div>
+                            <div class="col-12">
+                            <div class="form-group row" id = "img-upload-preview">
+
+                            </div>
+                        </div>
+
+                        <div class="row col-12">
+                            <div class="col-12 col-lg-6 note_notinternal">
+                                Reference #
+                                <input type="text" class="form-control" name="c_reference_num" id="c_reference_num">
+                            </div>
+                            <div class="col-12 col-lg-6 note_notinternal">
+                                Driver Name
+                                <input type="text" class="form-control" name="c_driver_name" id="c_driver_name">
+                            </div>
+                            <div class="col-12 col-lg-6 note_notinternal">
+                                Vehicle Type
+                                <input type="text" class="form-control" name="c_vehicle_type" id="c_vehicle_type">
+                            </div>
+                            <div class="col-12 col-lg-6 note_notinternal">
+                                Contact No.
+                                <input type="text" class="form-control" name="c_contact_number" id="c_contact_number">
+                            </div>
+                            <div class="col-12 col-lg-6 note_notinternal">
+                                Amount
+                                <input type="number" class="form-control allownumericwithdecimal" name="c_delivery_fee" id="c_delivery_fee">
+                            </div>
+
+                            <div class="col-12 note_notinternal mt-2">
+                                <div class="alert alert-warning" role="alert">
+                                    Weight Limit: Up to 20 kg. Size Limit (L x W x H): 20 × 20 × 20 inches. Delivery fee from other courier that will exceed the base Amount
+                                    of delivery fee settled to customer will be shouldered by 3Mang's Chicharon.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row col">
+                            <div class="col-12 col-sm-12 font-weight-bold">
+                                    <label for="">Recipient Address <span class="asterisk"></span></label>
+                                    <br>
+                                    <label id="tm_address font-weight-bold h3"><?=json_decode($order_details['shipping_data'])->address.', Brgy. '.json_decode($order_details['shipping_data'])->barangay.' '.json_decode($order_details['shipping_data'])->city.' '.json_decode($order_details['shipping_data'])->zip_code.', '.json_decode($order_details['shipping_data'])->province?></label>
+                                
+                            </div>
+                        </div>
+                        <?php }else if($order_details['status_id'] == 3 || $order_details['status_id'] == 4){?>
+                            <?php if(isset((json_decode($order_details['shipping_data'])->rider->partner))){?>
+                                <div class="row">
+                                    <div class="col-12 font-weight-bold">
+                                        <label class="">Rider Information:</label>
+                                    </div>
+                                    <div class="col-12 col-sm-6">
+                                        <label class="">Shipping Partner:</label>
+                                    </div>
+                                    <div class="col-12 col-sm-6">
+                                        <label id="f_partner_name"><?=($this->model_orders->getshippingpartners(json_decode($order_details['shipping_data'])->rider->partner)[0]['name']);?></label>
+                                    </div>
+                                    <div class="col-12 col-sm-6">
+                                        <label class="">Rider Name:</label>
+                                    </div>
+                                    <div class="col-12 col-sm-6">
+                                        <label id="f_rider_name"><?=json_decode($order_details['shipping_data'])->rider->name?></label>
+                                    </div>
+                                    <div class="col-12 col-sm-6">
+                                        <label class="">Reference Number:</label>
+                                    </div>
+                                    <div class="col-12 col-sm-6">
+                                        <label id="f_platenum"><?=json_decode($order_details['shipping_data'])->rider->reference_num?></label>
+                                    </div>
+                                    <div class="col-12 col-sm-6">
+                                        <label class="">Contact No.:</label>
+                                    </div>
+                                    <div class="col-12 col-sm-6">
+                                        <label id="f_rider_conno"><?=json_decode($order_details['shipping_data'])->rider->contact_no?></label>
+                                    </div>
+                                    <div class="col-12 col-sm-6">
+                                        <label class="">Vehicle Type:</label>
+                                    </div>
+                                    <div class="col-12 col-sm-6">
+                                        <label id="f_rider_vehicle"><?=json_decode($order_details['shipping_data'])->rider->vehicle_type?></label>
+                                    </div>
+                                    <div class="col-12 col-sm-6">
+                                        <label class="">Delivery Fee:</label>
+                                    </div>
+                                    <div class="col-12 col-sm-6">
+                                        <label id="f_rider_conno"><?=json_decode($order_details['shipping_data'])->rider->delivery_fee?></label>
+                                    </div>
+                                </div>
+                                <?php }else{?>
+                                <div class="row">
+                                    <div class="col-12 font-weight-bold">
+                                        <label class="">Rider Information:</label>
+                                    </div>
+                                    <div class="col-12 col-sm-6">
+                                        <label class="">Rider Name:</label>
+                                    </div>
+                                    <div class="col-12 col-sm-6">
+                                        <label id="f_rider_name"><?=json_decode($order_details['shipping_data'])->rider->name?></label>
+                                    </div>
+                                    <div class="col-12 col-sm-6">
+                                        <label class="">Contact No.:</label>
+                                    </div>
+                                    <div class="col-12 col-sm-6">
+                                        <label id="f_rider_conno"><?=json_decode($order_details['shipping_data'])->rider->contact_no?></label>
+                                    </div>
+                                    <div class="col-12 col-sm-6">
+                                        <label class="">Vehicle Type:</label>
+                                    </div>
+                                    <div class="col-12 col-sm-6">
+                                        <label id="f_rider_vehicle"><?=json_decode($order_details['shipping_data'])->rider->vehicle_type?></label>
+                                    </div>
+                                </div>
+                                <?php } ?>
+                        <?php }if($order_details['status_id'] == 4){
+                                $redeliver = $order_details['date_deliveryfailed1'] == ''?8:9;
+                                ?>
+                             <div class="row">
+                                <div class="col-12 font-weight-bold">
+                                    <label class="">Delivery Status</label>
+                                </div>
+                                <div class="col">
+                                    <input type="radio" name="delivery_option" value="5" text="Delivered">Delivered Success</input>
+                                </div>
+                                <div class="col">
+                                    <input type="radio" name="delivery_option" value="<?=$redeliver?>" text="Delivered">Re-Deliver Next Business Day</input>
+                                </div>
+                                <div class="col">
+                                    <input type="radio" name="delivery_option" value="<?=$redeliver?>" text="Delivered">Delivery Failed</input>
+                                </div>
+                                <div class="col-12 mt-2">
+                                    <div class="alert alert-warning" role="alert">
+                                        Note: You can only re-deliver twice to customer and the system will automatically tagged as delivery failed.
+                                    </div>
+                                </div>
+                            </div>
+                        <?php } ?>
                     </div>
                 </div>
-            </div>
-            </div>
-            <div class="modal-footer">
-                <div class="col-md-12 text-right">
-                    <button type="button" class="btn btn-info cancelBtn waves-effect waves-light" data-dismiss="modal" aria-label="Close">Cancel</button>
-                    <button type="submit" id="btn_tbl_confirm" class="btn btn-success waves-effect waves-light" aria-label="Close">Process Order</button>
+                <div class="modal-footer">
+                    <div class="col-md-12 text-right">
+                        <button type="button" class="btn btn-secondary cancelBtn waves-effect waves-light" data-dismiss="modal" aria-label="Close">Cancel</button>
+                        
+                        <?php if($order_details['status_id'] == 1){?>
+                            <button type="submit" id="btn_tbl_confirm" class="btn btn-success waves-effect waves-light" aria-label="Close">Process Order</button>
+                        <?php }?>
+                        <?php if($order_details['status_id'] == 2){?>
+                            <button type="submit" id="btn_readyforpickup" class=" btn btn-outline-info waves-effect waves-light" aria-label="Close">Mark as Ready for Pickup</button>
+                        <?php }?>
+                        <?php if($order_details['status_id'] == 3){?>
+                            <button type="submit" id="btn_fulfilled" class=" btn btn-outline-warning waves-effect waves-light" aria-label="Close">Mark as Fulfilled</button>
+                        <?php }?>
+                        <?php if($order_details['status_id'] == 4){?>
+                            <button type="submit" id="btn_delivered" class=" btn btn-outline-success waves-effect waves-light" aria-label="Close">Proceed</button>
+                        <?php }?>
+                    </div>
                 </div>
-            </div>
-        </form>
+            </form>
         </div>
     </div>
 </div>
 
 <!-- Ready for Pickup Modal -->
-<div id="readyPickup_modal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
+<!-- <div id="readyPickup_modal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
     <div role="document" class="modal-dialog modal-lg">
         <div class="modal-content">
             <form id="form_save_ready_pickup" enctype="multipart/form-data" method="post" action="" >
@@ -816,149 +1040,60 @@
                                 <label class="">Transaction Date:</label>
                             </div>
                             <div class="col-12 col-sm-6">
-                                <label id="rp_order_date"></label>
+                                <label class="order_date"></label>
                             </div>
                             <div class="col-12 col-sm-6">
                                 <label class="">Transaction Reference #:</label>
                             </div>
                             <div class="col-12 col-sm-6">
-                                <label id="rp_order_reference_num" class="green-text"></label>
+                                <label class="order_reference_num" class="green-text"></label>
                             </div>
                             <div class="col-12 col-sm-6">
                                 <label class="">Payment Date</label>
                             </div>
                             <div class="col-12 col-sm-6">
-                                <label id="rp_payment_date"></label>
+                                <label id="payment_date"></label>
                             </div>
                             <div class="col-12 col-sm-6">
                                 <label class="">Payment Reference No.</label>
                             </div>
                             <div class="col-12 col-sm-6">
-                                <label id="rp_payment_ref_num" class="green-text"></label>
+                                <label class="payment_ref_num" class="green-text"></label>
                             </div>
                             <div class="col-12 col-sm-6">
                                 <label class="">Total Amount:</label>
                             </div>
                             <div class="col-12 col-sm-6">
-                                <label id="rp_amount" class="green-text"></label>
+                                <label class="amount" class="green-text"></label>
                             </div>
                             <div class="col-12 col-sm-6">
                                 <label class="">Payment Status</label>
                             </div>
                             <div class="col-12 col-sm-6">
-                                <label id="rp_payment_status"></label>
+                                <label class="payment_status"></label>
                             </div>
                             <div class="col-12 col-sm-6">
                                 <label class="">Order Status:</label>
                             </div>
                             <div class="col-12 col-sm-6">
-                                <label id="rp_order_status"></label>
+                                <label class="order_status"></label>
                             </div>
                         </div>
 
-                        <div class="row">
-                            <div class="col-12 col-sm-6">
-                                <label class="">Shipping Partner:</label>
-                            </div>
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <select class="form-control" id="rp_shipping_partner" name="rp_shipping_partner">
-                                        <!-- <option value="">Manual</option> -->
-                                        <?php foreach($partners_api_isset as $row){?>
-                                            <option value="<?=$row['id']?>"><?=$row['name']?></option>
-                                        <?php }?>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-12 col-sm-6">
-                                <label class="">Referral Code:</label>
-                            </div>
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <input type="text" class="form-control" id="rp_referralCode" name="rp_referralCode" value="<?=$toktokreferral_code;?>">
-                                    
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-12 col-sm-6">
-                                <label class="">Notes:</label>
-                            </div>
-                            
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <textarea type="text" class="form-control" name="rp_notes" id="rp_notes" placeholder="Enter notes"><?=strtoupper(htmlspecialchars_decode(strtolower(str_replace('|::PA::|', '', $notes))));?></textarea>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="alert alert-warning" role="alert">
-                                    Weight Limit: Up to 20 kg. Size Limit (L x W x H): 20 × 20 × 20 inches. 
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <div class="row">
-                            <div class="col-12 col-sm-6">
-                                <label class="">Sender Address:</label>
-                            </div>
-                            <div class="col-12">
-                                <input type="hidden" class="hidden" name="rp_branch_id" id="rp_branch_id" value="<?=$branch_id?>">
-                                <input type="hidden" class="hidden" name="rp_shop_id" id="rp_shop_id" value="<?=$rp_shop_id?>">
-                                <div class="form-group">
-                                    <input type="text" class="form-control" name="rp_pickup_address" id="rp_pickup_address" placeholder="Pickup Address" value="<?=$pickup_address?>" readonly>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-12 col-sm-12">
-                                <div id="pac-container">
-                                    <label for="">Recipient Address <span class="asterisk"></span></label>
-                                    <input id="pin_address" type="text" placeholder="Search" class = "form-control pr_field detail-input" name = "pin_address" style = "padding:10px;font-size:15px !important;" value="">
-                                    <input type="hidden" name = "loc_latitude" id = "loc_latitude" name = "loc_latitude" class = "pr_field" value = "<?=$latitude?>">
-                                    <input type="hidden" name = "loc_longitude" id = "loc_longitude" name = "loc_longitude" class = "pr_field" value = "<?=$longitude?>">
-                                </div>
-                                <div id="map" style = "height:300px;margin-top:30px;"></div>
-                                <div id="infowindow-content">
-                                <!-- <img src="" width="16" height="16" id="place-icon"> -->
-                                <span id="place-name"  class="title"></span><br>
-                                <span id="place-address"></span>
-                                </div>
-                            </div>
-                        </div>
-
-                    
-                        
-                        <div class="row hidden">
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <label>ID</label>
-                                    <input type="text" name="rp_id" id="rp_id" class="form-control" value="0" >
-                                </div>
-                            </div>
-                        </div>
                     </div>
                  </div>
-                <!--<div class="modal-footer">
+                <div class="modal-footer">
                     <div class="col-md-12 text-right">
                         <div class="col-lg-12 col-12 text-right col-md-auto px-1 mb-1">
                             <button type="button" class="btn-mobile-w-100 btn btn-info cancelBtn waves-effect waves-light mb-2 mb-m-0" data-dismiss="modal" aria-label="Close">Cancel</button>
                             <button type="submit" id="btn_tbl_confirm" class="btn-mobile-w-100 btn btn-success waves-effect waves-light mb-2 mb-m-0" aria-label="Close">Book toktok</button>
                         </div>
                     </div>
-                </div> -->
+                </div> 
             </form>
         </div>
     </div>
-</div>
+</div> -->
 
 <!-- Cancel Modal -->
 <div id="CancelOrder_modal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
@@ -1778,7 +1913,9 @@
                 <!-- </button> -->
             <!-- </div> -->
             <div class="modal-body">
-                <img src="<?=$order_details['pickedup_photo']?>" class="img-fluid">
+                <?php foreach($images->result_array() as $image){?>
+                <img src="<?=base_url('assets/uploads/orders/'.str_replace('=','',$image['filename']));?>" class="img-fluid">
+                <?php }?>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>

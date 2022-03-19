@@ -20,7 +20,7 @@ class Model_orders extends CI_Model {
 
 	}
     public function orders_details($reference_num){
-        $query = 'SELECT * FROM sys_orders WHERE reference_num = "'.$reference_num.'"';
+        $query = 'SELECT * FROM sys_orders WHERE order_id = "'.$reference_num.'"';
 		return $this->db->query($query)->result_array();
     }
 
@@ -29,14 +29,128 @@ class Model_orders extends CI_Model {
 		$query="SELECT * FROM sys_products_images join sys_products on product_id = sys_products.id  WHERE status = 1 and product_id = ".$id;
 		return $this->db->query($query)->result_array();
     }
+	public function get_productinfo_parent($id='') {
+		$query="SELECT * FROM sys_products where id = ".$id;
+		return $this->db->query($query)->result_array();
+    }
 
 	public function processOrder($reference_num) {
 
-		$sql = "UPDATE `sys_orders` SET status_id = 2, `date_processed` = ? WHERE reference_num = ? ";
+		$sql = "UPDATE `sys_orders` SET status_id = 2, `date_processed` = ? WHERE order_id = ? ";
 		$bind_data = array(
 			date('Y-m-d H:i:s'),
 			$reference_num
 		);
+		return $this->db->query($sql, $bind_data);
+	}
+
+	public function fulFillOrder($reference_num) {
+
+		$sql = "UPDATE `sys_orders` SET status_id = 4, `date_fulfilled` = ? WHERE order_id = ? ";
+		$bind_data = array(
+			date('Y-m-d H:i:s'),
+			$reference_num
+		);
+		return $this->db->query($sql, $bind_data);
+	}
+
+	public function confirmOrder($reference_num,$order_status) {
+
+		$sql = "UPDATE `sys_orders` SET status_id = ".$order_status.", `date_delivered` = ?";
+		$bind_data = array(
+			date('Y-m-d H:i:s')
+		);
+
+        $order_info = $this->orders_details($reference_num)[0]['payment_data'];
+        $order_info = json_decode($order_info);
+        $new_shipping_data = array(
+            'payment_method_id' => $order_info -> payment_method_id,
+            'payment_method_name' => $order_info -> payment_method_name,
+            'amount' => $order_info -> amount,
+            'status_id' => $order_info -> status_id,
+            'paid_date' => date('Y-m-d H:i:s')
+        );
+        //print_r(json_encode($new_shipping_data));
+        
+        $sql .=", payment_data = ? ";
+        array_push($bind_data, json_encode($new_shipping_data));
+        
+        
+        $sql .=" WHERE order_id = ? ";
+        array_push($bind_data, $reference_num);
+		return $this->db->query($sql, $bind_data);
+	}
+	public function getImageByFileName($id='') {
+		$query="SELECT * FROM sys_orders_images join sys_orders on sys_orders.order_id = sys_orders_images.reference_num ";
+		if($id != ''){
+			$query.=' WHERE sys_orders_images.reference_num = "'.$id.'"';
+		}
+		//print_r($filename);
+		// }else if($update_isset){
+		//  	$query.='WHERE filename = ? and status = 1';
+		// }else{
+		// 	$query.='WHERE filename = ? ';
+		// }
+		//params = array($filename);
+		// print_r($query);
+		// print_r($filename);
+		// print_r($id);
+		// die();
+		return $this->db->query($query);
+	}
+	public function getshippingpartners($id = '') {
+        $sql = "SELECT * from sys_shipping_partners";
+        if($id!=''){
+            $sql.=" WHERE id =".$id;
+        }
+		return $this->db->query($sql)->result_array();
+    }
+	public function readyfordeliveryOrder($reference_num,$imgArr,$courier_info) {
+
+		$sql = "UPDATE `sys_orders` SET status_id = 3, `date_readyforpickup` = ?";
+		$bind_data = array(
+			date('Y-m-d H:i:s')
+		);
+
+        if($courier_info['reference_num'] != ''){
+            $order_info = $this->orders_details($reference_num)[0]['shipping_data'];
+            $order_info = json_decode($order_info);
+            $new_shipping_data = array(
+                'address_category_id' => $order_info -> address_category_id,
+                'full_name' => $order_info -> full_name,
+                'contact_no' => $order_info -> contact_no,
+                'province' => $order_info -> province,
+                'city' => $order_info -> city,
+                'barangay' => $order_info -> barangay,
+                'zip_code' => $order_info -> zip_code,
+                'address' => $order_info -> address,
+                'notes' => $order_info -> notes,
+                'rider' => $courier_info
+            );
+            //print_r(json_encode($new_shipping_data));
+            
+            $sql .=", shipping_data = ? ";
+            array_push($bind_data, json_encode($new_shipping_data));
+            
+            //array_push($array, "item", "another item");
+        }
+        
+        $sql .=" WHERE order_id = ? ";
+        array_push($bind_data, $reference_num);
+
+        foreach($imgArr as $key => $value){
+            if($value != ""){
+                $sql2 = "INSERT INTO sys_orders_images (`reference_num`,`filename`,`date_created`, `status`) VALUES (?,?,?,?) ";
+                $bind_data2 = array(
+                    $reference_num,
+                    $value,
+                    date('Y-m-d H:i:s'),
+                    1
+                );
+
+                $this->db->query($sql2, $bind_data2);
+            }
+        }
 		return $this->db->query($sql, $bind_data);
 	}
     
@@ -58,7 +172,7 @@ class Model_orders extends CI_Model {
 			4 => 'total_amount',
 		);
         
-        $sql = 'SELECT * FROM sys_orders WHERE reference_num = "'.$reference_num.'"';
+        $sql = 'SELECT * FROM sys_orders WHERE order_id = "'.$reference_num.'"';
 
 
         $query = $this->db->query($sql);
@@ -74,8 +188,16 @@ class Model_orders extends CI_Model {
             $product_id = json_decode($row["product_id"]);
             $order_info = json_decode($row["order_data"]);
             foreach($product_id as $product){
-                $product_info = $this->get_productinfo($product)[0];
-                $product_info_parent = $this->get_productinfo($product)[0]['parent_product_id']!=''?$this->get_productinfo($this->get_productinfo($product)[0]['parent_product_id'])[0]['name'].' - ':'';
+
+                $product_info = $this->get_productinfo_parent($product);
+                if($product_info[0]['parent_product_id']!=''){
+                    $product_info = $product_info[0];
+                    $product_info = $this->get_productinfo($product_info['parent_product_id']);
+                    $product_info = $product_info[0];
+                }else{
+                    $product_info = $this->get_productinfo($product)[0];
+                }
+                $product_info_parent = $product_info['parent_product_id']!=''?$this->get_productinfo($this->get_productinfo($product)['parent_product_id'])['name'].' - ':'';
             }
             foreach($order_info  as $key => $value){
                //print_r($value);
@@ -226,6 +348,8 @@ class Model_orders extends CI_Model {
 		}
 
 		if($status == ""){
+            $date_to = date('Y-m-d',strtotime($date_to. ' + 1 days'));
+            //print_r($date_to);
 			$date_string  = ($_name != "") ? "" : "date_created >= '".format_date_dash_reverse($date_from)."' AND date_created <= '".format_date_dash_reverse($date_to)."'";
             $sql = "SELECT * FROM sys_orders WHERE ".$date_string;
 
@@ -468,7 +592,7 @@ class Model_orders extends CI_Model {
 			}
 		    $special_upper = ["&NTILDE", "&NDASH"];
     		$special_format = ["&Ntilde", "&ndash"];
-			$nestedData[] = $row["reference_num"];
+			$nestedData[] = $row["order_id"];
 			$nestedData[] = str_replace($special_upper, $special_format, $name);
 			$nestedData[] = $contact_no;
             $nestedData[] = $subtotal_converted;
@@ -481,7 +605,7 @@ class Model_orders extends CI_Model {
             '<div class="dropdown">
                 <i class="fa fa-ellipsis-v fa-lg" id="dropdown_menu_button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-hidden="true"></i>
                 <div class="dropdown-menu" aria-labelledby="dropdown_menu_button">
-                    <a class="dropdown-item"  href="'.base_url('admin/Main_orders/orders_view/'.$token.'/'.$row["reference_num"]).'"><i class="fa fa-pencil" aria-hidden="true"></i> View</a>
+                    <a class="dropdown-item"  href="'.base_url('admin/Main_orders/orders_view/'.$token.'/'.$row["order_id"]).'"><i class="fa fa-pencil" aria-hidden="true"></i> View</a>
                 </div>
             </div>';
 

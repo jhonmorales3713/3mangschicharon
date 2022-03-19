@@ -9,5 +9,11 @@
 
         return $this->db->query($sql);
     }
+
+    public function get_shipping_partners() {
+        $sql = "SELECT * from sys_shipping_partners WHERE `enabled` >= 1";
+
+        return $this->db->query($sql);
+    }
 }
 ?>

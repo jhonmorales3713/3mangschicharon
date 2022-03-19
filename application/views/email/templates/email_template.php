@@ -137,7 +137,7 @@
                                             <tbody>
                                                 <tr>
                                                     <td>
-                                                        <p style="color: #fff; margin-bottom: 0; margin-top: 0; text-align: center; font-size: 14px"><b>MAS MASARAP, MAS MABILIS.</b></p>
+                                                        <p style="color: #fff; margin-bottom: 0; margin-top: 0; text-align: center; font-size: 14px"><b>EAT WITHOUT GUILT</b></p>
                                                         <a href="<?= faqs_link() ?>" style="color: #fff; margin-top: 0; text-decoration: underline; text-align:center; display: block; margin-top: 3px;">Help Centre</a>
                                                     </td>
                                                 </tr>

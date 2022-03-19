@@ -94,7 +94,7 @@
       <table class="order-status">
         <tbody>
           <tr>
-            <td style="width: 100px; text-align: center"><img src="<?=base_url().'assets/img/icons/preparing-order.png';?>" alt="" style="height: 40px;"></td>
+            <td style="width: 100px; text-align: center"><img src="<?=base_url().'assets/img/icons/preparing-order-done.png';?>" alt="" style="height: 40px;"></td>
             <td style="width: 100%;"><strong>Preparing Order</strong></td>
           </tr>
         </tbody>
@@ -107,9 +107,12 @@
             <td style="width: 47px;"></td>
             <td style="width: 100%;">
               <ul style="list-style-type: circle; padding-left: 0; margin-top: 0; vertical-align:top; margin-bottom: 40px">
-                <li style="list-style: none;">
-                  <!-- Your order is now being prepared. -->
+                <li style="list-style: none; color: #222;">
+                  We have processed your order.
                 </li>
+                <li style="list-style: none; font-size: 12px; color: gray;">
+                  <?= date("M d, Y h:i a", strtotime($order_data_main[0]['date_processed'])); ?>
+                  </li>
               </ul>
             </td>
           </tr>
@@ -119,8 +122,33 @@
       <table class="order-status">
         <tbody>
           <tr>
-            <td style="width: 100px; text-align: center"><img src="<?=base_url().'assets/img/icons/ready-for-pickup.png';?>" alt="" style="height: 40px;"></td>
+            <?php if($order_data_main[0]['status_id'] >= 3 && !empty($order_data_main[0]['date_declined'])){?>
+                <td style="width: 100px; text-align: center"><img src="<?=base_url().'assets/img/icons/ready-for-pickup-done.png';?>" alt="" style="height: 40px;"></td>
+            
+            <?php }else{?>
+                <td style="width: 100px; text-align: center"><img src="<?=base_url().'assets/img/icons/ready-for-pickup.png';?>" alt="" style="height: 40px;"></td>
+            
+            <?php } ?>
             <td style="width: 100%;"><strong>Ready for Pickup</strong></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table class="order-status">
+        <tbody>
+          <tr>
+            <td style="width: 47px; border-right: 2px solid lightgray"></td>
+            <td style="width: 47px;"></td>
+            <td style="width: 100%;">
+              <ul style="list-style-type: circle; padding-left: 0; margin-top: 0; vertical-align:top; margin-bottom: 0px">
+                <li style="list-style: none; color: #222;">
+                  We have tagged your order as ready for pickup.
+                </li>
+                <li style="list-style: none; font-size: 12px; color: gray;">
+                  <?= date("M d, Y h:i a", strtotime($order_data_main[0]['date_readyforpickup'])); ?>
+                  </li>
+              </ul>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -144,12 +172,36 @@
       <table class="order-status">
         <tbody>
           <tr>
-            <td style="width: 100px; text-align: center"><img src="<?=base_url().'assets/img/icons/fulfilled.png';?>" alt="" style="height: 40px;"></td>
+            <?php if($order_data_main[0]['status_id'] >= 4 && !empty($order_data_main[0]['date_declined'])){?>
+                <td style="width: 100px; text-align: center"><img src="<?=base_url().'assets/img/icons/fulfilled-done.png';?>" alt="" style="height: 40px;"></td>
+            
+            <?php }else{?>
+                <td style="width: 100px; text-align: center"><img src="<?=base_url().'assets/img/icons/fulfilled.png';?>" alt="" style="height: 40px;"></td>
+            
+            <?php } ?>
             <td style="width: 100%;"><strong>Fulfilled</strong></td>
           </tr>
         </tbody>
       </table>
-
+      
+      <table class="order-status">
+        <tbody>
+          <tr>
+            <td style="width: 47px; border-right: 2px solid lightgray"></td>
+            <td style="width: 47px;"></td>
+            <td style="width: 100%;">
+              <ul style="list-style-type: circle; padding-left: 0; margin-top: 0; vertical-align:top; margin-bottom: 0px">
+                <li style="list-style: none; color: #222;">
+                  We have tagged your order as for fulfilment.
+                </li>
+                <li style="list-style: none; font-size: 12px; color: gray;">
+                  <?= date("M d, Y h:i a", strtotime($order_data_main[0]['date_fulfilled'])); ?>
+                  </li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
       <table class="order-status">
         <tbody>
           <tr>
@@ -166,18 +218,42 @@
         </tbody>
       </table>
 
+
       <table class="order-status">
         <tbody>
           <tr>
-            <td style="width: 100px; text-align: center"><img src="<?=base_url().'assets/img/icons/delivered-.png';?>" alt="" style="height: 40px;"></td>
-            <td style="width: 100%;"><strong>Delivered</strong></td>
+            <?php if($order_data_main[0]['status_id'] >= 4 && !empty($order_data_main[0]['date_declined'])){?>
+                
+                <?php if($order_data_main[0]['status_id'] == 8 || $order_data_main[0]['status_id'] == 9){?>
+                    <td style="width: 100px; text-align: center"><img src="<?=base_url().'assets/img/icons/delivered-error.png';?>" alt="" style="height: 40px;"></td>
+                <?php }else{?>
+                    <td style="width: 100px; text-align: center"><img src="<?=base_url().'assets/img/icons/delivered-done.png';?>" alt="" style="height: 40px;"></td>
+                <?php }?>
+            <?php }else{?>
+                <td style="width: 100px; text-align: center"><img src="<?=base_url().'assets/img/icons/delivered.png';?>" alt="" style="height: 40px;"></td>
+            <?php } ?>
+            <?php if($order_data_main[0]['status_id'] == 8 || $order_data_main[0]['status_id'] == 9){?>
+                <td style="width: 100%;"><strong>Re-Deliver</strong></td>
+            <?php }else{?>
+                <td style="width: 100%;"><strong>Delivered</strong></td>
+            <?php }?>
           </tr>
+        </tbody>
+      </table>
+      
+      <table class="order-status">
+        <tbody>
           <tr>
-            <td colspan="2" style="width: 100%;">
-              <ul style="list-style-type: circle; padding-left: 0; margin-top: 0; vertical-align:top; margin-bottom: 40px">
-                <li style="list-style: none;">
-                  <!-- &nbsp;&nbsp;&nbsp;&nbsp;Order has been successfully shipped. -->
+            <td style="width: 47px; border-right: 2px solid lightgray"></td>
+            <td style="width: 47px;"></td>
+            <td style="width: 100%;">
+              <ul style="list-style-type: circle; padding-left: 0; margin-top: 0; vertical-align:top; margin-bottom: 0px">
+                <li style="list-style: none; color: #222;">
+                  We have tagged your order as delivered.
                 </li>
+                <li style="list-style: none; font-size: 12px; color: gray;">
+                  <?= date("M d, Y h:i a", strtotime($order_data_main[0]['date_delivered'])); ?>
+                  </li>
               </ul>
             </td>
           </tr>
