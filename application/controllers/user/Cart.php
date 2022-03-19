@@ -246,6 +246,9 @@ class Cart extends CI_Controller {
             if(!isset($_SESSION['has_logged_in'])){
                 $this->form_validation->set_rules('email','Email Address','required');
             }
+            else{
+                $shipping_data['email'] = en_dec('dec',$_SESSION['email']);
+            }
 
             if($this->form_validation->run() == FALSE) {
                 $response = array(
