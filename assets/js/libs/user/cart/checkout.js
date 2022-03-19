@@ -34,6 +34,7 @@ function get_shipping_details(){
         address_alias: $('#alias').val(),
         full_name: $('#full_name').val(),
         contact_no: $('#contact_no').val(),
+        email: $('#email').val(),
         province: $('#province').val(),
         city: $('#city').val(),
         barangay: $('#barangay').val(),        

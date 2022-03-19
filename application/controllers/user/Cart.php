@@ -189,8 +189,10 @@ class Cart extends CI_Controller {
     public function place_order(){
 
         $data = $this->input->post();
+        
+        $id = isset($_SESSION['customer_id']) ? $_SESSION['customer_id'] : '';
 
-        $customer_id = en_dec('dec',$_SESSION['customer_id']);
+        $customer_id = en_dec('dec',$id);
         $order_data = array();        
 
         $product_id = array();
@@ -240,6 +242,10 @@ class Cart extends CI_Controller {
             $this->form_validation->set_rules('barangay','Barangay','required');
             $this->form_validation->set_rules('zip_code','Zip Code','required');
             $this->form_validation->set_rules('address','Street Address','required');
+
+            if(!isset($_SESSION['has_logged_in'])){
+                $this->form_validation->set_rules('email','Email Address','required');
+            }
 
             if($this->form_validation->run() == FALSE) {
                 $response = array(

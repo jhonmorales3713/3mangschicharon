@@ -28,6 +28,14 @@
                 <input type="text" id="contact_no" class="form-control form-control-sm">            
             </div>        
         </div> 
+        
+        <div class="col-lg-12 col-md-12 col-sm-12 <?= isset($_SESSION['has_logged_in']) ? 'hidden' : ''; ?>">
+            <div class="form-group">
+                <small for="">Email Address <span class="text-danger">*</span></small>
+                <input type="text" id="email" class="form-control form-control-sm">            
+            </div>        
+        </div> 
+        
     </div>
     <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-12">
