@@ -136,7 +136,7 @@
                                 <div class="row">
                                     <div class="col-12 col-md-12">
                                         <label class="">Payment Status:</label>
-                                        <label id="tm_payment_status" class="green-text font-weight-bold"><?=($payment_method=='COD' && $order_details['status_id']==5)?'Paid':'Pending'?></label>
+                                        <label id="tm_payment_status" class="green-text font-weight-bold"><?=($payment_method=='COD' && $order_details['status_id']==5)?'Paid':($order_details['status_id']==6||$order_details['status_id']==7)?'Cancelled':'Pending'?></label>
                                     </div>
                                     <!-- <div class="col-12 col-md">
                                         
@@ -487,7 +487,7 @@
                                                 <div class="col-md-2" style="padding-top:5px;">
                                                     <span><?=$order_details['date_deliveryfailed1']?></span>
                                                 </div>
-                                            <?php }if($order_details['status_id'] >= 4  ||$order_details['status_id'] == 0){?>
+                                            <?php }if(($order_details['status_id'] >= 4  ||$order_details['status_id'] == 0)&& $order_details['status_id'] != 6&& $order_details['status_id'] != 7){?>
                                                 <div class="w-100" style="border-bottom: 1px dotted black;"></div>
                                                 <div class="col-md-6" style="padding-top:13px;">
                                                     <span>Order is fulfilled.</span>
@@ -498,7 +498,7 @@
                                                 <div class="col-md-2" style="padding-top:5px;">
                                                     <span><?=$order_details['date_fulfilled']?></span>
                                                 </div>
-                                            <?php }if($order_details['status_id'] >= 3  ||$order_details['status_id'] == 0 ){?>
+                                            <?php }if(($order_details['status_id'] >= 3  ||$order_details['status_id'] == 0)  && $order_details['status_id'] != 6&& $order_details['status_id'] != 7){?>
                                                 
                                                 <div class="w-100" style="border-bottom: 1px dotted black;"></div>
                                                 <div class="col-md-6" style="padding-top:13px;">
@@ -511,16 +511,17 @@
                                                     <span><?=$order_details['date_readyforpickup']?></span>
                                                     <span data-toggle="modal" data-target="#itemPickedupModal"><u>View Image</u></span>
                                                 </div>
-                                            <?php }if($order_details['status_id'] > 1  ||$order_details['status_id'] == 0){?>
+                                            <?php }  if($order_details['status_id'] == 6 || $order_details['status_id'] == 7){?>
                                                 <div class="w-100" style="border-bottom: 1px dotted black;"></div>
                                                 <div class="col-md-6" style="padding-top:13px;">
-                                                    <span>Order is being processed.</span>
+                                                    <span>Order is Cancelled By <?=($order_details['status_id'] == 6)?'Customer': 'Admin';?>.</span><br>
+                                                    <span class="font-weight-bold">Reason:<?=json_decode($order_details['reasons'])->decline;?></span>
                                                 </div>
                                                 <div class="col-md-4" style="padding-top:13px;">
                                                     <span></span>
                                                 </div>
                                                 <div class="col-md-2" style="padding-top:5px;">
-                                                    <span><?=$order_details['date_processed']?></span>
+                                                    <span><?=$order_details['date_declined']?></span>
                                                 </div>
                                             <?php }?>
                                             
@@ -590,7 +591,7 @@
 
                     <?php if($order_details['status_id'] == 1){ ?>
                         <button type="button" class=" btn btn-warning processBtn mb-2 mb-md-0" id="processBtn" data-value="<?=$reference_num?>">Process Order</button>
-                        <button type="button" class="btn-mobile-w-100 btn btn-danger waves-effect waves-light cancelOrderBtn" id="DeclineOrderBtn" data-value="<?=$reference_num?>">Decline Order</button> 
+                        <button type="button" class="btn-mobile-w-100 btn btn-danger waves-effect waves-light DeclineOrderBtn" id="DeclineOrderBtn" data-value="<?=$reference_num?>">Decline Order</button> 
                     <?php } ?>
                     <?php if($order_details['status_id'] == 2){ ?>
                         <button type="button" class="btn-mobile-w-100 btn btn-outline-info waves-effect waves-light readyforpickupBtn mb-2 mb-md-0" id="readyforpickupBtn" data-value="<?=$reference_num?>">Mark as Ready for Pickup</button>
@@ -804,7 +805,7 @@
             <form id="<?=$form_id?>" enctype="multipart/form-data" method="post" action="" >
                 <div class="modal-header">
                     <div class="col-md-12">
-                        <h4 id="tm_header_ref" class="modal-title" style="color:black;"><?=$header?></h4>
+                        <h4 id="tm_header_ref" class="modal-title" id="order_modal_title" style="color:black;"><?=$header?></h4>
                     </div>
                 </div>
                 <div class="modal-body">
@@ -1176,499 +1177,118 @@
     <div role="document" class="modal-dialog modal-md">
         <div class="modal-content">
             <form id="form_save_cancel_order" enctype="multipart/form-data" method="post" action="" >
-            <div class="modal-header">
-                <div class="col-md-12">
-                    <h4 id="tm_header_ref" class="modal-title" style="color:black;">Are you sure you want to cancel booking?</h4>
-                </div>
-            </div>
-            <div class="modal-body">
-                <div class="col-12">
-                <div class="row">
-                    <div class="col-12 mb-2">
-                        <i class="fa fa-info no-margin">
-                        </i> Order Summary
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label class="">Transaction Date:</label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label id="cn_order_date"></label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label class="">Transaction Reference #:</label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label id="cn_order_reference_num" class="green-text"></label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label class="">Payment Date</label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label id="cn_payment_date"></label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label class="">Payment Reference No.</label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label id="cn_payment_ref_num" class="green-text"></label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label class="">Total Amount:</label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label id="cn_amount" class="green-text"></label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label class="">Payment Status</label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label id="cn_payment_status"></label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label class="">Order Status:</label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label id="cn_order_status"></label>
+                <div class="modal-header">
+                    <div class="col-md-12">
+                        <h4 id="tm_header_ref" class="modal-title" style="color:black;">Are you sure you want to cancel booking?</h4>
                     </div>
                 </div>
-
-                <div class="row hidden">
+                <div class="modal-body">
                     <div class="col-12">
-                        <div class="form-group">
-                            <label>ID</label>
-                            <input type="text" name="cn_id" id="cn_id" class="form-control" value="0" >
+                    
+                        <input type="text" class="hidden" name="reference_number" id="reference_number" value="<?=$reference_num?>" hidden>
+                        <div class="row">
+                            <div class="col-12 mb-2">
+                                <i class="fa fa-info no-margin">
+                                </i> Order Summary
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <label class="">Transaction Date:</label>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <label class="order_date"></label>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <label class="">Transaction Reference #:</label>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <label class="order_reference_num" class="green-text"></label>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <label class="">Payment Date</label>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <label id="payment_date"></label>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <label class="">Payment Reference No.</label>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <label class="payment_ref_num" class="green-text"></label>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <label class="">Total Amount:</label>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <label class="amount" class="green-text"></label>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <label class="">Payment Status</label>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <label class="payment_status"></label>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <label class="">Order Status:</label>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <label class="order_status"></label>
+                            </div>
+                        </div>
+
+                    <div class="row hidden">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>ID</label>
+                                <input type="text" name="order_id" id="order_id" class="form-control" value="<?$reference_num?>" >
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="row">
-                    <div class="col-12 col-sm-6">
-                        <label class="">Why do you want to cancel the booking?</label>
-                    </div>
-                    <div class="col-12">
-                        <div class="form-group">
-                            <select class="form-control" id="cn_cancellation_cat" name="cn_cancellation_cat">
-                            </select>
+                    <div class="row">
+                        <div class="col-12">
+                            <label class="">Why do you want to cancel the booking?</label>
                         </div>
                     </div>
-                </div>
 
-                <div class="row">
-                    <div class="col-12">
-                        <div class="form-group">
-                            <textarea type="text" class="form-control" name="cn_cancellation_notes" id="cn_cancellation_notes" placeholder="Enter notes (optional)"></textarea>
+                    <div class="row">
+                        <div class="col ">
+                            <input type="radio"name="reason_option" value="Repetitive Order" >Repetitive Order</input>
+                        </div>
+                        <div class="col">
+                            <input type="radio"name="reason_option" value="Unreachable Area" >Unreachable Area</input>
+                        </div>
+                        <div class="col">
+                            <input type="radio"name="reason_option" value="Spam Order" >Spam Order</input>
+                        </div>
+                        <div class="col">
+                            <input type="radio"name="reason_option" value="Others" >Others</input>
+                        </div>
+                        <div class="col-12 reason_option_others" >
+                            <textarea class="form-control" name="f_reason" id="f_reason" placeholder="Type reason here"></textarea>
                         </div>
                     </div>
-                </div>
+                                    
+                    <!-- <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <textarea type="text" class="form-control" name="cn_cancellation_notes" id="cn_cancellation_notes" placeholder="Enter notes (optional)"></textarea>
+                            </div>
+                        </div>
+                    </div> -->
 
-            </div>
-            </div>
-            <div class="modal-footer">
-                <div class="col-md-12 text-right">
-                    <button type="button" class="btn btn-info cancelBtn waves-effect waves-light" data-dismiss="modal" aria-label="Close">Close</button>
-                    <button type="submit" id="btn_tbl_confirm" class="btn btn-success waves-effect waves-light" aria-label="Close">Yes</button>
                 </div>
-            </div>
-        </form>
+                </div>
+                <div class="modal-footer">
+                    <div class="col-md-12 text-right">
+                        <button type="button" class="btn btn-info cancelBtn waves-effect waves-light" data-dismiss="modal" aria-label="Close">Close</button>
+                        <button type="submit" id="btn_tbl_confirm" class="btn btn-success waves-effect waves-light" aria-label="Close">Yes</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
 
-<!-- Booking Confirmed Modal -->
-<div id="bookingConfirm_modal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
-    <div role="document" class="modal-dialog modal-md">
-        <div class="modal-content">
-            <form id="form_save_booking_confirm" enctype="multipart/form-data" method="post" action="" >
-            <div class="modal-header">
-                <div class="col-md-12">
-                    <h4 id="tm_header_ref" class="modal-title" style="color:black;">Order Booking Confirmed</h4>
-                </div>
-            </div>
-            <div class="modal-body">
-                <div class="col-12">
-                <div class="row">
-                    <div class="col-12 mb-2">
-                        <i class="fa fa-info no-margin">
-                        </i> Order Summary
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label class="">Transaction Date:</label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label id="bc_order_date"></label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label class="">Transaction Reference #:</label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label id="bc_order_reference_num" class="green-text"></label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label class="">Payment Date</label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label id="bc_payment_date"></label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label class="">Payment Reference No.</label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label id="bc_payment_ref_num" class="green-text"></label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label class="">Total Amount:</label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label id="bc_amount" class="green-text"></label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label class="">Payment Status</label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label id="bc_payment_status"></label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label class="">Order Status:</label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label id="bc_order_status"></label>
-                    </div>
-                </div>
-                <div class="row hidden">
-                    <div class="col-12">
-                        <div class="form-group">
-                            <label>ID</label>
-                            <input type="text" name="bc_id" id="bc_id" class="form-control" value="0" >
-                        </div>
-                    </div>
-                </div>
-                <div class="row hidden">
-                    <div class="col-12">
-                        <div class="form-group">
-                            <label>CheckBoxID</label>
-                            <input type="text" name="bc_rider_ischecked" id="bc_rider_ischecked" class="form-control" value="0" >
-                        </div>
-                    </div>
-                </div>
-                <div class="row mb-2">
-                    <div class="col-12 col-sm-12">
-                        <label>
-                            <input type="checkbox" id="tag_rider" name="tag_rider" class="checkbox-template m-r-xs">
-                            &nbsp;Tag Rider Details
-                        </label>
-                    </div>
-                </div>
-                <div class="row grp_rider" id="grp_rider">
-                    <div class="col-12">
-                        <div class="form-group">
-                            <input type="text" class="form-control" name="bc_rider_name" id="bc_rider_name" placeholder="Enter Rider's Name">
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="form-group">
-                            <input type="text" class="form-control" name="bc_platenum" id="bc_platenum" placeholder="Enter Rider's Plate Number">
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="form-group">
-                            <input type="text" class="form-control" name="bc_conno" id="bc_conno" placeholder="Enter Rider's Contact Number">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            </div>
-            <div class="modal-footer">
-                <div class="col-md-12 text-right">
-                    <button type="button" class="btn btn-info cancelBtn waves-effect waves-light" data-dismiss="modal" aria-label="Close">Cancel</button>
-                    <button type="submit" id="btn_tbl_confirm" class="btn btn-success waves-effect waves-light btn_tbl_confirm" aria-label="Close">Booking Confirmed</button>
-                </div>
-            </div>
-        </form>
-        </div>
-    </div>
-</div>
-
-<!-- Mark as Fulfilled-->
-<div id="fulfillment_modal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
-    <div role="document" class="modal-dialog modal-md">
-        <div class="modal-content">
-            <form id="form_save_fulfillment" enctype="multipart/form-data" method="post" action="" >
-            <div class="modal-header">
-                <div class="col-md-12">
-                    <h4 id="tm_header_ref" class="modal-title" style="color:black;">Order Fulfillment</h4>
-                </div>
-            </div>
-            <div class="modal-body">
-                <div class="col-12">
-                <div class="row">
-                    <div class="col-12 mb-2">
-                        <i class="fa fa-info no-margin">
-                        </i> Order Summary
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label class="">Transaction Date:</label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label id="f_order_date"></label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label class="">Transaction Reference #:</label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label id="f_order_reference_num" class="green-text"></label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label class="">Payment Date</label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label id="f_payment_date"></label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label class="">Payment Reference No.</label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label id="f_payment_ref_num-f" class="green-text"></label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label class="">Total Amount:</label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label id="f_amount" class="green-text"></label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label class="">Payment Status</label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label id="f_payment_status"></label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label class="">Order Status:</label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label id="f_order_status"></label>
-                    </div>
-                   
-                    <?php if($order_details['rider_name'] != ''){?>
-                        <div class="col-12 col-sm-6">
-                            <label class="">Rider Name:</label>
-                        </div>
-                        <div class="col-12 col-sm-6">
-                            <label id="f_rider_name"><?=$order_details['rider_name']?></label>
-                        </div>
-                        <div class="col-12 col-sm-6">
-                            <label class="">Plate Number:</label>
-                        </div>
-                        <div class="col-12 col-sm-6">
-                            <label id="f_platenum"><?=$order_details['rider_platenum']?></label>
-                        </div>
-                        <div class="col-12 col-sm-6">
-                            <label class="">Contact No.:</label>
-                        </div>
-                        <div class="col-12 col-sm-6">
-                            <label id="f_rider_conno"><?=$order_details['rider_conno']?></label>
-                        </div>
-                    <?php } ?>
-                </div>
-                <div class="row hidden">
-                    <div class="col-12">
-                        <div class="form-group">
-                            <label>ID</label>
-                            <input type="text" name="f_id" id="f_id" class="form-control" value="0" >
-                        </div>
-                    </div>
-                </div>
-                <div class="row hidden">
-                    <div class="col-12">
-                        <div class="form-group">
-                            <label>CheckBoxID</label>
-                            <input type="text" name="f_shipping_ischecked" id="f_shipping_ischecked" class="form-control" value="0" >
-                        </div>
-                    </div>
-                </div>
-                <div class="row mb-2 hidden">
-                    <div class="col-12 col-sm-12">
-                        <label>
-                            <input type="checkbox" id="tag_shipping" name="tag_shipping" class="checkbox-template m-r-xs">
-                            &nbsp;Tag Shipping Details
-                        </label>
-                    </div>
-                </div>
-                <div class="row grp_shipping" id="grp_shipping">
-                    <div class="col-6">
-                        <div class="form-group" id="shipping_field">
-                            <select style="height:42px;" type="text" name="f_shipping" id="f_shipping" class="form-control">
-                                <option value="">-- Select Shipping Partner --</option>
-                                <option
-                                <?php
-                                    foreach ($partners as $partner) {
-                                        ?>
-                                            <option value="<?= $partner['id']; ?>"><?= $partner['name']; ?></option>
-                                        <?php
-                                    }
-                                ?>
-
-                                <option value="Others">Others</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="form-group grp_shipping_others" id="grp_shipping_others">
-                            <input type="text" class="form-control" name="f_shipping_others" id="f_shipping_others" placeholder="Enter shipping partner">
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="form-group">
-                            <input type="text" class="form-control" name="f_shipping_ref_num" id="f_shipping_ref_num" placeholder="Enter reference number">
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="form-group">
-                            <input type="text" class="form-control allownumericwithdecimal" name="f_shipping_fee" id="f_shipping_fee" placeholder="Enter actual shipping fee" value="<?=$order_details['shipping_cost']?>">
-                        </div>
-                    </div>
-                    <div class="col-12">
-                        <div class="form-group">
-                            <!-- <input type="text" class="form-control" name="f_shipping_notes" id="f_shipping_notes" placeholder="Enter notes (optional)"> -->
-                            <textarea type="text" class="form-control" name="f_shipping_notes" id="f_shipping_notes" placeholder="Enter notes (optional)"></textarea>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row hidden">
-                    <div class="col-12">
-                        <div class="form-group">
-                            <label>CheckBoxID</label>
-                            <input type="text" name="mf_rider_ischecked" id="mf_rider_ischecked" class="form-control" value="0" >
-                        </div>
-                    </div>
-                </div>
-
-                 <div class="row mb-2">
-                    <div class="col-12 col-sm-12">
-                        <label>
-                            <input type="checkbox" id="mf_rider" name="mf_rider" class="checkbox-template m-r-xs">
-                            &nbsp;Tag Rider Details
-                        </label>
-                    </div>
-                </div>
-                <?php 
-                    $order_details['rider_name']     = ($order_details['rider_name'] != '') ? $order_details['rider_name'] : '';
-                    $order_details['rider_platenum'] = ($order_details['rider_platenum'] != '') ? $order_details['rider_platenum'] : '';
-                    $order_details['rider_conno']    = ($order_details['rider_conno'] != '') ? $order_details['rider_conno'] : '';
-                ?>
-                <div class="row mf_rider" id="mf_rider" style="display:none">
-                    <div class="col-12">
-                        <div class="form-group">
-                            <input type="text" class="form-control" name="mf_rider_name" id="mf_rider_name" placeholder="Enter Rider's Name" value="<?=$order_details['rider_name']?>">
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="form-group">
-                            <input type="text" class="form-control" name="mf_platenum" id="mf_platenum" placeholder="Enter Rider's Plate Number" value="<?=$order_details['rider_platenum']?>">
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="form-group">
-                            <input type="text" class="form-control" name="mf_conno" id="mf_conno" placeholder="Enter Rider's Contact Number" value="<?=$order_details['rider_conno']?>">
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-            </div>
-            <div class="modal-footer">
-                <div class="col-md-12 text-right">
-                    <button type="button" class="btn btn-info cancelBtn waves-effect waves-light" data-dismiss="modal" aria-label="Close">Cancel</button>
-                    <button type="submit" id="btn_tbl_confirm" class="btn btn-success waves-effect waves-light btn_tbl_confirm" aria-label="Close">Fulfill Order</button>
-                </div>
-            </div>
-        </form>
-        </div>
-    </div>
-</div>
-
-<!-- Return to Sender Modal -->
-<div id="returntosender_modal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
-    <div role="document" class="modal-dialog modal-md">
-        <div class="modal-content">
-            <form id="form_save_returntosender" enctype="multipart/form-data" method="post" action="" >
-            <div class="modal-header">
-                <div class="col-md-12">
-                    <h4 id="tm_header_ref" class="modal-title" style="color:black;">Return to Sender Order</h4>
-                </div>
-            </div>
-            <div class="modal-body">
-                <div class="col-12">
-                <div class="row">
-                    <div class="col-12 mb-2">
-                        <i class="fa fa-info no-margin">
-                        </i> Order Summary
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label class="">Transaction Date:</label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label id="rs_order_date"></label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label class="">Transaction Reference #:</label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label id="rs_order_reference_num" class="green-text"></label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label class="">Payment Date</label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label id="rs_payment_date"></label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label class="">Payment Reference No.</label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label id="rs_payment_ref_num" class="green-text"></label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label class="">Total Amount:</label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label id="rs_amount" class="green-text"></label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label class="">Payment Status</label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label id="rs_payment_status"></label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label class="">Order Status:</label>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <label id="rs_order_status"></label>
-                    </div>
-                </div>
-                <div class="row hidden">
-                    <div class="col-12">
-                        <div class="form-group">
-                            <label>ID</label>
-                            <input type="text" name="rs_id" id="rs_id" class="form-control" value="0" >
-                        </div>
-                    </div>
-                </div>
-            </div>
-            </div>
-            <div class="modal-footer">
-                <div class="col-md-12 text-right">
-                    <div class="col-lg-12 col-12 text-right col-md-auto px-1 mb-3">
-                        <button type="button" class="btn-mobile-w-100 btn btn-info cancelBtn waves-effect waves-light" data-dismiss="modal" aria-label="Close">Cancel</button>
-                        <button type="submit" id="btn_tbl_confirm" class="btn-mobile-w-100 btn btn-warning waves-effect waves-light" aria-label="Close">Return to Sender</button>
-                    </div>
-                </div>
-            </div>
-        </form>
-        </div>
-    </div>
-</div>
 
 <!-- Re-Deliver Modal -->
 <div id="redeliver_modal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">

@@ -303,10 +303,10 @@ function get_status_ui($status_id){
             $status_string = '<span class="badge badge-pill badge-success">Delivered</span>';
         break;
         case 6:
-            $status_string = '<span class="badge badge-pill badge-danger">Cancelled</span>';
+            $status_string = '<span class="badge badge-pill badge-danger">Cancelled By Customer</span>';
         break;
         case 7:
-            $status_string = '<span class="badge badge-pill badge-secondary">Returned</span>';
+            $status_string = '<span class="badge badge-pill badge-danger">Cancelled By System</span>';
         break;
     }
     return $status_string;

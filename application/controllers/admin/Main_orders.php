@@ -1,5 +1,6 @@
 <?php
 
+date_default_timezone_set('Asia/Manila');
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 
@@ -184,6 +185,50 @@ class Main_orders extends CI_Controller {
         $subject = "Order #".$reference_num." has been confirmed";
          $this->load->view('email/templates/email_template',$data,'',true);
     }
+    public function cancelOrder(){
+        $reference_num = $this->input->post('reference_number');
+        if($this->input->post('reason_option') == ''){
+            $response = array(
+                'success'      => false,
+                'environment' => ENVIRONMENT,
+                'message'     => 'Please select reason.'
+            );
+            echo json_encode($response);
+            die();
+        }
+        if($this->input->post('reason_option') == 'Others' && $this->input->post('f_reason') == ''){
+            $response = array(
+                'success'      => false,
+                'environment' => ENVIRONMENT,
+                'message'     => 'Please Input reason for others option.'
+            );
+            echo json_encode($response);
+            die();
+        }
+        $reason = $this->input->post('f_reason')!=''?$this->input->post('reason_option').','.$this->input->post('f_reason'):$this->input->post('reason_option');
+        $success    = $this->model_orders->cancelOrder($reference_num,$reason);
+        $order = $this->model_orders->orders_details($reference_num);
+        //print_r($reference_num);
+        $recipient_details = json_decode($order[0]['shipping_data']);
+        $order_details = json_decode($order[0]['order_data']);
+
+        $data = array(
+            'recipient_details' => $recipient_details,
+            'order_data'=> $order_details,
+            'order_data_main'=> $order,
+            'reference_num'=> $reference_num
+        );
+        $data['view'] = $this->load->view('email/order_processing',$data,TRUE);
+        $email = json_decode($order[0]['shipping_data'])->email;
+        $subject = "Order #".$reference_num." has been tagged as Cancelled/Declined";
+        $message = $this->load->view('email/templates/email_template',$data,true);
+		$this->send_email($email,$subject,$message);
+        $response['success'] = $success;
+        $response['message'] = "Order #".$reference_num." has been tagged as Cancelled/Declined";
+        $this->audittrail->logActivity('Order List', 'Order #'.$reference_num.' has been tagged as Cancelled/Declined', 'Decline Order', $this->session->userdata('username'));
+        echo json_encode($response);
+
+    }
     public function readyfordeliveryOrder(){
         
         $reference_num = $this->input->post('reference_num');
@@ -298,7 +343,6 @@ class Main_orders extends CI_Controller {
         $order = $this->model_orders->orders_details($reference_num);
         $recipient_details = json_decode($order[0]['shipping_data']);
         $order_details = json_decode($order[0]['order_data']);
-		$subject = get_company_name()." | Password Set Up";
         $data = array(
             'recipient_details' => $recipient_details,
             'order_data'=> $order_details,
@@ -330,17 +374,42 @@ class Main_orders extends CI_Controller {
 		
 		$this->load->library('email');
         
-		$config = Array(
-			'protocol' => 'smtp',
-			'smtp_host' => 'ssl://smtp.googlemail.com',
-			'smtp_port' => 465,
-			'smtp_user' => 'teeseriesphilippines@gmail.com',
-			'smtp_pass' => 'teeseriesph',
-			'charset' => 'utf-8',
-			'newline'   => "\r\n",
-			'wordwrap'=> TRUE,
-			'mailtype' => 'html'
-		);
+		// $config = Array(
+		// 	'protocol' => 'smtp',
+		// 	'smtp_host' => 'ssl://smtp.googlemail.com',
+		// 	'smtp_port' => 465,
+		// 	'smtp_user' => 'teeseriesphilippines@gmail.com',
+		// 	'smtp_pass' => 'teeseriesph',
+		// 	'charset' => 'utf-8',
+		// 	'newline'   => "\r\n",
+		// 	'wordwrap'=> TRUE,
+		// 	'mailtype' => 'html'
+		// );
+        $this->load->library('email');
+        if(strpos(base_url(),'3mangs.com')){
+            $config = array(
+                'protocol' => 'smtp',
+                'smtp_host' => get_host(),
+                'smtp_port' => 587,
+                'smtp_user' => get_email(),
+                'smtp_pass' => get_emailpassword(),
+                'charset' => 'utf-8',
+                'newline'   => "\r\n",
+                'mailtype' => 'html'
+            );
+        }else{
+            $config = Array(
+            	'protocol' => 'smtp',
+            	'smtp_host' => 'ssl://smtp.googlemail.com',
+            	'smtp_port' => 465,
+            	'smtp_user' => 'teeseriesphilippines@gmail.com',
+            	'smtp_pass' => 'teeseriesph',
+            	'charset' => 'utf-8',
+            	'newline'   => "\r\n",
+            	'wordwrap'=> TRUE,
+            	'mailtype' => 'html'
+            );
+        }
 		// $config = Array(
 		// 	'protocol' => 'smtp',
 		// 	'smtp_host' => get_host(),
@@ -354,7 +423,7 @@ class Main_orders extends CI_Controller {
 		// );
 		$this->email->initialize($config);
 		$this->email->set_newline("\r\n");  
-		$this->email->from(get_email(),get_company_name());
+		$this->email->from('noreply@3mangs.com');
 		$this->email->to($emailto);
 		$this->email->subject($subject);
 		$this->email->message($message);

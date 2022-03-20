@@ -26,6 +26,20 @@ class Main_settings extends CI_Controller {
         $this->session->set_userdata('active_page',$labelname);
     }    
 
+    public function profile_home($labelname = null){
+        $this->session->set_userdata('active_page',$labelname);
+
+        $this->isLoggedIn();
+        $data = array(
+            'active_page' => $this->session->userdata('active_page'),
+            'subnav' => true, //for highlight the navigation,
+            'token' => $this->session->userdata('token_session')
+        );
+        
+        $data['page_content'] = $this->load->view('admin/dashboard/index',$data,TRUE);
+		$this->load->view('admin_template',$data,'',TRUE);
+    }    
+
 	public function views_restriction($content_url){
         //this code is for destroying session and page if they access restricted page
         $access_content_nav = $this->session->userdata('access_content_nav');

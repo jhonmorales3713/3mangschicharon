@@ -39,6 +39,24 @@ $(function () {
         loadinfo();
 
     });
+    $('#DeclineOrderBtn').click(function(e){
+      $.LoadingOverlay("show");
+      
+      ref_num = $(this).data('value');
+      $('#order_id').val(ref_num);
+      $('.id').val(ref_num);
+      $('.header_ref').html('Processing Order for Ref # '+ $('#tm_order_reference_num').html());
+      $('.order_date').html(' '+ $('#tm_order_date').html());
+      $('.order_reference_num').html(' '+$('#tm_order_reference_num').html());
+      $('.amount').html(' '+$('#tm_amount').html());
+      $('.order_status').html(' '+$('#tm_order_status').html());
+      $('.payment_date').html(' '+$('#tm_payment_date').html());
+      $('.payment_ref_num').html(' '+$('#tm_payment_ref_num').html());
+      $('.payment_status').html(' '+$('#tm_payment_status').html());
+      $(".reason_option").css('display','block');
+      $.LoadingOverlay("hide");
+      $('#CancelOrder_modal').modal();
+    });
     $('#readyforpickupBtn').click(function(e){
         loadinfo();
     });
@@ -93,7 +111,7 @@ $(function () {
 
     
 
-    $('#form_save_process,#form_save_ready_pickup,#form_save_fulfillment_modal,#form_save_delivery_confirmed').submit(function(e){
+    $('#form_save_process,#form_save_ready_pickup,#form_save_fulfillment_modal,#form_save_delivery_confirmed,#form_save_cancel_order').submit(function(e){
         e.preventDefault();
         $.LoadingOverlay("show");
         var form = $(this);
@@ -106,8 +124,10 @@ $(function () {
         }else if(form[0].id == 'form_save_fulfillment_modal'){
             url= base_url+"admin/Main_orders/fulFillOrder";
         }else if(form[0].id == 'form_save_delivery_confirmed'){
-            url= base_url+"admin/Main_orders/confirmOrder";
-        }
+          url= base_url+"admin/Main_orders/confirmOrder";
+      }if(form[0].id == 'form_save_cancel_order'){
+        url= base_url+"admin/Main_orders/cancelOrder";
+    }
         
         $.ajax({
             type: form[0].method,

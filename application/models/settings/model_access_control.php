@@ -119,6 +119,8 @@ class Model_access_control extends CI_Model {
             $this->access_control['product_category']['delete'] = 0;
 		}
 
+        $this->access_control['profile']['view'] = 1;
+        $this->access_control['profile']['update'] = 1;
         //admin user list
         if(isset($data['settings_aul_view'])) {
             $this->access_control['aul']['view'] = 1;

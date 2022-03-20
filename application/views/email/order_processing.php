@@ -91,6 +91,39 @@
         </tbody>
       </table>
 
+      <?php if($order_data_main[0]['status_id'] == 7 && !empty($order_data_main[0]['date_declined'])){?>
+      <table class="order-status">
+        <tbody>
+          <tr>
+            <td style="width: 100px; text-align: center"><img src="<?=base_url().'assets/img/icons/preparing-order-done.png';?>" alt="" style="height: 40px;"></td>
+            
+            <td style="width: 100%;"><strong>Order Cancelled By System</strong></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table class="order-status">
+        <tbody>
+          <tr>
+            <td style="width: 47px; border-right: 2px solid lightgray"></td>
+            <td style="width: 47px;"></td>
+            <td style="width: 100%;">
+              <ul style="list-style-type: circle; padding-left: 0; margin-top: 0; vertical-align:top; margin-bottom: 0px">
+                <?php if($order_data_main[0]['date_declined']!=''){?>
+                  <li style="list-style: none; color: #222;">
+                    We have tagged your order as Declined by System.<br>
+                    <b>Reason:<?=json_decode($order_data_main[0]['reasons'])->decline;?></b>
+                  </li>
+                  <li style="list-style: none; font-size: 12px; color: gray;">
+                    <?= date("M d, Y h:i a", strtotime($order_data_main[0]['date_declined'])); ?>
+                    </li>
+                <?php } ?>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <?php } ?>
       <table class="order-status">
         <tbody>
           <tr>

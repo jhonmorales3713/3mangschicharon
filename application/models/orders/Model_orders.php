@@ -54,6 +54,23 @@ class Model_orders extends CI_Model {
 		return $this->db->query($sql, $bind_data);
 	}
 
+	public function cancelOrder($reference_num,$reason = '') {
+
+		$sql = "UPDATE `sys_orders` SET status_id = 7, `date_declined` = ?,`reasons` = ? WHERE order_id = ? ";
+		$reasons = array(
+			'redeliver1' => '',
+			'redeliver2' => '',
+			'cancel' => '',
+			'decline' => $reason
+		);
+		$bind_data = array(
+			date('Y-m-d H:i:s'),
+			json_encode($reasons),
+			$reference_num
+		);
+		return $this->db->query($sql, $bind_data);
+	}
+
 	public function confirmOrder($reference_num,$order_status,$reason = '') {
 
 		$sql = "UPDATE `sys_orders` SET status_id = ?";
