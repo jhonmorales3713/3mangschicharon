@@ -40,6 +40,9 @@ package-lock.json
 ## uploads folder
 assets/uploads/*
 
+## config
+application/controllers/config.php
+
 ## test ctrl
 application/controllers/Test.php
 
