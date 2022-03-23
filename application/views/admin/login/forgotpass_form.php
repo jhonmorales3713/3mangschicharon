@@ -42,12 +42,15 @@
     span,h1,h2,h3,h4,h5,span,input{
         font-family: <?=$font_choice?> !important;
     }
+    .hide{
+        display:none;
+    }
 </style>
 <div class="container mt-5">    
     <div class="d-flex justify-content-center">
         <span class="align-middle">
                             
-            <form id="form-login">
+            <form id="form-forgotpass">
                 <div class="card " style="width: 20rem;">
                     <div class="card-body">
                         <div class="w-100 text-center">
@@ -55,14 +58,14 @@
                         </div>
                         <br>
                         <br>    
-                        <h5 class="card-title">Sign In</h5>To proceed to your shop
+                        <h5 class="">Forgot Password</h5>Enter Email to proceed.
                         <br>
                         <br>
                         <div class="form-group">
-                            <label for="login-form">Username</label>
-                            <input type="text" required placeholder="Enter Username" name="username"id="username" class="form-control">
+                            <!-- <label for="login-form">Username</label> -->
+                            <input type="email" placeholder="Enter Email" name="username"id="username" class="form-control">
                         </div>
-                        <div class="form-group" id="show_hide_password">
+                        <!-- <div class="form-group" id="show_hide_password">
                             <label for="login-form">Password</label>
                             <div class="input-group">
                                 <input type="password"required id="password" name="password" placeholder="Enter Password" class="form-control">
@@ -72,21 +75,22 @@
                                     </span>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="row">
-
-                            <div class="col-12 text-right">
-                                <a href="<?=base_url('admin/login/forgot_password');?>" class="btn btn-link" id="forgotpass">Forgot Password?</a>
-                            </div>
                             <div class="col-12">
-                                <button type="button" class="btn btn-primary  w-100" id="signin">LogIn</button>
+                                <button type="submit" class="btn btn-primary  w-100" id="forgotpassbtn">Send Code</button>
                             </div>
                         </div>
                     </div>
                 </div>
-            </form>
+            </form>        
+            <div id="success_message" class=" hide">
+                <div class="alert alert-success" role="alert">
+                Success! Please check your email for the instructions we provided. Thank you!
+                </div>
+            </div>
         </span>
     </div>
 </div>
 
-<script src="<?=base_url('assets/js/libs/admin/login.js');?>"></script>
+<script src="<?=base_url('assets/js/libs/admin/login.js');?>"></script>f

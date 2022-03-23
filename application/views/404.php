@@ -1,3 +1,4 @@
+
 <?php
     //if ($this->session->userdata('token_session') != en_dec("dec", $token)) {
         //header("Location:" . base_url('Main/logout')); /* Redirect to login */
@@ -54,39 +55,12 @@
                             <img class="logo_login" src="<?=base_url('assets/img/'.$c_main_logo);?>" width=100%>
                         </div>
                         <br>
-                        <br>    
-                        <h5 class="card-title">Sign In</h5>To proceed to your shop
-                        <br>
-                        <br>
+                        <h5 class="card-title">Invalid URL</h5>
                         <div class="form-group">
-                            <label for="login-form">Username</label>
-                            <input type="text" required placeholder="Enter Username" name="username"id="username" class="form-control">
+                            <label for="login-form">You are accessing an unknown url. Please go back.</label>
                         </div>
-                        <div class="form-group" id="show_hide_password">
-                            <label for="login-form">Password</label>
-                            <div class="input-group">
-                                <input type="password"required id="password" name="password" placeholder="Enter Password" class="form-control">
-                                <div class="d-flex justify-content-center">
-                                    <span class="align-middle m-2">
-                                        <a href="#" class="showpassword"><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-
-                            <div class="col-12 text-right">
-                                <a href="<?=base_url('admin/login/forgot_password');?>" class="btn btn-link" id="forgotpass">Forgot Password?</a>
-                            </div>
-                            <div class="col-12">
-                                <button type="button" class="btn btn-primary  w-100" id="signin">LogIn</button>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </form>
         </span>
     </div>
 </div>
-
-<script src="<?=base_url('assets/js/libs/admin/login.js');?>"></script>

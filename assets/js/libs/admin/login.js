@@ -61,6 +61,38 @@ $(function(){
 			textColor: 'white'  
 		});
 	}
+	$("#form-forgotpass").submit(function(e){
+		e.preventDefault();
+		var serial = $(this).serialize();
+		var username = $("#username").val();
+		if (username == '') {
+			sys_toast_warning('Please fill up all fields.');
+		}else{
+			
+			$.ajax({
+				type: 'post',
+				url: base_url+'Main/sendcode',
+				data: serial,
+				beforeSend:function(data){
+					$.LoadingOverlay("show");
+				},
+				success:function(data){
+					$.LoadingOverlay("hide");
+					if(!data.success){
+						sys_toast_error(data.message);
+					}else{
+						$("#form-forgotpass").addClass('hide');
+						$("#success_message").removeClass('hide');
+						
+						setTimeout(function(){ 
+							window.location.href = base_url+'admin/';
+						}, 3000);
+					}
+				}
+			});
+		}
+
+	});
 	
 	$("#login-form").submit(function(e){
 		e.preventDefault();
@@ -352,17 +384,113 @@ $(function(){
 		
 	});
 });
-  $("#show_hide_password a").on('click', function() {
-    if($('#show_hide_password input').attr("type") == "text"){
-        $('#show_hide_password input').attr('type', 'password');
-        $('#show_hide_password i').addClass( "fa-eye-slash" );
-        $('#show_hide_password i').removeClass( "fa-eye" );
-    }else if($('#show_hide_password input').attr("type") == "password"){
-        $('#show_hide_password input').attr('type', 'text');
-        $('#show_hide_password i').removeClass( "fa-eye-slash" );
-        $('#show_hide_password i').addClass( "fa-eye" );
-    }
-  });
+$("#show_hide_password a").on('click', function() {
+  if($('#show_hide_password input').attr("type") == "text"){
+	  $('#show_hide_password input').attr('type', 'password');
+	  $('#show_hide_password i').addClass( "fa-eye-slash" );
+	  $('#show_hide_password i').removeClass( "fa-eye" );
+  }else if($('#show_hide_password input').attr("type") == "password"){
+	  $('#show_hide_password input').attr('type', 'text');
+	  $('#show_hide_password i').removeClass( "fa-eye-slash" );
+	  $('#show_hide_password i').addClass( "fa-eye" );
+  }
+});
+$("#show_hide_password2 a").on('click', function() {
+  if($('#show_hide_password2 input').attr("type") == "text"){
+	  $('#show_hide_password2 input').attr('type', 'password');
+	  $('#show_hide_password2 i').addClass( "fa-eye-slash" );
+	  $('#show_hide_password2 i').removeClass( "fa-eye" );
+  }else if($('#show_hide_password input').attr("type") == "password"){
+	  $('#show_hide_password2 input').attr('type', 'text');
+	  $('#show_hide_password2 i').removeClass( "fa-eye-slash" );
+	  $('#show_hide_password2 i').addClass( "fa-eye" );
+  }
+});
+  
+	$(".passwordretype, .password").keyup(function(){
+		var secNewpass = $('.password').val();
+		var secRetypenewpass = $('.passwordretype').val();
+
+		if (secNewpass == "" || secRetypenewpass == "") {
+			$(".saveChangePassBtn").prop('disabled',true);
+		}else{
+			$(".saveChangePassBtn").prop('disabled',false);
+		}
+	});
+	$("#form-resetpass").submit(function(e){
+		e.preventDefault();
+		var email       = $("#email").data('value'); 
+		var serial = $(this).serialize()+"&email="+email;
+		var thiss = $(this);
+		var pass = $(".passwordretype").val();
+
+        if (validate_strong_password(pass)) {
+			$.ajax({
+				type:'post',
+				url: base_url+'Main/update_password',
+				data: serial,
+				beforeSend:function(data){
+					$(".saveChangePassBtn").prop('disabled', true); 
+					$(".saveChangePassBtn").text("Please wait..."); 
+					$.LoadingOverlay("show");
+				},
+				success:function(data){
+					$(".saveChangePassBtn").text("Save");
+					$.LoadingOverlay("hide");
+					if (data.success == 1) {
+                        sys_toast_success(data.message);
+						setTimeout(function(){  
+							window.location.href = ''+base_url+'admin';
+						}, 3000);
+					}else{
+						$.LoadingOverlay("hide");
+                        sys_toast_warning(data.message);
+						$(".saveChangePassBtn").prop('disabled', false); 
+					}
+				}
+			});
+		}
+		else{
+			sys_toast_warning('Password must contain at least 8 characters long, alphanumeric, lowercase and uppercase.');
+		}
+	});
+	$("#saveChangePassForm").submit(function(e){
+		e.preventDefault();
+
+		var serial = $(this).serialize();
+		var thiss = $(this);
+		var pass = $(".passwordretype").val();
+
+        if (validate_strong_password(pass)) {
+			$.ajax({
+				type:'post',
+				url: base_url+'Account/setfirstpassword',
+				data: serial,
+				beforeSend:function(data){
+					$(".saveChangePassBtn").prop('disabled', true); 
+					$(".saveChangePassBtn").text("Please wait..."); 
+					$.LoadingOverlay("show");
+				},
+				success:function(data){
+					$(".saveChangePassBtn").text("Save");
+					$.LoadingOverlay("hide");
+					if (data.success == 1) {
+                        sys_toast_success(data.message);
+						setTimeout(function(){  
+							window.location.href = ''+base_url+'admin';
+						}, 3000);
+					}else{
+						$.LoadingOverlay("hide");
+                        sys_toast_warning(data.message);
+						$(".saveChangePassBtn").prop('disabled', false); 
+					}
+				}
+			});
+		}
+		else{
+			sys_toast_warning('Password must contain at least 8 characters long, alphanumeric, lowercase and uppercase.');
+		}
+	});
 
 
 	

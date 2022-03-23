@@ -12,7 +12,14 @@ class Login extends CI_Controller {
     }
 
     public function index(){
-        $this->load->view('admin/login/index');
+        session_destroy();
+        $data['view']=$this->load->view('admin/login/login_form','',TRUE);
+        $this->load->view('admin/login/index',$data,'',TRUE);
+    }
+    public function forgot_password(){
+        session_destroy();
+        $data['view']=$this->load->view('admin/login/forgotpass_form','',TRUE);
+        $this->load->view('admin/login/index',$data,'',TRUE);
     }
 
     public function signin(){

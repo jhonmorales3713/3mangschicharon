@@ -49,6 +49,10 @@ function get_company_email(){
 	return (cs_clients_info()) ? cs_clients_info()->c_email : "";
 }
 
+function get_404(){
+	return (cs_clients_info()) ? cs_clients_info()->c_404 : "";
+}
+
 function get_company_phone(){
 	return (cs_clients_info()) ? cs_clients_info()->c_phone : "";
 }

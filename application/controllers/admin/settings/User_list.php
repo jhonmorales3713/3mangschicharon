@@ -306,7 +306,8 @@ class user_list extends CI_Controller {
 		$subject = get_company_name()." | Password Set Up";
         $data['email']=$email;
         $data['resetpasslink'] = $resetpasslink;
-        $message = $this->load->view('email/templates/verify_email',$data,true);
+        $data['view'] = $this->load->view('email/verify_email',$data,TRUE);
+        $message = $this->load->view('email/templates/email_template',$data,true);
 		$this->send_email($email,$subject,$message);
         
         // Set to, from, message, etc.

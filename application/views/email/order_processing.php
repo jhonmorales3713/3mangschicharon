@@ -478,7 +478,7 @@
             </tr>
             <?php }?>
             <?php $total_amount = 0;$total_amount_conv = 0;?>
-            <?php print_r('');foreach($order_data as $key => $value){ ?>
+            <?php foreach($order_data as $key => $value){ ?>
             <?php $primary_pic = str_replace('=','',$value->img);?>
               <tr>
                   <td></td>

@@ -107,6 +107,106 @@ class Main extends CI_Controller {
         }
         generate_json($data);
     }
+    
+    public function update_password(){
+        $id = sanitize($this->input->post('email'));
+        $secNewpass = sanitize($this->input->post('password'));
+        $secRetypenewpass = sanitize($this->input->post('passwordretype'));
+
+        if ($secNewpass == $secRetypenewpass) {
+            // for password decryption
+			$secNewpass = en_dec('en',$secNewpass);
+            //$secNewpass = password_hash($secNewpass, PASSWORD_BCRYPT, $options);
+            //for password decryption
+
+            $query = $this->model_profile_settings->resetpassword($secNewpass, $id);
+
+            $data = array('success' => 1, 'message' => 'Successfully Saved!');
+        }else{
+            $data = array('success' => 0, 'message' => 'New Password and Re-type Password is not the same.');
+        }
+        generate_json($data);
+    }
+
+    public function sendcode(){
+        $email = sanitize($this->input->post('username'));
+        if($this->model->validate_username($email)->num_rows()>0){
+            
+            $data = array('success' => 1, 'message' => 'Email Successfully Sent. Please check your inbox for reset of your password.');
+            
+            $subject = get_company_name()." | Password Set Up";
+            $data['email']=$email;
+            $unique_key = en_dec('en',uniqid());
+            $this->model->sendcode($unique_key,$email);
+            $data['resetpasslink'] = base_url('Main/reset_password/'.$unique_key);
+            $data['view'] = $this->load->view('email/reset_pass',$data,TRUE);
+            $message = $this->load->view('email/templates/email_template',$data,true);
+            $this->send_email($email,$subject,$message);
+            
+        }else{
+            $data = array('success' => 0, 'message' => 'Username input is not existing in our database.');
+        }
+        generate_json($data);
+    }
+    
+    public function reset_password($id){
+        session_destroy();
+        if($this->model->validateresetkey($id)->num_rows() == 0){
+            $data['view']=$this->load->view('404','',TRUE);
+            $this->load->view('admin/login/index',$data,'',TRUE);
+        }else{
+            $data['email']=$this->model->validateresetkey($id)->row()->email;
+            $data['view']=$this->load->view('admin/login/resetpass_form',$data,TRUE);
+            $this->load->view('admin/login/index',$data,'',TRUE);
+        }
+    }
+
+	function send_email($emailto,$subject,$message){
+		
+		$this->load->library('email');
+        if(strpos(base_url(),'3mangs.com')){
+            $config = array(
+                'protocol' => 'smtp',
+                'smtp_host' => get_host(),
+                'smtp_port' => 587,
+                'smtp_user' => get_email(),
+                'smtp_pass' => get_emailpassword(),
+                'charset' => 'utf-8',
+                'newline'   => "\r\n",
+                'mailtype' => 'html'
+            );
+        }else{
+            $config = Array(
+            	'protocol' => 'smtp',
+            	'smtp_host' => 'ssl://smtp.googlemail.com',
+            	'smtp_port' => 465,
+            	'smtp_user' => 'teeseriesphilippines@gmail.com',
+            	'smtp_pass' => '@ugOct0810',
+            	'charset' => 'utf-8',
+            	'newline'   => "\r\n",
+            	'wordwrap'=> TRUE,
+            	'mailtype' => 'html'
+            );
+        }
+		// $config = Array(
+		// 	'protocol' => 'smtp',
+		// 	'smtp_host' => get_host(),
+		// 	'smtp_port' => 587,
+		// 	'smtp_user' => get_email(),
+		// 	'smtp_pass' => get_emailpassword(),
+		// 	'charset' => 'utf-8',
+		// 	'newline'   => "\r\n",
+		// 	'wordwrap'=> TRUE,
+		// 	'mailtype' => 'html'
+		// );
+		$this->email->initialize($config);
+		$this->email->set_newline("\r\n");  
+		$this->email->from('noreply@3mangs.com');
+		$this->email->to($emailto);
+		$this->email->subject($subject);
+		$this->email->message($message);
+		$this->email->send();
+	}
 
     public function logout()
     {

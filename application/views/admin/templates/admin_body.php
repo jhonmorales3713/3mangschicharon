@@ -32,8 +32,8 @@
     <div class="col-sm-5 mt-4 ml-4">
         <?php foreach($cn as $cn){ ?>
             <?php if (in_array($cn->id, $arr_)){ ?>
-                <a href="<?=base_url($cn->cn_url.$token);?>" class="">
-                    <div class="card card-option card-hover white p-3 mb-3 w-100">
+                <a href="<?=base_url($cn->cn_url.$token);?>" >
+                    <div class="card card-hover white p-3 mb-3 w-100">
                         <div class="option-check"><i class="fa fa-hand-o-right fa-lg"></i></div>
                         <div class="card-header-title font-weight-bold"><?=$cn->cn_name;?></div>
                         <small class="card-text text-black-50"><?=$cn->cn_description;?></small>

@@ -96,6 +96,22 @@ class Model extends CI_Model {
 			return "";
 		}
 	}
+	
+	public function sendcode($code,$email){
+		
+		$sql = 'Update sys_passwords_request SET status = ? WHERE email = ? ';
+		$this->db->query($sql, [0, $email]);
+		
+		$sql = 'INSERT into sys_passwords_request (key_id, email, status) VALUES (?, ?, ?)';
+		$response = $this->db->query($sql, [$code, $email, 1]);
+	}
+
+	public function validateresetkey($id){
+		
+		$sql = "SELECT * FROM sys_passwords_request WHERE key_id = ? AND status = 1 LIMIT 1";
+		$data = array($id);
+		return $this->db->query($sql, $data);
+	}
 
 	public function log_seller_time_activity($seller, $shop, $activity = 'in')
 	{

@@ -14,7 +14,15 @@ class Model_profile_settings extends CI_Model {
 			$data = array($secNewpass, $id);
 			$this->db->query($sql,$data); 
 		}
-
+		public function resetpassword($secNewpass, $email){
+			$sql = "UPDATE sys_users SET password = ? WHERE username = ?";
+			$data = array($secNewpass, $email);
+			$this->db->query($sql,$data); 
+			$sql = "UPDATE sys_passwords_request SET status = 1 WHERE email = ?";
+			$data = array($email);
+			$this->db->query($sql,$data); 
+		}
+		
 		public function update_first_password($secNewpass, $id){
 			$sql = "UPDATE sys_users SET password = ?, login_code = null WHERE id = ?";
 			$data = array($secNewpass, $id);
