@@ -52,7 +52,11 @@
                                 
                                     <div class="row">
                                         <div class="col-8">
-                                            <strong>&#8369; <?= number_format($product['variants'][0]['price'],2); ?></strong>
+                                            <?php if(isset($product['variants'][0])){ ?>
+                                                <strong>&#8369; <?= number_format($product['variants'][0]['price'],2); ?></strong>
+                                            <?php } else { ?>
+                                                <strong>&#8369; <?= number_format($product['price'],2); ?></strong>
+                                            <?php } ?>
                                         </div>
                                         <div class="col-4 text-right">
                                             <small><b>1 sold</b></small>

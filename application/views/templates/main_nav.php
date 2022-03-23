@@ -28,8 +28,7 @@
                 <a href="<?= base_url(); ?>" class="nav-home">HOME</a>
                 <a href="<?= base_url('shop'); ?>" class="nav-shop">SHOP NOW</a>
                 <a href="<?= base_url('about'); ?>" class="nav-about">ABOUT US</a>        
-                <a href="<?= base_url('contact_us'); ?>" class="nav-contact_us">CONTACT US</a>      
-                <a href="<?= base_url('admin'); ?>">ADMIN</a>  
+                <a href="<?= base_url('contact_us'); ?>" class="nav-contact_us">CONTACT US</a>                      
                 <?php if(!isset($_SESSION['has_logged_in'])){ ?>
                     <a href="<?= base_url('registration'); ?>" class="nav-registration">Login/Sign Up</a>  
                 <?php } ?>                
