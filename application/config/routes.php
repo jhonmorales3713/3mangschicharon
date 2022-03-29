@@ -85,6 +85,7 @@ $route['profile_home/(:any)'] = 'admin/Main_settings/profile_home/$1';
 $route['orders_home/(:any)'] = 'admin/Main_orders/orders_home/$1';
 $route['customers_home/(:any)'] = 'admin/Main_customers/customers_home/$1';
 $route['settings_home/(:any)'] = 'admin/Main_settings/settings_home/$1';
+$route['change_pass/(:any)'] = 'admin/Main_settings/change_pass/$1';
 $route['Main_orders/orders/(:any)'] = 'admin/Main_orders/orders/$1';
 $route['Main_customers/customers/(:any)'] = 'admin/Main_customers/customers/$1';
 $route['Main_products/products/(:any)'] = 'admin/Main_products/products/$1';

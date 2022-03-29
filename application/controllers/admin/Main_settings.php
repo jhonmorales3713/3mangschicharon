@@ -26,6 +26,38 @@ class Main_settings extends CI_Controller {
         $this->session->set_userdata('active_page',$labelname);
     }    
 
+    public function change_pass($token =''){
+        $this->isLoggedIn();
+        if($this->loginstate->get_access()['profile']['view'] == 1) {
+            $member_id = $this->session->userdata('sys_users_id');
+            $branchid  = $this->session->userdata('branchid');
+
+            $content_url = $this->uri->segment(1) . '/' ;
+            $main_nav_id = $this->views_restriction($content_url);
+
+            $data_admin = array(
+                'token'               => $token,
+                'main_nav_id'         => $main_nav_id, //for highlight the navigation
+                'main_nav_categories' => $this->model_dev_settings->main_nav_categories()->result()
+            );
+
+            $data_admin['active_page'] =  $this->session->userdata('active_page');
+            $data_admin['subnav'] = false;
+            $data_admin['page_content'] = $this->load->view('admin/settings/change_pass',$data_admin,TRUE);
+            $this->load->view('admin_template',$data_admin,'',TRUE);
+        }else{
+            $this->load->view('error_404');
+        }
+    }    
+
+    public function validate_password(){
+        if(en_dec('en',$this->input->post('oldpassword')) == $this->session->oldpass){
+            echo true;
+        }else{
+            echo false;
+        }
+    }
+
     public function profile_home($labelname = null){
         $this->session->set_userdata('active_page',$labelname);
 
@@ -51,7 +83,7 @@ class Main_settings extends CI_Controller {
         }
 
         if (in_array($content_url, $url_content_arr) == false){
-            header("location:".base_url('Main/logout'));
+           header("location:".base_url('Main/logout'));
         }else{
             return $get_main_nav_id_cn_url = $this->model->get_main_nav_id_cn_url($content_url);
         }

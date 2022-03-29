@@ -52,6 +52,7 @@ class Login extends CI_Controller {
                         'sys_shop' => 1,
                         'fname' => $user_info->fname,
                         'mname' => $user_info->mname,
+                        'oldpass'  =>en_dec('en',$this->input->post('password')),
                         'lname' => $user_info->lname,
                         'email' => $user_info->email,
                         'mobile_number' => $user_info->mobile_number,
