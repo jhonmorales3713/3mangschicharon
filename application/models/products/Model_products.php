@@ -585,7 +585,6 @@ class Model_products extends CI_Model {
 			// $nestedData[] = (!$exportable) ?'<u><a href="'.base_url('Main_products/view_products/'.$token.'/'.$row['id']).'" style="color:blue;">'.$row["name"].'</a></u>':$row["name"];
 			$nestedData[] = $row["name"];
 			$nestedData[] = $row["category_name"];
-			$nestedData[] = number_format($row["price"], 2);
 
 
 			
@@ -602,8 +601,15 @@ class Model_products extends CI_Model {
 			// $no_of_stocks = ($branchid != 0) ? (!empty($this->get_invqty_branch($branchid, $row['id'])['no_of_stocks']) ? $this->get_invqty_branch($branchid, $row['id'])['no_of_stocks'] : 0) : $grand_total_qty;
 			// $no_of_stocks = ($branchid != 0 && $no_of_stocks == 0) ? $this->getParentProductInvBranch($row['id'], $branchid) : $no_of_stocks;
 			// $nestedData[] = number_format($no_of_stocks, 1);
-
-			$nestedData[] = $row["no_of_stocks"];
+			$variant_stocks = 0;
+			$variant_price = [];
+			foreach($this->getVariants($row["id"]) as $variant){
+				$variant_stocks += number_format($variant['no_of_stocks'],2);
+				$variant_price [] = $variant['price'];
+			}
+			sort($variant_price);
+			$nestedData[] = !empty($variant_price) ? $variant_price[0] .'-'. $variant_price[count($variant_price)-1] : number_format($row["price"], 2);
+			$nestedData[] = $variant_stocks > 0 ? $variant_stocks : $row["no_of_stocks"];
 
 
 
@@ -670,7 +676,7 @@ class Model_products extends CI_Model {
 			$nestedData[] = 
 			'<div class="dropdown">
 				<i class="fa fa-ellipsis-v fa-lg" id="dropdown_menu_button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-hidden="true"></i>
-				<div class="dropdown-menu" aria-labelledby="dropdown_menu_button">
+				<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown_menu_button">
 			    '.$buttons.'
 			  	</div>
 			</div>';

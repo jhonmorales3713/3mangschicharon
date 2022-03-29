@@ -676,7 +676,7 @@ class Model_orders extends CI_Model {
             $nestedData[] =
             '<div class="dropdown">
                 <i class="fa fa-ellipsis-v fa-lg" id="dropdown_menu_button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-hidden="true"></i>
-                <div class="dropdown-menu" aria-labelledby="dropdown_menu_button">
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown_menu_button">
                     <a class="dropdown-item"  href="'.base_url('admin/Main_orders/orders_view/'.$token.'/'.$row["order_id"]).'"><i class="fa fa-pencil" aria-hidden="true"></i> View</a>
                 </div>
             </div>';

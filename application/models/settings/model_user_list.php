@@ -437,7 +437,7 @@ class Model_user_list extends CI_Model {
 			$actions = '
 			<div class="dropdown">
 				<i class="fa fa-ellipsis-v fa-lg" id="dropdown_menu_button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-hidden="true"></i>
-				<div class="dropdown-menu" aria-labelledby="dropdown_menu_button">
+				<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown_menu_button">
 			';
 			if ($this->loginstate->get_access()['aul']['update'] == 1) {
 				$actions .= '
