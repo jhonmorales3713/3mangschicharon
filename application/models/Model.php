@@ -77,6 +77,25 @@ class Model extends CI_Model {
 		$sql = "SELECT * from cp_main_navigation";
 		return $this->db->query($sql);
 	}
+	
+	public function update_core($data){
+		//SET (name,facebook_link,instagram_link,youtube_link,c_shortened_name,c_email,tagline,c_phone,c_telephone,c_address,date_updated) VALUES (?,?,?,?,?,?,?,?,?,?)
+		$sql = "UPDATE cs_clients_info SET name = ?,facebook_link = ?,instagram_link = ?,youtube_link = ?,c_shortened_name = ?,c_email = ?,tagline = ?,c_phone = ?,c_telephone = ?,c_address = ?,date_updated = ? WHERE id_key = '".ini()."'";
+		$bind_data = array(
+			$data['f_name'],
+			$data['f_facebook'],
+			$data['f_instagram'],
+			$data['f_youtube'],
+			$data['f_shortname'],
+			$data['f_support'],
+			$data['f_tagline'],
+			$data['f_phone'],
+			$data['f_telephone'],
+			$data['f_address'],
+			date('Y-m-d H:i:s')
+		);
+		$this->db->query($sql,$bind_data);
+	}
 
 	public function get_main_nav_id($labelname)
 	{

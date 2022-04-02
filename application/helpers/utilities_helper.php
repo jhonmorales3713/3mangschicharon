@@ -283,7 +283,17 @@ function getToken($length){
     }
     return $token;
 }
-
+function validate_link($name,$usename){
+    if(!preg_match("/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i",$name) && $name != ''){
+        $response = [
+            'environment' => ENVIRONMENT,
+            'success'     => 0,
+            'message'     =>array($usename." link must be a valid link")
+        ];
+        echo json_encode($response);
+        die();
+    }
+}
 function get_status_ui($status_id){
     $status_string = "";
     switch($status_id){

@@ -405,6 +405,14 @@ function populate_edit_user_form(data) {
 		if(('aul' in fn) && fn.aul.disable == 1) {
 			$('#settings_aul_disable').prop('checked', true);
 		}
+		
+		//Website Information
+		if(('web' in fn) && fn.web.view == 1) {
+			$('#settings_web_view').prop('checked', true);
+		}
+		if(('web' in fn) && fn.web.update == 1) {
+			$('#settings_web_update').prop('checked', true);
+		}
 
 		//console.log(fn);
 		//orders

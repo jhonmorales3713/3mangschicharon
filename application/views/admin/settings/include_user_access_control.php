@@ -1237,6 +1237,23 @@
 									</label>
 								</div>
 							</div>
+						</div>
+						<div class="col-12 mt-2">
+							<h4 class="font-semibold">Website Information</h4>
+							<div class="row">
+								<div class="col-6 col-sm-3">
+									<label>
+										<input type="checkbox" id="settings_web_view" name="settings_web_view" class="checkbox-template m-r-xs mr-2">
+										View
+									</label>
+								</div>
+								<div class="col-6 col-sm-3">
+									<label>
+										<input type="checkbox" id="settings_web_update" name="settings_web_update" class="checkbox-template m-r-xs mr-2">
+										Update
+									</label>
+								</div>
+							</div>
 						</div><!--
 						<div class="col-12 mt-2" hidden>
 							<h4 class="font-semibold">Payment Types</h4>

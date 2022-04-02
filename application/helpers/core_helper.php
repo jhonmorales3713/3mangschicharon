@@ -19,6 +19,10 @@ function get_company_name(){
 	return (cs_clients_info()) ? cs_clients_info()->name : "";
 }
 
+function get_shortened_name(){
+	return (cs_clients_info()) ? cs_clients_info()->c_shortened_name : "";
+}
+
 function get_shop_url($path){
 	return 'shop url in core helper';
 }
@@ -29,7 +33,25 @@ function get_s3_imgpath_upload(){
 	return $directory;
 }
 function get_tag_line(){
-	return (cs_clients_info()) ? cs_clients_info()->tag_line : "";
+	return (cs_clients_info()) ? cs_clients_info()->tagline : "";
+}
+function get_icon(){
+	return (cs_clients_info()) ? cs_clients_info()->c_favicon : "";
+}
+function get_placeholder(){
+	return (cs_clients_info()) ? cs_clients_info()->c_placeholder : "";
+}
+function get_logo(){
+	return (cs_clients_info()) ? cs_clients_info()->c_main_logo : "";
+}
+function get_bg(){
+	return (cs_clients_info()) ? cs_clients_info()->c_background_img : "";
+}
+function get_telephone(){
+	return (cs_clients_info()) ? cs_clients_info()->c_telephone : "";
+}
+function get_address(){
+	return (cs_clients_info()) ? cs_clients_info()->c_address : "";
 }
 
 function fb_link(){

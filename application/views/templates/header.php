@@ -22,7 +22,6 @@
     $twitter_link = cs_clients_info()->twitter_link;
     $c_favicon = cs_clients_info()->c_favicon;
     $c_main_logo = cs_clients_info()->c_main_logo;
-    $c_secondary_logo = cs_clients_info()->c_secondary_logo;
     $tagline = cs_clients_info()->tagline;
     $c_phone = cs_clients_info()->c_phone;
     $font_choice = cs_clients_info()->font_choice;
@@ -49,12 +48,12 @@
         <link rel="stylesheet" href="<?=base_url('assets/css/libs/jquery-ui.css')?>">        
         <link rel="stylesheet" href="<?=base_url();?>assets/css/libs/bootstrap-4.1.3.min.css">
         <link rel="stylesheet" href="<?=base_url();?>assets/css/libs/owl-carousel.min.css">    
-        
-        <link rel="stylesheet" href="<?=base_url('assets/css/libs/header_styles.css')?>">
-        <link rel="stylesheet" href="<?=base_url('assets/css/libs/content_styles.css')?>">
 
         <?php if($this->session->userdata('role')=='admin' || strpos($_SERVER['REQUEST_URI'],'admin')){?>
             <link rel="stylesheet" href="<?=base_url('assets/css/admin/admin_styles.css')?>">
+        <?php }else{?>
+            <link rel="stylesheet" href="<?=base_url('assets/css/libs/header_styles.css')?>">
+            <link rel="stylesheet" href="<?=base_url('assets/css/libs/content_styles.css')?>">
         <?php } ?>
 
         <link rel="stylesheet" href="<?=base_url('assets/css/libs/error_styles.css')?>">

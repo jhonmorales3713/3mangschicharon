@@ -147,7 +147,19 @@ class Model_access_control extends CI_Model {
         }else{
             $this->access_control['aul']['delete'] = 0;
 		}
-		
+		//website information
+        
+        if(isset($data['settings_web_view'])) {
+            $this->access_control['web']['view'] = 1;
+        }else{
+            $this->access_control['web']['view'] = 0;
+		}
+        if(isset($data['settings_web_update'])) {
+            $this->access_control['web']['update'] = 1;
+        }else{
+            $this->access_control['web']['update'] = 0;
+		}
+        
         //prders
         if(isset($data['ac_transactions_view'])) {
             $this->access_control['orders']['view'] = 1;

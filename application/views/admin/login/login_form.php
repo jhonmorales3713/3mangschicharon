@@ -22,7 +22,6 @@
     $twitter_link = cs_clients_info()->twitter_link;
     $c_favicon = cs_clients_info()->c_favicon;
     $c_main_logo = cs_clients_info()->c_main_logo;
-    $c_secondary_logo = cs_clients_info()->c_secondary_logo;
     $tagline = cs_clients_info()->tagline;
     $c_phone = cs_clients_info()->c_phone;
     $font_choice = cs_clients_info()->font_choice;
