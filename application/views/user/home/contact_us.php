@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container mt-5">
     <div class="row">
         <div class="col-lg-4 col-md-4 col-sm-4"></div>
         <div class="col-lg-4 col-md-4 col-sm-4">
@@ -13,31 +13,36 @@
     <div class="row">
         <div class="col-lg-4 col-md-4 col-sm-6 right-bordered">
             <center>
-            <div class="col-12">
-                <div class="icon-container">
-                    <i class="fa fa-map-marker" aria-hidden="true"></i>
+            <?php if(get_address() != ''){?>
+                <div class="col-12">
+                    <div class="icon-container">
+                        <i class="fa fa-map-marker" aria-hidden="true"></i>
+                    </div>
+                    <strong>Address</strong><br>
+                    <small><?=get_address()?></small>
                 </div>
-                <strong>Address</strong><br>
-                <small>30 Tuazon Avenue Potrero, Malabon City</small>
-            </div>
-            <div class="col-12">
-                <br>
-                <div class="icon-container">
-                    <i class="fa fa-phone" aria-hidden="true"></i>
+            <?php }?>
+            <?php if(get_company_phone() != ''){?>
+                <div class="col-12">
+                    <br>
+                    <div class="icon-container">
+                        <i class="fa fa-phone" aria-hidden="true"></i>
+                    </div>
+                    <strong>Phone</strong><br>
+                    <small><?=get_company_phone()?></small><br>
+                    <small><?=get_telephone()?></small>
                 </div>
-                <strong>Phone</strong><br>
-                <small>09217547233</small><br>
-                <small>09162424895</small>
-            </div>
+            <?php } ?>
+            <?php if(get_company_email() != ''){?>
             <div class="col-12">
                 <br>
                 <div class="icon-container">
                     <i class="fa fa-envelope" aria-hidden="true"></i>
                 </div>
                 <strong>Email</strong><br>
-                <small>3mangs@gmail.com</small><br>
-                <small>biseben29@gmail.com</small>
+                <small><?=get_company_email()?></small><br>
             </div>
+            <?php } ?>
             </center>
         </div>
         <div class="col-lg-8 col-md-8 col-sm-6 mt20">

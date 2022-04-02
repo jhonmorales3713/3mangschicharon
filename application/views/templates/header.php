@@ -43,13 +43,13 @@
         
         <link rel = "icon" href = "<?=base_url('assets/img/favicon.png')?>" type = "image/x-icon">
         <link rel="shortcut icon" href="<?=base_url('assets/img/favicon.png')?>">        
-        <link rel="stylesheet" href="<?=base_url('assets/css/libs/fontawesome/css/all.css')?>">
+        <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
         <link rel="stylesheet" href="<?=base_url('assets/css/libs/jquery.toast.css')?>">
         <link rel="stylesheet" href="<?=base_url('assets/css/libs/jquery-ui.css')?>">        
         <link rel="stylesheet" href="<?=base_url();?>assets/css/libs/bootstrap-4.1.3.min.css">
         <link rel="stylesheet" href="<?=base_url();?>assets/css/libs/owl-carousel.min.css">    
 
-        <?php if($this->session->userdata('role')=='admin' || strpos($_SERVER['REQUEST_URI'],'admin')){?>
+        <?php if(strpos($_SERVER['REQUEST_URI'],'admin')){?>
             <link rel="stylesheet" href="<?=base_url('assets/css/admin/admin_styles.css')?>">
         <?php }else{?>
             <link rel="stylesheet" href="<?=base_url('assets/css/libs/header_styles.css')?>">
