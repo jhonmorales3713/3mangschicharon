@@ -34,7 +34,7 @@
                 <ul class="list-unstyled">
                     <li><a href="<?=base_url('about');?>" class="primary-color n-top10"><small class="b">Our Team</small></a></li>
                     <li><a href="<?=base_url('about');?>" class="primary-color"><small class="b">Contact Us</small></a></li>
-                    <li><a href="<?=base_url('about/faqs');?>" class="primary-color"><small class="b">FAQs</small></a></li>
+                    <li><a href="<?=base_url('user/about/'.faqs_link());?>" class="primary-color"><small class="b">FAQs</small></a></li>
                 </ul>
             </div>
         </div>

@@ -101,7 +101,6 @@ $(function(){
             cache: false,      
             processData:false,
             success:function(data){
-                console.log(data);
                 $.LoadingOverlay("hide");
                 var json_data = JSON.parse(data);
                 

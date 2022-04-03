@@ -9,6 +9,7 @@ class website_info extends CI_Controller {
 		$this->load->model('settings/model_user_list', 'model_user_list');
 		$this->load->model('settings/model_access_control', 'model_access_control');
 		$this->load->model('model');
+        $this->load->model('model_dev_settings');
 		$this->load->library('form_validation');
 	}
     
@@ -35,7 +36,11 @@ class website_info extends CI_Controller {
             return $get_main_nav_id_cn_url = $this->model->get_main_nav_id_cn_url($content_url);
         }
     }
-
+    public function get_faq(){
+        $data = $this->input->post();
+        $result = $this->model_dev_settings->get_faq($data['id']);
+        echo json_encode($result[0]);
+    }
     public function view($token = '')
     {
         $this->isLoggedIn();
@@ -54,6 +59,55 @@ class website_info extends CI_Controller {
             
         }else{
             $this->load->view('error_404');
+        }
+    }
+    public function enable_disable_faq(){
+        $data = $this->input->post();
+        $this->model_dev_settings->enable_disable_faq($data);
+        $response = [
+            'environment' => ENVIRONMENT,
+            'success'     => 1,
+            'message'     => 'FAQ Saved Successfully'
+        ];
+        echo json_encode($response);
+    }
+    public function delete_faq(){
+        $data = $this->input->post();
+        $this->model_dev_settings->delete_faq($data);
+        $response = [
+            'environment' => ENVIRONMENT,
+            'success'     => 1,
+            'message'     => 'FAQ Deleted Successfully'
+        ];
+        echo json_encode($response);
+    }
+    public function save_faq(){
+        $data = $this->input->post();
+		$validation = array(
+            array('f_title','Title','required|max_length[100]|min_length[1]'),
+            array('f_content','Content','required|max_length[100]|min_length[1]')
+        );
+        $this->form_validation->set_data($data); 
+        foreach ($validation as $value) {
+            $this->form_validation->set_rules($value[0],$value[1],$value[2], (count($value) > 3 ? $value[3] : ''));
+        }
+        if($this->form_validation->run() == FALSE){
+            $response = [
+                'environment' => ENVIRONMENT,
+                'success'     => 0,
+                'message'     => explode("\n",validation_errors())
+            ];
+
+            echo json_encode($response);
+            die();
+        }else{
+            $this->model_dev_settings->save_faq($data);
+            $response = [
+                'environment' => ENVIRONMENT,
+                'success'     => 1,
+                'message'     => 'FAQ Saved Successfully'
+            ];
+            echo json_encode($response);
         }
     }
     public function update(){
@@ -121,26 +175,65 @@ class website_info extends CI_Controller {
 
         }
     }
+    public function save_arrangement(){
+        $data = $this->input->post()['arrangement'];
+        foreach($data as $arr){
+            $this->model_dev_settings->save_arrangement($arr['value'],1+$arr['order']);
+        }
+        $response = [
+            'success'     => 1,
+            'message'     => 'Faqs Arrangement Saved Successfully'
+        ];
+        echo json_encode($response);
+    }
+    public function faqs_view($token = ''){
+        //start - for restriction of views
+        $content_url = $this->uri->segment(1).'/'.$this->uri->segment(2).'/'.$this->uri->segment(3).'/'.$this->uri->segment(4).'/';
+        $main_nav_id = $this->views_restriction($content_url);
+        //end - for restriction of views main_nav_id
+
+        // start - data to be used for views
+        $data_admin = array(
+            'token' => $token,
+            'main_nav_id' => $main_nav_id, //for highlight the navigation
+        );
+        // end - data to be used for views
+
+        // start - load all the views synchronously
+        $data_admin['active_page'] =  $this->session->userdata('active_page');
+        $data_admin['subnav'] = false;
+        $data_admin['page_content'] = $this->load->view('admin/settings/faqs',$data_admin,TRUE);
+        $this->load->view('admin_template',$data_admin,'',TRUE);
+    }
+    
+    public function load_faqs(){
+    
+        $this->isLoggedIn();
+        $request = $_REQUEST;
+        $query = $this->model_dev_settings->load_faqs($request);
+        generate_json($query);
+    }
+
     public function web_info_details($token = ''){
         
         $this->isLoggedIn();
-    		//start - for restriction of views
-        	$content_url = $this->uri->segment(1).'/'.$this->uri->segment(2).'/'.$this->uri->segment(3).'/'.$this->uri->segment(4).'/';
-        	$main_nav_id = $this->views_restriction($content_url);
-            //end - for restriction of views main_nav_id
+        //start - for restriction of views
+        $content_url = $this->uri->segment(1).'/'.$this->uri->segment(2).'/'.$this->uri->segment(3).'/'.$this->uri->segment(4).'/';
+        $main_nav_id = $this->views_restriction($content_url);
+        //end - for restriction of views main_nav_id
 
-            // start - data to be used for views
-        	$data_admin = array(
-        		'token' => $token,
-                'main_nav_id' => $main_nav_id, //for highlight the navigation
-            );
-            // end - data to be used for views
+        // start - data to be used for views
+        $data_admin = array(
+            'token' => $token,
+            'main_nav_id' => $main_nav_id, //for highlight the navigation
+        );
+        // end - data to be used for views
 
-            // start - load all the views synchronously
-            $data_admin['active_page'] =  $this->session->userdata('active_page');
-            $data_admin['subnav'] = false;
-            $data_admin['page_content'] = $this->load->view('admin/settings/web_info_details',$data_admin,TRUE);
-            $this->load->view('admin_template',$data_admin,'',TRUE);
+        // start - load all the views synchronously
+        $data_admin['active_page'] =  $this->session->userdata('active_page');
+        $data_admin['subnav'] = false;
+        $data_admin['page_content'] = $this->load->view('admin/settings/web_info_details',$data_admin,TRUE);
+        $this->load->view('admin_template',$data_admin,'',TRUE);
     }
 
 }

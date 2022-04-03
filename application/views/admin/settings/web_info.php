@@ -21,16 +21,7 @@
             </a>
         </div>
         <div class="col-sm-5 mt-2 ml-4">
-            <a href="<?=base_url('settings/website_info/web_info_details');?>" >
-                <div class="card card-option card-hover white p-3 mb-3 w-100">
-                    <div class="option-check"><i class="fa fa-hand-o-right fa-lg"></i></div>
-                    <div class="card-header-title font-weight-bold">Contact Information</div>
-                    <small class="card-text text-black-50">Manage Contact Information of Website</small>
-                </div>
-            </a>
-        </div>
-        <div class="col-sm-5 mt-2 ml-4">
-            <a href="<?=base_url('settings/website_info/web_info_details');?>" >
+            <a href="<?=base_url('admin/settings/website_info/faqs_view');?>" >
                 <div class="card card-option card-hover white p-3 mb-3 w-100">
                     <div class="option-check"><i class="fa fa-hand-o-right fa-lg"></i></div>
                     <div class="card-header-title font-weight-bold">Frequently Asked Questions</div>

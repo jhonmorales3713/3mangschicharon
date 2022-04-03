@@ -3,7 +3,7 @@
     <div class="alert alert-secondary ml-3 color-dark" role="alert">
         <span class="font-weight-bold"><a class="text-dark" href="<?=base_url('admin/Main_settings/settings_home/Settings');?>"><?=$active_page?></a></span>
         &nbsp;<span class="fa fa-chevron-right"></span>&nbsp;
-        <span class="font-weight-bold"><a class="text-dark" href="<?=base_url('admin/settings/Website_info/view');?>">Web Information</a></span>
+        <span class="font-weight-bold"><a class="text-dark" href="<?=base_url('admin/settings/Website_info/view');?>">Website Information</a></span>
         &nbsp;<span class="fa fa-chevron-right"></span>&nbsp;
         <span class="font-weight-regular">Update</span>
         
