@@ -104,6 +104,10 @@
     margin: 5px !important;
 }
 
+.m20{
+    margin: 20px !important;
+}
+
 .m10{
     margin: 10px !important;
 }
@@ -118,6 +122,10 @@
 
 .mt20{
     margin-top: 20px !important;
+}
+
+.mt50{
+    margin-top: 50px !important;
 }
 
 .ml5{
@@ -287,6 +295,36 @@
 /*discounts */
 .dashed{
     text-decoration: line-through !important;
+}
+
+/* home page styles */
+.full-page{    
+    margin: 0;
+    padding: 0;
+    width: 100%;    
+}
+
+.home-container{
+    position: relative;
+    display: block;
+}
+
+.home-icon{    
+    display: inline-block;
+    position: relative;
+    border: 2px solid #d67943; 
+    border-radius: 50%; 
+    width: 100px; 
+    height: 100px; 
+    background-size: 60px; 
+    background-position: center; 
+    background-repeat: no-repeat;
+}
+
+.home-section{    
+    display: inline-block;
+    position: relative;
+    color: #d67943; 
 }
 
 @media only screen and (max-width: 548px) {
