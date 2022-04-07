@@ -300,7 +300,7 @@ class Cart extends CI_Controller {
 
         //gcash payment redirect
         $response['redirect_url'] = '';
-        if($data['payment_method'] == 1){
+        if($data['payment_method'] == 1){            
             $_SESSION['order_data'] = $order;
             $_SESSION['current_order_id'] = en_dec('en',$id);
             $response['redirect_url'] = base_url('checkout_gcash');

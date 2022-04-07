@@ -23,5 +23,14 @@ class Payment extends CI_Controller {
         $data['page_content'] = $this->load->view('user/payment/source',$view_data,TRUE);     
 		$this->load->view('landing_template',$data,'',TRUE);        
     }
+
+    public function payment_failed(){
+        $data['active_page'] = 'shop';
+
+        $view_data['ref'] = [];
+
+        $data['page_content'] = $this->load->view('user/payment/payment_failed',$view_data,TRUE);     
+		$this->load->view('landing_template',$data,'',TRUE);    
+    }
     
 }

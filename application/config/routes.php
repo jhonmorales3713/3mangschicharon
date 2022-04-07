@@ -72,6 +72,7 @@ $route['orders/(:any)'] = 'user/orders/orders/$1';
 $route['order_confirmation/(:any)'] = 'user/orders/order_confirmation/$1';
 
 $route['checkout_gcash'] = 'user/payment/create_source';
+$route['payment_failed'] = 'user/payment/payment_failed';
 
 $route['profile'] = 'user/account/profile';
 
