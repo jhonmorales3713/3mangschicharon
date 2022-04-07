@@ -28,6 +28,13 @@ class Payment extends CI_Controller {
         $data['active_page'] = 'shop';
 
         $view_data['ref'] = [];
+        
+        $_SESSION['cart'] = $_SESSION['temp_cart'];
+        $total_qty = 0;
+        foreach($_SESSION['cart'] as $key => $value){
+            $total_qty += intval($_SESSION['cart'][$key]['quantity']);
+        }
+        $_SESSION['cart_items'] = $total_qty;
 
         $data['page_content'] = $this->load->view('user/payment/payment_failed',$view_data,TRUE);     
 		$this->load->view('landing_template',$data,'',TRUE);    

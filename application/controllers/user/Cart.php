@@ -197,6 +197,9 @@ class Cart extends CI_Controller {
 
         $product_id = array();
 
+        //set temporary cart
+        $_SESSION['temp_cart'] = $_SESSION['cart'];
+
         foreach($_SESSION['cart'] as $key => $value){
             if($value['is_included'] == 1){
                 $order_data[$key] = $value;
@@ -300,7 +303,7 @@ class Cart extends CI_Controller {
 
         //gcash payment redirect
         $response['redirect_url'] = '';
-        if($data['payment_method'] == 1){            
+        if($data['payment_method'] == 1){
             $_SESSION['order_data'] = $order;
             $_SESSION['current_order_id'] = en_dec('en',$id);
             $response['redirect_url'] = base_url('checkout_gcash');
