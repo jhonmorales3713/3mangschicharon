@@ -25,10 +25,13 @@ class Payment extends CI_Controller {
     }
 
     public function payment_failed(){
+        $data = $this->input->post();
+        print_r($data); die();
+
         $data['active_page'] = 'shop';
 
         $view_data['ref'] = [];
-        
+
         $_SESSION['cart'] = $_SESSION['temp_cart'];
         $total_qty = 0;
         foreach($_SESSION['cart'] as $key => $value){

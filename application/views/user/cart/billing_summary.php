@@ -3,9 +3,11 @@
 
 <div id="payment_method_error">
     <?php foreach($payment_methods as $method){ ?>
-        <div class="payment-method-select" data-payment_method="<?= $method['id'] ?>">
-        <b><?= $method['method']; ?></b><br>
-        <small><?= $method['method_desc'] ?></small>
+        <div class="payment-method-select" data-payment_method="<?= $method['id']; ?>" data-keyword="<?= $method['keyword']; ?>">
+        <center>
+        <img src="<?= base_url('assets/uploads/payment_method_img/'.$method['img']); ?>" alt="" width="120"><br>
+        <b><?= $method['method']; ?></b><br>        
+        </center>
         </div>
     <?php }?>
 </div>

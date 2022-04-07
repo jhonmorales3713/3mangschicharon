@@ -2,16 +2,6 @@
 
 <input type="hidden" id="active_page" value="<?= $active_page; ?>">
 
-<?php if($active_page == 'home'){ ?>
-    <div class="cover-photo" style="background-image: url(<?= base_url('assets/img/s2.jpg'); ?>); background-size: cover;">        
-        <br><br><br>
-        <center>
-            <strong class="cover-name">3Mang's</strong><br>
-            <b class="cover-tagline">Mushroom Chicharon</b>
-        </center>
-    </div>
-<?php } ?>
-
 <div id="navbar">    
     <div class="row">
         <div class="col-4">            

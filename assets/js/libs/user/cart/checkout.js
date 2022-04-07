@@ -2,10 +2,12 @@ $(function(){
 
 $('#btn_place_order').click(function(){
     var p_method = $('.method-selected').length > 0 ? $('.method-selected').data('payment_method') : '';
+    var p_keyword = $('.method-selected').length > 0 ? $('.method-selected').data('keyword') : '';
     var data = {
         total_amount: $('#total_amount').val(),
         delivery_amount: 50,   
         payment_method: p_method,
+        payment_keyword: p_keyword,
         shipping_data: get_shipping_details()     
     };    
 
