@@ -284,6 +284,11 @@
     background: lightgray;
 }
 
+/*discounts */
+.dashed{
+    text-decoration: line-through !important;
+}
+
 @media only screen and (max-width: 548px) {
     .right-bordered{
         border-right: none;
