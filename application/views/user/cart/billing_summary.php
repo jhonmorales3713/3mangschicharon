@@ -1,12 +1,14 @@
 
 <b>Select Payment Method</b><br>
 
-<?php foreach($payment_methods as $method){ ?>
-    <div class="payment-method-select" data-payment_method="<?= $method['id'] ?>">
-    <b><?= $method['method']; ?></b><br>
-    <small><?= $method['method_desc'] ?></small>
-    </div>
-<?php }?>
+<div id="payment_method_error">
+    <?php foreach($payment_methods as $method){ ?>
+        <div class="payment-method-select" data-payment_method="<?= $method['id'] ?>">
+        <b><?= $method['method']; ?></b><br>
+        <small><?= $method['method_desc'] ?></small>
+        </div>
+    <?php }?>
+</div>
 
 <hr>
 

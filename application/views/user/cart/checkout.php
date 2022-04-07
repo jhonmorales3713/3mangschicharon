@@ -31,7 +31,7 @@
             <hr>
             <?php $this->load->view('user/cart/item_list'); ?>
         </div>
-        <div class="col-lg-4 col-md-6 col-sm-12 p20">            
+        <div class="col-lg-4 col-md-6 col-sm-12 p20">
             <?php $this->load->view('user/cart/billing_summary'); ?>            
         </div>
     </div>

@@ -182,7 +182,7 @@ class Cart extends CI_Controller {
         $view_data['payment_methods'] = $this->model_cart->get_payment_methods();
         $view_data['shipping_types'] = $this->model_cart->get_shipping_types();
 
-        $data['page_content'] = $this->load->view('user/cart/checkout',$view_data,TRUE);     
+        $data['page_content'] = $this->load->view('user/cart/checkout',$view_data,TRUE);
 		$this->load->view('landing_template',$data,'',TRUE);
     }
 
@@ -250,6 +250,10 @@ class Cart extends CI_Controller {
                 $shipping_data['email'] = en_dec('dec',$_SESSION['email']);
             }
 
+            if($data['payment_method'] == ''){
+                $this->form_validation->set_rules('payment_method_error','Payment Method','required');
+            }
+
             if($this->form_validation->run() == FALSE) {
                 $response = array(
                 'success'      => false,
@@ -260,7 +264,7 @@ class Cart extends CI_Controller {
                 generate_json($response);
                 die();            
             }
-        }        
+        }
 
         $order_id = $this->generate_order_id();
 
@@ -273,7 +277,7 @@ class Cart extends CI_Controller {
             'shipping_data' => json_encode($shipping_data),
             'total_amount' => floatval($data['total_amount']),
             'delivery_amount' => floatval($data['delivery_amount'])            
-        );
+        );        
 
         $id = $this->model_orders->insert_order($order);
 
@@ -293,6 +297,14 @@ class Cart extends CI_Controller {
         $response['order_id'] = $order_id;
         $response['id'] = en_dec('en',$id);
         $response['cart_items'] = $total_qty;
+
+        //gcash payment redirect
+        $response['redirect_url'] = '';
+        if($data['payment_method'] == 1){
+            $_SESSION['order_data'] = $order;
+            $_SESSION['current_order_id'] = en_dec('en',$id);
+            $response['redirect_url'] = base_url('checkout_gcash');
+        }
 
         generate_json($response);
     }    

@@ -1,9 +1,11 @@
 $(function(){
 
 $('#btn_place_order').click(function(){
+    var p_method = $('.method-selected').length > 0 ? $('.method-selected').data('payment_method') : '';
     var data = {
         total_amount: $('#total_amount').val(),
         delivery_amount: 50,   
+        payment_method: p_method,
         shipping_data: get_shipping_details()     
     };    
 
@@ -13,9 +15,14 @@ $('#btn_place_order').click(function(){
         data: data,
         success: function(response){
             if(response.success){
-                sys_toast_success(response.message);
-                $('.cart-items').text(response.cart_items);
-                window.location.href = base_url + 'order_confirmation/'+response.id;
+                if(response.redirect_url != ''){
+                    window.location.href = response.redirect_url;
+                }
+                else{
+                    sys_toast_success(response.message);
+                    $('.cart-items').text(response.cart_items);
+                    window.location.href = base_url + 'order_confirmation/'+response.id;
+                }                
             }
             else{
                 clearFormErrors();
