@@ -16,8 +16,16 @@ class Model_payment extends CI_Model {
 
     }
 
+    public function update_source_data($source_data){
+        $this->db->where('ref_no',$source_data['data']['id']);
+        $update = array(
+            'source_data' => json_encode($source_data),
+        );
+        $this->db->update('sys_payments',$update);
+    }
+
     public function update_payment($payment_id, $order_id = null){
-        
+
     }
     
 

@@ -85,9 +85,7 @@ class Payment extends CI_Controller {
         $type = $payload['data']['attributes']['type'];
 
         //If event type is source.chargeable, call the createPayment API
-        if ($type == 'source.chargeable') {
-
-            echo 'This is source chargeable';
+        if ($type == 'source.chargeable') {            
 
             $amount = $payload['data']['attributes']['data']['attributes']['amount'];
             $id = $payload['data']['attributes']['data']['id'];
@@ -123,10 +121,14 @@ class Payment extends CI_Controller {
             if ($err) {
                 echo "cURL Error #:" . $err;
                 //Log the response
-                $fp = file_put_contents( 'test.log', $err );
+                //$fp = file_put_contents( 'test.log', $err );
             } else {
                 echo $response;
             }
+
+            //update source data when source.chargeable
+            $this->model_payment->update_source_data($payload);
+            echo 'This is source chargeable';
         }
 
         else if($type == 'payment.paid'){
