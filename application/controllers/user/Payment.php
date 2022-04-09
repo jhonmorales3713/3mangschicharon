@@ -77,9 +77,7 @@ class Payment extends CI_Controller {
 		$this->load->view('landing_template',$data,'',TRUE);    
     }
 
-    public function capture(){
-        
-        echo 'WEBHOOK TEST';
+    public function capture(){        
 
         header('Content-Type: application/json');
         $request = file_get_contents('php://input');
@@ -88,44 +86,55 @@ class Payment extends CI_Controller {
 
         //If event type is source.chargeable, call the createPayment API
         if ($type == 'source.chargeable') {
-        $amount = $payload['data']['attributes']['data']['attributes']['amount'];
-        $id = $payload['data']['attributes']['data']['id'];
-        $description = "GCash Payment";
-        $curl = curl_init();
-        $fields = array("data" => array ("attributes" => array ("amount" => $amount, "source" => array ("id" => $id, "type" => "source"), "currency" => "PHP", "description" => $description)));
-        $jsonFields = json_encode($fields);
-            
-        curl_setopt_array($curl, [
-            CURLOPT_URL => "https://api.paymongo.com/v1/payments",
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => "",
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 30,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_POSTFIELDS => $jsonFields,
-            CURLOPT_HTTPHEADER => [
-            "Accept: application/json",
-            //Input your encoded API keys below for authorization
-            "Authorization:" ,
-            "Content-Type: application/json"
-            ],
-        ]);
 
-        $response = curl_exec($curl);
-        //Log the response
-        //$fp = file_put_contents( 'test.log', $response );
-        $err = curl_error($curl);
+            echo 'This is source chargeable';
 
-        curl_close($curl);
+            $amount = $payload['data']['attributes']['data']['attributes']['amount'];
+            $id = $payload['data']['attributes']['data']['id'];
+            $description = "GCash Payment";
+            $curl = curl_init();
+            $fields = array("data" => array ("attributes" => array ("amount" => $amount, "source" => array ("id" => $id, "type" => "source"), "currency" => "PHP", "description" => $description)));
+            $jsonFields = json_encode($fields);
+                
+            curl_setopt_array($curl, [
+                CURLOPT_URL => "https://api.paymongo.com/v1/payments",
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 30,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "POST",
+                CURLOPT_POSTFIELDS => $jsonFields,
+                CURLOPT_HTTPHEADER => [
+                "Accept: application/json",
+                //Input your encoded API keys below for authorization
+                "Authorization:" ,
+                "Content-Type: application/json"
+                ],
+            ]);
 
-        if ($err) {
-            echo "cURL Error #:" . $err;
+            $response = curl_exec($curl);
             //Log the response
-            $fp = file_put_contents( 'test.log', $err );
-        } else {
-            echo $response;
+            //$fp = file_put_contents( 'test.log', $response );
+            $err = curl_error($curl);
+
+            curl_close($curl);
+
+            if ($err) {
+                echo "cURL Error #:" . $err;
+                //Log the response
+                $fp = file_put_contents( 'test.log', $err );
+            } else {
+                echo $response;
+            }
         }
+
+        else if($type == 'payment.paid'){
+            echo 'This is payment paid';
+        }
+
+        else if($type == 'payment.failed'){
+            echo 'This is payment failed';
         }
     }
     
