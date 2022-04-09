@@ -106,7 +106,7 @@ class Payment extends CI_Controller {
                 CURLOPT_HTTPHEADER => [
                 "Accept: application/json",
                 //Input your encoded API keys below for authorization
-                "Authorization:" ,
+                "Authorization: Basic c2tfbGl2ZV9FdmhzbVZ1TndyRk5QcDVReERGUjhwZ0w6c2tfbGl2ZV9FdmhzbVZ1TndyRk5QcDVReERGUjhwZ0w=" ,
                 "Content-Type: application/json"
                 ],
             ]);
