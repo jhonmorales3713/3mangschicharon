@@ -280,9 +280,10 @@
     border: 1px solid #873e23;
 }
 
-.payment-method-select{
+.payment-method-select{    
     padding: 7px; 
     margin: 5px;
+    box-sizing: border-box;
     border-radius: 10px;   
     border: 1px solid gray;
 }

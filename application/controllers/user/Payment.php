@@ -43,20 +43,8 @@ class Payment extends CI_Controller {
     }
 
     public function capture(){        
-        
-        require_once('vendor/autoload.php');
-        
-        $client = new \GuzzleHttp\Client();
-        
-        $response = $client->request('POST', 'https://api.paymongo.com/v1/webhooks', [
-          'body' => '{"data":{"attributes":{"events":["source.chargeable"],"url":"http://3mangs.com/user/payment/capture"}}}',
-          'headers' => [
-            'Accept' => 'application/json',
-            'Authorization' => 'Basic c2tfbGl2ZV9FdmhzbVZ1TndyRk5QcDVReERGUjhwZ0w6c2tfbGl2ZV9FdmhzbVZ1TndyRk5QcDVReERGUjhwZ0w=',
-            'Content-Type' => 'application/json',
-          ],
-        ]);
 
+        
     }
     
 }
