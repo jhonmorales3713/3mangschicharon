@@ -16,6 +16,16 @@ class Model_payment extends CI_Model {
 
     }
 
+    public function check_order_id_exists($order_id){
+        $this->db->where('order_id',$order_id);
+        return $this->db->get('sys_payments')->num_rows();
+    }
+
+    public function get_payment_data($order_id){
+        $this->db->where('order_id',$order_id);
+        return $this->db->get('sys_payments')->row_array();
+    }
+
     public function update_source_data($source_data){
         $this->db->where('ref_no',$source_data['data']['id']);
         $update = array(

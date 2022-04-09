@@ -24,40 +24,47 @@ class Payment extends CI_Controller {
         $client = new \GuzzleHttp\Client();
 
         //original amount
-        $source_amount = $_SESSION['order_data']['total_amount'];
+        $source_amount = $_SESSION['order_data']['total_amount'];    
+        
+        //check if already made a source
+        if($this->model_payment->check_order_id_exists($_SESSION['order_data']['order_id']) == 0){
 
-        //set params for creating source
-        $amount = intval(floatval($_SESSION['order_data']['total_amount'])*100);
-        $success_url = base_url('order_confirmation/'.$_SESSION['current_order_id']);
-        $failed_url = base_url('payment_failed');
-        $keyword = $_SESSION['payment_keyword'];
+            //set params for creating source
+            $amount = intval(floatval($_SESSION['order_data']['total_amount'])*100);
+            $success_url = base_url('order_confirmation/'.$_SESSION['current_order_id']);
+            $failed_url = base_url('payment_failed');
+            $keyword = $_SESSION['payment_keyword'];
 
-        $response = $client->request('POST', 'https://api.paymongo.com/v1/sources', [
-            'body' => '{"data":{"attributes":{"amount":'.$amount.',"redirect":{"success":"'.$success_url.'","failed":"'.$failed_url.'"},"type":"'.$keyword.'","currency":"PHP"}}}',
-            'headers' => [
-                'Accept' => 'application/json',
-                'Authorization' => 'Basic cGtfbGl2ZV9rOXJDeXRwQWViZWcyS0dOZTFhWnB5aHY6c2tfbGl2ZV9FdmhzbVZ1TndyRk5QcDVReERGUjhwZ0w=',
-                'Content-Type' => 'application/json',
-            ],
-        ]);
+            $response = $client->request('POST', 'https://api.paymongo.com/v1/sources', [
+                'body' => '{"data":{"attributes":{"amount":'.$amount.',"redirect":{"success":"'.$success_url.'","failed":"'.$failed_url.'"},"type":"'.$keyword.'","currency":"PHP"}}}',
+                'headers' => [
+                    'Accept' => 'application/json',
+                    'Authorization' => 'Basic cGtfbGl2ZV9rOXJDeXRwQWViZWcyS0dOZTFhWnB5aHY6c2tfbGl2ZV9FdmhzbVZ1TndyRk5QcDVReERGUjhwZ0w=',
+                    'Content-Type' => 'application/json',
+                ],
+            ]);
 
-        $source_data = $response->getBody();
-        $source_data_arr = json_decode($source_data,TRUE);
+            $source_data = $response->getBody();
+            $source_data_arr = json_decode($source_data,TRUE);            
+            
+            $payment_id = $this->model_payment->save_source_data($source_data_arr,$_SESSION['order_data']);
+        } 
+        else{
 
-        $_SESSION['ref_no'] = $source_data_arr['data']['id'];
-
-        $payment_id = $this->model_payment->save_source_data($source_data_arr,$_SESSION['order_data']);       
+            //retrieve payment record if already exists
+            $payment = $this->model_payment->get_payment_data($_SESSION['order_data']['order_id']);
+            $source_data_arr = json_decode($payment['source_data'],TRUE);
+            
+        }
 
         $view_data['source_data'] = $source_data_arr;
         $view_data['checkout_url'] = $source_data_arr['data']['attributes']['redirect']['checkout_url'];
+        $_SESSION['ref_no'] = $source_data_arr['data']['id'];
 
-        $data['page_content'] = $this->load->view('user/payment/source',$view_data,TRUE);     
-		$this->load->view('landing_template',$data,'',TRUE);        
-    }
-
-    public function create_payment(){
-
-    }
+        $data['page_content'] = $this->load->view('user/payment/source',$view_data,TRUE);
+		$this->load->view('landing_template',$data,'',TRUE);
+             
+    }    
 
     public function payment_failed(){
         $data = $this->input->post();        
@@ -77,6 +84,7 @@ class Payment extends CI_Controller {
 		$this->load->view('landing_template',$data,'',TRUE);    
     }
 
+    //capture paymongo data (authorized, paid and failed)
     public function paymongo_capture(){        
 
         header('Content-Type: application/json');
