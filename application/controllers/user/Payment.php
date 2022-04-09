@@ -77,7 +77,7 @@ class Payment extends CI_Controller {
 		$this->load->view('landing_template',$data,'',TRUE);    
     }
 
-    public function capture(){        
+    public function paymongo_capture(){        
 
         header('Content-Type: application/json');
         $request = file_get_contents('php://input');
