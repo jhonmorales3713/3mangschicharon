@@ -25,8 +25,7 @@ class Payment extends CI_Controller {
     }
 
     public function payment_failed(){
-        $data = $this->input->post();
-        print_r($data); die();
+        $data = $this->input->post();        
 
         $data['active_page'] = 'shop';
 
@@ -41,6 +40,25 @@ class Payment extends CI_Controller {
 
         $data['page_content'] = $this->load->view('user/payment/payment_failed',$view_data,TRUE);     
 		$this->load->view('landing_template',$data,'',TRUE);    
+    }
+
+    public function capture(){
+        
+            require_once('vendor/autoload.php');
+
+            $client = new \GuzzleHttp\Client();
+
+            $response = $client->request('POST', 'https://api.paymongo.com/v1/webhooks', [
+            'body' => '{"data":{"attributes":{"events":["source.chargeable"],"url":"http://localhost/user/payment/capture"}}}',
+            'headers' => [
+                'Accept' => 'application/json',
+                'Authorization' => 'Basic c2tfbGl2ZV9FdmhzbVZ1TndyRk5QcDVReERGUjhwZ0w6c2tfbGl2ZV9FdmhzbVZ1TndyRk5QcDVReERGUjhwZ0w=',
+                'Content-Type' => 'application/json',
+            ],
+            ]);
+
+            echo $response->getBody();
+
     }
     
 }
