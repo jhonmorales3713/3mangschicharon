@@ -42,22 +42,20 @@ class Payment extends CI_Controller {
 		$this->load->view('landing_template',$data,'',TRUE);    
     }
 
-    public function capture(){
+    public function capture(){        
         
-            require_once('vendor/autoload.php');
-
-            $client = new \GuzzleHttp\Client();
-
-            $response = $client->request('POST', 'https://api.paymongo.com/v1/webhooks', [
-            'body' => '{"data":{"attributes":{"events":["source.chargeable"],"url":"http://localhost/user/payment/capture"}}}',
-            'headers' => [
-                'Accept' => 'application/json',
-                'Authorization' => 'Basic c2tfbGl2ZV9FdmhzbVZ1TndyRk5QcDVReERGUjhwZ0w6c2tfbGl2ZV9FdmhzbVZ1TndyRk5QcDVReERGUjhwZ0w=',
-                'Content-Type' => 'application/json',
-            ],
-            ]);
-
-            echo $response->getBody();
+        require_once('vendor/autoload.php');
+        
+        $client = new \GuzzleHttp\Client();
+        
+        $response = $client->request('POST', 'https://api.paymongo.com/v1/webhooks', [
+          'body' => '{"data":{"attributes":{"events":["source.chargeable"],"url":"http://3mangs.com/user/payment/capture"}}}',
+          'headers' => [
+            'Accept' => 'application/json',
+            'Authorization' => 'Basic c2tfbGl2ZV9FdmhzbVZ1TndyRk5QcDVReERGUjhwZ0w6c2tfbGl2ZV9FdmhzbVZ1TndyRk5QcDVReERGUjhwZ0w=',
+            'Content-Type' => 'application/json',
+          ],
+        ]);
 
     }
     
