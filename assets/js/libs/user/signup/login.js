@@ -1,6 +1,5 @@
 $(function(){
 
-
 var base_url = $('body').data('base_url');
 
 $('#btn_login').click(function(){
@@ -25,6 +24,12 @@ $('#btn_login').click(function(){
 
         }
     });
+});
+
+$('#signup_link').click(function(e){
+    e.preventDefault();
+    $('#login_page').hide();    
+    $('#signup_page').slideDown(300);    
 });
 
 });

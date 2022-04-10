@@ -43,8 +43,13 @@
         </div>   
     </div>
     <div class="row">        
-        <div class="col-12">            
+        <div class="col-12 form-group">            
             <button class="btn btn-primary form-control" id="btn_signup">SIGNUP</button>
+        </div>        
+    </div>
+    <div class="row">
+        <div class="col-12 clearfix">
+            <span class="float-right">Already have an account? click <a href="#" id="login_link">here</a> to login</span>
         </div>
     </div>
 </div>

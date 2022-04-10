@@ -30,4 +30,11 @@ $('#btn_signup').click(function(){
     });
 });
 
+$('#login_link').click(function(e){
+    e.preventDefault();
+    $('#signup_page').hide();
+    $('#login_page').slideDown(300);
+});
+
+
 })

@@ -5,13 +5,8 @@
             <br><br>
             <small><b>Category</b></small><br>            
             <?php foreach($categories as $category){ ?>
-                <input type="checkbox"/ data-cat_id="<?= $category['id']; ?>"> <small><?= $category['category_name']; ?></small><br>
+                <input type="checkbox"/ value="<?= $category['id']; ?>"> <small><?= $category['category_name']; ?></small><br>
             <?php } ?>
-            
-            <br>
-            <small><b>Size</b></small><br>
-            <input type="checkbox"> <small>Small</small><br>
-            <input type="checkbox"> <small>Large</small><br>           
 
             <br><br>
             <button class="btn btn-sm btn-primary form-control form-control-sm add-to-cart">Apply</button>
@@ -51,10 +46,14 @@
                                 <div class="ml5">
                                 
                                     <div class="row">
-                                        <div class="col-8">
+                                        <div class="col-8 clearfix">
                                             <?php if(isset($product['variants'][0])){ ?>
-                                                <strong class="dashed">&#8369; <?= number_format($product['variants'][0]['price'],2); ?></strong><br>
-                                                <strong>&#8369; <?= number_format(50.000,2); ?></strong> <span class="badge badge-pill badge-danger">- 30%</span>
+                                                <?php if(isset($product['promo'])){ ?>
+                                                    <strong class="dashed">&#8369; <?= number_format($product['variants'][0]['price'],2); ?></strong><br>
+                                                    <strong>&#8369; <?= number_format(50.000,2); ?></strong> <span class="badge badge-pill badge-danger">- 30%</span>
+                                                <?php } else { ?>
+                                                    <strong>&#8369; <?= number_format($product['variants'][0]['price'],2); ?></strong><br>
+                                                <?php } ?>
                                             <?php } else { ?>
                                                 <strong class="dashed">&#8369; <?= number_format($product['price'],2); ?></strong>
                                             <?php } ?>
