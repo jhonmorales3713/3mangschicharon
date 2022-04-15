@@ -403,7 +403,7 @@ class Main_orders extends CI_Controller {
             	'smtp_host' => 'ssl://smtp.googlemail.com',
             	'smtp_port' => 465,
             	'smtp_user' => 'teeseriesphilippines@gmail.com',
-            	'smtp_pass' => 'teeseriesph',
+            	'smtp_pass' => '@ugOct0810',
             	'charset' => 'utf-8',
             	'newline'   => "\r\n",
             	'wordwrap'=> TRUE,

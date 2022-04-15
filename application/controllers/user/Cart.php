@@ -19,10 +19,10 @@ class Cart extends CI_Controller {
 		$this->load->view('landing_template',$data,'',TRUE);
 	}
 
-    public function add_to_cart($p_product_id = '',$p_variant_id = '', $size = '', $quantity = ''){ //accepst product id an variant if order now
-        
+    public function add_to_cart($p_product_id = '',$p_variant_id = '', $size = '', $quantity = '',$from_checkout = 'true'){ 
         if($p_product_id == ''){
             $data = $this->input->post();
+            $from_checkout = isset($data['from_checkout'])?$data['from_checkout']:$from_checkout;
         }
         else{
             $data['product_id'] = $p_product_id;
@@ -61,10 +61,10 @@ class Cart extends CI_Controller {
             if($data['max_checkout2'] != 0){
                 $data['max_checkout'] =$data['max_checkout2'];
             }
-            if(intval($_SESSION['cart'][$key]['quantity']) + intval($data['quantity'])>$data['max_checkout'] && $data['max_checkout'] > 0){
+            if(intval($_SESSION['cart'][$key]['quantity']) + intval($data['quantity'])>$data['max_checkout'] && $data['max_checkout'] > 0 && $from_checkout == 'false'){
                 $response['success'] = false;
                 $response['cart_items'] = $_SESSION['cart_items'];
-                $response['message'] = 'Maximum of '.intval($data['max_checkout']).' quantity allowed to checkout per transaction exceeded.';   
+                $response['message'] = 'Maximum of '.intval($data['max_checkout']).' quantity allowed to checkout per transaction exceeded.'; 
                 generate_json($response);
                 die();
             }else{
@@ -326,7 +326,40 @@ class Cart extends CI_Controller {
         $response['order_id'] = $order_id;
         $response['id'] = en_dec('en',$id);
         $response['cart_items'] = $total_qty;
+        $order = $this->model_orders->orders_details($order_id);
+        //print_r($reference_num);
+        $recipient_details = json_decode($order[0]['shipping_data']);
+        $order_details = json_decode($order[0]['order_data']);
+        // $this->sendProcessOrderEmail($order);
+        
 
+        $data2 = array(
+            'recipient_details' => $recipient_details,
+            'order_data'=> $order_details,
+            'order_data_main'=> $order,
+            'reference_num'=> $order_id
+        );
+        
+        $data2['view'] = $this->load->view('email/order_processing',$data2,TRUE);
+        $email = $shipping_data['email'];
+        $subject = "Order #".$order_id." has been placed";
+        $message = $this->load->view('email/templates/email_template',$data2,true);
+		$this->send_email($email,$subject,$message);
+
+        $data2 = array(
+            'recipient_details' => $recipient_details,
+            'order_data'=> $order_details,
+            'order_data_main'=> $order,
+            'reference_num'=> $order_id,
+            'customer_name'=> $data['shipping_data']['full_name']
+        );
+        $data2['view'] = $this->load->view('email/order_processing',$data2,TRUE);
+        $email = 'teeseriesphilippines@gmail.com';
+        $subject = "Order #".$order_id." has been placed by ".$data['shipping_data']['full_name'];
+        $message = $this->load->view('email/templates/email_template',$data2,true);
+		$this->send_email($email,$subject,$message);
+        // print_r($this->email->print_debugger());
+        // die();
         //gcash payment redirect
         $response['redirect_url'] = '';
         if($data['payment_method'] != 3){
@@ -339,6 +372,66 @@ class Cart extends CI_Controller {
         generate_json($response);
     }    
 
+	function send_email($emailto,$subject,$message){
+		
+		$this->load->library('email');
+        
+		// $config = Array(
+		// 	'protocol' => 'smtp',
+		// 	'smtp_host' => 'ssl://smtp.googlemail.com',
+		// 	'smtp_port' => 465,
+		// 	'smtp_user' => 'teeseriesphilippines@gmail.com',
+		// 	'smtp_pass' => 'teeseriesph',
+		// 	'charset' => 'utf-8',
+		// 	'newline'   => "\r\n",
+		// 	'wordwrap'=> TRUE,
+		// 	'mailtype' => 'html'
+		// );
+        $this->load->library('email');
+        if(strpos(base_url(),'3mangs.com')){
+            $config = array(
+                'protocol' => 'smtp',
+                'smtp_host' => get_host(),
+                'smtp_port' => 587,
+                'smtp_user' => get_email(),
+                'smtp_pass' => get_emailpassword(),
+                'charset' => 'utf-8',
+                'newline'   => "\r\n",
+                'mailtype' => 'html'
+            );
+        }else{
+            $config = Array(
+            	'protocol' => 'smtp',
+            	'smtp_host' => 'ssl://smtp.googlemail.com',
+            	'smtp_port' => 465,
+            	'smtp_user' => 'teeseriesphilippines@gmail.com',
+            	'smtp_pass' => '@ugOct0810',
+            	'charset' => 'utf-8',
+            	'newline'   => "\r\n",
+            	'wordwrap'=> TRUE,
+            	'mailtype' => 'html'
+            );
+        }
+		// $config = Array(
+		// 	'protocol' => 'smtp',
+		// 	'smtp_host' => get_host(),
+		// 	'smtp_port' => 587,
+		// 	'smtp_user' => get_email(),
+		// 	'smtp_pass' => get_emailpassword(),
+		// 	'charset' => 'utf-8',
+		// 	'newline'   => "\r\n",
+		// 	'wordwrap'=> TRUE,
+		// 	'mailtype' => 'html'
+		// );
+		$this->email->initialize($config);
+		$this->email->set_newline("\r\n");  
+		$this->email->from('noreply@3mangs.com');
+		$this->email->to($emailto);
+		$this->email->subject($subject);
+		$this->email->message($message);
+		$this->email->send();
+        
+	}
     private function shipping_address_validation(){
         $validation = array(
 

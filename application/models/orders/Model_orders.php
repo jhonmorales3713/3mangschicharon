@@ -34,10 +34,41 @@ class Model_orders extends CI_Model {
 		return $this->db->query($query)->result_array();
     }
 
+	public function get_inventorydetails($Id,$uniqueID = '') {
+		$field = 'product_id';
+		if($uniqueID != ''){
+			$field = 'id';
+			$Id = $uniqueID;
+		}
+		$query=" SELECT * from sys_inventory
+		WHERE $field = ? AND status = 1 AND date_expiration >  CURRENT_DATE() ORDER BY date_expiration ASC";
+		$params = array($Id);
+		return $this->db->query($query, $params)->result_array();
+	}
 	public function processOrder($reference_num) {
 
-		$sql = "UPDATE `sys_orders` SET status_id = 2, `date_processed` = ? WHERE order_id = ? ";
+		$sql = "SELECT * from sys_orders WHERE order_id = ?";
+		
 		$bind_data = array(
+			$reference_num
+		);
+		$inventory_data = Array();
+		foreach($this->db->query($sql,$bind_data)->result_array() as $products){
+			foreach(json_decode($products['order_data']) as $key => $orderproduct){
+				$inventory_id = 0;
+				if(count($this->get_inventorydetails(en_dec('dec',$key))) > 0){
+					$inventory_id = $this->get_inventorydetails(en_dec('dec',$key))[0]['id'];
+					$current_inventory_count = $this->get_inventorydetails(en_dec('dec',$key))[0]['qty'];
+					$sql = 'UPDATE sys_inventory SET qty = '.($current_inventory_count - $orderproduct->qty).' WHERE id = '.$inventory_id;
+					$this->db->query($sql);
+				}
+				$inventory_data[]=Array('id' => $inventory_id,'qty' => $orderproduct->qty);
+			}
+		}
+		$sql = "UPDATE `sys_orders` SET status_id = 2,inventory_data = ?, `date_processed` = ? WHERE order_id = ?";
+		
+		$bind_data = array(
+			json_encode($inventory_data),
 			date('Y-m-d H:i:s'),
 			$reference_num
 		);
@@ -73,6 +104,26 @@ class Model_orders extends CI_Model {
 
 	public function confirmOrder($reference_num,$order_status,$reason = '') {
 
+		if($order_status == 0 || $order_status == 9){
+			$sql = "SELECT * from sys_orders WHERE order_id = ?";
+			
+			$bind_data = array(
+				$reference_num
+			);
+
+			$inventory_data = Array();
+			foreach($this->db->query($sql,$bind_data)->result_array() as $products){
+				foreach(json_decode($products['inventory_data']) as $key => $orderproduct){
+					// print_r($orderproduct);
+					if(count($this->get_inventorydetails('',$orderproduct->id)) > 0){
+						$current_inventory_count = $this->get_inventorydetails('',$orderproduct->id)[0]['qty'];
+						$sql = 'UPDATE sys_inventory SET qty = '.($current_inventory_count + $orderproduct->qty).' WHERE id = '.$orderproduct->id;
+						$this->db->query($sql);
+					}
+					// $inventory_data[]=Array('id' => $inventory_id,'qty' => $orderproduct->qty);
+				}
+			}
+		}
 		$sql = "UPDATE `sys_orders` SET status_id = ?";
 		$bind_data = array(
 			$order_status

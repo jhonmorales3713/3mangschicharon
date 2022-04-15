@@ -17,6 +17,11 @@ class Model_orders extends CI_Model {
         return $this->db->get('sys_orders')->num_rows();
     }
 
+    public function orders_details($reference_num){
+        $query = 'SELECT * FROM sys_orders WHERE order_id = "'.$reference_num.'"';
+		return $this->db->query($query)->result_array();
+    }
+    
     public function get_orders($customer_id,$order_id){
         $bind_data = [$customer_id];
         $sql = "SELECT 
@@ -36,7 +41,7 @@ class Model_orders extends CI_Model {
             array_push($bind_data,$order_id);
         }
 
-        $sql .= "ORDER BY
+        $sql .= " ORDER BY
                     o.date_created DESC";
 
         return $this->db->query($sql,$bind_data)->result_array();

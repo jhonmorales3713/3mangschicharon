@@ -136,7 +136,7 @@
                                 <div class="row">
                                     <div class="col-12 col-md-12">
                                         <label class="">Payment Status:</label>
-                                        <label id="tm_payment_status" class="green-text font-weight-bold"><?=($payment_method=='COD' && $order_details['status_id']==5)?'Paid':($order_details['status_id']==6||$order_details['status_id']==7)?'Cancelled':'Pending'?></label>
+                                        <label id="tm_payment_status" class="green-text font-weight-bold"><?=($payment_method=='COD' && $order_details['status_id']==5)?'Paid':($order_details['status_id']==6||$order_details['status_id']==7||$order_details['status_id']==0)?'Cancelled':'Pending'?></label>
                                     </div>
                                     <!-- <div class="col-12 col-md">
                                         

@@ -297,6 +297,9 @@ function validate_link($name,$usename){
 function get_status_ui($status_id){
     $status_string = "";
     switch($status_id){
+        case 0:
+            $status_string = '<span class="badge badge-pill badge-danger">Cancelled</span>';
+        break;
         case 1:
             $status_string = '<span class="badge badge-pill badge-warning">Pending</span>';
         break;

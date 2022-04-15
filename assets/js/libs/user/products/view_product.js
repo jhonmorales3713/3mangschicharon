@@ -23,7 +23,8 @@ $(function(){
                 product_id: product_id,
                 size: variant.size,
                 variant_id: variant.variant_id,
-                quantity: qty              
+                quantity: qty,
+                from_checkout: false
             },
             success: function(response){                
                 if(response.success){
@@ -62,10 +63,12 @@ $(function(){
                 quantity: qty,
                 order_now: true              
             },
-            success: function(response){                
+            success: function(response){
                 if(response.success){
                     $('.cart-items').text(response.cart_items);
-                   // window.location.href = base_url + 'user/cart/checkout/'+product_id+'/'+variant.variant_id+'/'+variant.size + '/' +qty;
+                    //console.log(response.message);
+
+                    window.location.href = base_url + 'user/cart/checkout/'+product_id+'/'+variant.variant_id+'/'+variant.size + '/' +qty+ '/' + true;
                     sys_toast_success(response.message);
                 }else{
                     sys_toast_error(response.message);

@@ -3,7 +3,7 @@
     <tbody>
         <tr>
             <td style="padding: 16px 0px 0 0">
-                <h3 style="color:#F6841F; margin-top: 0; font-size: 18px; font-family: 'Fira Sans', sans-serif;">Good day <?=$recipient_details->full_name;?>!</h3>
+                <h3 style="color:#F6841F; margin-top: 0; font-size: 18px; font-family: 'Fira Sans', sans-serif;">Good day <?=isset($customer_name)?get_company_name():$recipient_details->full_name;?>!</h3>
             </td>
         </tr>
     </tbody>
@@ -12,9 +12,16 @@
     <tbody>
         <tr>
             <td>
-                <p style="color: #222; margin-top: 0;">Your order #<?= $reference_num; ?> has been confirmed. Our Shop has also
-          been notified to start processing your order and will update you once it's on its way. Thank you for shopping with
-          us and hope to see you soon</p>
+                <p style="color: #222; margin-top: 0;">
+                <?php if(isset($customer_name)){ ?>
+                    Your order #<?= $reference_num; ?> has been placed. Customer has also
+                    been notified to start processing order and will update them once it's on its way.
+                  <?php }else{ ?>
+                    Your order #<?= $reference_num; ?> has been confirmed. Our Shop has also
+                    been notified to start processing your order and will update you once it's on its way. Thank you for shopping with
+                    us and hope to see you soon
+                 <?php }?>
+                 </p>
             </td>
         </tr>
     </tbody>
@@ -71,7 +78,6 @@
           </tr>
         </tbody>
       </table>
-
       <table class="order-status">
         <tbody>
           <tr>
@@ -80,7 +86,7 @@
             <td style="width: 100%;">
               <ul style="list-style-type: circle; padding-left: 0; margin-top: 0; vertical-align:top; margin-bottom: 40px">
                 <li style="list-style: none; color: #222;">
-                  We have verified your order
+                  <?=isset($customer_name)?$customer_name.' has placed an order.':' You have placed an order'?> 
                 </li>
                 <li style="list-style: none; font-size: 12px; color: gray;">
                   <?= date("M d, Y h:i a", strtotime($order_data_main[0]['date_created'])); ?>
