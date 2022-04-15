@@ -1,7 +1,7 @@
 <?php
 
 defined('BASEPATH') OR exit('No direct script access allowed');
-
+date_default_timezone_set('Asia/Manila');
 
 class Main_products extends CI_Controller {
 
@@ -43,6 +43,25 @@ class Main_products extends CI_Controller {
     }
 
     
+    public function get_inventorydetails($id)
+    {
+        $row = $this->model_products->get_inventorydetails($id);
+        $response = [
+            'success' => true,
+            'result' => $row
+        ];
+        echo json_encode($response);
+    }
+    public function check_product_orders(){
+        $id = $this->input->post('id');
+        $order_count = $this->model_products->check_product_orders($id);
+
+        echo json_encode($order_count);
+    }
+    public function check_expired_stocks(){
+        $id = $this->input->post('id');
+        echo json_encode($this->model_products->check_expired_stocks($id));
+    }
     public function get_productdetails($id)
     {
 
@@ -171,6 +190,7 @@ class Main_products extends CI_Controller {
         
             $data_admin = array(
                 'token'               => $token,
+                'admin'               => true,
                 'main_nav_id'         => $main_nav_id, //for highlight the navigation
                 'main_nav_categories' => $this->model_dev_settings->main_nav_categories()->result(),
                 'categories'          => $this->model_products->get_category_options(),
@@ -252,6 +272,7 @@ class Main_products extends CI_Controller {
             $data_admin = array(
                 'token'               => $token,
                 'branchid'            => $branchid,
+                'admin'               => true,
                 'main_nav_id'         => $main_nav_id, //for highlight the navigation
                 'main_nav_categories' => $this->model_dev_settings->main_nav_categories()->result(),
                 'shopid'              => $this->session->userdata('sys_shop_id'),
@@ -292,6 +313,7 @@ class Main_products extends CI_Controller {
                 'prev_product'        => $prev_product,
                 'next_product'        => $next_product,
                 'Id'                  => $Id,
+                'admin'               => true,
                 'parent_Id'           => $parent_Id,
                 'shops'               => $this->model_products->get_shop_options(),
                 'categories'          => $this->model_products->get_category_options(),
@@ -803,10 +825,10 @@ class Main_products extends CI_Controller {
             $featured_product =  $this->input->post('featured_prod_isset');
             $featured_product_arrangment =  $this->input->post('entry-feat-product-arrangement');
     		$success = $this->model_products->save_variant($this->input->post(), $imgArr,$featured_product,$featured_product_arrangment);
-            $this->model_products->updateParentProductInventoryQty($this->input->post('f_parent_product_id'));
+            //$this->model_products->updateParentProductInventoryQty($this->input->post('f_parent_product_id'));
             $response['success'] = $success;
             $response['message'] = "Variant created successfully.";
-            $response['parent_product_id'] = $this->input->post('f_parent_product_id');
+            $response['parent_product_id'] = en_dec('en',$this->input->post('f_parent_product_id'));
             $this->audittrail->logActivity('Product List - Variant', $this->input->post('f_itemname').' successfully added to Products.', 'add', $this->session->userdata('username'));
         }
         echo json_encode($response);
@@ -1482,11 +1504,143 @@ class Main_products extends CI_Controller {
 
         generate_json($data);
     }
+    public function required_if($fields,$validate){
+        $required_field = explode(',',$validate)[0];
+        $name = explode(',',$validate)[1];
+        $target_field = explode(',',$validate)[2];
+        $min_value = explode(',',$validate)[3];
+        $max_value = 0;
+        if($name == 'Discount Value'){
+            $max_value = 1;
+        }
+        
+        if($this->input->post($required_field) && $max_value == 1  && $this->input->post('f_discount_option') == 'p' && ($this->input->post($target_field) > $max_value || $this->input->post($target_field) <= $min_value)){
+            
+            $this->form_validation->set_message('required_if', 'Percentage value must not exceed 1 and must not be less than '.$min_value);
+            return false;
+        }
 
+        if($this->input->post($required_field) && $this->input->post($target_field) <= $min_value){
+            $this->form_validation->set_message('required_if', $name.' must not be less than '.$min_value);
+            return false;
+        }
+        return true;
+    }
+    public function store_inventory(){
+        $data = $this->input->post();
+        
+		$validation = array(
+            array('f_days','Days before expiration','callback_required_if[f_discount_product,Days before expiration,f_days,0]'),
+            array('f_discount_value','Discount Value','callback_required_if[f_discount_product,Discount Value,f_discount_value,0]')
+            // array('main_logo','Main Logo','required'),
+            // array('main_icon','Main Icon','required'),
+            // array('background_image','Background Image','required'),
+            // array('placeholder_image','Placeholder  Image','required'),
+        );
+        $this->form_validation->set_data($data); 
+        foreach ($validation as $value) {
+            $this->form_validation->set_rules($value[0],$value[1],$value[2]);
+            
+       
+        }
+        if($this->form_validation->run() == FALSE){
+            $response = [
+                'environment' => ENVIRONMENT,
+                'success'     => 0,
+                'message'     => explode("\n",validation_errors())
+            ];
+
+            echo json_encode($response);
+            die();
+        }
+        if($this->input->post('inventory_manufactured') == '' || $this->input->post('inventory_manufactured') != null){
+            $this->model_products->update_inventory($data,$data['product_id']);
+            
+            $response = [
+                'environment' => ENVIRONMENT,
+                'success'     => 1,
+                'qty'     => 0,
+                'message'     => array('Inventory Saved.')
+            ];
+            echo json_encode($response);
+            die();
+            // $response = [
+            //     'environment' => ENVIRONMENT,
+            //     'success'     => 0,
+            //     'message'     => array('Inventory List must be filled atleast 1')
+            // ];
+
+            // echo json_encode($response);
+            // die();
+        }else{
+            $inventory_qty = $this->input->post('inventory_qty');
+            $inventory_manufactured = $this->input->post('inventory_manufactured');
+            $inventory_expiration = $this->input->post('inventory_expiration');
+            $userdata = Array();
+            $valid_count = 0;
+            //$this->session->unset_userdata('inventory');
+            for($i = 0; $i < count($inventory_qty) ; $i++){
+                if($inventory_qty[$i] != '' && $inventory_manufactured[$i] != '' && $inventory_expiration[$i] != ''){
+                    if($inventory_manufactured[$i] >= $inventory_expiration[$i]){
+                        
+                        $response = [
+                            'environment' => ENVIRONMENT,
+                            'success'     => 0,
+                            'message'     => array('Expiration must be greated than manufactured data')
+                        ];
+                        //$this->session->unset_userdata('inventory');
+                        echo json_encode($response);
+                        die();
+                    }
+                    $userdata[] = array('qty'=>$inventory_qty[$i],'manufactured'=>$inventory_manufactured[$i],'expiration'=>$inventory_expiration[$i]);
+                    $occurence= 0;
+                    for($ii = 0; $ii < count($userdata) ; $ii++){
+                        if($userdata[$ii]['manufactured'] == $inventory_manufactured[$i] && $userdata[$ii]['expiration'] ==  $inventory_expiration[$i]){
+                            $occurence++;
+                        }
+                        if($inventory_expiration[$i] > date('Y-m-d')){
+                            $valid_count+=$inventory_qty[$i];
+                        }
+                    }
+                    if($occurence > 1){
+                        $response = [
+                            'environment' => ENVIRONMENT,
+                            'success'     => 0,
+                            'message'     => array('You cannot have identical row with the same manufactured & expiration date')
+                        ];
+                        //$this->session->unset_userdata('inventory');
+                        echo json_encode($response);
+                        die();
+                    }
+                }else{
+                    $response = [
+                        'environment' => ENVIRONMENT,
+                        'success'     => 0,
+                        'message'     => array('Inventory field row must be filled, else you must delete it.')
+                    ];
+                    //$this->session->unset_userdata('inventory');
+                    echo json_encode($response);
+                    die();
+                }
+            }
+            $this->model_products->update_inventory($data,$data['product_id']);
+            $response = [
+                'environment' => ENVIRONMENT,
+                'success'     => 1,
+                'qty'     => $valid_count,
+                'message'     => array('Inventory Saved.')
+            ];
+            echo json_encode($response);
+            die();
+            //$this->session->set_userdata('inventory',$userdata);
+            
+        }
+    }
 
     public function update_products($token = '', $Id)
     {
         $this->isLoggedIn();
+        $Id = en_dec('dec',$Id);
         $this->checkProductStatus($Id);
         if($this->loginstate->get_access()['products']['update'] == 1) {
             $member_id = $this->session->userdata('sys_users_id');
@@ -1507,6 +1661,7 @@ class Main_products extends CI_Controller {
                 'prev_product'        => $prev_product,
                 'next_product'        => $next_product,
                 'Id'                  => $Id,
+                'admin'               => true,
                 'shops'               => $this->model_products->get_shop_options(),
                 'categories'          => $this->model_products->get_category_options(),
                 'get_productdetails'  => $this->model_products->get_productdetails($Id),

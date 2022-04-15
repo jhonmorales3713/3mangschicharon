@@ -4,6 +4,39 @@ $(function(){
 	var token = $('#token').val();
 	var ini      = $(".body").data('ini');
 	// start - for loading a table
+	$(document).on('click',".action_disable",(event)=>{
+		id = $(this).data('value');
+		$.ajax({
+			type:'post',
+			url:base_url+'admin/Main_products/check_product_orders',
+			data:{'id':event.target.dataset.value},
+			success:function(data){
+				if(data > 0){
+					sys_toast_error("Manage Inventory by moving out of expired stocks from inventory of product.");
+				}else{
+					$("#disable_modal").modal('show');
+				}
+			}
+		});
+	});
+	
+	$(document).on('click',".action_delete",(event)=>{
+		id = $(this).data('value');
+		$.ajax({
+			type:'post',
+			url:base_url+'admin/Main_products/check_product_orders',
+			data:{'id':event.target.dataset.value},
+			success:function(data){
+				if(data == 1){
+
+					sys_toast_error("You cannot delete a product with active order");
+				}else{
+					$("#delete_modal").modal('show');
+				}
+			}
+		});
+	});
+	
 	function fillDatatable(){
 		var _record_status 	= $("select[name='_record_status']").val();
 		var _name 			= $("input[name='_name']").val();
@@ -22,9 +55,34 @@ $(function(){
 				"infoFiltered": ""
 			},
 			"columnDefs": [
-				{ targets: 6, orderable: false, "sClass":"text-center"},
-				{ responsivePriority: 1, targets: 6 },
-			],
+				{ targets: 7, orderable: false, "sClass":"text-center"},
+				{ responsivePriority: 1, targets: 7 },
+			],createdRow: function( row, data, dataIndex ) {
+				//console.log(row);
+				var data2 = $('#table-grid-product').DataTable().row(row).data();
+				if(data2[6]=='Expired Stocks'){
+					$(row).addClass( 'bg-danger text-white' );
+			   	}
+				if(data2[6]=='Expiring Soon'){
+					$(row).addClass( 'bg-warning' );
+		   		}
+				if(data2[6]=='Out of Stocks'){
+					$(row).addClass( 'bg-secondary' );
+				}
+				// if ( data['jobStatus'] == "red" ) {
+				// 	$(row).addClass( 'lightRed' );
+				// }else if(data['jobStatus'] == "green"){
+				// 	$(row).addClass( 'lightGreen' );
+				// }else if(data['jobStatus'] == "amber"){
+				// 	$(row).addClass( 'lightAmber' );
+				// }
+			},
+			"columnDefs": [
+				{
+					"targets": [ 6 ],
+					"visible": false,
+					"searchable": false
+				}],
 			"ajax":{
 				type: "post",
 				url:base_url+"admin/Main_products/product_table", // json datasource

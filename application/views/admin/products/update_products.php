@@ -76,6 +76,86 @@
         
     </div>
 </div>
+
+<div class="modal fade" id="inventory_modal" tabindex="-1" data-backdrop="static" data-keyboard="false"  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header secondary-bg white-text d-flex align-items-center">
+                <h3 class="modal-title" id="exampleModalLabel">Product Inventory</h3>
+            </div>
+            <div class="modal-body">
+                <form name="form_inventory" id="form_inventory">
+                    
+                    <!-- <hr>
+                    <div class="row">
+                        <div class="col-12 col-md-4">
+                            <div class="form-group">
+                                <label>Quantity</label>
+                                <input type="text" name="f_qty" id="f_qty" class="form-control" value="0" >
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <div class="form-group">
+                                <label>Date Manufactured</label>
+                                
+                                <input type="text" name="f_date_manufactured"autocomplete="false" id="f_date_manufactured" class="form-control datetimepicker-input" data-toggle="datetimepicker" data-target="#datepicker">
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <div class="form-group">
+                                <label>Date Expiration</label>
+                                <input type="text" name="f_date_expiration"autocomplete="false" id="f_date_expiration" class="form-control  datetimepicker-input" data-toggle="datetimepicker" data-target="#datepicker">
+                            </div>
+                        </div>
+                    </div>-->
+                    
+                    <div class="row">
+                        <div class="col-12 d-flex align-items-end flex-column">
+                            <button class="btn btn-primary" type="button" id="btnAddInventory">Add to Inventory</button>
+                        </div>
+                    </div> 
+                    <div class="row">
+                        <div class="col-md-12 table-responsive ">
+                            <table class='table table-striped table-hover table-bordered table-grid display nowrap'>
+                                <thead>
+                                    <tr>
+                                        <th scope='col'><b>#</b></th>
+                                        <th scope='col'><b>Quantity</b></th>
+                                        <th scope='col'><b>Date Manufactured</b></th>
+                                        <th scope='col'><b>Date Expiration</b></th>
+                                        <th scope='col'><b>Action</b></th>
+                                    </tr>
+                                </thead>
+                                <tbody id='tbody_inventory' class='tbody_inventory'>
+                                    <tr>
+                                        <td colspan="5" class="td-center">No existing inventory.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row mb-5">
+                        <div class="col-2">
+                            <span class="bg-danger p-1 mr-1" style="width:100px !important;">&nbsp;&nbsp;&nbsp;&nbsp;</span>Expired Stocks
+                        </div>
+                        <div class="col-2">
+                            <span class="bg-warning p-1 mr-1" style="width:100px !important;">&nbsp;&nbsp;&nbsp;&nbsp;</span>Expiring soon
+                        </div>
+                        <div class="col-2">
+                            <span class="bg-secondary p-1 mr-1" style="width:100px !important;">&nbsp;&nbsp;&nbsp;&nbsp;</span>Out of Stocks
+                        </div>
+                    </div>
+                </form>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" id="btnCloseInventory" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-id="<?=$Id?>" id="btnSaveinventory" >Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Modal -->
 
 <div class="modal fade" id="show_feature_prod_modal" tabindex="-1" data-backdrop="static" data-keyboard="false"  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -243,7 +323,7 @@
                                                     <input type="text" class="form-control" name="f_otherinfo" id="f_otherinfo" placeholder="250g/pack, Small Size" >
                                                 </div>
                                             </div> -->
-                                            <div class="col-md-6">
+                                            <div class="col-md-6 parentInvDiv">
                                                 <div class="form-group">
                                                     <label for="f_price" class="control-label">Price*</label>
                                                     <input type="text" class="form-control allownumericwithdecimal" name="f_price" id="f_price" >
@@ -255,11 +335,11 @@
                                                     <input type="text" class="form-control allownumericwithdecimal" name="f_compare_at_price" id="f_compare_at_price" value="0">
                                                 </div>
                                             </div> -->
-                                            <div class="col-md-6">
+                                            <div class="col-md-6 parentInvDiv">
                                                 <div class="form-group">
                                                     <label for="f_price" class="control-label">Product Tags</label><br/>
                                                     <!-- <small>List tags separated by comma (,)</small> -->
-                                                    <input type="text" class="form-control" name="f_tags" id="f_tags" placeholder="(Optional)">
+                                                    <input type="text" class="form-control tags" name="f_tags" id="f_tags" placeholder="(Optional)">
                                                 </div>
                                             </div>
 
@@ -286,7 +366,8 @@
                         </div>
                     </div>                         
                     <div class="col-12 col-lg-5 mb-3 ">
-                        <div class="card row parentInvDiv">
+                        
+                        <div class="card row mb-3 parentInvDiv">
                             <div class="card-header">
                                 <h3 class="card-title">Inventory</h3>
                             </div>
@@ -298,33 +379,36 @@
                                             <input type="text" class="form-control" name="f_inv_sku" id="f_inv_sku">
                                         </div>
                                     </div>
-    
+        
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="f_inv_barcode" class="control-label">Barcode (ISBN, UPC, GTIN, etc.)</label>
                                             <input type="text" class="form-control" name="f_inv_barcode" id="f_inv_barcode">
                                         </div>
                                     </div>
-    
+        
                                     <div hidden class="col-md-6">
                                         <div class="form-group">
                                             <label for="f_uom" class="control-label">UOM ID</label>
-                                            <input type="text" class="form-control" name="f_uom" id="f_uom" value="0">
+                                            <input type="text" class="form-control" name="f_uom" id="f_uom" value="0" placeholder="UOM ID">
                                         </div>
                                     </div> -->
 
-                                    <div class="col-md-6">
-                                        <div class="form-group">
+                                    <div class="col-md-12">
+                                        <!-- <div class="form-group"> -->
                                             <input type="hidden" name="f_max_qty_isset" value="0">
                                             <input type="checkbox" class="form-control-input" id="f_max_qty_isset" name="f_max_qty_isset" value="1" checked>
                                             <label class="form-control-label" for="max_qty_isset">Max quantity per checkout</label>
-                                        </div>
+                                        <!-- </div> -->
+                                    </div>
+
+                                    <div class="col-md-12 maxqtydiv">
                                         <div class="form-group">
                                             <!-- <label>Max quantity per checkout</label> -->
                                             <input type="number" class="form-control" name="f_max_qty" id="f_max_qty" placeholder="Max quantity" value="1">
                                         </div>
                                     </div>
-    
+        
                                     <!-- <div class="col-md-12">
                                         <div class="form-group">
                                             <input type="hidden" name="f_tq_isset" value="0">
@@ -337,38 +421,24 @@
                                             
                                         </div>
                                     </div> -->
-    
-
-                                    <!-- <div class="col-md-6 nostocksdiv hidden">
                                     
-                                        <?php if($branchid == 0){?>
-                                            <div class="form-group">
-                                                <label>Shop Branch:</label>
-                                                <select class="form-control" name="f_delivery_location" id="f_delivery_location">
-                                                    <option value="0" selected>Main</option>
-                                                    <?php foreach($get_branchdetails as $row){?>
-                                                        <option value="<?=$row['id']?>"><?=$row['branchname']?></option>
-                                                    <?php }?>
-                                                </select>
-                                            </div>
-                                        <?php }else{?>
-                                            <div class="form-group">
-                                                <label>Shop Branch:</label>
-                                                <select class="form-control" name="f_delivery_location" id="f_delivery_location">
-                                                    <?php foreach($get_branchdetails as $row){?>
-                                                        <option value="<?=$row['id']?>"><?=$row['branchname']?></option>
-                                                    <?php }?>
-                                                </select>
-                                            </div>
-                                        <?php }?>
+                                    <!-- <div class="col-md-6 nostocksdiv hidden" id="nostocksdiv">
+                                        <div class="form-group">
+                                            <label>Shop Branch:</label>
+                                            <select class="form-control" name="f_delivery_location" id="f_delivery_location">
+                                                <option value="0" selected>Main</option>
+                                            </select>
+                                        </div>
+                                    </div>-->
 
-                                    </div> -->
-
-                                    <div class="col-md-6 nostocksdiv mt-3" id="nostocksdiv">
+                                    <div class="col-md-12 nostocksdiv" id="nostocksdiv2">
                                         <div class="form-group divnostock" id="div_no_of_stocks_0">
                                             <label>Available quantity</label>
-                                            <input type="number" class="form-control parentProductStock" name="f_no_of_stocks" id="f_no_of_stocks" placeholder="Number of stocks" >
+                                            <input type="number" disabled class="form-control parentProductStock" name="f_no_of_stocks" id="f_no_of_stocks" placeholder="Number of stocks" value="0">
                                         </div>
+                                    </div>
+                                    <div class="col-md-6 nostocksdiv" >
+                                        <button class="btn btn-primary" type="button" id="btninventory" > Manage Inventory</button>
                                     </div>
 
                                 </div>
@@ -528,10 +598,10 @@
                                                     <td class="variant_tr_<?=$row['id']?>"><span class="variant_status_label_<?=$row['id']?>"><?=$variant_status;?></span><input type="hidden" class="form-control variant_status_<?=$row['id']?>" name="variant_status[]" value="<?=$row['enabled']?>" <?=$readonly;?>></td>
                                                     <td style="width:25%;"class="td-center variant_tr_<?=$row['id']?>">
                                                         <?php if($this->loginstate->get_access()['products']['update'] == 1){ ?>
-                                                            <a  href="<?=base_url('admin/Main_products/update_variants/'.$token.'/'.$row['id'].'/'.$Id);?>" class='btn btn-primary' data-value='<?=$row['id']?>'><i class='fa fa-pencil-alt'></i></a>&nbsp;
+                                                            <a  href="<?=base_url('admin/Main_products/update_variants/'.$token.'/'.$row['id'].'/'.$Id);?>" class='btn btn-primary' data-value='<?=$row['id']?>'><i class='fa fa-pencil'></i></a>&nbsp;
                                                         <?php }?>
                                                         <?php if($this->loginstate->get_access()['products']['delete'] == 1){ ?>
-                                                            <button type='button' id='removeVariantSpec' class='btn btn-danger' data-value='<?=$row['id']?>'><i class='fa fa-trash'></i></button>
+                                                            <button type='button' id='removeVariantSpec' class='btn btn-danger' data-value='<?=$row['id']?>'><i class='fa fa-trash-o'></i></button>
                                                         <?php }?>
                                                         <?php if($this->loginstate->get_access()['products']['disable'] == 1){ ?>
                                                             <?php if($row['enabled'] == 1){ ?>

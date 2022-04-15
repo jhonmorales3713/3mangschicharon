@@ -20,12 +20,27 @@
             <div class="col-12">
                 <strong><?= $product['name']; ?></strong><br><br>
                 <small><b>Product Description:</b></small><br>
-                <small>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</small>
+                <small><?=$product['summary']?></small>
                 
                 <hr>
 
-                <?php foreach($product['variants'] as $variant){ ?>
-                    <span class="badge badge-info size-select" data-variant_id="<?= en_dec('en',$variant['id']); ?>" data-size="<?= $variant['name']; ?>"><?= $variant['name']; ?></span> <span>&#8369; <?= number_format($variant['price'],2); ?></span><br>
+                <?php foreach($product['variants'] as $variant){ 
+                    $inv = 0;
+                    $inventories = $this->model_products->get_inventorydetails($variant['id']);
+                    foreach($inventories as $inventory){
+                        $now = time();
+                        $expiration = strtotime($inventory['date_expiration']);
+                        if(date('Y-m-d',$expiration) > date('Y-m-d') && $variant['id'] ==  $inventory['product_id']){
+                            $inv += $inventory['qty'];
+                            //(round(($expiration - $now)/(60*60*24))+1);
+                        }
+                    }
+                    if($inv == 0){ ?>
+                        <span class="badge" data-variant_id="<?= en_dec('en',$variant['id']); ?>" data-size="<?= $variant['name']; ?>"><?= $variant['name']; ?></span> <span>&#8369; <?= number_format($variant['price'],2); ?></span><span class="ml-2 text-danger">SOLD OUT</span><br>
+                    <?php }else{ ?>
+                        <span class="badge  badge-info size-select" data-variant_id="<?= en_dec('en',$variant['id']); ?>" data-size="<?= $variant['name']; ?>"><?= $variant['name']; ?></span> <span>&#8369; <?= number_format($variant['price'],2); ?></span> <br>
+                    <?php } ?>
+                    
                 <?php } ?>
 
                 <br><br>
@@ -37,10 +52,10 @@
             </div>
             <div class="row col-12">
                 <div class="col-lg-6 col-md-6 col-sm-12">
-                    <button class="btn btn-primary order-now form-control mt5" data-product_id="<?= $product['id'] ?>">ORDER NOW</button>                   
+                    <button class="btn btn-primary order-now form-control mt5" data-product_id="<?= $product['id'] ?>" data-max_checkout="<?=$product['max_qty'];?>">ORDER NOW</button>                   
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12">
-                    <button class="btn btn-primary add-to-cart form-control mt5" data-product_id="<?= $product['id'] ?>" data-category_id="<?= $product['category_id'] ?>">ADD TO CART</button>
+                    <button class="btn btn-primary add-to-cart form-control mt5" data-product_id="<?= $product['id'] ?>"  data-max_checkout="<?=$product['max_qty'];?>" data-category_id="<?= $product['category_id'] ?>">ADD TO CART</button>
                 </div>                    
             </div>    
             <hr>

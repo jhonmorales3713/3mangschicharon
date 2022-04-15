@@ -15,20 +15,19 @@ class Model_products extends CI_Model {
 
 		$args['f_status']  = ($args['f_itemid'] == '') ? 2 : $args['f_status'];
 
-		$sql = "INSERT INTO sys_products (`category_id`,`name`,`price`, `tags`, `no_of_stocks`, `max_qty_isset`, `max_qty`, `summary`, `img`, `img_2`, `img_3`, `img_4`, `img_5`, `img_6`, `enabled`, `date_created`, `date_updated`, `variant_isset`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+		$sql = "INSERT INTO sys_products (`category_id`,`name`,`price`, `tags`, `max_qty_isset`, `max_qty`, `summary`, `img`, `img_2`, `img_3`, `img_4`, `img_5`, `img_6`, `enabled`, `date_created`, `date_updated`, `variant_isset`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
 
 		if($args['f_max_qty'] == null || $args['f_max_qty'] == ''){
 			$args['f_max_qty'] = 1;
 		}
 		// print_r($args);
 		// die();
-		
+		$date_created = date('Y-m-d H:i:s');
 		$bind_data = array(
 			$args['f_category'],
 			$args['f_itemname'],
 			$args['f_price'],
 			$args['f_tags'],
-			$args['f_no_of_stocks'],
 			$args['f_max_qty_isset'],
 			$args['f_max_qty'],
 			$args['f_summary'],
@@ -39,14 +38,32 @@ class Model_products extends CI_Model {
 			'none',
 			'none',
 			1,
-			date('Y-m-d H:i:s'),
+			$date_created,
 			date('Y-m-d H:i:s'),
 			$args['f_variants_isset']
 		);
-
 		$this->db->query($sql, $bind_data);
+		$id =$this->db->query("SELECT id from sys_products where date_created = '".$date_created."' order by date_created  DESC limit 1")->row()->id;
 
-		$id =$this->db->query("SELECT id from sys_products order by date_created DESC limit 1")->row()->id;
+		$inventory_qty = isset($args['inventory_qty']) ? ($args['inventory_qty']) : '';
+		$inventory_manufactured = isset($args['inventory_manufactured']) ? $args['inventory_manufactured'] : '';
+		$inventory_expiration = isset($args['inventory_expiration']) ? $args['inventory_expiration'] : '';
+		$userdata = Array();
+		//$this->session->unset_userdata('inventory');
+		if(isset($args['inventory_qty'])){
+			for($i = 0; $i < count($inventory_qty) ; $i++){
+				$sql = "INSERT INTO sys_inventory (`product_id`, `qty`, `date_manufactured`,`date_expiration`, `date_created`) VALUES (?,?,?,?,?) ";
+				$bind_data = array(
+					$id,
+					$inventory_qty[$i],
+					$inventory_manufactured[$i],
+					$inventory_expiration[$i],
+					$date_created
+				);
+
+				$this->db->query($sql, $bind_data);
+			}
+		}
 		foreach($imgArr as $key => $value){
 			if($value != ""){
 				$sql = "INSERT INTO sys_products_images (`product_id`, `arrangement`, `filename`,`date_created`, `status`) VALUES (?,?,?,?,?) ";
@@ -70,6 +87,49 @@ class Model_products extends CI_Model {
 		$this->db->query($sql, $bind_data);
 		$data = array('success'=>true,'id'=>$id);
 		return $data;
+	}
+	public function update_inventory($data,$id){
+		if(isset($data['inventory_manufactured']) != false){
+			if(isset($data['tomoveout'])){
+				
+				for($i = 0;$i<count(explode(',',$data['tomoveout']));$i++){
+					$sql = "UPDATE sys_inventory SET status = 3,date_updated = '".date('Y-m-d H:i:s')."' where id = ".explode(',',$data['tomoveout'])[$i];
+					$this->db->query($sql);
+				}
+			}else{
+					
+				for($i=0;$i < count($data['inventory_manufactured']);$i++){
+					$sql = 'UPDATE sys_inventory SET qty = ?, date_manufactured = ?, date_expiration = ?,date_updated = ? where id = ? and product_id = ?';
+					$bind_data = array( 
+						number_format($data['inventory_qty'][$i],2),
+						$data['inventory_manufactured'][$i],
+						$data['inventory_expiration'][$i],
+						date('Y-m-d H:i:s'),
+						$data['inventory_id'][$i],
+						$id
+					);
+					$this->db->query($sql,$bind_data);
+					$row = ($this->db->affected_rows());
+					if($row == 0 && !in_array($id,explode(',',$data['todelete']))){
+						$sql = "INSERT INTO sys_inventory (`product_id`, `qty`, `date_manufactured`,`date_expiration`, `date_created`) VALUES (?,?,?,?,?) ";
+						$bind_data = array(
+							$id,
+							$data['inventory_qty'][$i],
+							$data['inventory_manufactured'][$i],
+							$data['inventory_expiration'][$i],
+							date('Y-m-d H:i:s')
+						);
+						$this->db->query($sql, $bind_data);
+					}
+				}
+			}
+		}
+		if($data['todelete']!=''){
+			for($i = 0;$i<count(explode(',',$data['todelete']));$i++){
+				$sql = "UPDATE sys_inventory SET status = 0 where id = ".explode(',',$data['todelete'])[$i];
+				$this->db->query($sql);
+			}
+		}
 	}
 
 	public function getVariants($product_id) {
@@ -282,8 +342,9 @@ class Model_products extends CI_Model {
 		$args['f_status']  = $args['f_status'];
 
 		//delivery areas condition. only set to jcww 
-		$sql = "INSERT INTO sys_products (`category_id`,`name`,`price`, `no_of_stocks`, `max_qty_isset`, `max_qty`, `summary`, `img`, `img_2`, `img_3`, `img_4`, `img_5`, `img_6`, `enabled`, `date_created`, `date_updated`, `parent_product_id`, `variant_isset`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+		$sql = "INSERT INTO sys_products (`category_id`,`name`,`price`, `max_qty_isset`, `max_qty`, `summary`, `img`, `img_2`, `img_3`, `img_4`, `img_5`, `img_6`, `enabled`, `date_created`, `date_updated`, `parent_product_id`, `variant_isset`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
 
+		$date_created = date('Y-m-d H:i:s');
 		if($args['f_max_qty'] == null || $args['f_max_qty'] == ''){
 			$args['f_max_qty'] = 1;
 		}
@@ -294,7 +355,6 @@ class Model_products extends CI_Model {
 			$args['f_category'],
 			$args['f_itemname'],
 			$args['f_price'],
-			$args['f_no_of_stocks'],
 			$args['f_max_qty_isset'],
 			$args['f_max_qty'],
 			$args['f_summary'],
@@ -305,15 +365,32 @@ class Model_products extends CI_Model {
 			'none',
 			'none',
 			1,
-			date('Y-m-d H:i:s'),
+			$date_created,
 			date('Y-m-d H:i:s'),
 			$args['f_parent_product_id'],
 			$args['f_variants_isset']
 		);
-
 		$this->db->query($sql, $bind_data);
-		$id =$this->db->query("SELECT id from sys_products order by date_created DESC limit 1")->row()->id;
-		
+		$id =$this->db->query("SELECT id from sys_products where date_created = '".$date_created."' order by date_created  DESC limit 1")->row()->id;
+		$inventory_qty = isset($args['inventory_qty']) ? ($args['inventory_qty']) : '';
+		$inventory_manufactured = isset($args['inventory_manufactured']) ? $args['inventory_manufactured'] : '';
+		$inventory_expiration = isset($args['inventory_expiration']) ? $args['inventory_expiration'] : '';
+		$userdata = Array();
+		//$this->session->unset_userdata('inventory');
+		if(isset($args['inventory_qty'])){
+			for($i = 0; $i < count($inventory_qty) ; $i++){
+				$sql = "INSERT INTO sys_inventory (`product_id`, `qty`, `date_manufactured`,`date_expiration`, `date_created`) VALUES (?,?,?,?,?) ";
+				$bind_data = array(
+					$id,
+					$inventory_qty[$i],
+					$inventory_manufactured[$i],
+					$inventory_expiration[$i],
+					$date_created
+				);
+
+				$this->db->query($sql, $bind_data);
+			}
+		}
 		foreach($imgArr as $key => $value){
 			
 			if($value != ""){
@@ -425,11 +502,26 @@ class Model_products extends CI_Model {
 		$this->db->query($sql, $bind_data);
 
 	}
+	public function get_inventorydetails($Id) {
+		$query=" SELECT * from sys_inventory
+		WHERE product_id = ? ";
+		$params = array($Id);
+		return $this->db->query($query, $params)->result_array();
+	}
 	public function get_productdetails($Id) {
 		$query=" SELECT a.*, d.shopcode, d.shopname
 		FROM sys_products AS a 
-		LEFT JOIN sys_shops AS d ON 1 = d.id 
+		LEFT JOIN sys_shops AS d ON 1 = d.id
 		WHERE a.Id = ? AND a.enabled > 0;";
+		
+		$params = array($Id);
+		return $this->db->query($query, $params)->row_array();
+	}
+	public function get_productdetailsinventory($Id) {
+		$query=" SELECT a.*, d.shopcode, d.shopname,sum(b.qty) as no_of_stocks
+		FROM sys_products AS a 
+		LEFT JOIN sys_shops AS d ON 1 = d.id RIGHT JOIN sys_inventory b on b.product_id = a.id
+		WHERE a.Id = ? AND a.enabled > 0 and b.date_expiration >  CURRENT_DATE() and b.status = 1 GROUP by a.id;";
 		
 		$params = array($Id);
 		return $this->db->query($query, $params)->row_array();
@@ -488,6 +580,35 @@ class Model_products extends CI_Model {
 		}
 	}
 
+	public function check_product_orders($id){
+		$active = 0;
+		$query='SELECT * from sys_orders WHERE status_id NOT IN (0,6,7,9)';
+		foreach($this->db->query($query)->result_array() as $order){
+			$matched_product = false;
+			foreach(json_decode($order['product_id']) as $product){
+				$get_product 	   = $this->check_products($product)->row_array();
+				if($product == $id || $get_product['parent_product_id'] == $id){
+					$matched_product =true;
+				}
+			}
+			if($matched_product){
+				$active++;
+			}
+		}
+		
+		return $active;
+	}
+
+	public function check_expired_stocks($id){
+		$expired_count = 0;
+		foreach($this->get_inventorydetails($id) as $inventory){
+			if(date('Y-m-d',strtotime($date['date_expiration']))>=date('Y-m-d')){
+				$expired_count++;
+			}
+		}
+		return $expired_count;
+	}
+
     public function getFeaturedProductCount(){
         $query="SELECT * FROM sys_products WHERE enabled = '1' AND featured_prod_isset = '1' ";
         return $this->db->query($query)->num_rows();
@@ -524,22 +645,25 @@ class Model_products extends CI_Model {
 		//
 
 		if (!$exportable) {
-			$sql = "SELECT a.*, code.shopcode, c.category_name, no_of_stocks FROM sys_products a 
+			$sql = "SELECT a.*, code.shopcode, c.category_name,sum(d.qty) as no_of_stocks FROM sys_products a 
                 LEFT JOIN sys_shops b ON 1 = b.id AND b.status > 0
 				LEFT JOIN sys_product_category c ON a.category_id = c.id AND c.status > 0
-				LEFT JOIN sys_shops code ON 1 = code.id";
-			$sql = "SELECT a.*, code.shopcode, c.category_name, no_of_stocks FROM sys_products a 
-                LEFT JOIN sys_shops b ON 1 = b.id AND b.status > 0
-				LEFT JOIN sys_product_category c ON a.category_id = c.id AND c.status > 0
-				LEFT JOIN sys_shops code ON 1 = code.id ";
-				// LEFT JOIN sys_products_images d ON a.Id = d.product_id AND d.arrangement = 1 AND d.status = 1";
-		}
-		else{
-			$sql = "SELECT a.*, code.shopcode, c.category_name, no_of_stocks,img.filename FROM sys_products a 
+				LEFT JOIN sys_shops code ON 1 = code.id
+				RIGHT JOIN sys_inventory d on d.product_id = a.id";
+			$sql = "SELECT a.*, code.shopcode, c.category_name,sum(d.qty) as no_of_stocks FROM sys_products a 
                 LEFT JOIN sys_shops b ON 1 = b.id AND b.status > 0
 				LEFT JOIN sys_product_category c ON a.category_id = c.id AND c.status > 0
 				LEFT JOIN sys_shops code ON 1 = code.id 
-				LEFT JOIN sys_products_images img ON a.id = img.product_id";
+				RIGHT JOIN sys_inventory d on d.product_id = a.id";
+				// LEFT JOIN sys_products_images d ON a.Id = d.product_id AND d.arrangement = 1 AND d.status = 1";
+		}
+		else{
+			$sql = "SELECT a.*, code.shopcode, c.category_name,img.filename,sum(d.qty) as no_of_stocks FROM sys_products a 
+                LEFT JOIN sys_shops b ON 1 = b.id AND b.status > 0
+				LEFT JOIN sys_product_category c ON a.category_id = c.id AND c.status > 0
+				LEFT JOIN sys_shops code ON 1 = code.id 
+				LEFT JOIN sys_products_images img ON a.id = img.product_id
+				RIGHT JOIN sys_inventory d on d.product_id = a.id";
 		}
 		// start - for default search
 		if ($_record_status == 1) {
@@ -563,7 +687,8 @@ class Model_products extends CI_Model {
 		if($date_from != ""){
 			$sql.="  AND DATE_FORMAT(a.`date_created`, '%m/%d/%Y') ='".$date_from. "'";
 		}
-		$sql.=" AND a.parent_product_id IS NULL";
+		$sql.=" AND a.parent_product_id IS NULL AND d.date_expiration > CURRENT_DATE()
+		GROUP BY a.id";
 		$query = $this->db->query($sql);
 		$totalFiltered = $query->num_rows(); // when there is a search parameter then we have to modify total number filtered rows as per search result.
 
@@ -603,13 +728,52 @@ class Model_products extends CI_Model {
 			// $nestedData[] = number_format($no_of_stocks, 1);
 			$variant_stocks = 0;
 			$variant_price = [];
+			$parent_stocks = 0;
+			$stock_status = '';
+			//print_r($row['id'].'..');
+			foreach($this->get_inventorydetails($row["id"]) as $inventory){
+				$now = time(); // or your date as well
+				$your_date = strtotime($inventory['date_expiration']);
+				$datediff = $now - $your_date;
+				$days_differ =  -1*(round($datediff / (60 * 60 * 24))-1);
+				if($inventory['status']==1){
+					$parent_stocks += $inventory['qty'];
+				}
+				if(in_array($inventory['status'],[1,2]) && date('Y-m-d',strtotime($inventory['date_expiration'])) <= date('Y-m-d')){
+					$stock_status = 'Expired Stocks';
+					$this->disable_modal_confirm($inventory['product_id'],2);
+					$row['enabled'] = 2;
+				}else if(in_array($inventory['status'],[1,2]) && date('Y-m-d',strtotime($inventory['date_expiration'])) > date('Y-m-d') && $days_differ < 30 && $stock_status==''){
+					$stock_status = 'Expiring Soon';
+				}
+				//print_r($days_differ.'//'.$row["id"].'?');
+			}
 			foreach($this->getVariants($row["id"]) as $variant){
-				$variant_stocks += number_format($variant['no_of_stocks'],2);
+				foreach($this->get_inventorydetails($variant["id"]) as $inventory){
+					$now = time(); // or your date as well
+					$your_date = strtotime($inventory['date_expiration']);
+					$datediff = $now - $your_date;
+
+					$days_differ =  -1*(round($datediff / (60 * 60 * 24))-1);
+					if($inventory['status']==1){
+						$variant_stocks += $inventory['qty'];
+					}
+					if(in_array($inventory['status'],[1,2]) && date('Y-m-d',strtotime($inventory['date_expiration'])) <= date('Y-m-d')){
+						$stock_status = 'Expired Stocks';
+						$this->disable_modal_confirm($inventory['product_id'],2);
+						$row['enabled'] = 2;
+					}else if(in_array($inventory['status'],[1,2]) && date('Y-m-d',strtotime($inventory['date_expiration'])) > date('Y-m-d') && $days_differ < 30 && $stock_status==''){
+						$stock_status = 'Expiring Soon';
+					}
+				}
 				$variant_price [] = $variant['price'];
+			}
+			if($stock_status == '' && $variant_stocks == 0 && $row['variant_isset'] == 1){
+				$stock_status = 'Out of Stock';
 			}
 			sort($variant_price);
 			$nestedData[] = !empty($variant_price) ? $variant_price[0] .'-'. $variant_price[count($variant_price)-1] : number_format($row["price"], 2);
-			$nestedData[] = $variant_stocks > 0 ? $variant_stocks : $row["no_of_stocks"];
+			$nestedData[] = $variant_stocks > 0 && $row['variant_isset'] == 1 ? $variant_stocks : $parent_stocks;
 
 
 
@@ -632,47 +796,27 @@ class Model_products extends CI_Model {
 
 			$buttons = "";
 			$buttons .= '
-				<a class="dropdown-item" data-value="'.$row['id'].'" href="'.base_url('admin/Main_products/view_products/'.$token.'/'.$row['id']).'"><i class="fa fa-search" aria-hidden="true"></i> View</a>';
+				<a class="dropdown-item" data-value="'.$row['id'].'" href="'.base_url('admin/Main_products/view_products/'.$token.'/'.en_dec('en',$row['id'])).'"><i class="fa fa-search" aria-hidden="true"></i> View</a>';
 
 			if($this->loginstate->get_access()['products']['update'] == 1){
 				$buttons .= '<div class="dropdown-divider"></div>
-				<a class="dropdown-item" data-value="'.$row['id'].'" href="'.base_url('admin/Main_products/update_products/'.$token.'/'.$row['id']).'"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a>';
+				<a class="dropdown-item" data-value="'.$row['id'].'" href="'.base_url('admin/Main_products/update_products/'.$token.'/'.en_dec('en',$row['id'])).'"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a>';
 			}
 
-            /// checker of product in product status table
-			if(ini() == 'toktokmall'){
 
-
-				$sql = "SELECT * FROM sys_product_status WHERE product_id = '".$row['id']."' AND status != '1'";
-				$check_status_product = $this->db->query($sql);		
-	
-				if($check_status_product->num_rows() == 0){
-	
-						if($this->loginstate->get_access()['products']['disable'] == 1){
-							$buttons .= '<div class="dropdown-divider"></div>
-							<a class="dropdown-item action_disable" data-value="'.$row['id'].'" data-record_status="'.$row['enabled'].'" data-toggle="modal" data-target="#disable_modal"><i class="fa '.$rec_icon.'" aria-hidden="true"></i> '.$record_status.'</a>';
-						}
-		
-				}else{
-	
-				}
-
-			}else{
-
-				if($this->loginstate->get_access()['products']['disable'] == 1){
-					$buttons .= '<div class="dropdown-divider"></div>
-					<a class="dropdown-item action_disable" data-value="'.$row['id'].'" data-record_status="'.$row['enabled'].'" data-toggle="modal" data-target="#disable_modal"><i class="fa '.$rec_icon.'" aria-hidden="true"></i> '.$record_status.'</a>';
-				}
-
+			if($this->loginstate->get_access()['products']['disable'] == 1){
+				$buttons .= '<div class="dropdown-divider"></div>
+				<a class="dropdown-item action_disable" data-value="'.$row['id'].'" data-record_status="'.$row['enabled'].'"><i class="fa '.$rec_icon.'" aria-hidden="true"></i> '.$record_status.'</a>';
 			}
 		
 
 			if($this->loginstate->get_access()['products']['delete'] == 1){
 				$buttons .= '<div class="dropdown-divider"></div>
-				<a class="dropdown-item action_delete " data-value="'.$row['id'].'" data-toggle="modal" data-target="#delete_modal"><i class="fa fa-trash" aria-hidden="true"></i> Delete</a>';
+				<a class="dropdown-item action_delete " data-value="'.$row['id'].'" ><i class="fa fa-trash" aria-hidden="true"></i> Delete</a>';
 			}
 
 
+			$nestedData[] = $stock_status;
 			$nestedData[] = 
 			'<div class="dropdown">
 				<i class="fa fa-ellipsis-v fa-lg" id="dropdown_menu_button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-hidden="true"></i>

@@ -141,7 +141,6 @@ $(document).ready(function(){
 			return element;
 		}
 	}
-
 	update_token = function(value)
 	{
 		$('#template_body').data('token_value',value);

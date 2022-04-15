@@ -1,5 +1,5 @@
 $(function() {
-    $('input, select').on('change', function(event) {
+    $('input.tags select').on('change', function(event) {
       var $element = $(event.target),
         $container = $element.closest('.example');
   

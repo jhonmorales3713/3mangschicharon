@@ -55,12 +55,38 @@ class Cart extends CI_Controller {
             $_SESSION['cart_items'] = 0;
         }
 
-        if(isset($_SESSION['cart'][$key])){            
-            $_SESSION['cart'][$key]['quantity'] = intval($_SESSION['cart'][$key]['quantity']) + intval($data['quantity']);     
+        if(isset($_SESSION['cart'][$key])){ 
+            $data['max_checkout'] = ($product['max_qty_isset']==1)?$product['max_qty']:0;
+            $data['max_checkout2'] = ($variant['max_qty_isset']==1)?$variant['max_qty']:0;
+            if($data['max_checkout2'] != 0){
+                $data['max_checkout'] =$data['max_checkout2'];
+            }
+            if(intval($_SESSION['cart'][$key]['quantity']) + intval($data['quantity'])>$data['max_checkout'] && $data['max_checkout'] > 0){
+                $response['success'] = false;
+                $response['cart_items'] = $_SESSION['cart_items'];
+                $response['message'] = 'Maximum of '.intval($data['max_checkout']).' quantity allowed to checkout per transaction exceeded.';   
+                generate_json($response);
+                die();
+            }else{
+                $_SESSION['cart'][$key]['quantity'] = intval($_SESSION['cart'][$key]['quantity']) + intval($data['quantity']);     
+            }
         }
         else{
-            $_SESSION['cart'][$key] = $product;
-            $_SESSION['cart'][$key]['quantity'] = intval($data['quantity']);            
+            $data['max_checkout'] = ($product['max_qty_isset']==1)?$product['max_qty']:0;
+            $data['max_checkout2'] = ($variant['max_qty_isset']==1)?$variant['max_qty']:0;
+            if($data['max_checkout2'] != 0){
+                $data['max_checkout'] =$data['max_checkout2'];
+            }
+            if(intval($data['quantity'])>$data['max_checkout'] && $data['max_checkout'] > 0){
+                $response['success'] = false;
+                $response['cart_items'] = $_SESSION['cart_items'];
+                $response['message'] = 'Maximum of '.intval($data['max_checkout']).' quantity allowed to checkout per transaction exceeded.';   
+                generate_json($response);
+                die();
+            }else{
+                $_SESSION['cart'][$key] = $product;
+                $_SESSION['cart'][$key]['quantity'] = intval($data['quantity']);    
+            }        
         }    
 
         $total_qty = 0;

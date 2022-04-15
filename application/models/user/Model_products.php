@@ -10,6 +10,12 @@ class Model_products extends CI_Model {
                     
         return $this->db->query($sql)->result_array();
     }
+	public function get_inventorydetails($Id) {
+		$query=" SELECT * from sys_inventory
+		WHERE product_id = $Id ";
+		$params = array($Id);
+		return $this->db->query($query, $params)->result_array();
+	}
     
     public function get_products(){
         $sql = "SELECT

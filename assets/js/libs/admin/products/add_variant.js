@@ -110,6 +110,59 @@ $(function(){
         }
     };
     
+    $("#btninventory").click(function(){
+        $('#inventory_modal').modal('show');
+    });
+    $("#btnAddInventory").click(function(){
+        if($(".inventory_count").length == 0){
+
+            $("#tbody_inventory").empty();
+        }
+        displayInventory($(".inventory_count").length+1);
+    });
+
+    $(document).delegate('#removeInventorySpec','click',function(e){
+        var index = $(this).data('value');
+        $('.inventory_tr_'+index).remove();
+        count = 1;
+        $('.id_key').each(function(index, tr) { 
+           // console.log(tr);
+            tr.innerText=(count);
+            //tr.innerHTML=('2asd');
+            count++;
+        });
+
+    });
+    $("#btnCloseInventory").click(function(){
+        // $("#f_discount_product").prop('checked',false);
+        // $("#f_days").val(0);
+        // $("#f_discount_value").val(0);
+        // $(".f_discount_product").hide(0);
+        // $("#tbody_inventory").html('');
+    });
+    function displayInventory(key){
+        var str="";
+        str += "<tr class='inventory_tr_"+key+" inventory_count'>";
+        str += "<td class='inventory_"+key+" id_key' >"+key+"<input type='text'  value='"+key+"' style='display:none;'></td>";
+        str += "<td class='inventory_"+key+"'>"+"<input type='text' class='form-control allownumericwithoutdecimal' name='inventory_qty[]' ></td>";
+        str += "<td class='inventory_"+key+"'><input class='form-control ' type='date' name='inventory_manufactured[]' ></td>";
+        str += "<td class='inventory_"+key+"'><input class='form-control ' type='date'  name='inventory_expiration[]' ></td>";
+        // str += "<td class='variant_tr_"+key+"'><input type='text' class='form-control' name='variant_sku[]'></td>";
+        // str += "<td class='variant_tr_"+key+"'><input type='text' class='form-control' name='variant_barcode[]'></td>";
+        str += "<td class='inventory_"+key+"'><button type='button' id='removeInventorySpec' class='btn btn-danger' data-value='"+key+"'><i class='fa fa-trash-o'></i></button></td>";
+        str += "</tr>";
+        $('#tbody_inventory').append(str);
+        
+        //allowing numeric without decimal
+        $(".allownumericwithoutdecimal").on("keypress keyup blur",function (event) {
+            $(this).val($(this).val().replace(/[^\d].+/, ""));
+        
+            if ((event.which < 48 || event.which > 57)) {
+                event.preventDefault();
+            }
+        });
+        
+    }
     //// update product
     Id = $('#f_parent_product_id').val();
 
@@ -163,6 +216,11 @@ $(function(){
             form_data.append(textinputs[i].name, textinputs[i].value);
         }
 
+        var form_data2 = new FormData($("form[name=form_inventory]")[0]);
+        for (var pair of form_data2.entries()) {
+            form_data.append(pair[0], pair[1]);
+        }
+
         $.each(branch_id, function(key, value) {
             form_data.append('f_no_of_stocks_'+value, $('#f_no_of_stocks_'+value).val());
         });
@@ -182,31 +240,7 @@ $(function(){
             form_data.append(textinputs[i].name, textinputs[i].value);
         }
 
-        if(ini == 'toktokmall'){
-       
-            if($("#f_admin_isset").prop('checked')){
-                var save = 1;
-                var f_disc_rate = $('#f_disc_rate').val() / 100;
-                var f_disc_rate = (f_disc_rate * 90) * 0.01;
-                var f_startup = $('#f_startup').val() / 100;
-                var f_jc      = $('#f_jc').val() / 100;
-                var f_mcjr    = $('#f_mcjr').val() / 100;
-                var f_mc      = $('#f_mc').val() / 100;
-                var f_mcsuper = $('#f_mcsuper').val() / 100;
-                var f_mcmega  = $('#f_mcmega').val() / 100;
-                var f_others  = $('#f_others').val() / 100;
-                if(f_startup > f_disc_rate || f_jc > f_disc_rate || f_mcjr > f_disc_rate || f_mc > f_disc_rate || f_mcsuper > f_disc_rate || f_mcmega > f_disc_rate || f_others > f_disc_rate){
-                    var save = 0;
-                }
-            }
-            else{
-                var save = 1;
-            }
-        }
-        else{
-            var save = 1;
-        }
-        
+        var save = 1;
         if(save == 1){
             $.ajax({
                 type: 'post',

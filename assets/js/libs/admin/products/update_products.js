@@ -115,6 +115,201 @@ $(function(){
         }
     };
 
+    $(".f_discount_product").hide(250);
+    var todeleteinventory = [];
+    $(document).delegate('#removeInventorySpec','click',function(e){
+        var index = $(this).data('value');
+        var id = $(this).data('id');
+        todeleteinventory.push(id);
+        $('.inventory_tr_'+index).remove();
+        count = 1;
+        $('.id_key').each(function(index, tr) { 
+           // console.log(tr);
+            tr.innerText=(count);
+            //tr.innerHTML=('2asd');
+            count++;
+        });
+
+    });
+
+    $("#btninventory").click(function(){
+        $('#inventory_modal').modal('show');
+        
+        $.LoadingOverlay("show");
+        $.ajax({
+            type:'get',
+            url:base_url+'admin/Main_products/get_inventorydetails/'+Id,
+            success:function(datas){
+                $.LoadingOverlay("hide");
+                var data = JSON.parse(datas).result;
+                var f_discount_product = false;
+                var f_days = 0;
+                var discount_value = 0;
+                var discount_amount = 0;
+                $("#tbody_inventory").empty();
+                var count = 1;
+                for(i=0;i<data.length;i++){
+                    if(data[i].status == 1){
+                        var d1 = new Date();
+                        var d2 = new Date(data[i].date_expiration);
+                        var str=""; 
+                        var additional_class="";
+                        var difference = d2.getTime() - d1.getTime();
+                        var days = Math.ceil(difference / (1000 * 3600 * 24));
+                        if(d1 >= d2){
+                            additional_class="bg-danger text-white";
+                        }else
+                        if(days <= 30){
+                            additional_class="bg-warning";
+                        }
+                        str += "<tr class='inventory_tr_"+i+" inventory_count "+additional_class+"'>";
+                        str += "<td class='inventory_"+i+" id_key' >"+(count)+"</td>";
+                        str += "<td class='inventory_"+i+"'>"+"<input type='text' name='inventory_id[]'  value='"+data[i].id+"' style='display:none;'><input type='text'value='"+data[i].qty+"' class='form-control allownumericwithoutdecimal' name='inventory_qty[]' ></td>";
+                        str += "<td class='inventory_"+i+"'><input class='form-control 'value='"+data[i].date_manufactured+"' type='date' name='inventory_manufactured[]' ></td>";
+                        str += "<td class='inventory_"+i+"'><input class='form-control 'value='"+data[i].date_expiration+"' type='date'  name='inventory_expiration[]' ></td>";
+                        // str += "<td class='variant_tr_"+key+"'><input type='text' class='form-control' name='variant_sku[]'></td>";
+                        // str += "<td class='variant_tr_"+key+"'><input type='text' class='form-control' name='variant_barcode[]'></td>";
+                        str+="<td class='inventory_"+i+"'>";
+                        if(d1 <= d2){
+                            str += "<button type='button'data-id='"+data[i].id+"' id='removeInventorySpec' class='btn btn-danger' data-value='"+i+"'><i class='fa fa-trash-o'></i></button>";
+                        }else
+                        if(days <= 30 && data[i].status == 1){
+                            str += "<button type='button' id='activateInventory' class='btn btn-warning btn_move_out' data-id='"+data[i].id+"' data-value='"+i+"'><i class='fa fa-share'></i></button>";
+                        }
+                        // if(data[i].status == 1){
+                        //     str += "<button type='button' id='activateInventory' class='btn btn-warning' data-value='"+data[i].id+"'><i class='fa fa-share'></i></button>";
+                        // }else{
+                        //     str += "<button type='button' id='activateInventory' class='btn btn-success' data-value='"+data[i].id+"'><i class='fa fa-eye-o'></i></button>";
+                        // }
+                        str += "</td></tr>";
+                        $('#tbody_inventory').append(str);
+                        f_discount_product = data[i].discount_isset;
+                        discount_value = data[i].discount_value;
+                        f_days = data[i].discount_days;
+                        discount_amount = data[i].discount_amount;
+                        //allowing numeric without decimal
+                        $(".allownumericwithoutdecimal").on("keypress keyup blur",function (event) {
+                            $(this).val($(this).val().replace(/[^\d].+/, ""));
+                        
+                            if ((event.which < 48 || event.which > 57)) {
+                                event.preventDefault();
+                            }
+                        });
+                        count++;
+                    }
+                }
+                if(f_discount_product){
+                    $(".f_discount_product").show(250);
+                    $("#f_days").val(f_days);
+                    $("#f_discount_product").prop('checked',true);
+                    $("#f_discount_value").val(discount_amount);
+                    if(discount_value == 'f'){
+
+                        $("#f_fixed_amount").prop('checked',true);
+                    }else{
+                        $("#f_percentage").prop('checked',true);
+                    }
+                }
+                //displayInventory($(".inventory_count").length+1);
+                
+            }
+        });
+    });
+    function displayInventory(key){
+        var str="";
+        str += "<tr class='inventory_tr_"+key+" inventory_count'>";
+        str += "<td class='inventory_"+key+" id_key' >"+key+"<input type='text' name='inventory_id[]'  value='"+key+"' style='display:none;'></td>";
+        str += "<td class='inventory_"+key+"'>"+"<input type='text' class='form-control allownumericwithoutdecimal' name='inventory_qty[]' ></td>";
+        str += "<td class='inventory_"+key+"'><input class='form-control ' type='date' name='inventory_manufactured[]' ></td>";
+        str += "<td class='inventory_"+key+"'><input class='form-control ' type='date'  name='inventory_expiration[]' ></td>";
+        // str += "<td class='variant_tr_"+key+"'><input type='text' class='form-control' name='variant_sku[]'></td>";
+        // str += "<td class='variant_tr_"+key+"'><input type='text' class='form-control' name='variant_barcode[]'></td>";
+        str += "<td class='inventory_"+key+"'><button type='button' id='removeInventorySpec' class='btn btn-danger' data-value='"+key+"'><i class='fa fa-trash-o'></i></button></td>";
+        str += "</tr>";
+        $('#tbody_inventory').append(str);
+        
+        //allowing numeric without decimal
+        $(".allownumericwithoutdecimal").on("keypress keyup blur",function (event) {
+            $(this).val($(this).val().replace(/[^\d].+/, ""));
+        
+            if ((event.which < 48 || event.which > 57)) {
+                event.preventDefault();
+            }
+        });
+        
+    }
+    $("#btnAddInventory").click(function(){
+        if($(".inventory_count").length == 0){
+
+            $("#tbody_inventory").empty();
+        }
+        displayInventory($(".inventory_count").length+1);
+    });
+    var tomoveout = [];
+    $(document).delegate('.btn_move_out','click',function(e){
+        var index = $(this).data('value');
+        var id = $(this).data('id');
+        tomoveout.push(id);
+        $('.inventory_tr_'+index).remove();
+        count = 1;
+        $('.id_key').each(function(index, tr) { 
+           // console.log(tr);
+            tr.innerText=(count);
+            //tr.innerHTML=('2asd');
+            count++;
+        });
+
+    });
+
+    $("#btnSaveinventory").click(function()
+    {
+        var form = $("form[name=form_inventory]");
+        var form_data = new FormData(form[0]);
+        form_data.append('product_id',$(this).data('id'));
+        form_data.append('todelete',todeleteinventory);
+        $.LoadingOverlay("show");
+        $.ajax({
+            type: 'post',
+            url: base_url+'admin/Main_products/store_inventory',
+            data: form_data,
+            contentType: false,   
+            cache: false,      
+            processData:false,
+            success:function(data){
+                $.LoadingOverlay("hide");
+                var json_data = JSON.parse(data);
+                if(json_data.success) {
+                    //sys_toast_success(json_data.message);
+                    sys_toast_success(json_data.message);
+                    //$("#inventory_modal").modal('hide');
+                    $.ajax({
+                        type:'get',
+                        url:base_url+'admin/Main_products/get_inventorydetails/'+Id,
+                        success:function(datas){
+                            var data = JSON.parse(datas).result;
+                            var qty = 0;
+                            for(var i = 0;i<data.length;i++){
+                                if(data[i].status == 1){
+                                    qty+=parseInt(data[i].qty);
+                                }
+                            }
+                            $("#f_no_of_stocks").val(qty);
+                        }
+                    });
+                    //setTimeout(function(){location.reload()}, 2000);
+                    //window.location.assign(base_url+"admin/Main_products/update_products/"+token+"/"+json_data.product_id);
+                }else{
+                    //sys_toast_warning(json_data.message);
+                    sys_toast_warning(json_data.message[0]);
+                }
+            },
+            error: function(error){
+                sys_toast_warning(json_data.message);
+                //showCpToast("warning", "Warning!", json_data.message);
+            }
+        });
+    });
+
     function imageExistsSpec(id, filename, shopcode, count){
         result = false;
         imageCounter = 0;
@@ -174,12 +369,12 @@ $(function(){
                     $('#product-placeholder').removeClass('hidden');
                     $('#product_image').val('');
                     // Product Image
+                    // console.log(json_data.message);
                     if (json_data.message.Id != "") {
                         $('#product-placeholder').addClass('hidden');
                         $('#change-product-image').show();
                         // if(json_data.message.img_1 == null || json_data.message.img_1 == ''){
                         //     imageExists(json_data.message.Id, json_data.message.shopcode);
-                        console.log(json_data.images);
                         $.each(json_data.images, function(key, value) {
                             imageExistsSpec(json_data.message.Id, value.filename, json_data.message.shopcode, value.arrangement);
                             if(value.arrangement == 1){
@@ -211,7 +406,6 @@ $(function(){
                     // json_data.message.tq_isset == 1 ? $( "#f_tq_isset" ).prop( "checked", true ) : $( "#f_tq_isset" ).prop( "checked", false );
                     // json_data.message.tq_isset == 1 && parseFloat(branchid) == parseFloat(0) ? '' : $('.contsellingdiv, .nostocksdiv').css('display','none');
                     json_data.message.cont_selling_isset == 1 ? $( "#f_cont_selling_isset" ).prop( "checked", true ) : $( "#f_cont_selling_isset" ).prop( "checked", false );
-                    $('#f_no_of_stocks').val(json_data.message.no_of_stocks);
                     $('#f_max_qty').val(json_data.message.max_qty);
                     json_data.message.shipping_isset == 1 ? $( "#f_shipping_isset" ).prop( "checked", true ) : $( "#f_shipping_isset" ).prop( "checked", false );
                     if(branchid == 0){
@@ -224,6 +418,23 @@ $(function(){
                         $( "#f_admin_isset" ).val(json_data.message.admin_isset);
                     }
                     displayVariantDivs( json_data.message.variant_isset);
+                    
+                    $.ajax({
+                        type:'get',
+                        url:base_url+'admin/Main_products/get_inventorydetails/'+Id,
+                        success:function(datas){
+                            var stocks = 0;
+                            var data = JSON.parse(datas).result;
+                            for(var i=0;i<data.length;i++){
+                                // console.log(data[i]);
+                                if(data[i].status == 1){
+                                    stocks+=parseInt(data[i].qty);
+                                }
+                            }
+                            $('#f_no_of_stocks').val(stocks);
+                    
+                        }
+                    });
                 }else{
                     // $.toast({
                     //     heading: 'Note',

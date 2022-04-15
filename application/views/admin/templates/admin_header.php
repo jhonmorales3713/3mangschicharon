@@ -5,7 +5,7 @@
     <div class="admin-header">        
         <i class="fa fa-bars" id="nav_toggle" aria-hidden="true"></i>        
         <a class="logout" href="<?= base_url('admin/signout') ?>">
-            <i class="fas fa-sign-out-alt"></i>
+            <i class="fa fa-sign-out"></i>
         </a>                    
     </div>
     <input type="hidden" id="active_page" value="<?= $active_page ?>">

@@ -208,6 +208,106 @@ $(function(){
         $(".oldimgurl").append("<input type='hidden' name='prev_image_name[]' value='"+format+"'>");
         $(".oldimgurl").append("<input type='hidden' name='prev_image_name_noformat[]' value='"+noformat+"'>");
     });
+    
+    $("#btninventory").click(function(){
+        $('#inventory_modal').modal('show');
+    });
+    $("#btnAddInventory").click(function(){
+        if($(".inventory_count").length == 0){
+
+            $("#tbody_inventory").empty();
+        }
+        displayInventory($(".inventory_count").length+1);
+    });
+    var tomoveout = [];
+    $(document).delegate('.btn_move_out','click',function(e){
+        var index = $(this).data('value');
+        var id = $(this).data('id');
+        tomoveout.push(id);
+        $('.inventory_tr_'+index).remove();
+        count = 1;
+        $('.id_key').each(function(index, tr) { 
+           // console.log(tr);
+            tr.innerText=(count);
+            //tr.innerHTML=('2asd');
+            count++;
+        });
+
+    });
+    function displayInventory(key){
+        var str="";
+        str += "<tr class='inventory_tr_"+key+" inventory_count'>";
+        str += "<td class='inventory_"+key+" id_key' >"+key+"<input name='inventory_id[]' type='text'  value='"+key+"' style='display:none;'></td>";
+        str += "<td class='inventory_"+key+"'>"+"<input type='text' class='form-control allownumericwithoutdecimal' name='inventory_qty[]' ></td>";
+        str += "<td class='inventory_"+key+"'><input class='form-control ' type='date' name='inventory_manufactured[]' ></td>";
+        str += "<td class='inventory_"+key+"'><input class='form-control ' type='date'  name='inventory_expiration[]' ></td>";
+        // str += "<td class='variant_tr_"+key+"'><input type='text' class='form-control' name='variant_sku[]'></td>";
+        // str += "<td class='variant_tr_"+key+"'><input type='text' class='form-control' name='variant_barcode[]'></td>";
+        str += "<td class='inventory_"+key+"'><button type='button' id='removeInventorySpec' class='btn btn-danger' data-value='"+key+"'><i class='fa fa-trash-o'></i></button>";
+        str += "</td>";
+        str += "</tr>";
+        $('#tbody_inventory').append(str);
+        
+        //allowing numeric without decimal
+        $(".allownumericwithoutdecimal").on("keypress keyup blur",function (event) {
+            $(this).val($(this).val().replace(/[^\d].+/, ""));
+        
+            if ((event.which < 48 || event.which > 57)) {
+                event.preventDefault();
+            }
+        });
+        
+    }
+
+    $("#btnSaveinventory").click(function()
+    {
+        var form = $("form[name=form_inventory]");
+        var form_data = new FormData(form[0]);
+        form_data.append('product_id',$(this).data('id'));
+        form_data.append('todelete',todeleteinventory);
+        form_data.append('tomoveout',tomoveout);
+        $.LoadingOverlay("show");
+        $.ajax({
+            type: 'post',
+            url: base_url+'admin/Main_products/store_inventory',
+            data: form_data,
+            contentType: false,   
+            cache: false,      
+            processData:false,
+            success:function(data){
+                $.LoadingOverlay("hide");
+                var json_data = JSON.parse(data);
+                if(json_data.success) {
+                    //sys_toast_success(json_data.message);
+                    sys_toast_success(json_data.message);
+                    //$("#inventory_modal").modal('hide');
+                    $.ajax({
+                        type:'get',
+                        url:base_url+'admin/Main_products/get_inventorydetails/'+Id,
+                        success:function(datas){
+                            var data = JSON.parse(datas).result;
+                            var qty = 0;
+                            for(var i = 0;i<data.length;i++){
+                                if(data[i].status == 1){
+                                    qty+=parseInt(data[i].qty);
+                                }
+                            }
+                            $("#f_no_of_stocks").val(qty);
+                        }
+                    });
+                    //setTimeout(function(){location.reload()}, 2000);
+                    //window.location.assign(base_url+"admin/Main_products/update_products/"+token+"/"+json_data.product_id);
+                }else{
+                    //sys_toast_warning(json_data.message);
+                    sys_toast_warning(json_data.message[0]);
+                }
+            },
+            error: function(error){
+                sys_toast_warning(json_data.message);
+                //showCpToast("warning", "Warning!", json_data.message);
+            }
+        });
+    });
 
     //// update product
     Id = $('#u_id').val();
@@ -270,7 +370,6 @@ $(function(){
                     json_data.message.tq_isset == 0 && parseFloat(branchid) != parseFloat(0) ? $('.nostocksdiv').show(250) : '';
                     json_data.message.tq_isset == 1 && parseFloat(branchid) != parseFloat(0) ? $('.nostocksdiv').show(250) : '';
                     json_data.message.cont_selling_isset == 1 ? $( "#f_cont_selling_isset" ).prop( "checked", true ) : $( "#f_cont_selling_isset" ).prop( "checked", false );
-                    $('#f_no_of_stocks').val(json_data.message.no_of_stocks);
                     $('#f_max_qty').val(json_data.message.max_qty);
                     json_data.message.shipping_isset == 1 ? $( "#f_shipping_isset" ).prop( "checked", true ) : $( "#f_shipping_isset" ).prop( "checked", false );
                     if(branchid == 0){
@@ -301,14 +400,23 @@ $(function(){
                     $('#f_mcmega').val((json_data.message.refmcmega*100).toFixed(2));
                     $('#f_others').val((json_data.message.refothers*100).toFixed(2));
 
-                    if(ini == 'jcww'){
-                        delivery_areas = json_data.message.delivery_areas.split(', ');
-                        $.each(delivery_areas, function(key, value) {
-                            $('#f_delivery_areas ').children("option[value=" + value + "]").prop("selected", true);
-                            $("#f_delivery_areas").select2().trigger('change');
-                        });
-
-                    }
+                    
+                    $.ajax({
+                        type:'get',
+                        url:base_url+'admin/Main_products/get_inventorydetails/'+Id,
+                        success:function(datas){
+                            var stocks = 0;
+                            var data = JSON.parse(datas).result;
+                            for(var i=0;i<data.length;i++){
+                                // console.log(data[i]);
+                                if(data[i].status == 1){
+                                    stocks+=parseInt(data[i].qty);
+                                }
+                            }
+                            $('#f_no_of_stocks').val(stocks);
+                    
+                        }
+                    });
                 }else{
                     ////showcpToast("info", "Note!", json_data.message);
                     // $.toast({
@@ -493,54 +601,109 @@ $(function(){
         return (new RegExp('(' + exts.join('|').replace(/\./g, '\\.') + ')$')).test(fileName);
     }
     
-    if(ini == 'toktokmall'){
-        $("#f_disc_rate").keyup(function(e) { 
-            rate = $(this).val();
-            refcomratePopulate(rate);
-        });
-    
-        function refcomratePopulate(rate){
-            c_startup = $('#c_startup').val();
-            c_jc      = $('#c_jc').val();
-            c_mcjr    = $('#c_mcjr').val();
-            c_mc      = $('#c_mc').val();
-            c_mcsuper = $('#c_mcsuper').val();
-            c_mcmega  = $('#c_mcmega').val();
-            c_others  = $('#c_others').val();
-            c_ofps    = $('#c_ofps').val();
-
-            f_startup = (rate/100) * c_ofps;
-            f_startup = parseFloat((f_startup * c_startup) * 100);
-
-            f_jc = (rate/100) * c_ofps;
-            f_jc = parseFloat((f_jc * c_jc) * 100);
-
-            f_mcjr = (rate/100) * c_ofps;
-            f_mcjr = parseFloat((f_mcjr * c_mcjr) * 100);
-
-            f_mc = (rate/100) * c_ofps;
-            f_mc = parseFloat((f_mc * c_mc) * 100);
-
-            f_mcsuper = (rate/100) * c_ofps;
-            f_mcsuper = parseFloat((f_mcsuper * c_mcsuper) * 100);
-
-            f_mcmega = (rate/100) * c_ofps;
-            f_mcmega = parseFloat((f_mcmega * c_mcmega) * 100);
-
-            f_others = (rate/100) * c_ofps;
-            f_others = parseFloat((f_others * c_others) * 100);
-
-            $('#f_startup').val(f_startup.toFixed(2));
-            $('#f_jc').val(f_jc.toFixed(2));
-            $('#f_mcjr').val(f_mcjr.toFixed(2));
-            $('#f_mc').val(f_mc.toFixed(2));
-            $('#f_mcsuper').val(f_mcsuper.toFixed(2));
-            $('#f_mcmega').val(f_mcmega.toFixed(2));
-            $('#f_others').val(f_others.toFixed(2));
-        }
-    }
 });
 
+var todeleteinventory = [];
+$(document).delegate('#removeInventorySpec','click',function(e){
+    var index = $(this).data('value');
+    var id = $(this).data('id');
+    todeleteinventory.push(id);
+    $('.inventory_tr_'+index).remove();
+    count = 1;
+    $('.id_key').each(function(index, tr) { 
+       // console.log(tr);
+        tr.innerText=(count);
+        //tr.innerHTML=('2asd');
+        count++;
+    });
+
+});
+
+$("#btninventory").click(function(){
+    $('#inventory_modal').modal('show');
+    
+    $.LoadingOverlay("show");
+    $.ajax({
+        type:'get',
+        url:base_url+'admin/Main_products/get_inventorydetails/'+Id,
+        success:function(datas){
+            $.LoadingOverlay("hide");
+            var data = JSON.parse(datas).result;
+            var f_discount_product = false;
+            var f_days = 0;
+            var discount_value = 0;
+            var discount_amount = 0;
+            $("#tbody_inventory").empty();
+            var count = 1;
+            for(i=0;i<data.length;i++){
+                if(data[i].status != 0){
+                    var d1 = new Date();
+                    var d2 = new Date(data[i].date_expiration);
+                    var str=""; 
+                    var additional_class="";
+                    var difference = d2.getTime() - d1.getTime();
+                    var days = Math.ceil(difference / (1000 * 3600 * 24));
+                    if(d1 >= d2){
+                        additional_class="bg-danger text-white";
+                    }else
+                    if(days <= 30){
+                        additional_class="bg-warning";
+                    }
+                    if(data[i].status == 1){
+                        str += "<tr class='inventory_tr_"+i+" inventory_count "+ additional_class+"'>";
+                        str += "<td class='inventory_"+i+" id_key' >"+(count)+"</td>";
+                        str += "<td class='inventory_"+i+"'>"+"<input type='text' name='inventory_id[]'  value='"+data[i].id+"' style='display:none;'><input type='text'value='"+data[i].qty+"' class='form-control allownumericwithoutdecimal' name='inventory_qty[]' ></td>";
+                        str += "<td class='inventory_"+i+"'><input class='form-control 'value='"+data[i].date_manufactured+"' type='date' name='inventory_manufactured[]' ></td>";
+                        str += "<td class='inventory_"+i+"'><input class='form-control 'value='"+data[i].date_expiration+"' type='date'  name='inventory_expiration[]' ></td>";
+                        // str += "<td class='variant_tr_"+key+"'><input type='text' class='form-control' name='variant_sku[]'></td>";
+                        // str += "<td class='variant_tr_"+key+"'><input type='text' class='form-control' name='variant_barcode[]'></td>";
+                        str+="<td class='inventory_"+i+"'>";
+                        if(d1 <= d2){
+                            str += "<button type='button'data-id='"+data[i].id+"' id='removeInventorySpec' class='btn btn-danger' data-value='"+i+"'><i class='fa fa-trash-o'></i></button>";
+                        }else
+                        if(days <= 30 && data[i].status == 1){
+                            str += "<button type='button' id='activateInventory' class='btn btn-warning btn_move_out' data-id='"+data[i].id+"' data-value='"+i+"'><i class='fa fa-share'></i></button>";
+                        }
+                        // if(data[i].status == 1){
+                        //     str += "<button type='button' id='activateInventory' class='btn btn-warning' data-value='"+data[i].id+"'><i class='fa fa-share'></i></button>";
+                        // }else{
+                        //     str += "<button type='button' id='activateInventory' class='btn btn-success' data-value='"+data[i].id+"'><i class='fa fa-eye-o'></i></button>";
+                        // }
+                        str += "</td></tr>";
+                        $('#tbody_inventory').append(str);
+                        f_discount_product = data[i].discount_isset;
+                        discount_value = data[i].discount_value;
+                        f_days = data[i].discount_days;
+                        discount_amount = data[i].discount_amount;
+                        //allowing numeric without decimal
+                        $(".allownumericwithoutdecimal").on("keypress keyup blur",function (event) {
+                            $(this).val($(this).val().replace(/[^\d].+/, ""));
+                        
+                            if ((event.which < 48 || event.which > 57)) {
+                                event.preventDefault();
+                            }
+                        });
+                        count++;
+                    }
+                }
+            }
+            if(f_discount_product){
+                $(".f_discount_product").show(250);
+                $("#f_days").val(f_days);
+                $("#f_discount_product").prop('checked',true);
+                $("#f_discount_value").val(discount_amount);
+                if(discount_value == 'f'){
+
+                    $("#f_fixed_amount").prop('checked',true);
+                }else{
+                    $("#f_percentage").prop('checked',true);
+                }
+            }
+            //displayInventory($(".inventory_count").length+1);
+            
+        }
+    });
+});
 function check_featuredproduct(product_id)
 {
     var base_url     = $("body").data('base_url'); //base_url came from built-in CI function base_url();

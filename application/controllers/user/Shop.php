@@ -6,7 +6,7 @@ class Shop extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->load->model('user/model_products');        
+        $this->load->model('user/model_products');  
     }
     
     public function index()
@@ -20,7 +20,8 @@ class Shop extends CI_Controller {
         $view_data['products'] = array();
         foreach($products as $product){
             $product['variants'] = $this->model_products->get_variants($product['id']);
-            $product['id'] = en_dec('en',$product['id']);
+            $product['inventory'] = $this->model_products->get_inventorydetails($product['id']);
+            $product['id'] = en_dec('en',$product['id']);  
             array_push($view_data['products'],$product);
         }
 

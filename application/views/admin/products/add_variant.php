@@ -215,8 +215,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 mb-3">
-                        <div class="card">
+                    <div class="col-12">
+                        
+                        <div class="card parentInvDiv">
                             <div class="card-header">
                                 <h3 class="card-title">Inventory</h3>
                             </div>
@@ -243,12 +244,15 @@
                                         </div>
                                     </div> -->
 
-                                    <div class="col-md-6">
-                                        <div class="form-group">
+                                    <div class="col-md-12">
+                                        <!-- <div class="form-group"> -->
                                             <input type="hidden" name="f_max_qty_isset" value="0">
                                             <input type="checkbox" class="form-control-input" id="f_max_qty_isset" name="f_max_qty_isset" value="1" checked>
                                             <label class="form-control-label" for="max_qty_isset">Max quantity per checkout</label>
-                                        </div>
+                                        <!-- </div> -->
+                                    </div>
+
+                                    <div class="col-md-12 maxqtydiv">
                                         <div class="form-group">
                                             <!-- <label>Max quantity per checkout</label> -->
                                             <input type="number" class="form-control" name="f_max_qty" id="f_max_qty" placeholder="Max quantity" value="1">
@@ -267,25 +271,25 @@
                                             
                                         </div>
                                     </div> -->
-                    <!--                                     
-                                    <div class="col-md-6 nostocksdiv" id="nostocksdiv">
+                                    
+                                    <!-- <div class="col-md-6 nostocksdiv hidden" id="nostocksdiv">
                                         <div class="form-group">
                                             <label>Shop Branch:</label>
                                             <select class="form-control" name="f_delivery_location" id="f_delivery_location">
                                                 <option value="0" selected>Main</option>
                                             </select>
                                         </div>
-                                    </div> -->
+                                    </div>-->
 
-
-                                    <div class="col-md-6 nostocksdiv" id="nostocksdiv2">
-                                        <div class="form-group divnostock mt-3" id="div_no_of_stocks_0">
+                                    <div class="col-md-12 nostocksdiv" id="nostocksdiv2">
+                                        <div class="form-group divnostock" id="div_no_of_stocks_0">
                                             <label>Available quantity</label>
-                                            <input type="number" class="form-control parentProductStock" name="f_no_of_stocks" id="f_no_of_stocks" placeholder="Number of stocks" >
+                                            <input type="number" disabled class="form-control parentProductStock" name="f_no_of_stocks" id="f_no_of_stocks" placeholder="Number of stocks" value="0">
                                         </div>
                                     </div>
-
-
+                                    <div class="col-md-6 nostocksdiv" >
+                                        <button class="btn btn-primary" type="button" id="btninventory" > Manage Inventory</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -339,6 +343,101 @@
 
 <!-- Modal -->
 
+<div class="modal fade" id="inventory_modal" tabindex="-1" data-backdrop="static" data-keyboard="false"  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header secondary-bg white-text d-flex align-items-center">
+                <h3 class="modal-title" id="exampleModalLabel">Product Inventory</h3>
+            </div>
+            <div class="modal-body">
+                <form name="form_inventory" id="form_inventory">
+                    <!-- <div class="row">
+                        <div class="col-12 col-md-12">
+                            <input type="checkbox" class="form-control-input" id="f_discount_product" name="f_discount_product" value="1">
+                            <label class="form-control-label" for="f_discount_product">Discount this product when expiration of stock is near</label>
+                        </div>
+                        <div class="col-12 f_discount_product">
+                            <div class="form-group">
+                                <label>Days before expiration</label>
+                                <input type="text" name="f_days" id="f_days" class="form-control allownumericwithoutdecimal" value="0" >
+                            </div>
+                        <hr>
+                        </div>
+                        
+                        <div class="col-12 h4 f_discount_product">Price Discount
+                            </div>
+                        <div class="col-12 col-md-6 f_discount_product">
+                            <input type="radio" class="form-control-input" id="f_fixed_amount" name="f_discount_option" value="f" checked>
+                            <label class="form-control-label mr-4" for="f_discount_option">Fixed Amount</label>
+                        </div>
+                        <div class="col-12 col-md-6 f_discount_product">
+                            <input type="radio" class="form-control-input" id="f_percentage" name="f_discount_option" value="p" checked>
+                            <label class="form-control-label" for="f_discount_option">Percentage</label>
+                            </div>
+                        <div class="col-12 col-md-6 f_discount_product">
+                            <div class="form-group">Less
+                                <input type="number" name="f_discount_value" id="f_discount_value" class="form-control" value="0" >
+                            </div>
+                        </div>
+                        <hr>
+                    </div> -->
+                    <!-- <hr>
+                    <div class="row">
+                        <div class="col-12 col-md-4">
+                            <div class="form-group">
+                                <label>Quantity</label>
+                                <input type="text" name="f_qty" id="f_qty" class="form-control" value="0" >
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <div class="form-group">
+                                <label>Date Manufactured</label>
+                                
+                                <input type="text" name="f_date_manufactured"autocomplete="false" id="f_date_manufactured" class="form-control datetimepicker-input" data-toggle="datetimepicker" data-target="#datepicker">
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <div class="form-group">
+                                <label>Date Expiration</label>
+                                <input type="text" name="f_date_expiration"autocomplete="false" id="f_date_expiration" class="form-control  datetimepicker-input" data-toggle="datetimepicker" data-target="#datepicker">
+                            </div>
+                        </div>
+                    </div>-->
+                    
+                    <div class="row">
+                        <div class="col-12 d-flex align-items-end flex-column">
+                            <button class="btn btn-primary" type="button" id="btnAddInventory">Add to Inventory</button>
+                        </div>
+                    </div> 
+                    <div class="row">
+                        <div class="col-md-12 table-responsive ">
+                            <table class='table table-striped table-hover table-bordered table-grid display nowrap'>
+                                <thead>
+                                    <tr>
+                                        <th scope='col'><b>#</b></th>
+                                        <th scope='col'><b>Quantity</b></th>
+                                        <th scope='col'><b>Date Manufactured</b></th>
+                                        <th scope='col'><b>Date Expiration</b></th>
+                                        <th scope='col'></th>
+                                    </tr>
+                                </thead>
+                                <tbody id='tbody_inventory' class='tbody_inventory'>
+                                    <tr>
+                                        <td colspan="5" class="td-center">No existing inventory.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" id="btnCloseInventory" data-dismiss="modal">Close</button>
+                <!-- <button type="button" class="btn btn-primary" id="btnSaveinventory" >Save</button> -->
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="show_feature_prod_modal" tabindex="-1" data-backdrop="static" data-keyboard="false"  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-md">
         <div class="modal-content">

@@ -49,7 +49,7 @@
         <link rel="stylesheet" href="<?=base_url();?>assets/css/libs/bootstrap-4.1.3.min.css">
         <link rel="stylesheet" href="<?=base_url();?>assets/css/libs/owl-carousel.min.css">    
 
-        <?php if(strpos($_SERVER['REQUEST_URI'],'admin')){?>
+        <?php if(strpos($_SERVER['REQUEST_URI'],'admin') || isset($admin)){?>
             <link rel="stylesheet" href="<?=base_url('assets/css/admin/admin_styles.css')?>">
         <?php }else{?>
             <link rel="stylesheet" href="<?=base_url('assets/css/libs/header_styles.css')?>">

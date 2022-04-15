@@ -46,7 +46,103 @@ $(function(){
             $('.adminsettings_div').hide(250);
         }
     });
+    $(".f_discount_product").hide(250);
+    $("#btnAddInventory").click(function(){
+        if($(".inventory_count").length == 0){
 
+            $("#tbody_inventory").empty();
+        }
+        displayInventory($(".inventory_count").length+1);
+    });
+    $("#btnCloseInventory").click(function(){
+        // $("#f_discount_product").prop('checked',false);
+        // $("#f_days").val(0);
+        // $("#f_discount_value").val(0);
+        // $(".f_discount_product").hide(0);
+        // $("#tbody_inventory").html('');
+    });
+    function displayInventory(key){
+        var str="";
+        str += "<tr class='inventory_tr_"+key+" inventory_count'>";
+        str += "<td class='inventory_"+key+" id_key' >"+key+"<input type='text'  value='"+key+"' style='display:none;'></td>";
+        str += "<td class='inventory_"+key+"'>"+"<input type='text' class='form-control allownumericwithoutdecimal' name='inventory_qty[]' ></td>";
+        str += "<td class='inventory_"+key+"'><input class='form-control ' type='date' name='inventory_manufactured[]' ></td>";
+        str += "<td class='inventory_"+key+"'><input class='form-control ' type='date'  name='inventory_expiration[]' ></td>";
+        // str += "<td class='variant_tr_"+key+"'><input type='text' class='form-control' name='variant_sku[]'></td>";
+        // str += "<td class='variant_tr_"+key+"'><input type='text' class='form-control' name='variant_barcode[]'></td>";
+        str += "<td class='inventory_"+key+"'><button type='button' id='removeInventorySpec' class='btn btn-danger' data-value='"+key+"'><i class='fa fa-trash-o'></i></button></td>";
+        str += "</tr>";
+        $('#tbody_inventory').append(str);
+        
+        //allowing numeric without decimal
+        $(".allownumericwithoutdecimal").on("keypress keyup blur",function (event) {
+            $(this).val($(this).val().replace(/[^\d].+/, ""));
+        
+            if ((event.which < 48 || event.which > 57)) {
+                event.preventDefault();
+            }
+        });
+        
+    }
+
+    $(".allownumericwithoutdecimal").on("keypress keyup blur",function (event) {
+        $(this).val($(this).val().replace(/[^\d].+/, ""));
+    
+        if ((event.which < 48 || event.which > 57)) {
+            event.preventDefault();
+        }
+    });
+    $('#inventory_modal').on('show.bs.modal', function () {
+        // Load up a new modal...
+        //$('#inventory_modal').modal('show')
+    });$(document).on('hide.bs.modal', '#modal' , function(e){
+        var contentArea = $(this).find('#modalContent');
+        contentArea.html('');
+    });
+    $("#btninventory").click(function(){
+        $('#inventory_modal').modal('show');
+    });
+    $("#btnSaveinventory").click(function()
+    {
+        var form = $("form[name=form_inventory]");
+        var form_data = new FormData(form[0]);
+        $.LoadingOverlay("show");
+        $.ajax({
+            type: 'post',
+            url: base_url+'admin/Main_products/store_inventory',
+            data: form_data,
+            contentType: false,   
+            cache: false,      
+            processData:false,
+            success:function(data){
+                $.LoadingOverlay("hide");
+                var json_data = JSON.parse(data);
+                if(json_data.success) {
+                    //sys_toast_success(json_data.message);
+                    sys_toast_success(json_data.message);
+                    $("#inventory_modal").modal('hide');
+                    $("#f_no_of_stocks").val(json_data.qty);
+                    //setTimeout(function(){location.reload()}, 2000);
+                    //window.location.assign(base_url+"admin/Main_products/update_products/"+token+"/"+json_data.product_id);
+                }else{
+                    //sys_toast_warning(json_data.message);
+                    sys_toast_warning(json_data.message[0]);
+                }
+            },
+            error: function(error){
+                sys_toast_warning(json_data.message);
+                //showCpToast("warning", "Warning!", json_data.message);
+            }
+        });
+    });
+
+    $("#f_discount_product").change(function(){
+        if($(this).prop('checked')){
+            $(".f_discount_product").show(250);
+        }else{
+            $(".f_discount_product").hide(250);
+        }
+    });
     $('#product_image_multip').on('change', function() {
         type_checker = 0;
        
@@ -135,6 +231,11 @@ $(function(){
         $.each(branch_id, function(key, value) {
             form_data.append('f_no_of_stocks_'+value, $('#f_no_of_stocks_'+value).val());
         });
+
+        var form_data2 = new FormData($("form[name=form_inventory]")[0]);
+        for (var pair of form_data2.entries()) {
+            form_data.append(pair[0], pair[1]);
+        }
 
         var textinputs = document.querySelectorAll('input[name*=variant_name]');
         for( var i = 0; i < textinputs.length; i++ ){
@@ -439,7 +540,6 @@ $(function(){
             $('.varoptionDiv2').hide();
             $('.varoptionDiv3').hide();
 
-            if(ini != 'jcww'){
                 var inputs = $(".parentProductStock");
                 for(var i = 0; i < inputs.length; i++){
                     // console.log($(inputs[i]).val());
@@ -449,10 +549,9 @@ $(function(){
                 $('.parentInvDiv').hide(250);
                 // $('.f_otherinfodiv').hide(250);
                 // $('#f_otherinfodiv').val('none');
-            }
+                $("#f_price").hide(250);
         }else{
             $('.parentVariantDiv').hide(250);
-            if(ini != 'jcww'){
                 $('.parentInvDiv').show(250);
                 // $('.f_otherinfodiv').show(250);
                 // $('#f_otherinfodiv').val('');
@@ -469,7 +568,6 @@ $(function(){
                 });
 
                 parentInvQty = [];
-            }
         }
     });
     count = 1;
@@ -492,6 +590,19 @@ $(function(){
     $(document).delegate('#removeVariantSpec','click',function(e){
         var index = $(this).data('value');
         $('.variant_tr_'+index).remove();
+        count = 1;
+        $('.id_key').each(function(index, tr) { 
+           // console.log(tr);
+            tr.innerText=(count);
+            //tr.innerHTML=('2asd');
+            count++;
+        });
+
+    });
+
+    $(document).delegate('#removeInventorySpec','click',function(e){
+        var index = $(this).data('value');
+        $('.inventory_tr_'+index).remove();
         count = 1;
         $('.id_key').each(function(index, tr) { 
            // console.log(tr);

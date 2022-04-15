@@ -91,8 +91,6 @@
                             </div>
                         </div>
                     </div>
-
-                    
                     <!-- end - record status is a default for every table -->
                     <table class="table wrap-btn-last-td table-striped table-hover table-bordered display nowrap" style="width:100%" id="table-grid-product"  cellpadding="0" cellspacing="0" border="0">
                         <thead>
@@ -103,10 +101,23 @@
                                 <th>Price</th>
                                 <th>No of Stock</th>
                                 <th>Status</th>
+                                <th width="30">Stock Status</th>
                                 <th width="30">Action</th>
                             </tr>
                         </thead>
                     </table>
+
+                    <div class="row mb-5">
+                        <div class="col-2">
+                            <span class="bg-danger p-1 mr-1" style="width:100px !important;">&nbsp;&nbsp;&nbsp;&nbsp;</span>Expired Stocks
+                        </div>
+                        <div class="col-2">
+                            <span class="bg-warning p-1 mr-1" style="width:100px !important;">&nbsp;&nbsp;&nbsp;&nbsp;</span>Expiring soon
+                        </div>
+                        <div class="col-2">
+                            <span class="bg-secondary p-1 mr-1" style="width:100px !important;">&nbsp;&nbsp;&nbsp;&nbsp;</span>Out of Stocks
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

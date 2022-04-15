@@ -36,7 +36,6 @@
                                 <div class="product-img" style="background-image: url(<?= $image_path; ?>); width: 100%;" data-product_id="<?= $product['id']; ?>">
                                     <div class="product-info">
                                     <strong class="product-name"><?= $product['name']; ?></strong><br>
-
                                     <?php foreach($product['variants'] as $variant){ ?>
                                         <span class="badge badge-info size-select"><?= $variant['name']; ?></span> <span>&#8369; <?= number_format($variant['price'],2); ?></span><br>
                                     <?php } ?>
@@ -46,21 +45,46 @@
                                 <div class="ml5">
                                 
                                     <div class="row">
-                                        <div class="col-8 clearfix">
-                                            <?php if(isset($product['variants'][0])){ ?>
-                                                <?php if(isset($product['promo'])){ ?>
-                                                    <strong class="dashed">&#8369; <?= number_format($product['variants'][0]['price'],2); ?></strong><br>
-                                                    <strong>&#8369; <?= number_format(50.000,2); ?></strong> <span class="badge badge-pill badge-danger">- 30%</span>
-                                                <?php } else { ?>
-                                                    <strong>&#8369; <?= number_format($product['variants'][0]['price'],2); ?></strong><br>
-                                                <?php } ?>
-                                            <?php } else { ?>
-                                                <strong class="dashed">&#8369; <?= number_format($product['price'],2); ?></strong>
+                                        <div class="col-8">
+                                            <?php 
+                                                $inv = 0;
+                                                $price = 0;
+                                                if(isset($product['variants'][0])){
+                                                    foreach($product['variants'] as $variant){
+                                                        $inventories = $this->model_products->get_inventorydetails($variant['id']);
+                                                        foreach($inventories as $inventory){
+                                                            $now = time();
+                                                            $expiration = strtotime($inventory['date_expiration']);
+                                                            if(date('Y-m-d',$expiration) > date('Y-m-d') && $variant['id'] ==  $inventory['product_id']){
+                                                                $inv += $inventory['qty'];
+                                                                //(round(($expiration - $now)/(60*60*24))+1);
+                                                            }
+                                                        }
+                                                    }
+                                                ?>
+                                                <strong>&#8369; <?= number_format($product['variants'][0]['price'],2); ?></strong>
+                                            <?php } else {
+                                                foreach($product['inventory'] as $inventory){
+                                                    $now = time();
+                                                    $expiration = strtotime($inventory['date_expiration']);
+                                                    if(date('Y-m-d',$expiration) > date('Y-m-d') && $product['id'] ==  en_dec('en',$inventory['product_id'])){
+                                                        $inv += $inventory['qty'];
+                                                        //(round(($expiration - $now)/(60*60*24))+1);
+                                                    }
+                                                }
+                                            ?>
+                                                <strong>&#8369; <?= number_format($product['price'],2); ?></strong>
+                                                <!-- <span class="badge badge-success">New</span> -->
                                             <?php } ?>
                                         </div>
                                         <div class="col-4 text-right">
                                             <small><b>1 sold</b></small>
                                         </div>
+                                        <?php if($inv==0){ ?>
+                                        <div class="col-12 text-right text-danger">
+                                            <small><b>SOLD OUT</b></small>
+                                        </div>
+                                        <?php } ?>
                                     </div>
 
                                 </div>                
