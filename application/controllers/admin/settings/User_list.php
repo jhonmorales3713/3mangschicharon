@@ -3,11 +3,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 class user_list extends CI_Controller {
-	public function __construct(){
-		parent::__construct();
-        //load model or libraries below here...
-		$this->load->model('settings/model_user_list', 'model_user_list');
-		$this->load->model('settings/model_access_control', 'model_access_control');
+    public function __construct() {
+        parent::__construct();        
+        $this->load->model('settings/model_user_list');
+        $this->load->model('settings/model_access_control');
 		$this->load->model('model');
 		$this->load->library('form_validation');
 	}

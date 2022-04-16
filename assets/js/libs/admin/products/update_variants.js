@@ -209,7 +209,7 @@ $(function(){
         $(".oldimgurl").append("<input type='hidden' name='prev_image_name_noformat[]' value='"+noformat+"'>");
     });
     
-    $("#btninventory").click(function(){console.log("SD");
+    $("#btninventory").click(function(){
         $('#inventory_modal').modal('show');
     });
     $("#btnAddInventory").click(function(){
@@ -237,7 +237,7 @@ $(function(){
     function displayInventory(key){
         var str="";
         str += "<tr class='inventory_tr_"+key+" inventory_count'>";
-        str += "<td class='inventory_"+key+" id_key' >"+key+"<input name='inventory_id[]' type='text'  value='"+key+"' style='display:none;'></td>";
+        str += "<td class='inventory_"+key+" id_key' >"+key+"<input name='inventory_id[]' type='text'  value='--"+key+"' style='display:none;'></td>";
         str += "<td class='inventory_"+key+"'>"+"<input type='text' class='form-control allownumericwithoutdecimal' name='inventory_qty[]' ></td>";
         str += "<td class='inventory_"+key+"'><input class='form-control ' type='date' name='inventory_manufactured[]' ></td>";
         str += "<td class='inventory_"+key+"'><input class='form-control ' type='date'  name='inventory_expiration[]' ></td>";

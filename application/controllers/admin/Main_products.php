@@ -978,8 +978,11 @@ class Main_products extends CI_Controller {
             array('f_category','Category','required|max_length[100]|min_length[1]'),
             array('f_itemname','Product Name','required|max_length[255]|min_length[2]'),
             // array('f_otherinfo','Other Info','required|max_length[100]|min_length[1]'),
-            array('f_price','Price','required|max_length[10]|min_length[1]'),
     	);
+        if($variants_isset == 0){
+            $validation[] = 
+            array('f_price','Price','required|max_length[10]|min_length[1]');
+        }
         
         foreach ($validation as $value) {
             $this->form_validation->set_rules($value[0],$value[1],$value[2], (count($value) > 3 ? $value[3] : ''));
@@ -1058,10 +1061,11 @@ class Main_products extends CI_Controller {
             // $this->sendProductForApprovalEmail($data_email);
             $response['success']    = $success['success'];
             $response['message']    = "Product created successfully.";
-            $response['product_id'] = $success['id'];
+            $response['product_id'] = en_dec('en',$success['id']);
             $this->audittrail->logActivity('Product List', $this->input->post('f_itemname').' successfully added to Products.', 'add', $this->session->userdata('username'));
+            
+            echo json_encode($response);
         }
-        echo json_encode($response);
 
     }
 

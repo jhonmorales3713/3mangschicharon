@@ -218,7 +218,7 @@ $(function(){
     function displayInventory(key){
         var str="";
         str += "<tr class='inventory_tr_"+key+" inventory_count'>";
-        str += "<td class='inventory_"+key+" id_key' >"+key+"<input type='text' name='inventory_id[]'  value='"+key+"' style='display:none;'></td>";
+        str += "<td class='inventory_"+key+" id_key' >"+key+"<input type='text' name='inventory_id[]'  value='--"+key+"' style='display:none;'></td>";
         str += "<td class='inventory_"+key+"'>"+"<input type='text' class='form-control allownumericwithoutdecimal' name='inventory_qty[]' ></td>";
         str += "<td class='inventory_"+key+"'><input class='form-control ' type='date' name='inventory_manufactured[]' ></td>";
         str += "<td class='inventory_"+key+"'><input class='form-control ' type='date'  name='inventory_expiration[]' ></td>";

@@ -5,7 +5,7 @@
         <center>
           <img src="<?= base_url('assets/img/gcash_icon.png'); ?>" alt="" width="100%">
           <span>You are about to pay: </span><br><br>
-          <strong><?= php_money($_SESSION['order_data']['total_amount']); ?></strong><br><br>
+          <strong><?= php_money($_SESSION['order_data'][0]['total_amount']); ?></strong><br><br>
           <a class="btn btn-primary" href="<?= $checkout_url; ?>">PROCEED</a>
           
         </center>
