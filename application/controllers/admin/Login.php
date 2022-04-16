@@ -12,12 +12,10 @@ class Login extends CI_Controller {
     }
 
     public function index(){
-        session_destroy();
         $data['view']=$this->load->view('admin/login/login_form','',TRUE);
         $this->load->view('admin/login/index',$data,'',TRUE);
     }
     public function forgot_password(){
-        session_destroy();
         $data['view']=$this->load->view('admin/login/forgotpass_form','',TRUE);
         $this->load->view('admin/login/index',$data,'',TRUE);
     }
@@ -153,7 +151,14 @@ class Login extends CI_Controller {
    }
 
    public function signout(){
-       session_destroy();
+        if (session_status() == PHP_SESSION_ACTIVE) {
+            try{
+
+                session_destroy();
+            }catch(Exception $v){
+
+            }
+        }
        redirect('admin');
    }
 

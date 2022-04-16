@@ -40,10 +40,10 @@ package-lock.json
 assets/uploads/*
 
 ## config
-application/controllers/config.php
+/application/config/config.php
 
-## test ctrl
-application/controllers/Test.php
+## database
+/application/config/database.php
 
 .env
 .vscode/

@@ -198,7 +198,7 @@ class Cart extends CI_Controller {
         $data['active_page'] = 'shop'; 
         $view_data['sub_active_page'] = 'checkout';
 
-        $view_data['customer_id'] = isset($_SESSION['customer_id']) ? en_dec('dec',$_SESSION['customer_id']) : 0;        
+        $view_data['customer_id'] = isset($_SESSION['customer_id']) ? en_dec('dec',$_SESSION['customer_id']) : 0;         
         $view_data['shipping_address'] = $this->model_address->get_shipping_address($view_data['customer_id']);
 
         foreach($view_data['shipping_address'] as $key => $value){
@@ -223,14 +223,15 @@ class Cart extends CI_Controller {
 
         $product_id = array();
 
-        //set temporary cart
-        $_SESSION['temp_cart'] = $_SESSION['cart'];
-
-        foreach($_SESSION['cart'] as $key => $value){
-            if($value['is_included'] == 1){
-                $order_data[$key] = $value;
-                unset($_SESSION['cart'][$key]);
-                array_push($product_id,en_dec('dec',$key));
+        if(isset($_SESSION['cart'])){
+            //set temporary cart
+            $_SESSION['temp_cart'] = $_SESSION['cart'];
+            foreach($_SESSION['cart'] as $key => $value){
+                if($value['is_included'] == 1){
+                    $order_data[$key] = $value;
+                    unset($_SESSION['cart'][$key]);
+                    array_push($product_id,en_dec('dec',$key));
+                }
             }
         }
         

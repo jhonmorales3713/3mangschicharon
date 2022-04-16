@@ -52,13 +52,14 @@ class Model_products extends CI_Model {
 		//$this->session->unset_userdata('inventory');
 		if(isset($args['inventory_qty'])){
 			for($i = 0; $i < count($inventory_qty) ; $i++){
-				$sql = "INSERT INTO sys_inventory (`product_id`, `qty`, `date_manufactured`,`date_expiration`, `date_created`) VALUES (?,?,?,?,?) ";
+				$sql = "INSERT INTO sys_inventory (`product_id`, `qty`, `date_manufactured`,`date_expiration`, `date_created`, `status`) VALUES (?,?,?,?,?,?) ";
 				$bind_data = array(
 					$id,
 					$inventory_qty[$i],
 					$inventory_manufactured[$i],
 					$inventory_expiration[$i],
-					$date_created
+					$date_created,
+					1
 				);
 
 				$this->db->query($sql, $bind_data);
@@ -90,7 +91,7 @@ class Model_products extends CI_Model {
 	}
 	public function update_inventory($data,$id){
 		if(isset($data['inventory_manufactured']) != false){
-			if(isset($data['tomoveout'])){
+			if($data['tomoveout']!= ''){
 				
 				for($i = 0;$i<count(explode(',',$data['tomoveout']));$i++){
 					$sql = "UPDATE sys_inventory SET status = 3,date_updated = '".date('Y-m-d H:i:s')."' where id = ".explode(',',$data['tomoveout'])[$i];
@@ -111,13 +112,14 @@ class Model_products extends CI_Model {
 					$this->db->query($sql,$bind_data);
 					$row = ($this->db->affected_rows());
 					if($row == 0 && !in_array($id,explode(',',$data['todelete']))){
-						$sql = "INSERT INTO sys_inventory (`product_id`, `qty`, `date_manufactured`,`date_expiration`, `date_created`) VALUES (?,?,?,?,?) ";
+						$sql = "INSERT INTO sys_inventory (`product_id`, `qty`, `date_manufactured`,`date_expiration`, `date_created`, `status`) VALUES (?,?,?,?,?,?) ";
 						$bind_data = array(
 							$id,
 							$data['inventory_qty'][$i],
 							$data['inventory_manufactured'][$i],
 							$data['inventory_expiration'][$i],
-							date('Y-m-d H:i:s')
+							date('Y-m-d H:i:s'),
+							1
 						);
 						$this->db->query($sql, $bind_data);
 					}
@@ -379,13 +381,14 @@ class Model_products extends CI_Model {
 		//$this->session->unset_userdata('inventory');
 		if(isset($args['inventory_qty'])){
 			for($i = 0; $i < count($inventory_qty) ; $i++){
-				$sql = "INSERT INTO sys_inventory (`product_id`, `qty`, `date_manufactured`,`date_expiration`, `date_created`) VALUES (?,?,?,?,?) ";
+				$sql = "INSERT INTO sys_inventory (`product_id`, `qty`, `date_manufactured`,`date_expiration`, `date_created`,status) VALUES (?,?,?,?,?,?) ";
 				$bind_data = array(
 					$id,
 					$inventory_qty[$i],
 					$inventory_manufactured[$i],
 					$inventory_expiration[$i],
-					$date_created
+					$date_created,
+					1
 				);
 
 				$this->db->query($sql, $bind_data);
@@ -648,13 +651,8 @@ class Model_products extends CI_Model {
 			$sql = "SELECT a.*, code.shopcode, c.category_name,sum(d.qty) as no_of_stocks FROM sys_products a 
                 LEFT JOIN sys_shops b ON 1 = b.id AND b.status > 0
 				LEFT JOIN sys_product_category c ON a.category_id = c.id AND c.status > 0
-				LEFT JOIN sys_shops code ON 1 = code.id
-				RIGHT JOIN sys_inventory d on d.product_id = a.id";
-			$sql = "SELECT a.*, code.shopcode, c.category_name,sum(d.qty) as no_of_stocks FROM sys_products a 
-                LEFT JOIN sys_shops b ON 1 = b.id AND b.status > 0
-				LEFT JOIN sys_product_category c ON a.category_id = c.id AND c.status > 0
 				LEFT JOIN sys_shops code ON 1 = code.id 
-				RIGHT JOIN sys_inventory d on d.product_id = a.id";
+				LEFT JOIN sys_inventory d on d.product_id = a.id";
 				// LEFT JOIN sys_products_images d ON a.Id = d.product_id AND d.arrangement = 1 AND d.status = 1";
 		}
 		else{
@@ -663,7 +661,7 @@ class Model_products extends CI_Model {
 				LEFT JOIN sys_product_category c ON a.category_id = c.id AND c.status > 0
 				LEFT JOIN sys_shops code ON 1 = code.id 
 				LEFT JOIN sys_products_images img ON a.id = img.product_id
-				RIGHT JOIN sys_inventory d on d.product_id = a.id";
+				LEFT JOIN sys_inventory d on d.product_id = a.id";
 		}
 		// start - for default search
 		if ($_record_status == 1) {
@@ -687,11 +685,9 @@ class Model_products extends CI_Model {
 		if($date_from != ""){
 			$sql.="  AND DATE_FORMAT(a.`date_created`, '%m/%d/%Y') ='".$date_from. "'";
 		}
-		$sql.=" AND a.parent_product_id IS NULL AND d.date_expiration > CURRENT_DATE()
-		GROUP BY a.id";
+		$sql.=" AND a.parent_product_id IS NULL GROUP BY a.id";
 		$query = $this->db->query($sql);
 		$totalFiltered = $query->num_rows(); // when there is a search parameter then we have to modify total number filtered rows as per search result.
-
 		$sql.=" ORDER BY ". $columns[$requestData['order'][0]['column']]." ".$requestData['order'][0]['dir']." ";  // adding length
 		if (!$exportable) {
 			$sql.=" LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
@@ -753,7 +749,7 @@ class Model_products extends CI_Model {
 					$now = time(); // or your date as well
 					$your_date = strtotime($inventory['date_expiration']);
 					$datediff = $now - $your_date;
-
+					
 					$days_differ =  -1*(round($datediff / (60 * 60 * 24))-1);
 					if($inventory['status']==1){
 						$variant_stocks += $inventory['qty'];

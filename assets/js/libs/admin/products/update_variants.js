@@ -209,7 +209,7 @@ $(function(){
         $(".oldimgurl").append("<input type='hidden' name='prev_image_name_noformat[]' value='"+noformat+"'>");
     });
     
-    $("#btninventory").click(function(){
+    $("#btninventory").click(function(){console.log("SD");
         $('#inventory_modal').modal('show');
     });
     $("#btnAddInventory").click(function(){
