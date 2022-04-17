@@ -85,6 +85,11 @@ class Signup extends CI_Controller {
                 $response['success'] = false;
                 $response['field_errors'] = array('login_password' => 'Invalid Password');
                 generate_json($response); die();
+            }else if($customer_data['status_id'] == 2){
+                $response['success'] = false;
+                $response['field_errors'] = array('login_email' => 'Account has been disabled by admin. For more info, please contact the administrator.');
+                generate_json($response); die();
+
             }
         }
         else{

@@ -45,6 +45,7 @@ class Login extends CI_Controller {
                         'avatar' => $user_info->avatar,
                         'functions' => $user_info->functions,
                         'role' => 'admin',
+                        'role_id' => $user_info->role,
                         'access_nav' => $user_info->access_nav,
                         'access_content_nav' => $user_info->access_content_nav,
                         'sys_shop' => 1,

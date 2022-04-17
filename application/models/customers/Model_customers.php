@@ -183,13 +183,15 @@ class Model_customers extends CI_Model {
                     data-name = "'.$row['full_name'].'"href="'.base_url('admin/Main_customers/view_customer/'.$token.'/'.en_dec('en',$row['id'])).'"
                     >
                     <i class="fa fa-search" aria-hidden="true"></i> View
-                    </a>
-                    <a class="dropdown-item btn_history"
-                    data-id="'.en_dec('en', $row['id']).'"
-                    data-name = "'.$row['full_name'].'"
-                    >
-                    <i class="fa fa-eye" aria-hidden="true"></i> Order History
                     </a>';
+                    
+                    // $dat.='
+                    // <a class="dropdown-item btn_history"
+                    // data-id="'.en_dec('en', $row['id']).'"
+                    // data-name = "'.$row['full_name'].'"
+                    // >
+                    // <i class="fa fa-eye" aria-hidden="true"></i> Order History
+                    // </a>';
 
                     if($this->loginstate->get_access()['customer']['disable'] == 1){
                         $dat.='

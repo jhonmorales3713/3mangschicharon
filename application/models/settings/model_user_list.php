@@ -429,13 +429,20 @@ class Model_user_list extends CI_Model {
             2 => 'username',
             3 => 'active'
 		);
-
-		$sql = "SELECT * FROM sys_users WHERE active > 0 AND role != 3";
+		if($this->session->userdata('role_id')==3){
+			$sql = "SELECT * FROM sys_users WHERE active > 0";
+		}else{
+			$sql = "SELECT * FROM sys_users WHERE active > 0 AND role != 3";
+		}
 		$query = $this->db->query($sql);
 		$totalData = $query->num_rows();
 		$totalFiltered = $totalData; 
 
-		$sql = "SELECT * FROM sys_users WHERE 1 AND role != 3";
+		if($this->session->userdata('role_id')==3){
+			$sql = "SELECT * FROM sys_users WHERE active > 0";
+		}else{
+			$sql = "SELECT * FROM sys_users WHERE active > 0 AND role != 3";
+		}
 
 		// start - for default search
 		if ($_record_status == 1) {
