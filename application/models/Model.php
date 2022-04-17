@@ -39,14 +39,14 @@ class Model extends CI_Model {
 		return $this->db->query($query,$argument);
 	}
 	public function get_cities($sys_shop = null) {
-		if ($sys_shop == null) {
-			$query="SELECT * FROM sys_delivery_areas WHERE status = 1";
-			return $this->db->query($query);
-		}else{
-			$query = "SELECT * FROM `sys_delivery_areas` WHERE `status` = 1 AND id NOT IN (SELECT areaid FROM `sys_shop_shipping` WHERE `sys_shop` = ?)";
-			$data = array($sys_shop);
-			return $this->db->query($query, $data);
-		}
+		// if ($sys_shop == null) {
+		// 	$query="SELECT * FROM sys_delivery_areas WHERE status = 1";
+		// 	return $this->db->query($query);
+		// }else{
+		// 	$query = "SELECT * FROM `sys_delivery_areas` WHERE `status` = 1 AND id NOT IN (SELECT areaid FROM `sys_shop_shipping` WHERE `sys_shop` = ?)";
+		// 	$data = array($sys_shop);
+		// 	return $this->db->query($query, $data);
+		// }
 	}
 
 

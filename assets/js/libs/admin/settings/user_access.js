@@ -425,6 +425,17 @@ function populate_edit_user_form(data) {
 		if(('orders' in fn) && fn.orders.decline == 1) {
 			$('#ac_transactions_decline').prop('checked', true);
 		}
+		
+		if(('customer' in fn) && fn.customer.view == 1) {
+			$('#ac_customer_view').prop('checked', true);
+		}
+		
+		if(('customer' in fn) && fn.customer.update == 1) {
+			$('#ac_customer_update').prop('checked', true);
+		}
+		if(('customer' in fn) && fn.customer.disable == 1) {
+			$('#ac_customer_disable').prop('checked', true);
+		}
 
 	}
 	run_sub_parent_checkbox_checker();

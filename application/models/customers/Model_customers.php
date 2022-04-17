@@ -66,8 +66,27 @@ class Model_customers extends CI_Model {
 
     return $json_data;
   }
+  
+	public function get_customerdetails($Id) {
+		$query=" SELECT * from sys_customers
+		WHERE id = ?";
+		$params = array($Id);
+		return $this->db->query($query, $params)->row_array();
+	}
+    public function changestatus($id, $status){
+        $sql = "UPDATE sys_customers set user_type_id = ? where id = ?";
+        $params = array ($status,en_dec('dec',$id));
+        $this->db->query($sql, $params);
+    }
+    public function changestatus_user($id, $status){
+        $sql = "UPDATE sys_customers set status_id = ? where id = ?";
+        $params = array ($status,en_dec('dec',$id));
+        $this->db->query($sql, $params);
+    }
   public function get_customers($_type, $_name, $_status, $requestData, $exportable = false){
 
+    $token_session  = $this->session->userdata('token_session');
+    $token          = en_dec('en', $token_session);
     $columns = array(
     // datatable column index  => database column name for sorting
         0 => 'full_name',
@@ -101,6 +120,7 @@ class Model_customers extends CI_Model {
     if (!$exportable) {
     $sql.=" LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
     }
+
     $query = $this->db->query($sql);
 
     $data = array();
@@ -121,40 +141,70 @@ class Model_customers extends CI_Model {
         //$nestedData[] = $row["city"];
         //$nestedData[] = $history["count"].' order(s) with '.$spent.' spent';
 
-        if($row["status_id"] != 0 ) {
+        if($row["user_type_id"] == 1 ) {
             $nestedData[] = (!$exportable) ? "<label class='badge badge-success'> Verified</label>":"Verified";
+        }else if($row["user_type_id"] == 2 ) {
+            $nestedData[] = (!$exportable) ? "<label class='badge badge-primary'> For Verification</label>":" For Verification";
         }else{
             $nestedData[] = (!$exportable) ? "<label class='badge badge-info'> Guest</label>":"Guest";
         }
-        if($row["status_id"] == 0){
+        if($row["status_id"] == 2){
 
-            $nestedData[] = 'Inactive';
-        }else{
-            
+            $record_status = 'Set as Active';
+            $rec_icon = 'fa fa-check-circle';
+            $enable = '.enable_confirmation';
+            $disable = '.disable_confirmation';
+            $changeto = 1;
+            $nestedData[] = 'Disabled';
+        }else
+        if($row["status_id"] == 1){
+            $changeto = 2;
+            $disable = '.enable_confirmation';
+            $enable = '.disable_confirmation';
+            $record_status = 'Set as Inactive';
+            $rec_icon = 'fa fa-ban';
             $nestedData[] ='Active';
+        }else{
+            $changeto = 0;
+            $disable = '';
+            $enable = '';
+            $record_status = '';
+            $rec_icon = '';
+            $nestedData[] ='';
         }
         
         $nestedData[] = date('m-d-Y',strtotime($row["date_created"]));
-            $nestedData[] =
-            '
+            $dat='
             <div class="dropdown text-center">
                 <i class="fa fa-ellipsis-v fa-lg" id="dropdown_menu_button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-hidden="true"></i>
                 <div class="dropdown-menu" aria-labelledby="dropdown_menu_button">
+                    <a class="dropdown-item btn_view"
+                    data-id="'.en_dec('en', $row['id']).'"
+                    data-name = "'.$row['full_name'].'"href="'.base_url('admin/Main_customers/view_customer/'.$token.'/'.en_dec('en',$row['id'])).'"
+                    >
+                    <i class="fa fa-search" aria-hidden="true"></i> View
+                    </a>
                     <a class="dropdown-item btn_history"
                     data-id="'.en_dec('en', $row['id']).'"
                     data-name = "'.$row['full_name'].'"
                     >
-                    <i class="fa fa-ye" aria-hidden="true"></i> Order History
-                    </a>
-                    <a class="dropdown-item btn_sendemail"
-                    data-id="'.en_dec('en', $row['id']).'"
-                    data-name = "'.$row['full_name'].'"
-                    >
-                    <i class="fa fa-ye" aria-hidden="true"></i> Send Email
-                    </a>
+                    <i class="fa fa-eye" aria-hidden="true"></i> Order History
+                    </a>';
+
+                    if($this->loginstate->get_access()['customer']['disable'] == 1){
+                        $dat.='
+                        <a class="dropdown-item btn_changestatus" data-changeto="'.$changeto.'"data-target="'.$enable.'"data-disable="'.$disable.'"
+                        data-custid="'.en_dec('en', $row['id']).'"
+                        data-name = "'.$row['full_name'].'"
+                        >
+                        <i class="'.$rec_icon.'" aria-hidden="true"></i>'. $record_status.'
+                        </a>';
+                    }
+            $dat.='
                 </div>
             </div>
             ';
+            $nestedData[] =$dat;
         // if($row['userid'] != 0){
         //     $nestedData[] =
         //     '

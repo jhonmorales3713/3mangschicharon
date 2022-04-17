@@ -177,6 +177,23 @@ class Model_access_control extends CI_Model {
             $this->access_control['orders']['decline'] = 0;
 		}
 		
+        //prders
+        if(isset($data['ac_customer_view'])) {
+            $this->access_control['customer']['view'] = 1;
+        }else{
+            $this->access_control['customer']['view'] = 0;
+		}
+        if(isset($data['ac_customer_update'])) {
+            $this->access_control['customer']['update'] = 1;
+        }else{
+            $this->access_control['customer']['update'] = 0;
+		}
+        if(isset($data['ac_customer_disable'])) {
+            $this->access_control['customer']['disable'] = 1;
+        }else{
+            $this->access_control['customer']['disable'] = 0;
+		}
+
          
 		// //dashboard
 		// if(isset($data['ac_dashboard_view'])) {

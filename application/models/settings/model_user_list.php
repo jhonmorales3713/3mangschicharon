@@ -50,6 +50,9 @@ class Model_user_list extends CI_Model {
 		$main_nav_ac_orders_view = $this->input->post('ac_transactions_view');
 		$main_nav_orders = ($main_nav_ac_orders_view) ? 1 : 0;
 
+		$main_nav_ac_customers_view = $this->input->post('ac_customer_view');
+		$main_nav_customer = ($main_nav_ac_customers_view) ? 1 : 0;
+
 		$main_nav_profile = 1;
 
 
@@ -88,6 +91,13 @@ class Model_user_list extends CI_Model {
 						$array_main_nav_id[] = $row->main_nav_id;
 					} 
 				}
+				
+				if ($main_nav_customer == 1) {
+					$main_nav_href_string = 'customers_home'; //get reference in cp_main_navigation
+					if ($main_nav_href_string == $row->main_nav_href) {
+						$array_main_nav_id[] = $row->main_nav_id;
+					} 
+				}
 
 
 			}
@@ -110,6 +120,9 @@ class Model_user_list extends CI_Model {
         
 		$ac_orders_view = $this->input->post('ac_transactions_view');
 		$ac_orders_view = ($ac_orders_view) ? 1 : 0;
+
+		$ac_customers_view = $this->input->post('ac_customer_view');
+		$ac_customers_view = ($ac_customers_view) ? 1 : 0;
 		
 		$ac_profile_view = 1;
 
@@ -141,6 +154,13 @@ class Model_user_list extends CI_Model {
 
                 if($ac_profile_view == 1){
 					$content_nav_href_string = 'Profile Update'; //get reference in cp_content_navigation->cn_name
+					if ($content_nav_href_string == $row->cn_name) {
+						$array_content_nav_id[] = $row->id;
+					} 
+                }
+
+                if($ac_customers_view == 1){
+					$content_nav_href_string = 'Customer List'; //get reference in cp_content_navigation->cn_name
 					if ($content_nav_href_string == $row->cn_name) {
 						$array_content_nav_id[] = $row->id;
 					} 
@@ -190,6 +210,9 @@ class Model_user_list extends CI_Model {
 		$main_nav_ac_orders_view = $this->input->post('ac_transactions_view');
 		$main_nav_orders = ($main_nav_ac_orders_view) ? 1 : 0;
 
+		$main_nav_ac_customers_view = $this->input->post('ac_customer_view');
+		$main_nav_customer = ($main_nav_ac_customers_view) ? 1 : 0;
+
 		$main_nav_profile = 1;
 
 		$array_main_nav_id = [];
@@ -225,6 +248,15 @@ class Model_user_list extends CI_Model {
 					} 
 				}
 
+				
+				if ($main_nav_customer == 1) {
+					$main_nav_href_string = 'customers_home'; //get reference in cp_main_navigation
+					if ($main_nav_href_string == $row->main_nav_href) {
+						$array_main_nav_id[] = $row->main_nav_id;
+					} 
+				}
+
+
 			}
 		}
 
@@ -248,6 +280,9 @@ class Model_user_list extends CI_Model {
 		$ac_orders_view = $this->input->post('ac_transactions_view');
 		$ac_orders_view = ($ac_orders_view) ? 1 : 0;
 
+		$ac_customers_view = $this->input->post('ac_customer_view');
+		$ac_customers_view = ($ac_customers_view) ? 1 : 0;
+		
 		$ac_profile_view = 1;
 
 		$array_content_nav_id = [];
@@ -285,6 +320,13 @@ class Model_user_list extends CI_Model {
 
                 if($ac_profile_view == 1){
 					$content_nav_href_string = 'Profile Update'; //get reference in cp_content_navigation->cn_name
+					if ($content_nav_href_string == $row->cn_name) {
+						$array_content_nav_id[] = $row->id;
+					} 
+                }
+				
+                if($ac_customers_view == 1){
+					$content_nav_href_string = 'Customer List'; //get reference in cp_content_navigation->cn_name
 					if ($content_nav_href_string == $row->cn_name) {
 						$array_content_nav_id[] = $row->id;
 					} 

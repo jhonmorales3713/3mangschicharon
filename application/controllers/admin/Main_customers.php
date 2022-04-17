@@ -170,7 +170,7 @@ class Main_customers extends CI_Controller {
 
     public function customers($token = ''){
         $this->isLoggedIn();
-        if($this->loginstate->get_access()['overall_access'] == 1 || $this->loginstate->get_access()['customer']['view'] == 1) {
+        if($this->loginstate->get_access()['customer']['view'] == 1) {
             $content_url = $this->uri->segment(1) . '/' . $this->uri->segment(2) . '/';
             $main_nav_id = $this->views_restriction($content_url);
 
@@ -192,45 +192,58 @@ class Main_customers extends CI_Controller {
     }
 
 
-    public function view_products($token = '', $Id)
+    public function view_customer($token = '', $Id)
     {
         $this->isLoggedIn();
-        $this->checkProductStatus($Id);
-        if($this->loginstate->get_access()['overall_access'] == 1 || $this->loginstate->get_access()['products']['view'] == 1) {
+        if($this->loginstate->get_access()['customer']['view'] == 1) {
             $member_id = $this->session->userdata('sys_users_id');
             $sys_shop = $this->session->userdata('sys_users_id');
             
-            $prev_product = $this->model_products->get_prev_product_per_shop($this->model_products->get_productdetails($Id)['itemname'], $sys_shop);
-            $next_product = $this->model_products->get_next_product_per_shop($this->model_products->get_productdetails($Id)['itemname'], $sys_shop);
-
             $content_url = $this->uri->segment(1) . '/' . $this->uri->segment(2) . '/';
             $main_nav_id = $this->views_restriction($content_url);
             $branchid = $this->session->userdata('branchid');
 
             $data_admin = array(
                 'token'               => $token,
-                'main_nav_categories' => $this->model_dev_settings->main_nav_categories()->result(),
-                'shopid'              => $this->session->userdata('sys_shop_id'),
-                'main_nav_id'         => $main_nav_id, //for highlight the navigation
-                'prev_product'        => $prev_product,
-                'next_product'        => $next_product,
                 'Id'                  => $Id,
-                'shops'               => $this->model_products->get_shop_options(),
-                'categories'          => $this->model_products->get_category_options(),
-                'get_productdetails'  => $this->model_products->get_productdetails($Id),
-                'itemname'            => $this->model_products->get_productdetails($Id)['itemname'],
+                'main_nav_id'         => $main_nav_id,
+                'get_customerdetails'  => $this->Model_customers->get_customerdetails(en_dec('dec',$Id))
                 //'get_branchdetails'   => $this->model_products->get_sys_branch_profile($this->model_products->get_productdetails($Id)['sys_shop'], $Id, $branchid),
-                'branchid'            => $branchid,
-                'featured_products'   => $this->model_products->getFeaturedProduct(),
-                'getVariants'         => $this->model_products->getVariants($Id)
             );
             $data_admin['active_page'] =  $this->session->userdata('active_page');
             $data_admin['subnav'] = false;
-            $data_admin['page_content'] = $this->load->view('admin/products/view_products',$data_admin,TRUE);
+            $data_admin['page_content'] = $this->load->view('admin/customers/view_customer',$data_admin,TRUE);
             $this->load->view('admin_template',$data_admin,'',TRUE);
         }else{
             $this->load->view('error_404');
         }
+    }
+    public function changestatus(){
+        $data = $this->input->post();
+        $this->Model_customers->changestatus($data['id'],$data['status']);
+        $status = $data['status'] == 3 ? 'Declined' : 'Verified';
+        $response = [
+            'environment' => ENVIRONMENT,
+            'success'     => true,
+            'message'     => 'Customer has been '.$status. ' successfully'
+        ];
+
+        echo json_encode($response);
+        die();
+    }
+
+    public function changestatus_user(){
+        $data = $this->input->post();
+        $this->Model_customers->changestatus_user($data['id'],$data['status']);
+        $status = $data['status'] == 2 ? 'Disabled' : 'Enabled';
+        $response = [
+            'environment' => ENVIRONMENT,
+            'success'     => true,
+            'message'     => 'Customer has been '.$status. ' successfully'
+        ];
+
+        echo json_encode($response);
+        die();
     }
 
     

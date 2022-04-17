@@ -32,8 +32,8 @@
                                     <!-- <label class="form-control-label col-form-label-sm">Customer Type</label> -->
                                     <select id="search_type" class="form-control material_josh form-control-sm search-input-text">
                                         <option value="">All Customer Type</option>
+                                        <option value="2">For Verification</option>
                                         <option value="1">Verified</option>
-                                        <option value="2">Guest</option>
                                     </select>
                                 </div>
                             </div>
@@ -42,8 +42,8 @@
                                     <!-- <label class="form-control-label col-form-label-sm">City</label> -->
                                     <select id="search_status" class="form-control material_josh form-control-sm search-input-text">
                                         <option value="">All Status</option>
-                                        <option value="0">Active</option>
-                                        <option value="1">Declined</option>
+                                        <option value="1">Active</option>
+                                        <option value="2">Declined</option>
                                         <!-- <?php foreach ($get_cities as $city): ?>
                                             <option><?=$city['name']?></option>
                                         <?php endforeach ?> -->
@@ -214,6 +214,29 @@
       </div>
       <div class="modal-footer text-right">
         <button class="btn btn-outline-secondary" data-dismiss = "modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Change Status Modal -->
+<div class="modal fade" id = "changestatus_modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header secondary-bg">
+        <h4 class="modal-title">Change Status</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group disable_confirmation" style="display:none;">
+            Are you sure you want to enable this user?
+        </div>
+        <div class="form-group enable_confirmation" style="display:none;">
+            Are you sure you want to disable this user?
+        </div>
+      </div>
+      <div class="modal-footer text-right">
+        <button class="btn btn-outline-secondary" data-dismiss = "modal">No</button>
+        <button class="btn btn-success" id="btnchangestatus">Yes</button>
       </div>
     </div>
   </div>

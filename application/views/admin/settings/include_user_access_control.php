@@ -65,7 +65,7 @@
 				<a class="nav-link col active" id="v-pills-dashboard-tab" data-toggle="pill" href="#v-pills-dashboard" role="tab" aria-controls="v-pills-dashboard" aria-selected="true">Dashboard <span class="check-count badge-success rounded text-xs rounded-lg px-1 bg-teal-500 text-light">0</span></a>
 				<a class="nav-link col" id="v-pills-order-headers-tab" data-toggle="pill" href="#v-pills-order-headers" role="tab" aria-controls="v-pills-order-headers" aria-selected="false" class="row m-0">Orders <span class="check-count badge-success rounded text-xs rounded-lg px-1 bg-teal-500 text-light">0</span></a>
 				<a class="nav-link col" id="v-pills-products-tab" data-toggle="pill" href="#v-pills-products" role="tab" aria-controls="v-pills-products" aria-selected="false" class="row m-0">Products <span class="check-count badge-success rounded text-xs rounded-lg px-1 bg-teal-500 text-light">0</span></a>
-				<!-- <a class="nav-link col" id="v-pills-shops-tab" data-toggle="pill" href="#v-pills-shops" role="tab" aria-controls="v-pills-shops" aria-selected="false">Shops <span class="check-count badge-success rounded text-xs rounded-lg px-1 bg-teal-500 text-light">0</span></a>
+				<!-- <a class="nav-link col" id="v-pills-shops-tab" data-toggle="pill" href="#v-pills-shops" role="tab" aria-controls="v-pills-shops" aria-selected="false">Shops <span class="check-count badge-success rounded text-xs rounded-lg px-1 bg-teal-500 text-light">0</span></a>-->
 				<a class="nav-link col" id="v-pills-customers-tab" data-toggle="pill" href="#v-pills-customers" role="tab" aria-controls="v-pills-customers" aria-selected="false">Customers <span class="check-count badge-success rounded text-xs rounded-lg px-1 bg-teal-500 text-light">0</span></a>
 				<a class="nav-link col" id="v-pills-accounts-tab" data-toggle="pill" href="#v-pills-accounts" role="tab" aria-controls="v-pills-accounts" aria-selected="false">Accounts <span class="check-count badge-success rounded text-xs rounded-lg px-1 bg-teal-500 text-light">0</span></a>
 				<a class="nav-link col" id="v-pills-reports-tab" data-toggle="pill" href="#v-pills-reports" role="tab" aria-controls="v-pills-reports" aria-selected="false">Reports <span class="check-count badge-success rounded text-xs rounded-lg px-1 bg-teal-500 text-light">0</span></a> -->
@@ -630,7 +630,7 @@
 						</div>
 
 					</div>
-				</div>
+				</div>-->
 				<div class="tab-pane fade w-100 online_ordering parent_section" id="v-pills-customers" role="tabpanel" aria-labelledby="v-pills-customers-tab">
 					<div class="py-3 px-4 row m-0 mb-1">
 						<div class="col-6 col-sm-3">
@@ -655,15 +655,15 @@
 										Create
 									</label>
 								</div>
-								<div class="col-6 col-sm-3" hidden>
+								<div class="col-6 col-sm-3" >
 									<label>
-										<input type="checkbox" class="hidden"  id="ac_customer_update" name="ac_customer_update" class="checkbox-template m-r-xs mr-2">
-										Update
+										<input type="checkbox"  id="ac_customer_update" name="ac_customer_update" class="checkbox-template m-r-xs mr-2">
+										Update Access
 									</label>
 								</div>
-								<div class="col-6 col-sm-3" hidden>
+								<div class="col-6 col-sm-3">
 									<label>
-										<input type="checkbox" class="hidden"  id="ac_customer_disable" name="ac_customer_disable" class="checkbox-template m-r-xs mr-2">
+										<input type="checkbox"  id="ac_customer_disable" name="ac_customer_disable" class="checkbox-template m-r-xs mr-2">
 										Disable
 									</label>
 								</div>
@@ -676,7 +676,7 @@
 							</div>
 						</div>
 					</div>
-				</div>
+				</div><!--
 				<div class="tab-pane fade w-100 online_ordering parent_section" id="v-pills-accounts" role="tabpanel" aria-labelledby="v-pills-accounts-tab">
 					<div class="py-3 px-4 row m-0 mb-1">
 						<div class="col-6 col-sm-3">

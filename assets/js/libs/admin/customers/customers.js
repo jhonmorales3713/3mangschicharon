@@ -1,5 +1,7 @@
 $(document).ready(function () {
 	var base_url = $("body").data("base_url"); //base_url came from built-in CI function base_url();
+    var custId='';
+	var status = 0;
 	var filter = {
 		search: "",
 		shop: "",
@@ -7,6 +9,33 @@ $(document).ready(function () {
 		to: "",
 	};
 
+    $(document).delegate('.btn_changestatus','click',function(e){
+        target = $(this).data('target');
+		status = target == '.enable_confirmation' ? 1 : 2;
+        $(target).show(250);
+        disable = $(this).data('disable');
+        $(disable).hide(250);
+        custId = $(this).data('custid');
+        $("#changestatus_modal").modal('show');
+    });
+	$("#btnchangestatus").click(function(){
+		$.ajax({				
+			url: base_url+'admin/Main_customers/changestatus_user',
+	       	type: 'POST',
+			data: {id:custId,status:status},
+			beforeSend:function() {
+				$.LoadingOverlay("show"); 
+			},
+			success : function(data){
+				json_data = JSON.parse(data);
+				$.LoadingOverlay("hide"); 
+                $("#changestatus_modal").modal('hide');
+                sys_toast_success(json_data.message);
+                setTimeout(function(){location.reload()}, 2000);
+            }
+        });
+	});
+    
 	function gen_order_history_tbl(search, id, total_amount) {
 		var order_history_tbl = $("#history_tbl").DataTable({
 			processing: true,
@@ -82,7 +111,7 @@ $(document).ready(function () {
 			serverSide: true,
 			responsive: true,
 			columnDefs: [
-				{ targets: [3], orderable: true, sClass: "text-center" },
+				{ targets: [4], orderable: true, sClass: "text-center" },
 				{ targets: [2, 4], orderable: false },
 			],
 			ajax: {
