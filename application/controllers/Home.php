@@ -34,7 +34,8 @@ class Home extends CI_Controller {
 		if(isset($_SESSION['message_sent_count'])){
 			if(intval($_SESSION['message_sent_count']) == 3){
 				$response = array(
-					'success'      => false,					
+					'success'      => false,		
+					'limit'		   => true,			
 				);
 			}
 		}
