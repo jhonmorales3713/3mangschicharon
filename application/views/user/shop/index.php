@@ -34,7 +34,7 @@
                                     }
                                 ?>
                                 <div class="product-img" style="background-image: url(<?= $image_path; ?>); width: 100%;" data-product_id="<?= $product['id']; ?>">
-                                    <div class="product-info">
+                                    <div class="product-info <?= sizeof($product['variants']) == 1 ? 'single-variant' : '';?>">
                                     <strong class="product-name"><?= $product['name']; ?></strong><br>
                                     <?php foreach($product['variants'] as $variant){ ?>
                                         <span class="badge badge-info size-select"><?= $variant['name']; ?></span> <span>&#8369; <?= number_format($variant['price'],2); ?></span><br>
