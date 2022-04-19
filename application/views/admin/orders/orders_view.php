@@ -23,7 +23,7 @@
     $sub_total_converted=number_format($sub_total_converted, 2); 
     $shipping_fee_converted = number_format($order_details['delivery_amount'],2);
     $total_amount_converted = $sub_total_converted + $shipping_fee_converted;
-    $payment_method = json_decode($order_details['payment_data'])->payment_method_name;
+    $payment_method = strtoupper(json_decode($order_details['payment_data'])->payment_method_name);
     // $special_upper = ["&NTILDE", "&NDASH",'|::PA::|'];
     // $special_format   = ["&Ntilde", "&ndash",''];
     // $order_details['name']= str_replace($special_upper, $special_format, $order_details['name']);
@@ -112,7 +112,7 @@
                                     </div> -->
                                     <div class="col-12 col-md-12">
                                         <label class="">Payment Reference No.:</label>
-                                        <label id="tm_payment_ref_num" class="green-text font-weight-bold"><?=$payment_method=='COD'?'None':json_decode($order_details['payment_data'])->ref_num?></label>
+                                        <label id="tm_payment_ref_num" class="green-text font-weight-bold"><?=$payment_method=='COD'?'None':json_decode($order_details['order_id'])?></label>
                                     </div>
                                     <!-- <div class="col-12 col-md">
                                         
@@ -136,7 +136,7 @@
                                 <div class="row">
                                     <div class="col-12 col-md-12">
                                         <label class="">Payment Status:</label>
-                                        <label id="tm_payment_status" class="green-text font-weight-bold"><?=($payment_method=='COD' && $order_details['status_id']==5)?'Paid':($order_details['status_id']==6||$order_details['status_id']==7||$order_details['status_id']==0)?'Cancelled':'Pending'?></label>
+                                        <label id="tm_payment_status" class="green-text font-weight-bold"><?=(($payment_method=='COD' && $order_details['status_id']==5)||($payment_method!='COD'&&$order_details['payment_details']!=''))?'Paid':($order_details['status_id']==6||$order_details['status_id']==7||$order_details['status_id']==0?'Cancelled':'Pending')?></label>
                                     </div>
                                     <!-- <div class="col-12 col-md">
                                         
@@ -546,8 +546,8 @@
                                         <div class="col-md-2" style="padding-top:5px;">
                                             <span><?=$order_details['payment_date']?></span>
                                         </div> -->
-
-                                        <?php if($order_details['payment_date'] != '0000-00-00 00:00:00'){?>
+                                        
+                                        <?php if($order_details['payment_date'] != '0000-00-00 00:00:00' && $order_details['payment_details']!=''){?>
                                             <div class="col-md-6" style="padding-top:13px;">
                                                 <span>Payment for order has been confirmed.</span>
                                             </div>
@@ -567,7 +567,7 @@
                                             <span></span>
                                         </div>
                                         <div class="col-md-2" style="padding-top:5px;">
-                                            <span><?=$order_details['date_ordered']?></span>
+                                            <span><?=$order_details['date_created']?></span>
                                         </div>
                                     <?php } ?>
 

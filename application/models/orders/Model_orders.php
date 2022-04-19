@@ -20,7 +20,7 @@ class Model_orders extends CI_Model {
 
 	}
     public function orders_details($reference_num){
-        $query = 'SELECT * FROM sys_orders WHERE order_id = "'.$reference_num.'"';
+        $query = 'SELECT a.*,b.date_created as payment_date,b.payment_data as payment_details FROM sys_orders a LEFT JOIN sys_payments b on a.order_id=b.order_id WHERE a.order_id = "'.$reference_num.'"';
 		return $this->db->query($query)->result_array();
     }
 
