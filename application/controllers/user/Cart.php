@@ -214,7 +214,7 @@ class Cart extends CI_Controller {
 
     public function place_order(){
 
-        $data = $this->input->post();
+        $data = $this->input->post();        
         
         $id = isset($_SESSION['customer_id']) ? $_SESSION['customer_id'] : '';
 
