@@ -60,7 +60,7 @@ $route['faqs'] = 'home/faqs';
 $route['shop'] = 'user/shop/index';
 $route['about'] = 'user/about/index';
 
-$route['registration'] = 'user/signup/index';
+$route['login'] = 'user/signup/index';
 $route['signup'] = 'user/signup/signup';
 $route['signin'] = 'user/signup/login';
 $route['signout'] = 'user/signup/signout';

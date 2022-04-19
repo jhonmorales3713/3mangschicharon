@@ -20,7 +20,7 @@
                 <a href="<?= base_url('about'); ?>" class="nav-about">ABOUT US</a>        
                 <a href="<?= base_url('contact_us'); ?>" class="nav-contact_us">CONTACT US</a>                      
                 <?php if(!isset($_SESSION['has_logged_in'])){ ?>
-                    <a href="<?= base_url('registration'); ?>" class="nav-registration">LOGIN</a>  
+                    <a href="<?= base_url('login'); ?>" class="nav-registration">LOGIN</a>
                 <?php } ?>                
                 </center>  
             </div>              
