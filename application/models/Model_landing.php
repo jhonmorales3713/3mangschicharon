@@ -19,6 +19,20 @@ class Model_landing extends CI_Model {
         }
     }
 
+    public function insert_message($info_message){
+        $this->db->insert('sys_messages',$info_message);        
+        return $this->db->insert_id();
+    }
+
+    public function get_message($message_id){
+        $this->db->where('id',$message_id);
+        return $this->db->get('sys_messages')->row_array();
+    }
+
+    public function get_messages(){
+        return $this->db->get('messages')->result_array();
+    }
+
     
 
 }

@@ -1,4 +1,4 @@
-<div class="container mt-5">
+<div class="container mt-5" id="contact_us_form">
     <div class="row">
         <div class="col-lg-4 col-md-4 col-sm-4"></div>
         <div class="col-lg-4 col-md-4 col-sm-4">
@@ -45,23 +45,36 @@
             <?php } ?>
             </center>
         </div>
-        <div class="col-lg-8 col-md-8 col-sm-6 mt20">
+        <div class="col-lg-8 col-md-8 col-sm-6 mt20" id="message_form">
             <div class="col-12">
                 <strong>Send Us a message</strong><br>
                 <p><small>If you have any concern please feel free to message us</small></p><br>
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Enter your name"/>
+                    <input type="text" class="form-control" id="name" placeholder="Enter your name"/>
                 </div>
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Enter your email"/>
+                    <input type="text" class="form-control" id="email" placeholder="Enter your email"/>
                 </div>
                 <div class="form-group">
-                    <textarea name="" id="" cols="30" rows="7" class="form-control" placeholder="Enter your message"></textarea>
+                    <textarea name="" cols="30" rows="7" class="form-control" id="message" placeholder="Enter your message"></textarea>
                 </div>      
             </div>
             <div class="col-4">                
-                <button class="btn btn-primary form-control">Submit</button>
+                <button class="btn btn-primary form-control" id="send_message">Submit</button>
             </div>   
+        </div>
+        <div class="col-lg-8 col-md-8 col-sm-6 mt20" id="message_success" style="display:none;">
+            <div class="col-12">
+                <strong>Message Sent!</strong>
+                <p>Please wait atleast 24 hours for us to respond to your inquiry.</p><br>
+                <p>Thank you</p>
+            </div>
+        </div>
+        <div class="col-lg-8" id="sent_limit" style="display:none;">
+            <div class="col-12">
+                <p>You already reached maximum number of message sent today.</p>
+            </div>
         </div>
     </div>
 </div>
+<script src="<?= base_url('assets/js/libs/user/home/contact_us.js'); ?>"></script>
