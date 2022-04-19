@@ -49,7 +49,7 @@ class Payment extends CI_Controller {
             $payment_id = $this->model_payment->save_source_data($source_data_arr,$_SESSION['order_data'][0]);
         } 
         else{
-
+            
             //retrieve payment record if already exists
             $payment = $this->model_payment->get_payment_data($current_order_id);
             $source_data_arr = json_decode($payment['source_data'],TRUE);
