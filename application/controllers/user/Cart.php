@@ -363,7 +363,7 @@ class Cart extends CI_Controller {
         // die();
         //gcash payment redirect
         $response['redirect_url'] = '';
-        if($data['payment_method'] != 3){
+        if($data['payment_method'] == 1){
             $_SESSION['order_data'] = $order;
             $_SESSION['current_order_id'] = en_dec('en',$id);
             $_SESSION['payment_keyword'] = $data['payment_keyword'];
