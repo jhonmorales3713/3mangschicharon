@@ -32,8 +32,11 @@
             <?php $this->load->view('user/cart/item_list'); ?>
         </div>
         <div class="col-lg-4 col-md-6 col-sm-12 p20">
-            <?php $this->load->view('user/cart/billing_summary'); ?>            
+            <?php $this->load->view('user/cart/billing_summary'); ?>
         </div>
+        <?php if(isset($_SESSION['cart'])){ ?>
+            
+        <?php } ?>
     </div>
 </div>
 

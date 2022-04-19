@@ -43,8 +43,9 @@
 </div>
 
 <div class="p20">
-<?php if($sub_active_page == 'checkout'){ ?>
-<?php $total_amount += $shipping_types[0]['rate']; ?>
+<?php if($sub_active_page == 'checkout'){ ?>    
+<?php $total_amount += floatval($shipping_types[0]['rate']); ?>
+<?= $total_amount ?>
     <div class="row">
         <div class="col-7">
             <small><strong>Shipping Fee</strong></small>

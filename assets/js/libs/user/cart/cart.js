@@ -34,6 +34,8 @@ function set_cart_data(cart_data){
         summary_string += '</div>';
     });
 
+    sub_total += 50; //add automatic shipping fee
+
     $('#cart_div').html(cart_item_string);
     $('#summary_div').html(summary_string);
     $('#sub_total').html(php_money(sub_total));    

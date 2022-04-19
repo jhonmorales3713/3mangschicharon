@@ -206,7 +206,7 @@ class Cart extends CI_Controller {
         }
 
         $view_data['payment_methods'] = $this->model_cart->get_payment_methods();
-        $view_data['shipping_types'] = $this->model_cart->get_shipping_types();
+        $view_data['shipping_types'] = $this->model_cart->get_shipping_types();        
 
         $data['page_content'] = $this->load->view('user/cart/checkout',$view_data,TRUE);
 		$this->load->view('landing_template',$data,'',TRUE);
