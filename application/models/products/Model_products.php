@@ -765,7 +765,7 @@ class Model_products extends CI_Model {
 				$variant_price [] = $variant['price'];
 			}
 			if($stock_status == '' && $variant_stocks == 0 && $row['variant_isset'] == 1){
-				$stock_status = 'Out of Stock';
+				$stock_status = 'Out of Stocks';
 			}
 			sort($variant_price);
 			$nestedData[] = !empty($variant_price) ? $variant_price[0] .'-'. $variant_price[count($variant_price)-1] : number_format($row["price"], 2);

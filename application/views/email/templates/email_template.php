@@ -79,7 +79,7 @@
                             <tbody>
                                 <tr style="height: 100px; border: 0;">
                                     <td>
-                                        <img src="<?=$bg;?>" style="width: 100%; border-top-right-radius: 8px; border-top-left-radius: 8px;" alt="toktok banner">
+                                        <img src="<?=$bg;?>" style="width: 100%; border-top-right-radius: 8px; border-top-left-radius: 8px;" alt="3mangs banner">
                                     </td>
                                 </tr>
                             </tbody>

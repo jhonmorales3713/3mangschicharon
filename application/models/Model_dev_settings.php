@@ -55,7 +55,7 @@
         return $this->db->query($sql)->result_array();
     }
     public function get_active_faq(){
-        $sql = "SELECT * from sys_faqs WHERE `status` = 1";
+        $sql = "SELECT * from sys_faqs WHERE `status` = 1 ORDER BY arrangement";
         return $this->db->query($sql)->result_array();
     }
     public function load_faqs($requestData,$exportable = false) {

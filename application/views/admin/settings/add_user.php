@@ -66,7 +66,7 @@
 
     <div class="card p-2">
         <div class="row justify-content-end">
-            <a href="<?=base_url('settings/user_list/view/'.$token);?>" class="btn btn-outline-secondary col-md-1 mr-3" id="backBtn">Back</a>
+            <a href="<?=base_url('admin/settings/user_list/view');?>" class="btn btn-outline-secondary col-md-1 mr-3" id="backBtn">Back</a>
             <button type="submit" class="btn btn-primary col-md-1 mr-3" form="record_form">Save</button>
         </div>
     </div>

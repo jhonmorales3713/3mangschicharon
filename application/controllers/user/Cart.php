@@ -234,10 +234,9 @@ class Cart extends CI_Controller {
                 }
             }
         }
-        
         $payment_data = array(
-            'payment_method_id:' => 1,
-            'payment_method_name' => 'COD',
+            'payment_method_id:' => $data['payment_method'] != ''?$data['payment_method'] : 2,
+            'payment_method_name' => $data['payment_keyword'] != ''?$data['payment_keyword'] : 'COD',
             'amount' => $data['total_amount'],
             'status_id' => 1, //pending
         );

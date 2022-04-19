@@ -323,6 +323,11 @@ class Model_user_list extends CI_Model {
 					if ($content_nav_href_string == $row->cn_name) {
 						$array_content_nav_id[] = $row->id;
 					} 
+					
+					$content_nav_href_string = 'Change Password'; //get reference in cp_content_navigation->cn_name
+					if ($content_nav_href_string == $row->cn_name) {
+						$array_content_nav_id[] = $row->id;
+					} 
                 }
 				
                 if($ac_customers_view == 1){

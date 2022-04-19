@@ -249,7 +249,6 @@ function populate_edit_user_form(data) {
 		$('#avatar-placeholder').removeClass('hidden');
 		$('#change-image').hide();
 	}
-	console.log(data);
 
 	if (data.access_nav != "") {
 		// online ordering view

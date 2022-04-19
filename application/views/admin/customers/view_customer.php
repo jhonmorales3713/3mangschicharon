@@ -137,7 +137,7 @@
                         <div class="card ">
                             <div class="card-body">
                                 <!-- <button type="button" class="btn btn-outline-secondary cancelBtn" id="backBtn">Close</button> -->
-                                <?php if($get_customerdetails['status_id']==2 ){?>
+                                <?php if($get_customerdetails['user_type_id']==2 ){?>
                                 <button type="button" class="btn btn-danger approvalbtn" data-content=".declineContent" data-custid="<?=$Id?>" data-disable=".verifyContent">Decline</button>
                                 <button type="button" class="btn btn-success approvalbtn" data-content=".verifyContent" data-custid="<?=$Id?>"  data-disable=".declineContent">Verify</button>
                                 <?php } ?>
