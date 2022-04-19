@@ -17,13 +17,13 @@
                 <small><strong class="mb-3 p10">SOCIAL MEDIA LINKS:</strong></small>                
                 <ul class="list-unstyled form-inline p10">
                     <?php if(fb_link()!=''){?>
-                        <li><a href="<?=fb_link();?>" class="primary-color p-3 n-top10"><span class="fa fa-facebook-square"></span></a></li>
+                        <li><a href="<?=fb_link();?>" target="blank" class="primary-color p-3 n-top10"><span class="fa fa-facebook-square"></span></a></li>
                     <?php }?>
                     <?php if(ig_link()!=''){?>
-                        <li><a href="<?=ig_link();?>" class="primary-color p-3 n-top10"><span class="fa fa-instagram"></span></a></li>
+                        <li><a href="<?=ig_link();?>" target="blank" class="primary-color p-3 n-top10"><span class="fa fa-instagram"></span></a></li>
                     <?php }?>
                     <?php if(youtube_link()!=''){?>
-                        <li><a href="<?=youtube_link();?>" class="primary-color p-3 n-top10"><span class="fa fa-youtube-square"></span></a></li>
+                        <li><a href="<?=youtube_link();?>" target="blank" class="primary-color p-3 n-top10"><span class="fa fa-youtube-square"></span></a></li>
                     <?php }?>
                 </ul>                
             </div>
