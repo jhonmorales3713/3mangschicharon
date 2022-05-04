@@ -45,6 +45,7 @@ class Model_orders extends CI_Model {
 		$params = array($Id);
 		return $this->db->query($query, $params)->result_array();
 	}
+
 	public function processOrder($reference_num) {
 
 		$sql = "SELECT * from sys_orders WHERE order_id = ?";
@@ -56,15 +57,18 @@ class Model_orders extends CI_Model {
 		foreach($this->db->query($sql,$bind_data)->result_array() as $products){
 			foreach(json_decode($products['order_data']) as $key => $orderproduct){
 				$inventory_id = 0;
-				if(count($this->get_inventorydetails(en_dec('dec',$key))) > 0){
-					$inventory_id = $this->get_inventorydetails(en_dec('dec',$key))[0]['id'];
-					$current_inventory_count = $this->get_inventorydetails(en_dec('dec',$key))[0]['qty'];
+				foreach($this->get_inventorydetails(en_dec('dec',$key)) as $inventory_details){
+					// print_r($inventory_details);
+					$inventory_id = $inventory_details['id'];
+					$current_inventory_count = $inventory_details['qty'];
+					
 					$sql = 'UPDATE sys_inventory SET qty = '.($current_inventory_count - $orderproduct->qty).' WHERE id = '.$inventory_id;
 					$this->db->query($sql);
 				}
 				$inventory_data[]=Array('id' => $inventory_id,'qty' => $orderproduct->qty);
 			}
 		}
+		// die();
 		$sql = "UPDATE `sys_orders` SET status_id = 2,inventory_data = ?, `date_processed` = ? WHERE order_id = ?";
 		
 		$bind_data = array(
@@ -310,33 +314,64 @@ class Model_orders extends CI_Model {
 		foreach( $query->result_array() as $row ) {  // preparing an array for table tbody
             $product_id = json_decode($row["product_id"]);
             $order_info = json_decode($row["order_data"]);
-            foreach($product_id as $product){
-
-                $product_info = $this->get_productinfo_parent($product);
-                if($product_info[0]['parent_product_id']!=''){
-                    $product_info = $product_info[0];
-                    $product_info = $this->get_productinfo($product_info['parent_product_id']);
-                    $product_info = $product_info[0];
-                }else{
-                    $product_info = $this->get_productinfo($product)[0];
-                }
-                $product_info_parent = $product_info['parent_product_id']!=''?$this->get_productinfo($this->get_productinfo($product)['parent_product_id'])['name'].' - ':'';
-            }
             foreach($order_info  as $key => $value){
                //print_r($value);
                 $qty = $value->qty;
-                $amount = $value->price;
+                $amount = $value->amount;
+				$product = (en_dec('dec',$key));
+				$discount_info = $value->discount_info;
+				// print_r($discount_info);
+				$badge = '';
+				if($discount_info != '' && $discount_info != null){
+					if(in_array($key,json_decode($discount_info->product_id))){
+						$discount_id = $discount_info->id;
+						if($discount_info->discount_type == 1){
+							if($discount_info->disc_amount_type == 2){
+								$newprice = $amount - ($amount * ($discount_info->disc_amount/100));
+								$discount_price = $discount_info->disc_amount;
+								if($discount_info->max_discount_isset && $newprice < $discount_info->max_discount_price){
+									$discount_price = $discount_info->max_discount_price;
+									$newprice = $discount_info->max_discount_price;
+								}
+								$badge =  '<span class=" mr-1 badge badge-danger">- '.$discount_price.'% off</span> <s><small>'.$amount.'</small></s>'.number_format($newprice,2);
+							}else{
+								$newprice = $amount - $discount_info->disc_amount;
+								$badge = '<span class=" mr-1 badge badge-danger">- &#8369; '.$discount_info->disc_amount.' off</span>'.number_format($newprice,2);
+								if($discount_info->max_discount_isset && $newprice < $discount_info->max_discount_price){
+									$badge ='<span class=" mr-1 badge badge-danger">- &#8369; '.$discount_info->max_discount_price.' off</span>'.number_format($newprice,2);
+									$newprice = $discount_info->max_discount_price;
+									// $newprice = $discount['max_discount_price'];
+								}
+							}
+							$amount = $newprice;
+						}
+					}
+				}
+				
+				// print_r($value);
+
+				// print_r(en_dec('dec',$key));
+				// print_r($value);
+				// print_r($product);
+				$parent_product_info = $this->get_productinfo_parent($product);
+				$parent_product_info_ = $this->get_productinfo_parent($parent_product_info[0]['parent_product_id']);
+				$size_info = $parent_product_info[0];
+				
+				// print_r($product_info);
+				// $product_info_parent = $parent_product_info['parent_product_id']!=''?$this->get_productinfo($this->get_productinfo($product)['parent_product_id'])['name'].' - ':'';
+				// print_r($size_info);
+				// print_r($parent_product_info);
+				$nestedData=array();
+				$nestedData[] = '<img class="img-thumbnail" style="width: 50px;" src="'.base_url().'assets/uploads/products/'.str_replace('==.','.',$size_info['img'] == '' ?$parent_product_info_[0]['img']:$size_info['img'] ).'?'.rand().'">';
+				$nestedData[] = ucwords($parent_product_info[0]['parent_product_id'] != '' ? 
+					$this->get_productinfo($parent_product_info[0]['parent_product_id'])[0]['name'].' - '.$size_info["name"]:
+					$size_info["name"]);
+				$nestedData[] = $qty;
+	
+				$nestedData[] = $badge!=''?$badge:number_format($amount, 2);
+				$nestedData[] = number_format($amount * $qty, 2);
+				$data[] = $nestedData;
             }
-			$nestedData=array();
-            
-			$nestedData[] = '<img class="img-thumbnail" style="width: 50px;" src="'.base_url().'assets/uploads/products/'.str_replace('==.','.',$product_info['filename']).'?'.rand().'">';
-			$nestedData[] = ucwords($product_info_parent.$product_info["name"]);
-			$nestedData[] = $qty;
-
-            $nestedData[] = number_format($amount, 2);
-            $nestedData[] = number_format($amount * $qty, 2);
-
-			$data[] = $nestedData;
 		}
 
 		$json_data = array(

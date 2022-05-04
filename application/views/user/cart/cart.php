@@ -22,13 +22,44 @@
                             <?php $total_amount = 0; ?>
                             <?php foreach($_SESSION['cart'] as $key => $value){ ?>
                                 <div class="row">
-                                    <div class="col-7">                                        
+                                    <div class="col-7">                    
                                         <small><strong><?= $_SESSION['cart'][$key]['name'] ?> (<?= $_SESSION['cart'][$key]['size']; ?>)</strong> <b>x</b> <?= $_SESSION['cart'][$key]['quantity'] ?></small><br>
                                     </div>
                                     <div class="col-5 text-right">
-                                        <?php $amount = floatval($_SESSION['cart'][$key]['amount']) * intval($_SESSION['cart'][$key]['quantity']); ?>
+                                        
+                                        <?php
+                                            $newprice = floatval($_SESSION['cart'][$key]['amount']);
+                                            $badge = number_format($newprice,2);
+                                            foreach($discounts as $discount){
+                                                if(in_array($key,json_decode($discount['product_id']))){
+                                                    
+                                                    $discount_id = $discount['id'];
+                                                    // $discount = '<span class="badge badge-danger"></span>';
+                                                    // $discount = $product['discount'];
+                                                    if($discount['discount_type'] == 1){
+                                                        if($discount['disc_amount_type'] == 2){
+                                                            $newprice = $_SESSION['cart'][$key]['amount'] - ($_SESSION['cart'][$key]['amount'] * ($discount['disc_amount']/100));
+                                                            $discount_price = $discount['disc_amount'];
+                                                            if($discount['max_discount_isset'] && $newprice < $discount['max_discount_price']){
+                                                                $discount_price = $discount['max_discount_price'];
+                                                                $newprice = $discount['max_discount_price'];
+                                                            }
+                                                            $badge =  '<span class=" mr-1 badge badge-danger">- '.$discount_price.'% off</span> <s><small>'.$_SESSION['cart'][$key]['amount'].'</small></s>'.number_format($newprice,2);
+                                                        }else{
+                                                            $newprice = $product['price'] -$discount['disc_amount'];
+                                                            $badge = '<span class=" mr-1 badge badge-danger">- &#8369; '.$discount['disc_amount'].' off</span>'.number_format($newprice,2);
+                                                            if($discount['max_discount_isset'] && $newprice < $discount['max_discount_price']){
+                                                                $badge ='<span class=" mr-1 badge badge-danger">- &#8369; '.$discount['max_discount_price'].' off</span>'.number_format($newprice,2);
+                                                                $newprice = $discount['max_discount_price'];
+                                                                // $newprice = $discount['max_discount_price'];
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            } ?>     
+                                        <?php $amount = floatval($newprice) * intval($_SESSION['cart'][$key]['quantity']); ?>
                                         <?php $total_amount += $amount; ?>
-                                        <span><?= number_format($amount,2); ?></span>
+                                        <span><?= $badge; ?></span>
                                     </div>           
                                 </div>     
                             <?php } ?>                        

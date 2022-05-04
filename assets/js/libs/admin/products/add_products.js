@@ -710,7 +710,7 @@ $(function(){
         str += "<td class='variant_tr_"+key+"'><input type='number' min='0' class='form-control allownumericwithdecimal' name='variant_price[]'  placecholder='0.00'></td>";
         // str += "<td class='variant_tr_"+key+"'><input type='text' class='form-control' name='variant_sku[]'></td>";
         // str += "<td class='variant_tr_"+key+"'><input type='text' class='form-control' name='variant_barcode[]'></td>";
-        str += "<td class='variant_tr_"+key+"'><button type='button' id='removeVariantSpec' class='btn btn-danger' data-value='"+key+"'><i class='fa fa-trash'></i></button></td>";
+        str += "<td class='variant_tr_"+key+"'><button type='button' id='removeVariantSpec' class='btn btn-danger' data-value='"+key+"'><i class='fa fa-trash-o'></i></button></td>";
         str += "</tr>";
         $('#tbody_variants').append(str);
 

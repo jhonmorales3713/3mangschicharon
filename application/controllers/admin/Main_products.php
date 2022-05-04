@@ -2,7 +2,9 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 date_default_timezone_set('Asia/Manila');
-
+require_once('vendor/autoload.php');
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 class Main_products extends CI_Controller {
 
     public function __construct() {
@@ -13,6 +15,8 @@ class Main_products extends CI_Controller {
         $this->load->model('model_dev_settings');
         $this->load->model('products/model_products');
         $this->load->library('upload');
+        $this->load->library('pdf');
+        $this->load->library('excel');
         $this->load->library('uuid');
     }
 
@@ -95,12 +99,7 @@ class Main_products extends CI_Controller {
       
         // $sys_shop = $this->model_products->get_sys_shop($member_id);
         $sys_shop = $this->session->userdata('sys_shop');
-        
-        if($sys_shop == 0) {
-            $query = $this->model_products->product_table($sys_shop, $request, true);
-        }else{
-            $query = $this->model_products->product_table($sys_shop, $request, true);
-        }
+        $query = $this->model_products->product_table($sys_shop, $request, true);
 
         // $_record_status = ($this->input->post('_record_status') == 1 && $this->input->post('_record_status') != '') ? "Enabled":"Disabled";
 
@@ -118,18 +117,17 @@ class Main_products extends CI_Controller {
         }
 
 		$_name 			= ($this->input->post('_name') == "") ? "":"'" . $this->input->post('_name') ."'";
-        $_shops 		= ($this->input->post('_shops') == "") ? "All Shops":array_get($query, 'data.0.5');
         
         /// for details column in audit trail
-        if($_name != ''){
-            $filter_text .= $_record_status.' in '.$_shops. ', Product Name: '.$_name;
-        }else{
-            $filter_text .= $_record_status.' in '.$_shops;
-        }
+        // if($_name != ''){
+        //     $filter_text .= $_record_status.' in '.$_shops. ', Product Name: '.$_name;
+        // }else{
+        //     $filter_text .= $_record_status.' in '.$_shops;
+        // }
         
-        $sheet->setCellValue('B1', "Products");
-        $sheet->setCellValue('B2', "Filter: '$_name', $_record_status in $_shops");
-        $sheet->setCellValue('B3', date('Y/m/d'));
+        $sheet->setCellValue('A1', "Products");
+        // $sheet->setCellValue('B2', "Filter: '$_name', $_record_status in $_shops");
+        $sheet->setCellValue('A2', date('Y/m/d'));
         
         $sheet->getColumnDimension('A')->setWidth(40);
         $sheet->getColumnDimension('B')->setWidth(30);
@@ -142,7 +140,7 @@ class Main_products extends CI_Controller {
         $sheet->setCellValue('B6', 'Category');
         $sheet->setCellValue('C6', 'Price');
         $sheet->setCellValue('D6', 'No of Stock');
-        $sheet->setCellValue('E6', 'Shop Name');
+        $sheet->setCellValue('E6', 'Status');
         $sheet->setCellValue('F6', 'Status');
 
         $sheet->getStyle('B1')->getFont()->setBold(true);
@@ -214,6 +212,20 @@ class Main_products extends CI_Controller {
         $sys_shop = $this->session->userdata('sys_shop_id');
         
         $query = $this->model_products->product_table($sys_shop, $request);
+        
+        
+        generate_json($query);
+    }
+    
+
+    public function product_table_active()
+    {
+        $this->isLoggedIn();
+        $request = $_REQUEST;
+        $member_id = $this->session->userdata('id');
+        $sys_shop = $this->session->userdata('sys_shop_id');
+        
+        $query = $this->model_products->product_table_active($sys_shop, $request);
         
         
         generate_json($query);
@@ -842,25 +854,34 @@ class Main_products extends CI_Controller {
         $imgArr    = [];
 
         // variants validation if empty
-        $variants_isset  = sanitize($this->input->post('f_variants_isset'));
+        $variants_isset  = 1;
         $variant_checker = 0;
         if($variants_isset == 1){
             $variant_name   = $this->input->post('variant_name');
             $variant_price   = $this->input->post('variant_price');
             $variant_counter = count($variant_name);
             for($i = 0; $i < $variant_counter; $i++) { 
-                if($variant_name[$i] == "" && $variant_price[$i] != ""){
+                if($variant_name[$i] == "" || $variant_price[$i] == ""){
                     $variant_checker = 1;
                 }
             }
         }
 
-
+        if($variant_counter == 0){
+            $response = [
+                'environment' => ENVIRONMENT,
+                'success'     => false,
+                'message'     => 'Atleast 1 size is required.'
+            ];
+            echo json_encode($response);
+            die();
+        }
+        
         if($variant_checker == 1){
             $response = [
                 'environment' => ENVIRONMENT,
                 'success'     => false,
-                'message'     => 'Please complete variants field.'
+                'message'     => 'Please complete sizes field.'
             ];
             echo json_encode($response);
             die();
@@ -1117,7 +1138,80 @@ class Main_products extends CI_Controller {
             $this->load->view('error_404');
         }
     }
-    
+    //controller
+    public function export(){
+        if(empty($this->input->post()) || !array_key_exists('post_url', $this->input->post()) || !array_key_exists('export_type', $this->input->post()) ){
+            $this->load->view('custom_404',NULL);
+            return;
+        }
+
+        $post_data = $this->input->post();
+        $function  = $post_data['post_url'];
+        
+        $export_type = strtolower($post_data['export_type']);        
+        if(!in_array($export_type, $this->array_export_formats)){
+            $this->load->view('custom_404',NULL);
+            return;
+        }
+        try {
+            $this->$function($post_data, $export_type);   
+        } catch (\Throwable $th) {
+            $this->load->view('custom_404',NULL);
+            return;
+        }
+    }
+
+    public function export_products($post_data,$type){
+
+        $title = 'Products List';
+        $filename = construct_name_from_filter([], $title);
+        
+        $data['data'] = $this->load_events(true,$post_data)['data'];
+
+        if($type == 'pdf'){
+            $page = $this->load->view('admin/events/events_list_pdf',$data,true);
+            $this->pdf->load_pdf($title, $page, $filename, TRUE, $post_data);           
+        } 
+        elseif ($type == 'xlsx' || $type == 'csv') { //export xlsx or csv
+            
+            //initialize
+            $excel = new Excel();
+
+            //data to display
+            $get_data = array(); 
+            foreach ($data['data'] as $key => $column) { //select column to be display in excel                
+                $get_data[$key][] = trim(strip_tags($column[0]));
+                $get_data[$key][] = trim(strip_tags($column[6]));
+                $get_data[$key][] = trim(strip_tags($column[2]));
+                $get_data[$key][] = trim(strip_tags($column[7]));
+                $get_data[$key][] = trim(strip_tags($column[8]));
+                $get_data[$key][] = trim(strip_tags($column[3]));
+                $get_data[$key][] = trim(strip_tags($column[4]));
+            }
+
+            //column headers
+            $columns = array( 
+                0 => 'Event Title',
+                1 => 'Chapter',
+                2 => 'Hosted By',
+                3 => 'Sponsor',
+                4 => 'Event Date',
+                5 => '# of Participants',
+                6 => 'Participants Joined'
+            );
+
+            $excel->set_column_header($columns);
+            $excel->set_row_data($get_data);
+            
+            if ($type == 'xlsx'){
+                $excel->export_xlsx($filename);      
+            }                
+            elseif ($type == 'csv'){
+                $excel->export_csv($filename);
+            }            
+        }    
+    }
+
 
     public function update_product()
     {
@@ -1132,7 +1226,29 @@ class Main_products extends CI_Controller {
         $imgArr    = [];
 
         // variants validation if empty
-        $variants_isset  = sanitize($this->input->post('f_variants_isset'));
+        $variants_isset  = 1;
+        $variant_counter = 0;
+        if($variants_isset == 1){
+            $variant_name   = $this->input->post('variant_name');
+            $variant_price   = $this->input->post('variant_price');
+            $variant_counter = isset($variant_name)?count($variant_name):0;
+            for($i = 0; $i < $variant_counter; $i++) { 
+                if($variant_name[$i] == "" || $variant_price[$i] == ""){
+                    $variant_checker = 1;
+                }
+            }
+        }
+
+        if($variant_counter == 0){
+            $response = [
+                'environment' => ENVIRONMENT,
+                'success'     => false,
+                'message'     => 'Atleast 1 size is required.'
+            ];
+            echo json_encode($response);
+            die();
+        }
+        
         $var_option_name = $this->input->post('f_var_option_name');
         $var_option_list = $this->input->post('f_var_option_list');
         $variant_checker = 0;
@@ -1386,7 +1502,7 @@ class Main_products extends CI_Controller {
                     $this->audittrail->logActivity('Product List - Variant', $variant_name[$i].' Variant from '.$get_product->itemname.' has been updated successfully.', 'update', $this->session->userdata('username'));
                 }
                 
-                $this->model_products->updateParentProductInventoryQty($id);
+                // $this->model_products->updateParentProductInventoryQty($id);
             }
             $deletedVariants = $this->input->post('deletedVariants');
             $deletedVariants = explode(",", $deletedVariants);

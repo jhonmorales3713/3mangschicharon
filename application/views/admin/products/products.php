@@ -40,6 +40,7 @@
                                 <div class="form-group">
                                     <select name="_categories" class="form-control material_josh form-control-sm search-input-text enter_search">
                                         <option value="">All Category</option>
+                                        <option value="0">By Sizes</option>
                                         <?php foreach ($categories as $category): ?>
                                             <option value="<?=$category['id'];?>"><?=$category['category_name'];?></option>
                                         <?php endforeach ?>
@@ -75,6 +76,7 @@
                                         <form action="<?=base_url('admin/Main_products/export_product_table')?>" method="post" target="_blank">
                                             <input type="hidden" name="date_from" id="date_from">
                                             <input type="hidden" name="_shops" id="_shops">
+                                            <input type="hidden" name="_category" id="category">
                                             <input type="hidden" name="_name" id="_name">
                                             <input type="hidden" name="_record_status" id="_record_status">
                                             <input type="hidden" name="_search" id="_search">
@@ -128,7 +130,7 @@
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header secondary-bg white-text d-flex align-items-center">
-                <h3 class="modal-title" id="exampleModalLabel">Disable Confirmation</h3>
+                <h3 class="modal-title " id="exampleModalLabel"><span class="mtext_record_status">Disable</span> Confirmation</h3>
             </div>
             <div class="modal-body">
                 <p>Are you sure you want to <b class="mtext_record_status">Enable</b> this record?</p>
@@ -154,7 +156,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="delete_modal_confirm_btn">Confirm</button>
+                <button type="button" class="btn btn-primary"  id="delete_modal_confirm_btn">Confirm</button>
             </div>
         </div>
     </div>

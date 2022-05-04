@@ -19,6 +19,23 @@ $(document).ready(function(){
 	    
 	}
 
+	//allowing numeric with decimal
+	$(".allownumericwithdecimal").on("keypress keyup blur",function (event) {
+		$(this).val($(this).val().replace(/[^0-9\.]/g,''));
+
+		if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
+			event.preventDefault();
+		}
+	});
+
+	//allowing numeric without decimal
+	$(".allownumericwithoutdecimal").on("keypress keyup blur",function (event) {
+		$(this).val($(this).val().replace(/[^\d].+/, ""));
+
+		if ((event.which < 48 || event.which > 57)) {
+			event.preventDefault();
+		}
+	});
 	
 
 	sys_log = function(env,data){

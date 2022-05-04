@@ -16,13 +16,48 @@
     // $payment_notes  = ($order_details['payment_notes'] != '') ? $order_details['payment_notes']:'None';
     // $shipping_note  = ($order_details['shipping_note'] != '' || !empty($order_details['shipping_note'])) ? $order_details['shipping_note']:'None';
 
-    $sub_total_converted = 0; ;
-    foreach(json_decode($order_details['order_data']) as $row ){
-        $sub_total_converted += floatval($row->price); 
+    $sub_total_converted = 0; 
+    $discount_total = 0;
+    foreach(json_decode($order_details['order_data']) as $key => $row ){
+        
+        $discount_info = $row->discount_info;
+        $amount = $row->amount;
+        $badge = '';
+        if($discount_info != '' && $discount_info != null){
+            if(in_array($key,json_decode($discount_info->product_id))){
+                $discount_id = $discount_info->id;
+                if($discount_info->discount_type == 1){
+                    if($discount_info->disc_amount_type == 2){
+                        $newprice = $amount - ($amount * ($discount_info->disc_amount/100));
+                        $discount_price = ($amount * ($discount_info->disc_amount/100));
+                        if($discount_info->max_discount_isset && $newprice < $discount_info->max_discount_price){
+                            $discount_price = $discount_info->max_discount_price;
+                            $newprice = $discount_info->max_discount_price;
+                        }
+                        $badge =  '<span class=" mr-1 badge badge-danger">- '.$discount_price.'% off</span> <s><small>'.$amount.'</small></s>'.number_format($newprice,2);
+                    }else{
+                        $newprice = $amount - $discount_info->disc_amount;
+                        $badge = '<span class=" mr-1 badge badge-danger">- &#8369; '.$discount_info->disc_amount.' off</span>'.number_format($newprice,2);
+                        if($discount_info->max_discount_isset && $newprice < $discount_info->max_discount_price){
+                            $discount_price = $discount_info->max_discount_price;
+                            $newprice = $discount_info->max_discount_price;
+                            $badge ='<span class=" mr-1 badge badge-danger">- &#8369; '.$discount_info->max_discount_price.' off</span>'.number_format($newprice,2);
+                            // $newprice = $discount['max_discount_price'];
+                        }
+                    }
+                    $amount = $newprice;
+                    $discount_total += $discount_price* floatval($row->qty);
+                    $sub_total_converted += floatval($newprice) * floatval($row->qty); 
+                }
+            }
+        }else{
+            $sub_total_converted += floatval($row->amount) * floatval($row->qty); 
+        }
     }
-    $sub_total_converted=number_format($sub_total_converted, 2); 
+    // print_r($newprice);
+    $sub_total_converted=floatval($sub_total_converted); 
     $shipping_fee_converted = number_format($order_details['delivery_amount'],2);
-    $total_amount_converted = $sub_total_converted + $shipping_fee_converted;
+    $total_amount_converted = floatval($sub_total_converted) + floatval($shipping_fee_converted) - floatval($discount_total);
     $payment_method = strtoupper(json_decode($order_details['payment_data'])->payment_method_name);
     // $special_upper = ["&NTILDE", "&NDASH",'|::PA::|'];
     // $special_format   = ["&Ntilde", "&ndash",''];
@@ -36,6 +71,7 @@
         <span class="font-weight-bold"><a class="text-dark" href="<?=base_url('admin/Main_orders/orders_home/Orders');?>"><?=$active_page?></a></span>
         &nbsp;<span class="fa fa-chevron-right"></span>&nbsp;
         <span class="font-weight-bold">View Orders</span>
+        
         &nbsp;<span class="fa fa-chevron-right"></span>&nbsp;
         <span class="font-weight-regular"><?=$reference_num?></span>
         
@@ -216,9 +252,9 @@
 
                                     <div class="col-12 col-md-6">
                                         <label class="">Sub-Total:</label>
-                                        <label id="tm_subtotal" class="font-weight-bold"><?=$sub_total_converted;?></label>
+                                        <label id="tm_subtotal" class="font-weight-bold"><?=number_format($sub_total_converted,2);?></label>
                                     </div> 
-
+                                    
                                     <!-- <div class="col-12 col-md-6">
                                         <label class="">Voucher Total:</label>
                                         <label id="tm_vouchertotal" class="font-weight-bold"><?=$vouchertotal_converted?></label>
@@ -226,14 +262,15 @@
 
                                     <div class="col-12 col-md-6">
                                         <label class="">Shipping:</label>
-                                        <label id="tm_shipping" class="font-weight-bold"><?=$shipping_fee_converted;?></label>
+                                        <label id="tm_shipping" class="font-weight-bold"><?=number_format($shipping_fee_converted,2);?></label>
                                     </div>
-                                    <!-- <div class="col-12 col-md">
-                                        
-                                    </div> -->
+                                    <div class="col-12 col-md-6">
+                                        <label class="">Total Discount:</label>
+                                        <label id="tm_subtotal" class="font-weight-bold"><?=number_format($discount_total,2);?></label>
+                                    </div> 
                                     <div class="col-12 col-md-6">
                                         <label class="">Total Amount:</label>
-                                        <label id="tm_amount" class="green-text font-weight-bold"><?=$total_amount_converted;?></label>
+                                        <label id="tm_amount" class="green-text font-weight-bold"><?=number_format($total_amount_converted);?></label>
                                     </div>
 
                                     <!-- <div class="col-12 col-md-6">

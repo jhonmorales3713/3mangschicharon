@@ -87,6 +87,7 @@ $route['products_home/(:any)'] = 'admin/Main_products/products_home/$1';
 $route['profile_home/(:any)'] = 'admin/Main_settings/profile_home/$1';
 $route['orders_home/(:any)'] = 'admin/Main_orders/orders_home/$1';
 $route['customers_home/(:any)'] = 'admin/Main_customers/customers_home/$1';
+$route['promotions_home/(:any)'] =  'admin/Main_promotions/promotions_home/$1';
 $route['settings_home/(:any)'] = 'admin/Main_settings/settings_home/$1';
 $route['change_pass/(:any)'] = 'admin/Main_settings/change_pass/$1';
 $route['Main_orders/orders/(:any)'] = 'admin/Main_orders/orders/$1';
@@ -97,5 +98,7 @@ $route['Main_products/update_products/(:any)'] = 'admin/Main_products/update_pro
 $route['Main_products/add_variant/(:any)'] = 'admin/Main_products/add_variant/$1/$2';
 $route['Main_products/update_variants/(:any)'] = 'admin/Main_products/update_variants/$1/$2/$3';
 $route['Main_products/view_products/(:any)'] = 'admin/Main_products/view_products/$1/$2';
+
+$route['Main_promotions/products_discount_list/(:any)'] = 'admin/Main_promotions/products_discount_list/$1';
 
 

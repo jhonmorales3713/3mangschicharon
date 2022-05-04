@@ -9,13 +9,15 @@ class Cart extends CI_Controller {
         $this->load->model('user/model_cart');
         $this->load->model('user/model_products');
         $this->load->model('user/model_address');
+        $this->load->model('promotions/model_promotions');
         $this->load->model('user/model_orders');
     }
 
     public function index()
 	{		
 		$data['active_page'] = 'cart';
-        $data['page_content'] = $this->load->view('user/cart/cart','',TRUE);     
+		$data['discounts'] = $this->model_promotions->get_ongoing();
+        $data['page_content'] = $this->load->view('user/cart/cart',$data,TRUE);     
 		$this->load->view('landing_template',$data,'',TRUE);
 	}
 
@@ -184,6 +186,9 @@ class Cart extends CI_Controller {
 
     public function checkout($product_id = '', $variant_id = '', $size = '', $quantity = ''){
 
+        if(!isset($_SESSION['cart'])){
+            header('Location:'.base_url());
+        }
         if($product_id != ''){
             if(isset($_SESSION['cart'])){
                 if(sizeof($_SESSION['cart'])){
@@ -191,10 +196,11 @@ class Cart extends CI_Controller {
                         $_SESSION['cart'][$key]['is_included'] = 0; //reset selected item in cart
                     }
                 }
-            }            
+            }          
             $this->add_to_cart($product_id, $variant_id, $size, $quantity);
         }
 
+		$view_data['discounts'] = $this->model_promotions->get_ongoing();
         $data['active_page'] = 'shop'; 
         $view_data['sub_active_page'] = 'checkout';
 
@@ -219,9 +225,20 @@ class Cart extends CI_Controller {
         $id = isset($_SESSION['customer_id']) ? $_SESSION['customer_id'] : '';
 
         $customer_id = en_dec('dec',$id);
+        
         $order_data = array();        
 
         $product_id = array();
+        //check discount usage
+		$discounts = $this->model_promotions->get_ongoing();
+		$completed_orders = $this->model_orders->get_completed_orders();
+        if(!isset($_SESSION['has_logged_in']) && $data['shipping_data']['email'] != ''){
+            $email = $data['shipping_data']['email'];
+        }
+        else{
+            $email = en_dec('dec',$_SESSION['email']);
+        }
+        //end checking of discount usage
 
         if(isset($_SESSION['cart'])){
             //set temporary cart
@@ -229,6 +246,26 @@ class Cart extends CI_Controller {
             foreach($_SESSION['cart'] as $key => $value){
                 if($value['is_included'] == 1){
                     $order_data[$key] = $value;
+                    $discount_info = Array();
+                    foreach($discounts as $discount){
+                        if(in_array($key,json_decode($discount['product_id']))){
+                            $discount_info = $discount;
+                        }
+                        // $usage_max = $discount['usage_quantity'];
+                        // foreach($completed_orders as $order){
+                        //     if(strtolower(json_decode($order['shipping_data'])->email) == strtolower($email)){
+                        //         foreach(json_decode($order['order_data']) as $product_id => $order_value){
+                        //             if(in_array($order,json_decode($discount['product_id'])) && $product_id == $key){
+                                        
+                        //             }
+                        //             print_r($order);
+                        //         }
+                        //     }
+                        // }
+                    }
+                    $order_data[$key]['discount_info'] = $discount_info;
+                    // print_r($order_data);
+                    // die();
                     unset($_SESSION['cart'][$key]);
                     array_push($product_id,en_dec('dec',$key));
                 }
@@ -327,6 +364,7 @@ class Cart extends CI_Controller {
         $response['id'] = en_dec('en',$id);
         $response['cart_items'] = $total_qty;
         $order = $this->model_orders->orders_details($order_id);
+        
         //print_r($reference_num);
         $recipient_details = json_decode($order[0]['shipping_data']);
         $order_details = json_decode($order[0]['order_data']);
@@ -341,16 +379,20 @@ class Cart extends CI_Controller {
         );
         
         $data2['view'] = $this->load->view('email/order_processing',$data2,TRUE);
-        $email = $shipping_data['email'];
+        $email = 'morales_jhon10@yahoo.com';
         $subject = "Order #".$order_id." has been placed";
         $message = $this->load->view('email/templates/email_template',$data2,true);
 		$this->send_email($email,$subject,$message);
 
+        // print_r($message);
+        // print_r($email);
+        // print_r($this->email->print_debugger());
+        // die();
         $data2 = array(
             'recipient_details' => $recipient_details,
             'order_data'=> $order_details,
             'order_data_main'=> $order,
-            'reference_num'=> $order_id,
+            '(reference_num)'=> $order_id,
             'customer_name'=> $data['shipping_data']['full_name']
         );
         $data2['view'] = $this->load->view('email/order_processing',$data2,TRUE);
@@ -358,8 +400,6 @@ class Cart extends CI_Controller {
         $subject = "Order #".$order_id." has been placed by ".$data['shipping_data']['full_name'];
         $message = $this->load->view('email/templates/email_template',$data2,true);
 		$this->send_email($email,$subject,$message);
-        // print_r($this->email->print_debugger());
-        // die();
         //gcash payment redirect
         $response['redirect_url'] = '';
         if($data['payment_method'] == 1){

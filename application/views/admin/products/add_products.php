@@ -130,7 +130,7 @@
                                                             <label><small><b>Primary Photo</b></small></label>
                                                             <img src="<?= base_url('assets/img/placeholder-500x500.jpg') ?>" id="primary_product" class="img-thumbnail" alt="Responsive image">
                                                             </br>
-                                                            <div class="input-group">
+                                                            <div class="input-group" style="z-index:0">
                                                                 <div class="custom-file">
                                                                     <input type="file" class="custom-file-input" name="product_image[]" id="product_image_multip" multiple>
                                                                     <label class="custom-file-label" id="file_label">Choose file</label>
@@ -159,12 +159,12 @@
                                                         <input type="text" class="form-control" name="f_otherinfo" id="f_otherinfo" placeholder="ex. 250g/pack, Small Size" >
                                                     </div>
                                                 </div> -->
-                                                <div class="col-md-6 parentInvDiv">
+                                                <!-- <div class="col-md-6 parentInvDiv">
                                                     <div class="form-group">
                                                         <label for="f_price" class="control-label">Price*</label>
                                                         <input type="text" class="form-control allownumericwithdecimal" name="f_price" id="f_price">
                                                     </div>
-                                                </div>
+                                                </div> -->
                                                 <!-- <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="f_promo_price" class="control-label">Compared at Price</label>
@@ -213,13 +213,13 @@
                         </div>
                         <div class="col-12 col-lg-5 ">
 
-                            <div class="card row mb-3 parentInvDiv">
+                            <!-- <div class="card row mb-3 parentInvDiv">
                                 <div class="card-header">
                                     <h3 class="card-title">Inventory</h3>
                                 </div>
                                 <div class="card-body">
                                     <div class="row">
-                                        <!-- <div class="col-md-6">
+                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="f_inv_sku" class="control-label">SKU (Stock Keeping Unit)</label>
                                                 <input type="text" class="form-control" name="f_inv_sku" id="f_inv_sku">
@@ -238,24 +238,24 @@
                                                 <label for="f_uom" class="control-label">UOM ID</label>
                                                 <input type="text" class="form-control" name="f_uom" id="f_uom" value="0" placeholder="UOM ID">
                                             </div>
-                                        </div> -->
+                                        </div> 
 
                                         <div class="col-md-12">
-                                            <!-- <div class="form-group"> -->
+                                            <div class="form-group">
                                                 <input type="hidden" name="f_max_qty_isset" value="0">
                                                 <input type="checkbox" class="form-control-input" id="f_max_qty_isset" name="f_max_qty_isset" value="1" checked>
                                                 <label class="form-control-label" for="max_qty_isset">Max quantity per checkout</label>
-                                            <!-- </div> -->
+                                            </div> 
                                         </div>
 
                                         <div class="col-md-12 maxqtydiv">
                                             <div class="form-group">
-                                                <!-- <label>Max quantity per checkout</label> -->
+                                                 <label>Max quantity per checkout</label> 
                                                 <input type="number" class="form-control" name="f_max_qty" id="f_max_qty" placeholder="Max quantity" value="1">
                                             </div>
                                         </div>
             
-                                        <!-- <div class="col-md-12">
+                                        <div class="col-md-12">
                                             <div class="form-group">
                                                 <input type="hidden" name="f_tq_isset" value="0">
                                                 <input type="checkbox" class="form-control-input" id="f_tq_isset" name="f_tq_isset" value="1" checked>
@@ -266,16 +266,16 @@
                                                 <label class="form-control-label contsellingdiv" for="f_cont_selling_isset">Continue selling when out of stock</label>
                                                 
                                             </div>
-                                        </div> -->
+                                        </div> 
                                         
-                                       <!-- <div class="col-md-6 nostocksdiv hidden" id="nostocksdiv">
+                                        <div class="col-md-6 nostocksdiv hidden" id="nostocksdiv">
                                             <div class="form-group">
                                                 <label>Shop Branch:</label>
                                                 <select class="form-control" name="f_delivery_location" id="f_delivery_location">
                                                     <option value="0" selected>Main</option>
                                                 </select>
                                             </div>
-                                        </div>-->
+                                        </div>
 
                                         <div class="col-md-12 nostocksdiv" id="nostocksdiv2">
                                             <div class="form-group divnostock" id="div_no_of_stocks_0">
@@ -289,20 +289,20 @@
 
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="card row">
                                 <div class="card-header">
                                     <h3 class="card-title">Sizes</h3>
                                 </div>
                                 <div class="card-body">
                                     <div class="row">
-                                        <div class="col-md-12">
+                                        <!-- <div class="col-md-12"> -->
                                             <!-- <div class="form-group"> -->
-                                                <input type="hidden" name="f_variants_isset" value="0">
+                                                <!-- <input type="hidden" name="f_variants_isset" value="0">
                                                 <input type="checkbox" class="form-control-input" id="f_variants_isset" name="f_variants_isset" value="1">
-                                                <label class="form-control-label" for="f_variants_isset">This product has multiple sizes</label>
+                                                <label class="form-control-label" for="f_variants_isset">This product has multiple sizes</label> -->
                                             <!-- </div> -->
-                                        </div>
+                                        <!-- </div> -->
 
                                         <!-- 
                                         <div class="col-12 parentVariantDiv">
@@ -369,7 +369,7 @@
                                         </div> -->
 
                                         <!-- ////// -->
-                                        <div class="col-12 parentVariantDiv">
+                                        <!-- <div class="col-12 parentVariantDiv">
                                             <label class="form-control-label">&nbsp;</label>
                                         </div>
 
@@ -379,17 +379,17 @@
 
                                         <div class="col-12 parentVariantDiv">
                                             <label class="form-control-label">&nbsp;</label>
-                                        </div>
+                                        </div> -->
 
-                                        <div class="col-12 parentVariantDiv">
+                                        <div class="col-12 ">
                                             <button type="button" id="addOptionVariantBtn" class="btn btn-primary">Add Size</button>
                                         </div>
 
-                                        <div class="col-12 parentVariantDiv">
+                                        <div class="col-12 ">
                                             <label class="form-control-label">&nbsp;</label>
                                         </div>
 
-                                        <div class="col-md-12 table-responsive parentVariantDiv">
+                                        <div class="col-md-12 table-responsive ">
                                             <table class='table table-striped table-hover table-bordered table-grid display nowrap'>
                                                 <thead>
                                                     <tr>

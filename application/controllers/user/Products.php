@@ -6,6 +6,7 @@ class Products extends CI_Controller {
 
     public function __construct() {
         parent::__construct();        
+		$this->load->model('promotions/model_promotions');
         $this->load->model('user/model_products');
         $this->load->model('model_products','admin_product');
     }
@@ -28,7 +29,8 @@ class Products extends CI_Controller {
         $product['variants'] = $this->model_products->get_variants($product_id);
         $product['id'] = en_dec('en',$product['id']);
         $view_data['product'] = $product;
-
+		$discounts = $this->model_promotions->get_ongoing();
+        $view_data['discounts'] = $discounts;
         $data['page_content'] = $this->load->view('user/products/view_product',$view_data,TRUE);
         $this->load->view('landing_template',$data,'',TRUE);
     }

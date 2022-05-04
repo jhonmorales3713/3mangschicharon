@@ -186,10 +186,10 @@
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header secondary-bg white-text d-flex align-items-center">
-            <h3 class="modal-title" id="exampleModalLabel"> Delete Variant</h3>
+            <h3 class="modal-title" id="exampleModalLabel"> Delete Size</h3>
             </div>
             <div class="modal-body">
-                <p>Are you sure you want to delete this variant? This action cannot be reversed.</p>
+                <p>Are you sure you want to delete this size? This action cannot be reversed.</p>
                 <input type="hidden" id="deleteVariantId">
                 <br>
             </div>
@@ -335,7 +335,7 @@
                                                     <input type="text" class="form-control allownumericwithdecimal" name="f_compare_at_price" id="f_compare_at_price" value="0">
                                                 </div>
                                             </div> -->
-                                            <div class="col-md-6 parentInvDiv">
+                                            <div class="col-md-6 ">
                                                 <div class="form-group">
                                                     <label for="f_price" class="control-label">Product Tags</label><br/>
                                                     <!-- <small>List tags separated by comma (,)</small> -->
@@ -367,13 +367,13 @@
                     </div>                         
                     <div class="col-12 col-lg-5 mb-3 ">
                         
-                        <div class="card row mb-3 parentInvDiv">
+                        <!-- <div class="card row mb-3 parentInvDiv">
                             <div class="card-header">
                                 <h3 class="card-title">Inventory</h3>
                             </div>
                             <div class="card-body">
                                 <div class="row">
-                                    <!-- <div class="col-md-6">
+                                    <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="f_inv_sku" class="control-label">SKU (Stock Keeping Unit)</label>
                                             <input type="text" class="form-control" name="f_inv_sku" id="f_inv_sku">
@@ -392,24 +392,24 @@
                                             <label for="f_uom" class="control-label">UOM ID</label>
                                             <input type="text" class="form-control" name="f_uom" id="f_uom" value="0" placeholder="UOM ID">
                                         </div>
-                                    </div> -->
+                                    </div> 
 
                                     <div class="col-md-12">
-                                        <!-- <div class="form-group"> -->
+                                         <div class="form-group">
                                             <input type="hidden" name="f_max_qty_isset" value="0">
                                             <input type="checkbox" class="form-control-input" id="f_max_qty_isset" name="f_max_qty_isset" value="1" checked>
                                             <label class="form-control-label" for="max_qty_isset">Max quantity per checkout</label>
-                                        <!-- </div> -->
+                                        </div>
                                     </div>
 
                                     <div class="col-md-12 maxqtydiv">
                                         <div class="form-group">
-                                            <!-- <label>Max quantity per checkout</label> -->
+                                            <label>Max quantity per checkout</label>
                                             <input type="number" class="form-control" name="f_max_qty" id="f_max_qty" placeholder="Max quantity" value="1">
                                         </div>
                                     </div>
         
-                                    <!-- <div class="col-md-12">
+                                    <div class="col-md-12">
                                         <div class="form-group">
                                             <input type="hidden" name="f_tq_isset" value="0">
                                             <input type="checkbox" class="form-control-input" id="f_tq_isset" name="f_tq_isset" value="1" checked>
@@ -420,16 +420,16 @@
                                             <label class="form-control-label contsellingdiv" for="f_cont_selling_isset">Continue selling when out of stock</label>
                                             
                                         </div>
-                                    </div> -->
+                                    </div>
                                     
-                                    <!-- <div class="col-md-6 nostocksdiv hidden" id="nostocksdiv">
+                                    <div class="col-md-6 nostocksdiv hidden" id="nostocksdiv">
                                         <div class="form-group">
                                             <label>Shop Branch:</label>
                                             <select class="form-control" name="f_delivery_location" id="f_delivery_location">
                                                 <option value="0" selected>Main</option>
                                             </select>
                                         </div>
-                                    </div>-->
+                                    </div>
 
                                     <div class="col-md-12 nostocksdiv" id="nostocksdiv2">
                                         <div class="form-group divnostock" id="div_no_of_stocks_0">
@@ -443,7 +443,7 @@
 
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                         
                         <div class="card row">
                             <div class="card-header">
@@ -451,13 +451,13 @@
                             </div>
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-md-12">
+                                    <!-- <div class="col-md-12"> -->
                                         <!-- <div class="form-group"> -->
-                                            <input type="hidden" name="f_variants_isset" value="0">
+                                            <!-- <input type="hidden" name="f_variants_isset" value="0">
                                             <input type="checkbox" class="form-control-input" id="f_variants_isset" name="f_variants_isset" value="1">
-                                            <label class="form-control-label" for="f_variants_isset">This product has multiple sizes</label>
+                                            <label class="form-control-label" for="f_variants_isset">This product has multiple sizes</label> -->
                                         <!-- </div> -->
-                                    </div>
+                                    <!-- </div> -->
 
                                     <div class="col-12 parentVariantDiv2">
                                         <div class="border-bottom w-100"></div>
@@ -591,7 +591,7 @@
                                             ?>
 
                                             <?php foreach($getVariants as $row){?>
-                                                <tr class="variant_tr_<?=$row['id']?>">
+                                                <tr class="variant_tr variant_tr_<?=$row['id']?>">
                                                     <td class="variant_tr_<?=$row['id']?>"><span class="variant_id<?=$row['id']?>"><?=$row['name']?></span><input type="hidden" name="variant_id[]" value="<?=$row['id']?>"><input type="hidden" class="variant_id<?=$row['id']?>" name="variant_name[]" value="<?=$row['name']?>" data-variant_id="<?=$row['id']?>"></td>
                                                     <td class="variant_tr_<?=$row['id']?>"><input type="text" class="form-control allownumericwithdecimal" name="variant_price[]" value="<?=$row['price']?>" <?=$readonly;?>></td>
                                                     <?php $variant_status = ($row['enabled'] == 1) ? 'Active' : 'Inactive';?>

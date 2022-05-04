@@ -17,8 +17,10 @@ class Model_products extends CI_Model {
 
 		$sql = "INSERT INTO sys_products (`category_id`,`name`,`price`, `tags`, `max_qty_isset`, `max_qty`, `summary`, `img`, `img_2`, `img_3`, `img_4`, `img_5`, `img_6`, `enabled`, `date_created`, `date_updated`, `variant_isset`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
 
-		if($args['f_max_qty'] == null || $args['f_max_qty'] == ''){
+		if(!isset($args['f_max_qty'])){
 			$args['f_max_qty'] = 1;
+			$args['f_max_qty_isset'] = 0;
+			$args['f_price'] = 0;
 		}
 		// print_r($args);
 		// die();
@@ -40,7 +42,7 @@ class Model_products extends CI_Model {
 			1,
 			$date_created,
 			date('Y-m-d H:i:s'),
-			$args['f_variants_isset']
+			1
 		);
 		$this->db->query($sql, $bind_data);
 		$id =$this->db->query("SELECT id from sys_products where date_created = '".$date_created."' order by date_created  DESC limit 1")->row()->id;
@@ -181,18 +183,22 @@ class Model_products extends CI_Model {
 		$imgArr[5]   	   = (!empty($imgArr[5])) ? $imgArr[5] : '';
 
 		$f_status          = $get_product['enabled'];
-		$sql = "UPDATE sys_products SET category_id = ?, name = ?, price =?,  tags = ?, no_of_stocks = ?, max_qty_isset = ?, max_qty = ?, summary = ?, img = ?, img_2 = ?, img_3 = ?, img_4 = ?, img_5 = ?, img_6 = ?, enabled = ?, date_updated = ?, variant_isset = ? WHERE Id = ?";
+		$sql = "UPDATE sys_products SET category_id = ?, name = ?, price =?,  tags = ?, max_qty_isset = ?, max_qty = ?, summary = ?, img = ?, img_2 = ?, img_3 = ?, img_4 = ?, img_5 = ?, img_6 = ?, enabled = ?, date_updated = ? WHERE Id = ?";
 		
-		if($args['f_max_qty'] == null || $args['f_max_qty'] == ''){
+		if(!isset($args['f_max_qty'])){
 			$args['f_max_qty'] = 1;
+			$args['f_max_qty_isset'] = 0;
+			$args['f_price'] = 0;
 		}
+		// if($args['f_max_qty'] == null || $args['f_max_qty'] == ''){
+		// 	$args['f_max_qty'] = 1;
+		// }
 		
 		$bind_data = array(
 			$args['f_category'],
 			$args['f_itemname'],
 			$args['f_price'],
 			$args['f_tags'],
-			$args['f_no_of_stocks'],
 			$args['f_max_qty_isset'],
 			$args['f_max_qty'],
 			$args['f_summary'],
@@ -204,7 +210,6 @@ class Model_products extends CI_Model {
 			'none',
 			$f_status,
 			date('Y-m-d H:i:s'),
-			$args['f_variants_isset'],
 			$id
 		);
 
@@ -265,7 +270,7 @@ class Model_products extends CI_Model {
 		$str_update = "";
 		$f_status          = ($args['f_itemid'] == '') ? 2 : $get_product['enabled'];
 
-		$sql = "UPDATE sys_products SET category_id = ?, name = ?, price =?,  tags = ?, no_of_stocks = ?, max_qty_isset = ?, max_qty = ?, summary = ?, img = ?, img_2 = ?, img_3 = ?, img_4 = ?, img_5 = ?, img_6 = ?, enabled = ?, date_updated = ?, variant_isset = ? WHERE Id = ?";
+		$sql = "UPDATE sys_products SET category_id = ?, name = ?, price =?,  tags = ?, max_qty_isset = ?, max_qty = ?, summary = ?, img = ?, img_2 = ?, img_3 = ?, img_4 = ?, img_5 = ?, img_6 = ?, enabled = ?, date_updated = ? WHERE Id = ?";
 		
 		if($args['f_max_qty'] == null || $args['f_max_qty'] == ''){
 			$args['f_max_qty'] = 1;
@@ -276,7 +281,6 @@ class Model_products extends CI_Model {
 			$args['f_itemname'],
 			$args['f_price'],
 			$args['f_tags'],
-			$args['f_no_of_stocks'],
 			$args['f_max_qty_isset'],
 			$args['f_max_qty'],
 			$args['f_summary'],
@@ -288,7 +292,6 @@ class Model_products extends CI_Model {
 			'none',
 			$f_status,
 			date('Y-m-d H:i:s'),
-			$args['f_variants_isset'],
 			$id
 		);
 		
@@ -512,9 +515,11 @@ class Model_products extends CI_Model {
 		return $this->db->query($query, $params)->result_array();
 	}
 	public function get_productdetails($Id) {
-		$query=" SELECT a.*, d.shopcode, d.shopname
+		$query=" SELECT a.*, d.shopcode,aa.name as parent_name, d.shopname, c.category_name
 		FROM sys_products AS a 
-		LEFT JOIN sys_shops AS d ON 1 = d.id
+		LEFT JOIN sys_products AS aa ON a.parent_product_id = aa.id 
+		LEFT JOIN sys_shops AS d ON 1 = d.id 
+		LEFT JOIN sys_product_category c on c.id = a.category_id
 		WHERE a.Id = ? AND a.enabled > 0;";
 		
 		$params = array($Id);
@@ -618,10 +623,10 @@ class Model_products extends CI_Model {
     }
     public function product_table($sys_shop, $requestData, $exportable = false){
 		// storing  request (ie, get/post) global array to a variable  
-		$date_from      = $this->input->post('date_from');
-		$_record_status = $this->input->post('_record_status');
-		$_name 			= $this->input->post('_name');
-		$_categories 	= $this->input->post('_categories');
+		$date_from      = $exportable ? $requestData['date_from']:$this->input->post('date_from');
+		$_record_status = $exportable ? $requestData['_record_status']:$this->input->post('_record_status');
+		$_name 			= $exportable ? $requestData['_name']:$this->input->post('_name');
+		$_categories 	= $exportable ? $requestData['_categories']:$this->input->post('_categories');
 		$token_session  = $this->session->userdata('token_session');
 		$token          = en_dec('en', $token_session);
 		$branchid       = $this->session->userdata('branchid');
@@ -678,14 +683,20 @@ class Model_products extends CI_Model {
 		if($_name != ""){
 			$sql.=" AND a.name LIKE '%" . $this->db->escape_like_str($_name) . "%' ";
 		}
-		if($_categories != ""){
+		if($_categories != "" && $_categories == "0"){
+			$sql.=" AND a.parent_product_id IS NOT NULL GROUP BY a.id";
+		}else
+		if($_categories != "" && $_categories > 0){
 			$sql.=" AND c.id = " . $this->db->escape($_categories) . "";
+			$sql.=" AND a.parent_product_id IS NULL GROUP BY a.id";
+		}else{
+			$sql.=" AND a.parent_product_id IS NULL GROUP BY a.id";
 		}
 
 		if($date_from != ""){
 			$sql.="  AND DATE_FORMAT(a.`date_created`, '%m/%d/%Y') ='".$date_from. "'";
 		}
-		$sql.=" AND a.parent_product_id IS NULL GROUP BY a.id";
+		// $sql.=" AND a.parent_product_id IS NULL GROUP BY a.id";
 		$query = $this->db->query($sql);
 		$totalFiltered = $query->num_rows(); // when there is a search parameter then we have to modify total number filtered rows as per search result.
 		$sql.=" ORDER BY ". $columns[$requestData['order'][0]['column']]." ".$requestData['order'][0]['dir']." ";  // adding length
@@ -702,10 +713,20 @@ class Model_products extends CI_Model {
 		$get_s3_imgpath_upload = get_s3_imgpath_upload();
 		foreach( $query->result_array() as $row ) {  // preparing an array for table tbody
 			$nestedData=array(); 
-			$nestedData[] = (!$exportable) ? '<img class="img-thumbnail" style="width: 50px;" src="'.base_url('assets/uploads/products/'.str_replace('==','',$row['img']).'?'.rand()).'">' : '';;
 			// $nestedData[] = (!$exportable) ?'<u><a href="'.base_url('Main_products/view_products/'.$token.'/'.$row['id']).'" style="color:blue;">'.$row["name"].'</a></u>':$row["name"];
-			$nestedData[] = $row["name"];
-			$nestedData[] = $row["category_name"];
+			// $nestedData[] = $row["name"];
+			// $nestedData[] = $row["category_name"];
+			if($_categories != "" && $_categories == "0"){
+				
+				$details = $this->get_productdetails($row["parent_product_id"]);
+				$nestedData[] = (!$exportable) ? '<img class="img-thumbnail" style="width: 50px;" src="'.base_url('assets/uploads/products/'.str_replace('==','',$details['img']).'?'.rand()).'">' : '';;
+				$nestedData[] = $details['name'].' - '.$row["name"];
+				$nestedData[] = $details["category_name"];
+			}else{
+				$nestedData[] = (!$exportable) ? '<img class="img-thumbnail" style="width: 50px;" src="'.base_url('assets/uploads/products/'.str_replace('==','',$row['img']).'?'.rand()).'">' : '';;
+				$nestedData[] = $row["name"];
+				$nestedData[] = $row["category_name"];
+			}
 
 
 			
@@ -764,8 +785,10 @@ class Model_products extends CI_Model {
 				}
 				$variant_price [] = $variant['price'];
 			}
-			if($stock_status == '' && $variant_stocks == 0 && $row['variant_isset'] == 1){
+			if($stock_status == '' && $variant_stocks == 0){
 				$stock_status = 'Out of Stocks';
+			}else if($stock_status == ''){
+				$stock_status = 'Active';
 			}
 			sort($variant_price);
 			$nestedData[] = !empty($variant_price) ? $variant_price[0] .'-'. $variant_price[count($variant_price)-1] : number_format($row["price"], 2);
@@ -778,6 +801,245 @@ class Model_products extends CI_Model {
             }else{
                 $nestedData[] = 'Disabled';
             }
+
+			if ($row['enabled'] == 1) {
+				$record_status = 'Disable';
+				$rec_icon = 'fa-ban';
+			}else if ($row['enabled'] == 2) {
+				$record_status = 'Enable';
+				$rec_icon = 'fa-check-circle';
+			}else{
+				$record_status = 'Disable';
+				$rec_icon = 'fa-ban';
+			}
+
+			$buttons = "";
+			if($_categories != "" && $_categories == "0"){
+			}else{
+				$buttons .= '
+				<a class="dropdown-item" data-value="'.$row['id'].'" href="'.base_url('admin/Main_products/view_products/'.$token.'/'.en_dec('en',$row['id'])).'"><i class="fa fa-search" aria-hidden="true"></i> View</a>';
+			
+			}
+			if($this->loginstate->get_access()['products']['update'] == 1){
+				if($_categories != "" && $_categories == "0"){
+					// print_r(base_url('admin/Main_products/update_products/'.$token.'/'.$row["id"].'/'.$row['parent_product_id']));
+					$details = $this->get_productdetails($row["parent_product_id"]);
+					$buttons .= '<div class="dropdown-divider"></div>
+					<a class="dropdown-item" data-value="'.$row['id'].'" href="'.base_url('admin/Main_products/update_variants/'.$token.'/'.$row["id"].'/'.$row['parent_product_id']).'"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a>';
+				}else{
+					$buttons .= '<div class="dropdown-divider"></div>
+					<a class="dropdown-item" data-value="'.$row['id'].'" href="'.base_url('admin/Main_products/update_products/'.$token.'/'.en_dec('en',$row['id'])).'"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a>';
+				}
+			}
+
+
+			if($this->loginstate->get_access()['products']['disable'] == 1){
+				$buttons .= '<div class="dropdown-divider"></div>
+				<a class="dropdown-item action_disable" data-value="'.$row['id'].'" data-record_status="'.$row['enabled'].'"><i class="fa '.$rec_icon.'" aria-hidden="true"></i> '.$record_status.'</a>';
+			}
+		
+
+			if($this->loginstate->get_access()['products']['delete'] == 1){
+				$buttons .= '<div class="dropdown-divider"></div>
+				<a class="dropdown-item action_delete " data-value="'.$row['id'].'" ><i class="fa fa-trash" aria-hidden="true"></i> Delete</a>';
+			}
+
+
+			$nestedData[] = $stock_status;
+			$nestedData[] = 
+			'<div class="dropdown">
+				<i class="fa fa-ellipsis-v fa-lg" id="dropdown_menu_button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-hidden="true"></i>
+				<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown_menu_button">
+			    '.$buttons.'
+			  	</div>
+			</div>';
+			$data[] = $nestedData;
+		}
+
+		$json_data = array(
+			"draw"            => intval( $requestData['draw'] ),   // for every request/draw by clientside , they send a number as a parameter, when they recieve a response/data they first check the draw number, so we are sending same number in draw. 
+			"recordsTotal"    => intval( $totalData ),  // total number of records
+			"recordsFiltered" => intval( $totalFiltered ), // total number of records after searching, if there is no searching then totalFiltered = totalData
+			"data"            => $data   // total data array
+		);
+
+		return $json_data;
+	}
+
+	
+    public function product_table_active($sys_shop, $requestData, $exportable = false){
+		// storing  request (ie, get/post) global array to a variable  
+		$date_from      = $this->input->post('date_from');
+		$_record_status = $this->input->post('_record_status');
+		$loaded 		= $this->input->post('loaded');
+		$_name 			= $this->input->post('_name');
+		$_categories 	= $this->input->post('_categories');
+		$token_session  = $this->session->userdata('token_session');
+		$token          = en_dec('en', $token_session);
+		$branchid       = $this->session->userdata('branchid');
+
+		$columns = array( 
+		// datatable column index  => database column name for sorting
+			0 => 'name',
+            1 => 'name',
+            2 => 'category_name',
+            3 => 'price',
+            4 => 'no_of_stocks',
+            5 => 'shopname',
+            6 => 'enabled',
+		);
+
+		// getting total number records without any search
+		$sql = "SELECT COUNT(*) as count FROM sys_products a 
+                LEFT JOIN sys_shops b ON 1 = b.id AND b.status > 0
+                LEFT JOIN sys_product_category c ON a.category_id = c.id AND c.status > 0
+				WHERE a.enabled > 0 AND a.parent_product_id IS NULL";
+		$query = $this->db->query($sql);
+		$totalData = $query->row()->count;
+		$totalFiltered = $totalData; 
+		//
+		$sql = "SELECT a.*, code.shopcode, c.category_name,img.filename,sum(d.qty) as no_of_stocks FROM sys_products a 
+		LEFT JOIN sys_shops b ON 1 = b.id AND b.status > 0
+		LEFT JOIN sys_product_category c ON a.category_id = c.id AND c.status > 0
+		LEFT JOIN sys_shops code ON 1 = code.id 
+		LEFT JOIN sys_products_images img ON a.id = img.product_id
+		LEFT JOIN sys_inventory d on d.product_id = a.id";
+		// start - for default search
+		$sql.=" WHERE a.enabled = " . 1 . "";
+		// end - for default search
+
+		// getting records as per search parameters
+		
+		if($_name != ""){
+			$sql.=" AND a.name LIKE '%" . $this->db->escape_like_str($_name) . "%' ";
+		}
+		if($date_from != ""){
+			$sql.="  AND DATE_FORMAT(a.`date_created`, '%m/%d/%Y') ='".$date_from. "'";
+		}
+		if($_categories != "" && $_categories == "0"){
+			$sql.=" AND a.parent_product_id IS NOT NULL GROUP BY a.id";
+		}else
+		if($_categories != "" && $_categories > 0){
+			$sql.=" AND c.id = " . $this->db->escape($_categories) . "";
+			$sql.=" AND a.parent_product_id IS NULL GROUP BY a.id";
+		}else{
+			$sql.=" AND a.parent_product_id IS NULL GROUP BY a.id";
+		}
+
+		$query = $this->db->query($sql);
+		$totalFiltered = $query->num_rows(); // when there is a search parameter then we have to modify total number filtered rows as per search result.
+		$sql.=" ORDER BY ". $columns[$requestData['order'][0]['column']]." ".$requestData['order'][0]['dir']." ";  // adding length
+		if (!$exportable) {
+			$sql.=" LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
+		}
+
+		// print_r($sql);
+		// exit();
+		
+		$query = $this->db->query($sql);
+
+		$data = array();
+		$get_s3_imgpath_upload = get_s3_imgpath_upload();
+		foreach( $query->result_array() as $row ) {  // preparing an array for table tbody
+			$nestedData=array(); 
+			$margin = '';
+			if($loaded){
+				$margin ='m-1';
+			}
+			$selected_products = $this->session->userdata('selected_products') == '' ? Array() : $this->session->userdata('selected_products');
+			$checked = '';
+			// foreach($selected_products as $prod){
+			// 	$parent_product_info = $this->get_productdetails(en_dec('dec',$prod));
+			// 	if($parent_product_info['parent_product_id'] == $row['id']){
+			// 		$checked = 'checked';
+			// 	}
+			// }
+			if(array_search(en_dec('en',$row["id"]),$selected_products) > -1){
+				$checked = 'checked';
+			}
+			
+			$nestedData[] = '<input type="checkbox" name="product_checkbox" '.$checked.' data-id="'.en_dec('en',$row["id"]).'" class="form-control '.$margin.' w-100 checkbox_product">';
+			// $nestedData[] = (!$exportable) ? '<img class="img-thumbnail" style="width: 50px;" src="'.base_url('assets/uploads/products/'.str_replace('==','',$row['img']).'?'.rand()).'">' : '';;
+			// $nestedData[] = (!$exportable) ?'<u><a href="'.base_url('Main_products/view_products/'.$token.'/'.$row['id']).'" style="color:blue;">'.$row["name"].'</a></u>':$row["name"];
+			
+			if($_categories != "" && $_categories == "0"){
+				$details = $this->get_productdetails($row["parent_product_id"]);
+				$nestedData[] = $details['name'].' - '.$row["name"];
+				$nestedData[] = $details["category_name"];
+			}else{
+				$nestedData[] = $row["name"];
+				$nestedData[] = $row["category_name"];
+			}
+
+
+			
+			// $inv_qty_branch = $this->get_uptodate_nostocks($row['sys_shop'], $row['id']);
+			// $total_inv_qty  = 0;
+
+			// if($inv_qty_branch != false){
+			// 	foreach($inv_qty_branch as $val){
+			// 		$total_inv_qty += $val['total_inv_qty'];
+			// 	}
+			// }
+			// $total_inv_qty_main = ($this->get_uptodate_nostocks_main($row['id']) != false) ? $this->get_uptodate_nostocks_main($row['id'])->total_inv_qty:0;
+			// $grand_total_qty = ($total_inv_qty+$total_inv_qty_main == 0) ? $row['no_of_stocks'] : $total_inv_qty+$total_inv_qty_main;
+			// $no_of_stocks = ($branchid != 0) ? (!empty($this->get_invqty_branch($branchid, $row['id'])['no_of_stocks']) ? $this->get_invqty_branch($branchid, $row['id'])['no_of_stocks'] : 0) : $grand_total_qty;
+			// $no_of_stocks = ($branchid != 0 && $no_of_stocks == 0) ? $this->getParentProductInvBranch($row['id'], $branchid) : $no_of_stocks;
+			// $nestedData[] = number_format($no_of_stocks, 1);
+			$variant_stocks = 0;
+			$variant_price = [];
+			$parent_stocks = 0;
+			$stock_status = '';
+			//print_r($row['id'].'..');
+			foreach($this->get_inventorydetails($row["id"]) as $inventory){
+				$now = time(); // or your date as well
+				$your_date = strtotime($inventory['date_expiration']);
+				$datediff = $now - $your_date;
+				$days_differ =  -1*(round($datediff / (60 * 60 * 24))-1);
+				if($inventory['status']==1){
+					$parent_stocks += $inventory['qty'];
+				}
+				if(in_array($inventory['status'],[1,2]) && date('Y-m-d',strtotime($inventory['date_expiration'])) <= date('Y-m-d')){
+					$stock_status = 'Expired Stocks';
+					$this->disable_modal_confirm($inventory['product_id'],2);
+					$row['enabled'] = 2;
+				}else if(in_array($inventory['status'],[1,2]) && date('Y-m-d',strtotime($inventory['date_expiration'])) > date('Y-m-d') && $days_differ < 30 && $stock_status==''){
+					$stock_status = 'Expiring Soon';
+				}
+				//print_r($days_differ.'//'.$row["id"].'?');
+			}
+			foreach($this->getVariants($row["id"]) as $variant){
+				foreach($this->get_inventorydetails($variant["id"]) as $inventory){
+					$now = time(); // or your date as well
+					$your_date = strtotime($inventory['date_expiration']);
+					$datediff = $now - $your_date;
+					
+					$days_differ =  -1*(round($datediff / (60 * 60 * 24))-1);
+					if($inventory['status']==1){
+						$variant_stocks += $inventory['qty'];
+					}
+					if(in_array($inventory['status'],[1,2]) && date('Y-m-d',strtotime($inventory['date_expiration'])) <= date('Y-m-d')){
+						$stock_status = 'Expired Stocks';
+						$this->disable_modal_confirm($inventory['product_id'],2);
+						$row['enabled'] = 2;
+					}else if(in_array($inventory['status'],[1,2]) && date('Y-m-d',strtotime($inventory['date_expiration'])) > date('Y-m-d') && $days_differ < 30 && $stock_status==''){
+						$stock_status = 'Expiring Soon';
+					}
+				}
+				$variant_price [] = $variant['price'];
+			}
+			// print_r($stock_status);
+			// print_r('//');
+			// print_r($variant_stocks);
+			if($stock_status == '' && $variant_stocks == 0){
+				$stock_status = 'Out of Stocks';
+			}else if($stock_status == ''){
+				$stock_status = 'Active';
+			}
+			sort($variant_price);
+			$nestedData[] = !empty($variant_price) ? $variant_price[0] .'-'. $variant_price[count($variant_price)-1] : number_format($row["price"], 2);
+			$nestedData[] = $variant_stocks > 0 && $row['variant_isset'] == 1 ? $variant_stocks : $parent_stocks;
+
 
 			if ($row['enabled'] == 1) {
 				$record_status = 'Disable';
@@ -833,8 +1095,6 @@ class Model_products extends CI_Model {
 		return $json_data;
 	}
 
-	
-
 	public function deleteVariant($Id){
 		$sql = "UPDATE sys_products SET `enabled` = '0' WHERE Id = ?";
 		$bind_data = array(
@@ -852,9 +1112,6 @@ class Model_products extends CI_Model {
 	}
 	public function update_variants($product_id, $child_product_id, $variant_name, $variant_price, $variant_sku, $variant_status) {
 		$sql = "UPDATE sys_products SET name = ?, price = ?, enabled = ?, date_updated = ?";
-
-
-
 	 	$sql .= " WHERE Id = ? AND parent_product_id = ? ";
 		
 		$variant_price = ($variant_price == '') ? 0: $variant_price;

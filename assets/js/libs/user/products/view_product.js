@@ -12,7 +12,7 @@ $(function(){
             sys_toast_error('Please select size');
             return;
         }
-
+        
         var product_id = $(this).data('product_id');
         var qty = $('#qty').val();
           
@@ -23,6 +23,7 @@ $(function(){
                 product_id: product_id,
                 size: variant.size,
                 variant_id: variant.variant_id,
+                discount_id: variant.discount_id,
                 quantity: qty,
                 from_checkout: false
             },
@@ -90,6 +91,7 @@ $(function(){
                 if($(value).hasClass('selected')){
                     variant.size = $(value).data('size');
                     variant.variant_id = $(value).data('variant_id');
+                    variant.discount_id = $(value).data('discountid');
                 }
             });
         }

@@ -133,6 +133,7 @@ $(function(){
     });
 
     $("#btninventory").click(function(){
+        Id = $('#u_id').val();
         $('#inventory_modal').modal('show');
         
         $.LoadingOverlay("show");
@@ -325,7 +326,7 @@ $(function(){
         // if(result == true){
             filename_2 = filename.split('.').join("");
             filename_2=(filename_2.split('==').join("."));
-            $('<div class="closediv p-1 bd-highlight img'+filename_2+'">'+'<li class="ui-state-default" data-id="'+count+'" data-directory="'+base_url + 'assets/uploads/products/'+ filename+"?"+Math.random()+'" data-imagename="'+filename+'" ><img id="product_preview" width=100% class="img'+filename_2+'" src="'+base_url + 'assets/uploads/products/'+ filename_2+"?"+Math.random()+'"></li><span class="deleteimg" data-value="'+filename_2+'" data-format="'+filename+'" data-noformat="'+filename+'">x</span></div>').appendTo('.imagepreview2');
+            $('<div class="closediv p-1 bd-highlight img'+filename_2.replaceAll('.','')+'">'+'<li class="ui-state-default" data-id="'+count+'" data-directory="'+base_url + 'assets/uploads/products/'+ filename+"?"+Math.random()+'" data-imagename="'+filename+'" ><img id="product_preview" width=100% class="img'+filename_2.replaceAll('.','')+'" src="'+base_url + 'assets/uploads/products/'+ filename_2+"?"+Math.random()+'"></li><span class="deleteimg" data-value="'+filename_2+'" data-format="'+filename+'" data-noformat="'+filename+'">x</span></div>').appendTo('.imagepreview2');
             $('<font>&nbsp;</font>').appendTo('.imagepreview2');
             $('#current_product_url').val(filename);
             $('#upload_checker').val(filename);
@@ -347,7 +348,8 @@ $(function(){
         format   = $(this).data('format');
         noformat = $(this).data('noformat');
         $('#productimage_changes').val(1);
-        $('.img'+data).hide(250)
+        // console.log($('.img'+data.replaceAll('.','')).length);
+        $('.img'+data.replaceAll('.','')).hide(250)
         $(".oldimgurl").append("<input type='hidden' name='prev_image_name[]' value='"+format+"'>");
         $(".oldimgurl").append("<input type='hidden' name='prev_image_name_noformat[]' value='"+noformat+"'>");
     });
@@ -712,9 +714,13 @@ $(function(){
     $(document).delegate('#deleteVariantConfirm','click',function(e){
         $.LoadingOverlay("show");
         var index = $('#deleteVariantId').val();
-        $('.variant_tr_'+index).remove();
-        $('#deleteVariantModal').modal();
-        deletedVariant.push(index);
+        if($('.variant_tr').length>1){
+            $('.variant_tr_'+index).remove();
+            $('#deleteVariantModal').modal();
+            deletedVariant.push(index);
+        }else{
+            sys_toast_warning('Atleast 1 size is required.');
+        }
         $.LoadingOverlay("hide");
 
     });

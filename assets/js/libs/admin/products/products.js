@@ -67,7 +67,7 @@ $(function(){
 					$(row).addClass( 'bg-warning' );
 		   		}
 				if(data2[6]=='Out of Stocks'){
-					$(row).addClass( 'bg-secondary' );
+					$(row).addClass( 'bg-secondary text-white' );
 				}
 				// if ( data['jobStatus'] == "red" ) {
 				// 	$(row).addClass( 'lightRed' );

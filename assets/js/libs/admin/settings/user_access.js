@@ -405,6 +405,57 @@ function populate_edit_user_form(data) {
 			$('#settings_aul_disable').prop('checked', true);
 		}
 		
+		//Product Discount List
+		if(('product_discount' in fn) && fn.product_discount.view == 1) {
+			$('#ac_pd_view').prop('checked', true);
+		}
+		if(('product_discount' in fn) && fn.product_discount.create == 1) {
+			$('#ac_pd_create').prop('checked', true);
+		}
+		if(('product_discount' in fn) && fn.product_discount.update == 1) {
+			$('#ac_pd_update').prop('checked', true);
+		}
+		if(('product_discount' in fn) && fn.product_discount.delete == 1) {
+			$('#ac_pd_delete').prop('checked', true);
+		}
+		if(('product_discount' in fn) && fn.product_discount.disable == 1) {
+			$('#ac_pd_disable').prop('checked', true);
+		}
+		
+		//Shipping Discount List
+		if(('shipping_discount' in fn) && fn.shipping_discount.view == 1) {
+			$('#ac_shd_view').prop('checked', true);
+		}
+		if(('shipping_discount' in fn) && fn.shipping_discount.create == 1) {
+			$('#ac_shd_create').prop('checked', true);
+		}
+		if(('shipping_discount' in fn) && fn.shipping_discount.update == 1) {
+			$('#ac_shd_update').prop('checked', true);
+		}
+		if(('shipping_discount' in fn) && fn.shipping_discount.delete == 1) {
+			$('#ac_shd_delete').prop('checked', true);
+		}
+		if(('shipping_discount' in fn) && fn.shipping_discount.disable == 1) {
+			$('#ac_shd_disable').prop('checked', true);
+		}
+		
+		//Shop Discount List
+		if(('shop_discount' in fn) && fn.shop_discount.view == 1) {
+			$('#ac_sd_view').prop('checked', true);
+		}
+		if(('shop_discount' in fn) && fn.shop_discount.create == 1) {
+			$('#ac_sd_create').prop('checked', true);
+		}
+		if(('shop_discount' in fn) && fn.shop_discount.update == 1) {
+			$('#ac_sd_update').prop('checked', true);
+		}
+		if(('shop_discount' in fn) && fn.shop_discount.delete == 1) {
+			$('#ac_sd_delete').prop('checked', true);
+		}
+		if(('shop_discount' in fn) && fn.shop_discount.disable == 1) {
+			$('#ac_sd_disable').prop('checked', true);
+		}
+		
 		//Website Information
 		if(('web' in fn) && fn.web.view == 1) {
 			$('#settings_web_view').prop('checked', true);

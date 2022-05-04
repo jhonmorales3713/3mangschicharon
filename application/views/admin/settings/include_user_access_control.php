@@ -70,6 +70,7 @@
 				<!--<a class="nav-link col" id="v-pills-accounts-tab" data-toggle="pill" href="#v-pills-accounts" role="tab" aria-controls="v-pills-accounts" aria-selected="false">Accounts <span class="check-count badge-success rounded text-xs rounded-lg px-1 bg-teal-500 text-light">0</span></a>
 				<a class="nav-link col" id="v-pills-reports-tab" data-toggle="pill" href="#v-pills-reports" role="tab" aria-controls="v-pills-reports" aria-selected="false">Reports <span class="check-count badge-success rounded text-xs rounded-lg px-1 bg-teal-500 text-light">0</span></a> -->
 				<a class="nav-link col" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">Settings <span class="check-count badge-success rounded text-xs rounded-lg px-1 bg-teal-500 text-light">0</span></a>
+				<a class="nav-link col" id="v-pills-promotions-tab" data-toggle="pill" href="#v-pills-promotions" role="tab" aria-controls="v-pills-promotions" aria-selected="false">Promotions <span class="check-count badge-success rounded text-xs rounded-lg px-1 bg-teal-500 text-light">0</span></a>
 				<!-- <a class="nav-link col" id="v-pills-dev_settings-tab" data-toggle="pill" href="#v-pills-dev_settings" role="tab" aria-controls="v-pills-dev_settings" aria-selected="false">Developer Settings <span class="check-count badge-success rounded text-xs rounded-lg px-1 bg-teal-500 text-light">0</span></a> -->
 			</div>
 			<div class="tab-content" id="v-pills-tabContent">
@@ -676,402 +677,7 @@
 							</div>
 						</div>
 					</div>
-				</div><!--
-				<div class="tab-pane fade w-100 online_ordering parent_section" id="v-pills-accounts" role="tabpanel" aria-labelledby="v-pills-accounts-tab">
-					<div class="py-3 px-4 row m-0 mb-1">
-						<div class="col-6 col-sm-3">
-							<label> 
-								<input type="checkbox" class="hidden" id="main_nav_ac_accounts_view" name="main_nav_ac_accounts_view">
-								<input type="checkbox" class="main_nav_ac_accounts_view sub_parent_checkbox checkbox-template m-r-xs mr-2" >
-								All
-							</label>
-						</div>
-						<div class="col-12 mt-2">
-							<h4 class="font-semibold">Billing Settlement</h4>
-							<div class="row">
-								<div class="col-6 col-sm-3">
-									<label>
-										<input type="checkbox" id="ac_billing_view" name="ac_billing_view" class="checkbox-template m-r-xs mr-2">
-										View
-									</label>
-								</div>
-								<div class="col-6 col-sm-3">
-									<label>
-										<input type="checkbox" id="ac_billing_create" name="ac_billing_create" class="checkbox-template m-r-xs mr-2">
-										Create
-									</label>
-								</div>
-								<div class="col-6 col-sm-3">
-									<label>
-										<input type="checkbox" id="ac_billing_update" name="ac_billing_update" class="checkbox-template m-r-xs mr-2">
-										Update
-									</label>
-								</div>
-								<div class="col-6 col-sm-3">
-									<label>
-										<input type="checkbox" id="ac_billing_disable" name="ac_billing_disable" class="checkbox-template m-r-xs mr-2">
-										Disable
-									</label>
-								</div>
-								<div class="col-6 col-sm-3">
-									<label>
-										<input type="checkbox" id="ac_billing_delete" name="ac_billing_delete" class="checkbox-template m-r-xs mr-2">
-										Delete
-									</label>
-								</div>
-								<div class="col-6 col-sm-3">
-									<label>
-										<input type="checkbox" id="ac_billing_adminview" name="ac_billing_adminview" class="checkbox-template m-r-xs mr-2">
-										Admin View
-									</label>
-								</div>
-							</div>
-						</div>
-						<div class="col-12 mt-2">
-							<h4 class="font-semibold">Billing (By Payment Portal Fee)</h4>
-							<div class="row">
-								<div class="col-6 col-sm-3">
-									<label>
-										<input type="checkbox" id="billing_portal_fee_view" name="billing_portal_fee_view" class="checkbox-template m-r-xs mr-2">
-										View
-									</label>
-								</div>
-								<div class="col-6 col-sm-3">
-									<label>
-										<input type="checkbox" id="billing_portal_fee_create" name="billing_portal_fee_create" class="checkbox-template m-r-xs mr-2">
-										Create
-									</label>
-								</div>
-								<div class="col-6 col-sm-3">
-									<label>
-										<input type="checkbox" id="billing_portal_fee_update" name="billing_portal_fee_update" class="checkbox-template m-r-xs mr-2">
-										Update
-									</label>
-								</div>
-								<div class="col-6 col-sm-3">
-									<label>
-										<input type="checkbox" id="billing_portal_fee_disable" name="billing_portal_fee_disable" class="checkbox-template m-r-xs mr-2">
-										Disable
-									</label>
-								</div>
-								<div class="col-6 col-sm-3">
-									<label>
-										<input type="checkbox" id="billing_portal_fee_delete" name="billing_portal_fee_delete" class="checkbox-template m-r-xs mr-2">
-										Delete
-									</label>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="tab-pane fade w-100 parent_section has-seller-access has-seller-branch-access has-food-hub-access" id="v-pills-reports" role="tabpanel" aria-labelledby="v-pills-reports-tab">
-					<div class="py-3 px-4 row m-0 mb-1">
-						<div class="col-12">
-							<label> 
-								<input type="checkbox" id="main_nav_ac_reports_view" name="main_nav_ac_reports_view" class="hidden">
-								<input type="checkbox" class="main_nav_ac_reports_view sub_parent_checkbox checkbox-template m-r-xs mr-2" >
-								All
-							</label>
-						</div>
-						<div class="col-md-4 mt-2">
-							<h4 class="font-semibold">Average Order Value Report</h4>
-							<div class="row">
-								<div class="col-6 col-sm-3">
-									<label>
-										<input type="checkbox" id="ac_aov_view" name="ac_aov_view" class=" checkbox-template m-r-xs mr-2">
-										View
-									</label>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-4 mt-2">
-							<h4 class="font-semibold">Branch Performance Report</h4>
-							<div class="row">
-								<div class="col-6 col-sm-3">
-									<label>
-										<input type="checkbox" id="ac_bpr_view" name="ac_bpr_view" class=" checkbox-template m-r-xs mr-2">
-										View
-									</label>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-4 mt-2">
-							<h4 class="font-semibold">Inventory List</h4>
-							<div class="row">
-								<div class="col-6 col-sm-3">
-									<label>
-										<input type="checkbox" id="ac_invlist_view" name="ac_invlist_view" class=" checkbox-template m-r-xs mr-2">
-										View
-									</label>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-4 mt-2">
-							<h4 class="font-semibold">Inventory Report</h4>
-							<div class="row">
-								<div class="col-6 col-sm-3">
-									<label>
-										<input type="checkbox" id="ac_inv_view" name="ac_inv_view" class=" checkbox-template m-r-xs mr-2">
-										View
-									</label>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-4 mt-2">
-							<h4 class="font-semibold">Online Store Conversion Rate</h4>
-							<div class="row">
-								<div class="col-6 col-sm-3">
-									<label>
-										<input type="checkbox" id="ac_oscrr_view" name="ac_oscrr_view" class="reports-with-sessions checkbox-template m-r-xs mr-2">
-										View
-									</label>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-4 mt-2">
-							<h4 class="font-semibold">Online Store Sessions</h4>
-							<div class="row">
-								<div class="col-6 col-sm-3">
-									<label>
-										<input type="checkbox" id="ac_ps_view" name="ac_ps_view" class="reports-with-sessions checkbox-template m-r-xs mr-2">
-										View
-									</label>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-4 mt-2">
-							<h4 class="font-semibold">Inventory Ending Report</h4>
-							<div class="row">
-								<div class="col-6 col-sm-3">
-									<label>
-										<input type="checkbox" id="ac_invend_view" name="ac_invend_view" class=" checkbox-template m-r-xs mr-2">
-										View
-									</label>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-4 mt-2">
-							<h4 class="font-semibold">Order and Sales Report</h4>
-							<div class="row">
-								<div class="col-6 col-sm-3">
-									<label>
-										<input type="checkbox" id="ac_os_view" name="ac_os_view" class=" checkbox-template m-r-xs mr-2">
-										View
-									</label>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-4 mt-2" style="display: none;">
-							<h4 class="font-semibold">Order Status Report</h4>
-							<div class="row">
-								<div class="col-6 col-sm-3">
-									<label>
-										<input type="checkbox" id="ac_osr_view" name="ac_osr_view" class=" checkbox-template m-r-xs mr-2">
-										View
-									</label>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-4 mt-2">
-							<h4 class="font-semibold">Orders By Location</h4>
-							<div class="row">
-								<div class="col-6 col-sm-3">
-									<label>
-										<input type="checkbox" id="ac_oblr_view" name="ac_oblr_view" class=" checkbox-template m-r-xs mr-2">
-										View
-									</label>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-4 mt-2">
-							<h4 class="font-semibold">Pending Orders</h4>
-							<div class="row">
-								<div class="col-6 col-sm-3">
-									<label>
-										<input type="checkbox" id="ac_po_view" name="ac_po_view" class=" checkbox-template m-r-xs mr-2">
-										View
-									</label>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-4 mt-2">
-							<h4 class="font-semibold">Product Releasing Report</h4>
-							<div class="row">
-								<div class="col-6 col-sm-3">
-									<label>
-										<input type="checkbox" id="ac_prr_view" name="ac_prr_view" class=" checkbox-template m-r-xs mr-2">
-										View
-									</label>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-4 mt-2">
-							<h4 class="font-semibold">Order Report</h4>
-							<div class="row">
-								<div class="col-6 col-sm-3">
-									<label>
-										<input type="checkbox" id="ac_or_view" name="ac_or_view" class="reports-refund_order checkbox-template m-r-xs mr-2">
-										View
-									</label>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-4 mt-2">
-							<h4 class="font-semibold">Refund Order Summary</h4>
-							<div class="row">
-								<div class="col-6 col-sm-3">
-									<label>
-										<input type="checkbox" id="ac_rosum_view" name="ac_rosum_view" class="reports-refund_order checkbox-template m-r-xs mr-2">
-										View
-									</label>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-4 mt-2">
-							<h4 class="font-semibold">Refund Order Status</h4>
-							<div class="row">
-								<div class="col-6 col-sm-3">
-									<label>
-										<input type="checkbox" id="ac_rostat_view" name="ac_rostat_view" class="reports-refund_order checkbox-template m-r-xs mr-2">
-										View
-									</label>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-4 mt-2" hidden>
-							<h4 class="font-semibold">Revenue by Branch</h4>
-							<div class="row">
-								<div class="col-6 col-sm-3">
-									<label>
-										<input type="checkbox" id="ac_rbbr_view" name="ac_rbbr_view" class="reports-revenuesBy checkbox-template m-r-xs mr-2">
-										View
-									</label>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-4 mt-2">
-							<h4 class="font-semibold">Revenue By Location</h4>
-							<div class="row">
-								<div class="col-6 col-sm-3">
-									<label>
-										<input type="checkbox" id="ac_rbl_view" name="ac_rbl_view" class=" checkbox-template m-r-xs mr-2">
-										View
-									</label>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-4 mt-2">
-							<h4 class="font-semibold">Revenue by Store</h4>
-							<div class="row">
-								<div class="col-6 col-sm-3">
-									<label>
-										<input type="checkbox" id="ac_rbsr_view" name="ac_rbsr_view" class="reports-revenuesBy checkbox-template m-r-xs mr-2">
-										View
-									</label>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-4 mt-2" style="display: none;">
-							<h4 class="font-semibold">Sales Report</h4>
-							<div class="row">
-								<div class="col-6 col-sm-3">
-									<label>
-										<input type="checkbox" id="ac_sr_view" name="ac_sr_view" class=" checkbox-template m-r-xs mr-2">
-										View
-									</label>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-4 mt-2" hidden>
-							<h4 class="font-semibold">toktok Booking Report</h4>
-							<div class="row">
-								<div class="col-6 col-sm-3">
-									<label>
-										<input type="checkbox" id="ac_tbr_view" name="ac_tbr_view" class=" checkbox-template m-r-xs mr-2">
-										View
-									</label>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-4 mt-2">
-							<h4 class="font-semibold">Order List Payout Status Report</h4>
-							<div class="row">
-								<div class="col-6 col-sm-3">
-									<label>
-										<input type="checkbox" id="ac_olps_view" name="ac_olps_view" class=" checkbox-template m-r-xs mr-2">
-										View
-									</label>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-4 mt-2">
-							<h4 class="font-semibold">Top Products Sold Report</h4>
-							<div class="row">
-								<div class="col-6 col-sm-3">
-									<label>
-										<input type="checkbox" id="ac_tps_view" name="ac_tps_view" class=" checkbox-template m-r-xs mr-2">
-										View
-									</label>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-4 mt-2">
-							<h4 class="font-semibold">Total Abandoned Carts Report</h4>
-							<div class="row">
-								<div class="col-6 col-sm-3">
-									<label>
-										<input type="checkbox" id="ac_tacr_view" name="ac_tacr_view" class="reports-with-sessions checkbox-template m-r-xs mr-2">
-										View
-									</label>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-4 mt-2">
-							<h4 class="font-semibold">Total Orders Report</h4>
-							<div class="row">
-								<div class="col-6 col-sm-3">
-									<label>
-										<input type="checkbox" id="ac_to_view" name="ac_to_view" class=" checkbox-template m-r-xs mr-2">
-										View
-									</label>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-4 mt-2">
-							<h4 class="font-semibold">Total Sales Report</h4>
-							<div class="row">
-								<div class="col-6 col-sm-3">
-									<label>
-										<input type="checkbox" id="ac_tsr_view" name="ac_tsr_view" class=" checkbox-template m-r-xs mr-2">
-										View
-									</label>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-4 mt-2">
-							<h4 class="font-semibold">Withholding Tax Reports</h4>
-							<div class="row">
-								<div class="col-6 col-sm-3">
-									<label>
-										<input type="checkbox" id="ac_wtr_view" name="ac_wtr_view" class=" checkbox-template m-r-xs mr-2">
-										View
-									</label>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-4 mt-2">
-							<h4 class="font-semibold">Merchant Serviceable Areas Report</h4>
-							<div class="row">
-								<div class="col-6 col-sm-3">
-									<label>
-										<input type="checkbox" id="ac_msr_view" name="ac_msr_view" class=" checkbox-template m-r-xs mr-2">
-										View
-									</label>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>-->
+				</div><!---->
 				<div class="tab-pane fade w-100 parent_section" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
 					<div class="py-3 px-4 row m-0 mb-1">
 						<div class="col-6 col-sm-3">
@@ -1254,7 +860,8 @@
 									</label>
 								</div>
 							</div>
-						</div><!--
+						</div>
+						<!--
 						<div class="col-12 mt-2" hidden>
 							<h4 class="font-semibold">Payment Types</h4>
 							<div class="row">
@@ -1702,9 +1309,126 @@
 									</label>
 								</div>
 							</div>
-						</div>
+						</div>-->
 					</div>
 				</div>
+				<div class="tab-pane fade w-100 online_ordering parent_section" id="v-pills-promotions" role="tabpanel" aria-labelledby="v-pills-promotions-tab">
+					<div class="py-3 px-4 row m-0 mb-1">
+						<div class="col-6 col-sm-3">
+							<label> 
+								<input type="checkbox" class="hidden" id="main_nav_ac_promotions_view" name="main_nav_ac_promotions_view">
+								<input type="checkbox" class="main_nav_ac_promotions_view sub_parent_checkbox checkbox-template m-r-xs mr-2" >
+								All
+							</label>
+						</div>
+						<div class="col-12 mt-2">
+							<h4 class="font-semibold">Products Discount List</h4>
+							<div class="row">
+								<div class="col-6 col-sm-3">
+									<label>
+										<input type="checkbox" id="ac_pd_view" name="ac_pd_view" class="checkbox-template m-r-xs mr-2">
+										View
+									</label>
+								</div>
+								<div class="col-6 col-sm-3" >
+									<label>
+										<input type="checkbox" id="ac_pd_create" name="ac_pd_create" class="checkbox-template m-r-xs mr-2">
+										Create
+									</label>
+								</div>
+								<div class="col-6 col-sm-3" >
+									<label>
+										<input type="checkbox"  id="ac_pd_update" name="ac_pd_update" class="checkbox-template m-r-xs mr-2">
+										Update Access
+									</label>
+								</div>
+								<div class="col-6 col-sm-3">
+									<label>
+										<input type="checkbox"  id="ac_pd_disable" name="ac_pd_disable" class="checkbox-template m-r-xs mr-2">
+										Disable
+									</label>
+								</div>
+								<div class="col-6 col-sm-3" >
+									<label>
+										<input type="checkbox"  id="ac_pd_delete" name="ac_pd_delete" class="checkbox-template m-r-xs mr-2">
+										Delete
+									</label>
+								</div>
+							</div>
+						</div>
+						<!-- <div class="col-12 mt-2">
+							<h4 class="font-semibold">Shipping Discounts List</h4>
+							<div class="row">
+								<div class="col-6 col-sm-3">
+									<label>
+										<input type="checkbox" id="ac_shd_view" name="ac_shd_view" class="checkbox-template m-r-xs mr-2">
+										View
+									</label>
+								</div>
+								<div class="col-6 col-sm-3" >
+									<label>
+										<input type="checkbox" id="ac_shd_create" name="ac_shd_create" class="checkbox-template m-r-xs mr-2">
+										Create
+									</label>
+								</div>
+								<div class="col-6 col-sm-3" >
+									<label>
+										<input type="checkbox"  id="ac_shd_update" name="ac_shd_update" class="checkbox-template m-r-xs mr-2">
+										Update Access
+									</label>
+								</div>
+								<div class="col-6 col-sm-3">
+									<label>
+										<input type="checkbox"  id="ac_shd_disable" name="ac_shd_disable" class="checkbox-template m-r-xs mr-2">
+										Disable
+									</label>
+								</div>
+								<div class="col-6 col-sm-3" >
+									<label>
+										<input type="checkbox"  id="ac_shd_delete" name="ac_shd_delete" class="checkbox-template m-r-xs mr-2">
+										Delete
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="col-12 mt-2">
+							<h4 class="font-semibold">Shop Discounts List</h4>
+							<div class="row">
+								<div class="col-6 col-sm-3">
+									<label>
+										<input type="checkbox" id="ac_sd_view" name="ac_sd_view" class="checkbox-template m-r-xs mr-2">
+										View
+									</label>
+								</div>
+								<div class="col-6 col-sm-3" >
+									<label>
+										<input type="checkbox" id="ac_sd_create" name="ac_sd_create" class="checkbox-template m-r-xs mr-2">
+										Create
+									</label>
+								</div>
+								<div class="col-6 col-sm-3" >
+									<label>
+										<input type="checkbox"  id="ac_sd_update" name="ac_sd_update" class="checkbox-template m-r-xs mr-2">
+										Update Access
+									</label>
+								</div>
+								<div class="col-6 col-sm-3">
+									<label>
+										<input type="checkbox"  id="ac_sd_disable" name="ac_sd_disable" class="checkbox-template m-r-xs mr-2">
+										Disable
+									</label>
+								</div>
+								<div class="col-6 col-sm-3" >
+									<label>
+										<input type="checkbox"  id="ac_sd_delete" name="ac_sd_delete" class="checkbox-template m-r-xs mr-2">
+										Delete
+									</label>
+								</div>
+							</div>
+						</div> -->
+					</div>
+				</div>
+				<!--
 				<div class="tab-pane fade w-100 online_ordering parent_section" id="v-pills-vouchers" role="tabpanel" aria-labelledby="v-pills-vouchers-tab">
 					<div class="py-3 px-4 row m-0 mb-1">
 						<div class="col-6 col-sm-3">

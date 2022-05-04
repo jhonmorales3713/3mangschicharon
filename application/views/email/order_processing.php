@@ -482,10 +482,43 @@
             <tr>
               <td colspan="4">Delivered On: <?= $order_data_main[0]['date_delivered'];?></td> 
             </tr>
-            <?php }?>
-            <?php $total_amount = 0;$total_amount_conv = 0;?>
-            <?php foreach($order_data as $key => $value){ ?>
-            <?php $primary_pic = str_replace('=','',$value->img);?>
+            <?php }
+                  $total_amount = 0;$total_amount_conv = 0;
+                  foreach($order_data as $key => $value){ 
+                  $primary_pic = str_replace('=','',$value->img);
+
+                  $discount_info = $value->discount_info;
+                  $amount = $value->amount;
+                  // print_r($discount_info);
+                  $badge = '';
+                  if($discount_info != '' && $discount_info != null){
+                      if(in_array($key,json_decode($discount_info->product_id))){
+                          $discount_id = $discount_info->id;
+                          if($discount_info->discount_type == 1){
+                              if($discount_info->disc_amount_type == 2){
+                                  $newprice = $amount - ($amount * ($discount_info->disc_amount/100));
+                                  $discount_price = $discount_info->disc_amount;
+                                  if($discount_info->max_discount_isset && $newprice < $discount_info->max_discount_price){
+                                      $discount_price = $discount_info->max_discount_price;
+                                      $newprice = $discount_info->max_discount_price;
+                                  }
+                                  $badge =  number_format($newprice,2).' <s><small>'.$amount.'</small></s><span style="background-color:red; color:white;padding:2px;">- '.$discount_price.'% off</span>';
+                              }else{
+                                  $newprice = $amount - $discount_info->disc_amount;
+                                  $badge = '<span class=" mr-1 badge badge-danger">- &#8369; '.$discount_info->disc_amount.' off</span>'.number_format($newprice,2);
+                                  if($discount_info->max_discount_isset && $newprice < $discount_info->max_discount_price){
+                                      $discount_price = $discount_info->max_discount_price;
+                                      $newprice = $discount_info->max_discount_price;
+                                      $badge ='<span class=" mr-1 badge badge-danger">- &#8369; '.$discount_info->max_discount_price.' off</span>'.number_format($newprice,2);
+                                      // $newprice = $discount['max_discount_price'];
+                                  }
+                              }
+                              $amount = $newprice;
+                              $discount_total = $newprice;
+                          }
+                      }
+                    }
+            ?>
               <tr>
                   <td></td>
                   <td width="10%">
@@ -500,10 +533,11 @@
                               <div class="portal-table__column col-4 col-lg-2 portal-table__unit">
                               <span class="d-lg-none">Unit:</span> <?=$value->qty;?>
                               </div>
-                              <div class="portal-table__column col-12 col-lg-2 portal-table__price text-lg-right">Price:  <?=number_format($value->amount,2)?></div>
-                              <div class="portal-table__column col-12 col-lg-2 portal-table__id portal-table__totalprice text-lg-right">Total: <?=number_format($value->amount,2) * number_format($value->qty,2)?></div>
+                              <div class="portal-table__column col-12 col-lg-2 portal-table__price text-lg-right">Price:  <?=$badge!= ''? $badge:number_format($value->amount,2)?></div>
+                              <div class="portal-table__column col-12 col-lg-2 portal-table__id portal-table__totalprice text-lg-right">Total: <?=$amount * number_format($value->qty,2)?></div>
                               
-                              <?php $total_amount += number_format($value->amount,2) * number_format($value->qty,2);?>
+                              <?php $base_price = $amount;
+                               $total_amount += number_format($base_price,2) * number_format($value->qty,2);?>
                           </div>
                       </div>
                   </td>
@@ -537,35 +571,3 @@
       <br><br><br>
 
 
-
-<!-- 
-
-<table style="width: 100%">
-        <tbody>
-            <tr>
-                <td>
-                    <p style="color: #222; margin-top: 0;">Please change your password upon log-in at <?=$resetpasslink;?></p>
-                </td>
-            </tr>
-        </tbody>
-</table>
-
-<table style="width: 100%">
-    <tbody>
-        <tr>
-            <td style="padding: 20px 0 0 0">
-                <i style="font-size: 13px; color:#525252; font-family: 'Fira Sans', sans-serif;">Note: This is an auto-generated email. Please do not reply to this email thread.</i>
-            </td>
-        </tr>
-    </tbody>
-</table>
-<table style="width: 100%">
-    <tbody>
-        <tr>
-            <td>
-                <p>
-                </p>
-            </td>
-        </tr>
-    </tbody>
-</table> -->

@@ -213,6 +213,17 @@ class Model_user_list extends CI_Model {
 		$main_nav_ac_customers_view = $this->input->post('ac_customer_view');
 		$main_nav_customer = ($main_nav_ac_customers_view) ? 1 : 0;
 
+		//promotions start
+		$main_nav_ac_dicounts_view = $this->input->post('ac_shd_view');
+		$main_nav_promotions = ($main_nav_ac_dicounts_view) ? 1 : 0;
+
+		$main_nav_ac_dicounts_view = $main_nav_ac_dicounts_view == 0 ? $this->input->post('ac_pd_view') : $main_nav_ac_dicounts_view;
+		$main_nav_promotions = ($main_nav_ac_dicounts_view) ? 1 : 0;
+
+		$main_nav_ac_dicounts_view = $main_nav_ac_dicounts_view == 0 ? $this->input->post('ac_sd_view') : $main_nav_ac_dicounts_view;
+		$main_nav_promotions = ($main_nav_ac_dicounts_view) ? 1 : 0;
+		//promotions end
+
 		$main_nav_profile = 1;
 
 		$array_main_nav_id = [];
@@ -255,6 +266,12 @@ class Model_user_list extends CI_Model {
 						$array_main_nav_id[] = $row->main_nav_id;
 					} 
 				}
+				if ($main_nav_promotions == 1) {
+					$main_nav_href_string = 'promotions_home'; //get reference in cp_main_navigation
+					if ($main_nav_href_string == $row->main_nav_href) {
+						$array_main_nav_id[] = $row->main_nav_id;
+					} 
+				}
 
 
 			}
@@ -282,6 +299,15 @@ class Model_user_list extends CI_Model {
 
 		$ac_customers_view = $this->input->post('ac_customer_view');
 		$ac_customers_view = ($ac_customers_view) ? 1 : 0;
+
+		$ac_pd_view = $this->input->post('ac_pd_view');
+		$ac_pd_view = ($ac_pd_view) ? 1 : 0;
+
+		$ac_shd_view = $this->input->post('ac_shd_view');
+		$ac_shd_view = ($ac_shd_view) ? 1 : 0;
+
+		$ac_sd_view = $this->input->post('ac_sd_view');
+		$ac_sd_view = ($ac_sd_view) ? 1 : 0;
 		
 		$ac_profile_view = 1;
 
@@ -332,6 +358,27 @@ class Model_user_list extends CI_Model {
 				
                 if($ac_customers_view == 1){
 					$content_nav_href_string = 'Customer List'; //get reference in cp_content_navigation->cn_name
+					if ($content_nav_href_string == $row->cn_name) {
+						$array_content_nav_id[] = $row->id;
+					} 
+                }
+				
+                if($ac_pd_view == 1){
+					$content_nav_href_string = 'Products Discount'; //get reference in cp_content_navigation->cn_name
+					if ($content_nav_href_string == $row->cn_name) {
+						$array_content_nav_id[] = $row->id;
+					} 
+                }
+				
+                if($ac_shd_view == 1){
+					$content_nav_href_string = 'Shipping Discounts'; //get reference in cp_content_navigation->cn_name
+					if ($content_nav_href_string == $row->cn_name) {
+						$array_content_nav_id[] = $row->id;
+					} 
+                }
+				
+                if($ac_sd_view == 1){
+					$content_nav_href_string = 'Shop Discounts'; //get reference in cp_content_navigation->cn_name
 					if ($content_nav_href_string == $row->cn_name) {
 						$array_content_nav_id[] = $row->id;
 					} 
@@ -416,7 +463,7 @@ class Model_user_list extends CI_Model {
 		
 
 			$sql = "UPDATE sys_users SET enabled = 0, username = ? WHERE id = ?";
-			return $this->db->query($sql, ['Deleted('.$value['username'].')',$delete_id]);
+			return $this->db->query($sql, [$value['username'],$delete_id]);
 
 		}
 	}

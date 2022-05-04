@@ -226,6 +226,88 @@ class Model_access_control extends CI_Model {
 		// if(isset($data['ac_dashboard_transactions_chart'])) {
 		// 	$this->access_control['dashboard']['transactions_chart_view'] = 1;
 		// }
+
+        //Product discount
+        if(isset($data['ac_pd_view'])) {
+            $this->access_control['product_discount']['view'] = 1;
+        }else{
+            $this->access_control['product_discount']['view'] = 0;
+		}
+        if(isset($data['ac_pd_create'])) {
+            $this->access_control['product_discount']['create'] = 1;
+        }else{
+            $this->access_control['product_discount']['create'] = 0;
+		}
+        if(isset($data['ac_pd_update'])) {
+            $this->access_control['product_discount']['update'] = 1;
+        }else{
+            $this->access_control['product_discount']['update'] = 0;
+		}
+        if(isset($data['ac_pd_disable'])) {
+            $this->access_control['product_discount']['disable'] = 1;
+        }else{
+            $this->access_control['product_discount']['disable'] = 0;
+		}
+        if(isset($data['ac_pd_delete'])) {
+            $this->access_control['product_discount']['delete'] = 1;
+        }else{
+            $this->access_control['product_discount']['delete'] = 0;
+		}
+
+        //shipping discount
+        
+        if(isset($data['ac_shd_view'])) {
+            $this->access_control['shipping_discount']['view'] = 1;
+        }else{
+            $this->access_control['shipping_discount']['view'] = 0;
+		}
+        if(isset($data['ac_shd_create'])) {
+            $this->access_control['shipping_discount']['create'] = 1;
+        }else{
+            $this->access_control['shipping_discount']['create'] = 0;
+		}
+        if(isset($data['ac_shd_update'])) {
+            $this->access_control['shipping_discount']['update'] = 1;
+        }else{
+            $this->access_control['shipping_discount']['update'] = 0;
+		}
+        if(isset($data['ac_shd_disable'])) {
+            $this->access_control['shipping_discount']['disable'] = 1;
+        }else{
+            $this->access_control['shipping_discount']['disable'] = 0;
+		}
+        if(isset($data['ac_shd_delete'])) {
+            $this->access_control['shipping_discount']['delete'] = 1;
+        }else{
+            $this->access_control['shipping_discount']['delete'] = 0;
+		}
+        //shop voucher
+        
+        if(isset($data['ac_sd_view'])) {
+            $this->access_control['shop_discount']['view'] = 1;
+        }else{
+            $this->access_control['shop_discount']['view'] = 0;
+		}
+        if(isset($data['ac_sd_create'])) {
+            $this->access_control['shop_discount']['create'] = 1;
+        }else{
+            $this->access_control['shop_discount']['create'] = 0;
+		}
+        if(isset($data['ac_sd_update'])) {
+            $this->access_control['shop_discount']['update'] = 1;
+        }else{
+            $this->access_control['shop_discount']['update'] = 0;
+		}
+        if(isset($data['ac_sd_disable'])) {
+            $this->access_control['shop_discount']['disable'] = 1;
+        }else{
+            $this->access_control['shop_discount']['disable'] = 0;
+		}
+        if(isset($data['ac_sd_delete'])) {
+            $this->access_control['shop_discount']['delete'] = 1;
+        }else{
+            $this->access_control['shop_discount']['delete'] = 0;
+		}
 		
 
 		return json_encode($this->access_control);

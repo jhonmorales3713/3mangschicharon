@@ -294,6 +294,25 @@ function validate_link($name,$usename){
         die();
     }
 }
+
+function url_decode($query){
+    $new_arr = [];
+    foreach (explode('&', $query) as $chunk) {
+        $param = explode("=", $chunk);
+
+        if ($param) {
+            $key = str_replace("columns[", "", urldecode($param[0]));
+            $key = str_replace("][", ".", $key);
+            $key = str_replace("[", ".", $key);
+            $key = str_replace("]", "", $key);
+
+            $value=urldecode($param[1]);
+
+            data_set($new_arr, $key, $value);
+        }
+    }
+    return $new_arr;
+}
 function get_status_ui($status_id){
     $status_string = "";
     switch($status_id){
