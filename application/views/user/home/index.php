@@ -303,7 +303,8 @@
                 </div>
             <?php } ?>
         </div>
-        <?php if(count($top_products) > 0){?>
+        <?php $target = 0;
+         if(count($top_products) > 0){?>
         <div class="row bg-custom-primary mt-3 ">
             <div class="col-12 text-white h3 d-flex justify-content-start ">
                 Top Products Sold
@@ -311,131 +312,133 @@
         </div>
         <div class="row">
             <?php foreach($top_products as $product){
-                $discount_badge = '';?>
-                <div class="col-lg-2 col-md-4 col-sm-6 mt10">
-                    <?php
-                        if($product['img'] == '' || $product['img'] == NULL){
-                            $image_path = base_url('assets/img/shop_logo.png');
-                        }
-                        else{                                
-                            $image_path = base_url('assets/uploads/products/').str_replace('==','',$product['img']);
-                        }
-                    ?>
-                    <div class="product-img" style="background-image: url(<?= $image_path; ?>); width: 100%;" data-product_id="<?= $product['id']; ?>">
-                        <div class="product-info <?= sizeof($product['variants']) == 1 ? 'single-variant' : '';?>">
-                        <strong class="product-name"><?= $product['name']; ?></strong><br>
-                        <?php foreach($product['variants'] as $variant){ 
-                            $newprice = $variant['price'];
-                            $badge = $newprice;
-                            if(in_array(en_dec('en',$variant['id']),$discount_ids)){
-                                // $discount = $product['discount'];
-                                foreach($discounts as $discount_){
-                                    $discount = ($discount_['discount_info']);
-                                    if($discount['discount_type'] == 1){
-                                        if($discount['disc_amount_type'] == 2){
-                                            $newprice = $variant['price'] - ($variant['price'] * ($discount['disc_amount']/100));
-                                            $discount_price = $discount['disc_amount'];
-                                            if($discount['max_discount_isset'] && $newprice < $discount['max_discount_price']){
-                                                $discount_price = $discount['max_discount_price'];
-                                            }
-                                            $discount_badge = '<span class=" mr-1 badge badge-danger">- &#8369; '.$discount_price.' % off</span>';
-                                            $badge =  number_format($newprice,2).' <s><small>'.$variant['price'].'</small></s><span class=" mr-1 badge badge-danger">- '.$discount_price.'% off</span>';
-                                        }else{
-                                            $newprice = $product['price'] -$discount['disc_amount'];
-                                            $badge =  number_format($newprice,2).'<span class=" mr-1 badge badge-danger">- &#8369; '.$discount['disc_amount'].' off</span>';
-                                            $discount_badge = '<span class=" mr-1 badge badge-danger">- &#8369; '.$discount['disc_amount'].' off</span>';
-                                            if($discount['max_discount_isset'] && $newprice < $discount['max_discount_price']){
-                                                $discount_badge = '<span class=" mr-1 badge badge-danger">- &#8369; '.$discount['max_discount_price'].' off</span>';
-                                                $badge = number_format($newprice,2).'<span class=" mr-1 badge badge-danger">- &#8369; '.$discount['max_discount_price'].' off</span>';
-                                                // $newprice = $discount['max_discount_price'];
+                if($target<10){
+                    $target++;
+                    $discount_badge = '';?>
+                    <div class="col-lg-2 col-md-4 col-sm-6 mt10">
+                        <?php
+                            if($product['img'] == '' || $product['img'] == NULL){
+                                $image_path = base_url('assets/img/shop_logo.png');
+                            }
+                            else{                                
+                                $image_path = base_url('assets/uploads/products/').str_replace('==','',$product['img']);
+                            }
+                        ?>
+                        <div class="product-img" style="background-image: url(<?= $image_path; ?>); width: 100%;" data-product_id="<?= $product['id']; ?>">
+                            <div class="product-info <?= sizeof($product['variants']) == 1 ? 'single-variant' : '';?>">
+                            <strong class="product-name"><?= $product['name']; ?></strong><br>
+                            <?php foreach($product['variants'] as $variant){ 
+                                $newprice = $variant['price'];
+                                $badge = $newprice;
+                                if(in_array(en_dec('en',$variant['id']),$discount_ids)){
+                                    // $discount = $product['discount'];
+                                    foreach($discounts as $discount_){
+                                        $discount = ($discount_['discount_info']);
+                                        if($discount['discount_type'] == 1){
+                                            if($discount['disc_amount_type'] == 2){
+                                                $newprice = $variant['price'] - ($variant['price'] * ($discount['disc_amount']/100));
+                                                $discount_price = $discount['disc_amount'];
+                                                if($discount['max_discount_isset'] && $newprice < $discount['max_discount_price']){
+                                                    $discount_price = $discount['max_discount_price'];
+                                                }
+                                                $discount_badge = '<span class=" mr-1 badge badge-danger">- &#8369; '.$discount_price.' % off</span>';
+                                                $badge =  number_format($newprice,2).' <s><small>'.$variant['price'].'</small></s><span class=" mr-1 badge badge-danger">- '.$discount_price.'% off</span>';
+                                            }else{
+                                                $newprice = $product['price'] -$discount['disc_amount'];
+                                                $badge =  number_format($newprice,2).'<span class=" mr-1 badge badge-danger">- &#8369; '.$discount['disc_amount'].' off</span>';
+                                                $discount_badge = '<span class=" mr-1 badge badge-danger">- &#8369; '.$discount['disc_amount'].' off</span>';
+                                                if($discount['max_discount_isset'] && $newprice < $discount['max_discount_price']){
+                                                    $discount_badge = '<span class=" mr-1 badge badge-danger">- &#8369; '.$discount['max_discount_price'].' off</span>';
+                                                    $badge = number_format($newprice,2).'<span class=" mr-1 badge badge-danger">- &#8369; '.$discount['max_discount_price'].' off</span>';
+                                                    // $newprice = $discount['max_discount_price'];
+                                                }
                                             }
                                         }
                                     }
                                 }
-                            }
-                        ?>
-                        <span class="badge badge-info size-select"><?= $variant['name']; ?></span> <span>&#8369; <?= $badge; ?></span><br>
-                        <?php } ?>
+                            ?>
+                            <span class="badge badge-info size-select"><?= $variant['name']; ?></span> <span>&#8369; <?= $badge; ?></span><br>
+                            <?php } ?>
+                            
+                            </div>   
+                        </div>  
+                        <div class="ml5">
                         
-                        </div>   
-                    </div>  
-                    <div class="ml5">
-                    
-                        <div class="row">
-                            <div class="col-8">
-                                <?php 
-                                    $inv = 0;
-                                    $price = 0;
-                                    if(isset($product['variants'][0])){
-                                        foreach($product['variants'] as $variant){
-                                            $inventories = $this->model_products->get_inventorydetails($variant['id']);
-                                            foreach($inventories as $inventory){
-                                                $now = time();
-                                                $expiration = strtotime($inventory['date_expiration']);
-                                                if(date('Y-m-d',$expiration) > date('Y-m-d') && $variant['id'] ==  $inventory['product_id']){
-                                                    $inv += $inventory['qty'];
-                                                    //(round(($expiration - $now)/(60*60*24))+1);
+                            <div class="row">
+                                <div class="col-8">
+                                    <?php 
+                                        $inv = 0;
+                                        $price = 0;
+                                        if(isset($product['variants'][0])){
+                                            foreach($product['variants'] as $variant){
+                                                $inventories = $this->model_products->get_inventorydetails($variant['id']);
+                                                foreach($inventories as $inventory){
+                                                    $now = time();
+                                                    $expiration = strtotime($inventory['date_expiration']);
+                                                    if(date('Y-m-d',$expiration) > date('Y-m-d') && $variant['id'] ==  $inventory['product_id']){
+                                                        $inv += $inventory['qty'];
+                                                        //(round(($expiration - $now)/(60*60*24))+1);
+                                                    }
                                                 }
+                                            }
+                                        ?>
+                                        <strong>&#8369; <?= number_format($product['variants'][0]['price'],2).$discount_badge;?></strong>
+                                    <?php } else { 
+                                        $novariant_product = $product;
+                                        $newprice = $novariant_product['price'];
+                                        $badge = $newprice;
+                                        if(in_array($novariant_product['id'],$discount_ids)){
+                                            // $discount = $product['discount'];
+                                            foreach($discounts as $discount_){
+                                                $discount = ($discount_['discount_info']);
+                                                if($discount['discount_type'] == 1){
+                                                    if($discount['disc_amount_type'] == 2){
+                                                        $newprice = $novariant_product['price'] - ($novariant_product['price'] * ($discount['disc_amount']/100));
+                                                        $discount_price = $discount['disc_amount'];
+                                                        if($discount['max_discount_isset'] && $newprice < $discount['max_discount_price']){
+                                                            $discount_price = $discount['max_discount_price'];
+                                                        }
+                                                        $discount_badge = '<span class=" mr-1 badge badge-danger">- &#8369; '.$discount_price.' % off</span>';
+                                                        $badge =  number_format($newprice,2).' <s><small>'.$novariant_product['price'].'</small></s><span class=" mr-1 badge badge-danger">- '.$discount_price.'% off</span>';
+                                                    }else{
+                                                        $newprice = $product['price'] -$discount['disc_amount'];
+                                                        $badge =  number_format($newprice,2).'<span class=" mr-1 badge badge-danger">- &#8369; '.$discount['disc_amount'].' off</span>';
+                                                        $discount_badge = '<span class=" mr-1 badge badge-danger">- &#8369; '.$discount['disc_amount'].' off</span>';
+                                                        if($discount['max_discount_isset'] && $newprice < $discount['max_discount_price']){
+                                                            $discount_badge = '<span class=" mr-1 badge badge-danger">- &#8369; '.$discount['max_discount_price'].' off</span>';
+                                                            $badge = number_format($newprice,2).'<span class=" mr-1 badge badge-danger">- &#8369; '.$discount['max_discount_price'].' off</span>';
+                                                            // $newprice = $discount['max_discount_price'];
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        foreach($product['inventory'] as $inventory){
+                                            $now = time();
+                                            $expiration = strtotime($inventory['date_expiration']);
+                                            if(date('Y-m-d',$expiration) > date('Y-m-d') && $product['id'] ==  en_dec('en',$inventory['product_id'])){
+                                                $inv += $inventory['qty'];
+                                                //(round(($expiration - $now)/(60*60*24))+1);
                                             }
                                         }
                                     ?>
-                                    <strong>&#8369; <?= number_format($product['variants'][0]['price'],2).$discount_badge;?></strong>
-                                <?php } else { 
-                                    $novariant_product = $product;
-                                    $newprice = $novariant_product['price'];
-                                    $badge = $newprice;
-                                    if(in_array($novariant_product['id'],$discount_ids)){
-                                        // $discount = $product['discount'];
-                                        foreach($discounts as $discount_){
-                                            $discount = ($discount_['discount_info']);
-                                            if($discount['discount_type'] == 1){
-                                                if($discount['disc_amount_type'] == 2){
-                                                    $newprice = $novariant_product['price'] - ($novariant_product['price'] * ($discount['disc_amount']/100));
-                                                    $discount_price = $discount['disc_amount'];
-                                                    if($discount['max_discount_isset'] && $newprice < $discount['max_discount_price']){
-                                                        $discount_price = $discount['max_discount_price'];
-                                                    }
-                                                    $discount_badge = '<span class=" mr-1 badge badge-danger">- &#8369; '.$discount_price.' % off</span>';
-                                                    $badge =  number_format($newprice,2).' <s><small>'.$novariant_product['price'].'</small></s><span class=" mr-1 badge badge-danger">- '.$discount_price.'% off</span>';
-                                                }else{
-                                                    $newprice = $product['price'] -$discount['disc_amount'];
-                                                    $badge =  number_format($newprice,2).'<span class=" mr-1 badge badge-danger">- &#8369; '.$discount['disc_amount'].' off</span>';
-                                                    $discount_badge = '<span class=" mr-1 badge badge-danger">- &#8369; '.$discount['disc_amount'].' off</span>';
-                                                    if($discount['max_discount_isset'] && $newprice < $discount['max_discount_price']){
-                                                        $discount_badge = '<span class=" mr-1 badge badge-danger">- &#8369; '.$discount['max_discount_price'].' off</span>';
-                                                        $badge = number_format($newprice,2).'<span class=" mr-1 badge badge-danger">- &#8369; '.$discount['max_discount_price'].' off</span>';
-                                                        // $newprice = $discount['max_discount_price'];
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                    foreach($product['inventory'] as $inventory){
-                                        $now = time();
-                                        $expiration = strtotime($inventory['date_expiration']);
-                                        if(date('Y-m-d',$expiration) > date('Y-m-d') && $product['id'] ==  en_dec('en',$inventory['product_id'])){
-                                            $inv += $inventory['qty'];
-                                            //(round(($expiration - $now)/(60*60*24))+1);
-                                        }
-                                    }
-                                ?>
-                                    <strong>&#8369; <?= !isset($product['variants'][0]) ? $badge:number_format($product['price'],2).$discount_badge;?></strong>
-                                    <!-- <span class="badge badge-success">New</span> -->
+                                        <strong>&#8369; <?= !isset($product['variants'][0]) ? $badge:number_format($product['price'],2).$discount_badge;?></strong>
+                                        <!-- <span class="badge badge-success">New</span> -->
+                                    <?php } ?>
+                                </div>
+                                <div class="col-4 text-right">
+                                    <small><b><?=$product['sold_count'];?> sold</b></small>
+                                </div>
+                                <?php if($inv==0){ ?>
+                                <div class="col-12 text-right text-danger">
+                                    <small><b>SOLD OUT</b></small>
+                                </div>
                                 <?php } ?>
                             </div>
-                            <div class="col-4 text-right">
-                                <small><b><?=$product['sold_count'];?> sold</b></small>
-                            </div>
-                            <?php if($inv==0){ ?>
-                            <div class="col-12 text-right text-danger">
-                                <small><b>SOLD OUT</b></small>
-                            </div>
-                            <?php } ?>
-                        </div>
 
-                    </div>                 
-                </div>
-            <?php } ?>
+                        </div>                 
+                    </div>
+            <?php }} ?>
         </div>
         <?php } ?>
     </div>
