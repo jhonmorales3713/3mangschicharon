@@ -26,7 +26,7 @@ class Products extends CI_Controller {
         foreach($orders as $id => $order){
             foreach(json_decode($order['order_data']) as $product_id => $order_data){
                 if($product_id == $product){
-                    $times_sold++;
+                    $times_sold+=$order_data->qty;
                 }
             }
 
