@@ -12,6 +12,7 @@ class Home extends CI_Controller {
 		$this->load->model('model_landing');
     }
 
+
 	public function index()
 	{		
 		$data['active_page'] = 'home';
@@ -57,6 +58,12 @@ class Home extends CI_Controller {
 				array_push($view_data['top_products'],$product);
 			}
         }
+	
+		function cmp($a, $b) {
+			return strcmp($a['sold_count'], $b['sold_count']);
+		}
+		
+		usort($view_data['top_products'], "cmp");
 		$count = 0;
         foreach($discounts as $discount){
 			$view_data['discounts'][$count]['discount_info'] = $discount;
