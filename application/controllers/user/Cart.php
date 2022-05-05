@@ -379,7 +379,7 @@ class Cart extends CI_Controller {
         );
         
         $data2['view'] = $this->load->view('email/order_processing',$data2,TRUE);
-        $email = 'morales_jhon10@yahoo.com';
+        $email = $shipping_data['email'];
         $subject = "Order #".$order_id." has been placed";
         $message = $this->load->view('email/templates/email_template',$data2,true);
 		$this->send_email($email,$subject,$message);
