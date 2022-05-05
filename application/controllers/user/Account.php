@@ -112,6 +112,9 @@ class Account extends CI_Controller {
         
         if($profile_info['profile_img'] == '' || $profile_info['profile_img'] == 'undefined'){
             unset($profile_info['profile_img']);
+        }
+        else{
+            $_SESSION['profile_img'] = $profile_info['profile_img'];
         }       
 
         $this->model_accounts->update_profile($customer_id,$profile_info);
