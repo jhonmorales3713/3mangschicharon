@@ -76,5 +76,19 @@
             </div>
         </div>
     </div>
+    <div class="row mt50">
+        <div class="col-12 p20 mt50">
+            <center>
+            <h3>COME AND PAY A VISIT</h3>
+            </center>
+        </div>
+        <div class="col-lg-3 col-md-2 col-sm-2"></div>
+        <div class="col-lg-6 col-md-8 col-sm-8">
+            <a href="<?= base_url('assets/img/3MangMapFull.jpg') ?>" target="blank">
+            <img src="<?= base_url('assets/img/3MangMapFull.jpg') ?>" alt="" width="100%">
+            </a>
+        </div>
+        <div class="col-lg-3 col-md-2 col-sm-2"></div>
+    </div>
 </div>
 <script src="<?= base_url('assets/js/libs/user/home/contact_us.js'); ?>"></script>
