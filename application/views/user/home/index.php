@@ -119,14 +119,16 @@
                                                                 $newprice = $product['price'] - ($product['price'] * ($discount['disc_amount']/100));
                                                                 $discount_price = $discount['disc_amount'];
                                                                 if($discount['max_discount_isset'] && $newprice < $discount['max_discount_price']){
+                                                                    $newprice = $discount['max_discount_price'];
                                                                     $discount_price = $discount['max_discount_price'];
                                                                 }
                                                                 $badge =  number_format($newprice,2).' <s><small>'.$variant['price'].'</small></s><span class=" mr-1 badge badge-danger">- '.$discount_price.'% off</span>';
                                                             }else{
                                                                 $newprice = $product['price'] -$discount['disc_amount'];
-                                                                $badge =  number_format($newprice,2).'<span class=" mr-1 badge badge-danger">- &#8369; '.$discount['disc_amount'].' off</span>';
+                                                                $badge =  number_format($newprice,2).'<s><small>'.$variant['price'].'</small></s><span class=" mr-1 badge badge-danger">- &#8369; '.$discount['disc_amount'].' off</span>';
                                                                 if($discount['max_discount_isset'] && $newprice < $discount['max_discount_price']){
-                                                                    $badge = number_format($newprice,2).'<span class=" mr-1 badge badge-danger">- &#8369; '.$discount['max_discount_price'].' off</span>';
+                                                                    $newprice = $discount['max_discount_price'];
+                                                                    $badge = number_format($newprice,2).'<s><small>'.($variant['price']).'</small></s><span class=" mr-1 badge badge-danger">- &#8369; '.($variant['price']-$discount['max_discount_price']).' off</span>';
                                                                     // $newprice = $discount['max_discount_price'];
                                                                 }
                                                             }
@@ -165,13 +167,13 @@
                                                             if($discount['discount_type'] == 1){
                                                                 if($discount['disc_amount_type'] == 2){
                                                                     $newprice = $product['price'] - ($product['price'] * ($discount['disc_amount']/100));
-                                                                    $badge = '- '.$discount['disc_amount'].'% off';
+                                                                    $badge = 'SALE';
                                                                     if($discount['max_discount_isset'] && $newprice < $discount['max_discount_price']){
                                                                         $newprice = $discount['max_discount_price'];
                                                                     }
                                                                 }else{
                                                                     $newprice = $product['price'] -$discount['disc_amount'];
-                                                                    $badge = '- &#8369; '.$discount['disc_amount'].' off';
+                                                                    $badge = 'SALE';
                                                                     if($discount['max_discount_isset'] && $newprice < $discount['max_discount_price']){
                                                                         $newprice = $discount['max_discount_price'];
                                                                     }

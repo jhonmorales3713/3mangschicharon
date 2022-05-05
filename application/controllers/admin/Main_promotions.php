@@ -288,8 +288,8 @@ class Main_promotions extends CI_Controller {
     public function change_status(){
         $data = $this->input->post();
         $status = $data['status'];
-        $date_from = $data['date_from'];
-        $date_to = $data['date_to'];
+        $date_from = isset($data['date_from'])?$data['date_from']:'';
+        $date_to = isset($data['date_from'])?$data['date_to']:'';
         $id = $data['id'];
         $this->model_promotions->change_status($id, $status,$date_from,$date_to);
         if($status == 1){

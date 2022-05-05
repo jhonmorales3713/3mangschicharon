@@ -212,15 +212,14 @@ class Model_user_list extends CI_Model {
 
 		$main_nav_ac_customers_view = $this->input->post('ac_customer_view');
 		$main_nav_customer = ($main_nav_ac_customers_view) ? 1 : 0;
-
+		
 		//promotions start
 		$main_nav_ac_dicounts_view = $this->input->post('ac_shd_view');
 		$main_nav_promotions = ($main_nav_ac_dicounts_view) ? 1 : 0;
 
 		$main_nav_ac_dicounts_view = $main_nav_ac_dicounts_view == 0 ? $this->input->post('ac_pd_view') : $main_nav_ac_dicounts_view;
 		$main_nav_promotions = ($main_nav_ac_dicounts_view) ? 1 : 0;
-
-		$main_nav_ac_dicounts_view = $main_nav_ac_dicounts_view == 0 ? $this->input->post('ac_sd_view') : $main_nav_ac_dicounts_view;
+		$main_nav_ac_dicounts_view = $main_nav_promotions == 0 ? $this->input->post('ac_sd_view') : $main_nav_ac_dicounts_view;
 		$main_nav_promotions = ($main_nav_ac_dicounts_view) ? 1 : 0;
 		//promotions end
 
