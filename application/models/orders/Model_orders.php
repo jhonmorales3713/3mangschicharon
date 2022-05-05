@@ -383,7 +383,48 @@ class Model_orders extends CI_Model {
 
 		return $json_data;
     }
-
+	public function get_total_order_amount($orderdata){
+		$total_amount = 0;
+		$sub_total_converted = 0; 
+		$discount_total = 0;
+		foreach(json_decode($orderdata) as $key => $row ){
+			
+			$discount_info = $row->discount_info;
+			$amount = $row->amount;
+			$badge = '';
+			if($discount_info != '' && $discount_info != null){
+				if(in_array($key,json_decode($discount_info->product_id))){
+					$discount_id = $discount_info->id;
+					if($discount_info->discount_type == 1){
+						if($discount_info->disc_amount_type == 2){
+							$newprice = $amount - ($amount * ($discount_info->disc_amount/100));
+							$discount_price = ($amount * ($discount_info->disc_amount/100));
+							if($discount_info->max_discount_isset && $newprice < $discount_info->max_discount_price){
+								$discount_price = $discount_info->max_discount_price;
+								$newprice = $discount_info->max_discount_price;
+							}
+							$badge =  '<span class=" mr-1 badge badge-danger">- '.$discount_price.'% off</span> <s><small>'.$amount.'</small></s>'.number_format($newprice,2);
+						}else{
+							$newprice = $amount - $discount_info->disc_amount;
+							$badge = '<span class=" mr-1 badge badge-danger">- &#8369; '.$discount_info->disc_amount.' off</span>'.number_format($newprice,2);
+							if($discount_info->max_discount_isset && $newprice < $discount_info->max_discount_price){
+								$discount_price = $discount_info->max_discount_price;
+								$newprice = $discount_info->max_discount_price;
+								$badge ='<span class=" mr-1 badge badge-danger">- &#8369; '.$discount_info->max_discount_price.' off</span>'.number_format($newprice,2);
+								// $newprice = $discount['max_discount_price'];
+							}
+						}
+						$amount = $newprice;
+						$discount_total += $discount_price* floatval($row->qty);
+						$sub_total_converted += floatval($newprice) * floatval($row->qty); 
+					}
+				}
+			}else{
+				$sub_total_converted += floatval($row->amount) * floatval($row->qty); 
+			}
+		}
+		return($sub_total_converted);
+	}
     public function order_table_data(){
 		$sql = "SELECT * from sys_orders WHERE status_id = 5";
 		return $this->db->query($sql)->result_array();
@@ -701,7 +742,7 @@ class Model_orders extends CI_Model {
 			$nestedData=array();
             $name = json_decode($row['shipping_data'])->full_name;
             $contact_no = json_decode($row['shipping_data'])->contact_no;
-			$subtotal_converted = number_format($row['total_amount'], 2);
+			$subtotal_converted = number_format($this->get_total_order_amount($row['order_data']), 2);
             $payment_status = json_decode($row['payment_data'])->status_id;
             $payment_method = json_decode($row['payment_data'])->payment_method_name;
 			// if($international == 1){
