@@ -41,7 +41,7 @@
                         <span class="badge badge-primary float-right edit-address" data-en_id="<?= en_dec('en',$address['id']); ?>">Edit</span>
                         <span class="badge <?= $address['address_category_id'] > 1 ? 'badge-warning' : 'badge-success' ?>"><?= $address['address_type'] ?></span> 
                         <b><?= $address['contact_person']; ?></b><br>
-                        <?= $address['address'].' '.$address['barangay'].' '.$address['city'].', '.$address['province'].' ('.$address['zip_code'].')'; ?>
+                        <?= $address['address'].' '.$address['barangay'].' '.$address['city'].', '.$address['province'].' ('.$address['zip_code'].')'; ?><br>
                         <b><?= $address['contact_no']; ?></b>
                     </div>
                 <?php } ?>
