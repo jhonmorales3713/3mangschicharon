@@ -88,7 +88,7 @@
                         <i class="fa fa-square" aria-hidden="true"></i> <small>Orders</small>
                     </li>
                     <li id="signout">
-                        <i class="fas fa-sign-out-alt" aria-hidden="true"></i> <small>Signout</small>
+                        <i class="fa fa-sign-out" aria-hidden="true"></i> <small>Signout</small>
                     </li>                    
                 </ul>
             </div>
