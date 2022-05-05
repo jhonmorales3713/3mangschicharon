@@ -67,7 +67,11 @@
                 <ul class="list-unstyled">
                     <li>
                         <center>
-                            <div class="profile-img" style="background-image: url(<?= base_url('assets/img/profile_default.png'); ?>)"></div>
+                        <?php if($customer_data['profile_img'] != ''){ ?>
+                            <div class="profile-img" style="background-image: url(<?= base_url('uploads/profile_img/'.$customer_data['profile_img']); ?>);"></div>
+                        <?php } else { ?>
+                            <div class="profile-img" style="background-image: url(<?= base_url('assets/img/profile_default.png');?>"></div>
+                        <?php }?>
                             <b><?= isset($_SESSION['full_name']) ? $_SESSION['full_name'] : '' ; ?></b><br>
                             <?php if($_SESSION['is_verified'] == 1){ ?>
                                 <span class="badge badge-success">Verified</span>                    
