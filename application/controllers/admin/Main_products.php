@@ -14,6 +14,7 @@ class Main_products extends CI_Controller {
         $this->load->model('model');
         $this->load->model('model_dev_settings');
         $this->load->model('products/model_products');
+        $this->load->model('orders/model_orders');
         $this->load->library('upload');
         $this->load->library('pdf');
         $this->load->library('excel');

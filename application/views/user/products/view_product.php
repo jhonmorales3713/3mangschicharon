@@ -13,7 +13,7 @@
             <br>
             <small><b>Category: </b><?= $product['category_name'] ?></small><br>
             <small><b>Product Rating: </b></small><br>
-            <small><b>14</b> Sold</small><br>
+            <small><b><?=$product['sold_count']?></b> Sold</small><br>
             <br>            
         </div>  
         <div class="col-lg-8 col-md-8 col-sm-12">            

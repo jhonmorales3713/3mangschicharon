@@ -146,7 +146,7 @@
                                             <?php } ?>
                                         </div>
                                         <div class="col-4 text-right">
-                                            <small><b>1 sold</b></small>
+                                            <small><b><?=$product['sold_count'];?> sold</b></small>
                                         </div>
                                         <?php if($inv==0){ ?>
                                         <div class="col-12 text-right text-danger">

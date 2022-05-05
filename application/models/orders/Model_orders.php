@@ -384,6 +384,10 @@ class Model_orders extends CI_Model {
 		return $json_data;
     }
 
+    public function order_table_data(){
+		$sql = "SELECT * from sys_orders WHERE status_id = 5";
+		return $this->db->query($sql)->result_array();
+	}
     public function order_table(){
 		// storing  request (ie, get/post) global array to a variable
 		$_record_status       = $this->input->post('_record_status');

@@ -7,9 +7,24 @@ class Shop extends CI_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->model('user/model_products');  
+        $this->load->model('orders/model_orders');  
         $this->load->model('promotions/model_promotions');  
     }
     
+    public function generate_product_number_of_sold($product){
+        $orders = $this->model_orders->order_table_data();
+        $times_sold = 0;
+        foreach($orders as $id => $order){
+            foreach(json_decode($order['order_data']) as $product_id => $order_data){
+                if($product_id == $product){
+                    $times_sold++;
+                }
+            }
+
+        }
+		return $times_sold;
+    }
+
     public function index()
 	{		
 		$data['active_page'] = 'shop';        
@@ -24,9 +39,14 @@ class Shop extends CI_Controller {
             $product['variants'] = $this->model_products->get_variants($product['id']);
             $product['inventory'] = $this->model_products->get_inventorydetails($product['id']);
             $product['id'] = en_dec('en',$product['id']);  
+			$times_sold = 0;
+			foreach($product['variants'] as $variant){
+				$times_sold+=($this->generate_product_number_of_sold(en_dec('en',$variant['id'])));
+				// print_r(en_dec('en',$variant['id']).'//');
+			}
+			$product['sold_count']=$times_sold;
             array_push($view_data['products'],$product);
         }
-
 		$count = 0;
         foreach($discounts as $discount){
 			$view_data['discounts'][$count]['discount_info'] = $discount;
