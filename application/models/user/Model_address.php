@@ -28,4 +28,25 @@ class Model_address extends CI_Model {
         return $this->db->update('sys_shipping_address',$shipping_address);
     }
 
+    public function update_shipping_address_by_id($address_id,$shipping_address){
+        $this->db->where('id',$address_id);
+        return $this->db->update('sys_shipping_address',$shipping_address);
+    }
+
+    public function get_shippind_address_by_id($address_id){
+        $sql = "SELECT
+                    sa.*,
+                    sat.address_type
+                FROM
+                    sys_shipping_address sa
+                LEFT JOIN
+                    sys_shipping_address_types sat
+                ON 
+                    sa.address_category_id = sat.id
+                WHERE
+                    sa.id = ?";
+        
+        return $this->db->query($sql,[$address_id])->row_array();
+    }
+
 }

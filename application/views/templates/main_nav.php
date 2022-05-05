@@ -67,7 +67,11 @@
                 <ul class="list-unstyled">
                     <li>
                         <center>
-                            <div class="profile-img" style="background-image: url(<?= base_url('assets/img/profile_default.png'); ?>)"></div>
+                        <?php if($_SESSION['profile_img'] != ''){ ?>
+                            <div class="profile-img" style="background-image: url(<?= base_url('uploads/profile_img/'.$_SESSION['profile_img']); ?>);"></div>
+                        <?php } else { ?>
+                            <div class="profile-img" style="background-image: url(<?= base_url('assets/img/profile_default.png');?>"></div>
+                        <?php }?>
                             <b><?= isset($_SESSION['full_name']) ? $_SESSION['full_name'] : '' ; ?></b><br>
                             <?php if($_SESSION['is_verified'] == 1){ ?>
                                 <span class="badge badge-success">Verified</span>                    
@@ -84,7 +88,7 @@
                         <i class="fa fa-square" aria-hidden="true"></i> <small>Orders</small>
                     </li>
                     <li id="signout">
-                        <i class="fas fa-sign-out-alt" aria-hidden="true"></i> <small>Signout</small>
+                        <i class="fa fa-sign-out" aria-hidden="true"></i> <small>Signout</small>
                     </li>                    
                 </ul>
             </div>

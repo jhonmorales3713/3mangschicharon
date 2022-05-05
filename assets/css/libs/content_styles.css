@@ -338,12 +338,14 @@
 }
 
 /* profile styles */
-.profile-img{
-    width: 300px;
+.profile-img{    
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     border-radius: 50%;
+    box-shadow: -1px 0px 15px -5px rgba(0,0,0,0.45);
+    -webkit-box-shadow: -1px 0px 15px -5px rgba(0,0,0,0.45);
+    -moz-box-shadow: -1px 0px 15px -5px rgba(0,0,0,0.45);
 }
 
 @media only screen and (max-width: 548px) {

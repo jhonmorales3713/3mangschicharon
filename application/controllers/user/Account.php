@@ -8,6 +8,7 @@ class Account extends CI_Controller {
         parent::__construct();
         $this->load->model('user/model_customers');
         $this->load->model('user/model_accounts');
+        $this->load->model('user/model_address');
     }
 
     public function index()
@@ -25,6 +26,7 @@ class Account extends CI_Controller {
         $customer_data = $this->model_customers->get_customer_by_email($email); 
 
         $view_data['customer_data'] = $customer_data;
+        $view_data['shipping_addresses'] = $this->model_address->get_shipping_address($customer_id);
 
         $doc_count = $this->model_accounts->check_pending_verification($customer_id);
         $view_data['has_docs'] = $doc_count > 0 ? true : false;
@@ -112,6 +114,9 @@ class Account extends CI_Controller {
         
         if($profile_info['profile_img'] == '' || $profile_info['profile_img'] == 'undefined'){
             unset($profile_info['profile_img']);
+        }
+        else{
+            $_SESSION['profile_img'] = $profile_info['profile_img'];
         }       
         $this->model_accounts->update_profile($customer_id,$profile_info);
 
@@ -222,6 +227,95 @@ class Account extends CI_Controller {
         $response['message'] = 'Document has been submitted';
         $response['doc_id'] = en_dec('en',$doc_id);
 
+        generate_json($response);
+    }
+
+    public function save_address(){
+        $address_info = $this->input->post();        
+
+        $customer_id = en_dec('dec',$_SESSION['customer_id']);
+
+        $this->form_validation->validation_data = $address_info;
+
+        //declaration of form validations
+        $this->form_validation->set_rules('address_category_id','Address Type','required');
+        $this->form_validation->set_rules('contact_person','Full Name','required');
+        $this->form_validation->set_rules('contact_no','Contact Number','required');
+        $this->form_validation->set_rules('province','Province','required');
+        $this->form_validation->set_rules('city','City / Municipality','required');
+        $this->form_validation->set_rules('barangay','Barangay','required');
+        $this->form_validation->set_rules('zip_code','Zip Code','required');
+        $this->form_validation->set_rules('address','Street Address','required');        
+
+        if($this->form_validation->run() == FALSE) {
+            $response = array(
+            'success'      => false,
+            'message'      => 'Please check for field errors',
+            'field_errors' => $this->form_validation->error_array(),              
+            );
+
+            generate_json($response);
+            die();            
+        }
+
+        $address_info['customer_id'] = $customer_id;
+        $address_id = $this->model_address->insert_address($address_info);
+
+        $response['success'] = true;
+        $response['message'] = 'Address has been saved';
+        $response['address_id'] = en_dec('en',$address_id);
+
+        generate_json($response);
+    }
+
+    public function update_address(){
+        $address_info = $this->input->post();        
+
+        $address_id = en_dec('dec',$address_info['address_id']);
+        unset($address_info['address_id']);
+
+        $this->form_validation->validation_data = $address_info;
+
+        //declaration of form validations
+        $this->form_validation->set_rules('address_category_id','Address Type','required');
+        $this->form_validation->set_rules('contact_person','Full Name','required');
+        $this->form_validation->set_rules('contact_no','Contact Number','required');
+        $this->form_validation->set_rules('province','Province','required');
+        $this->form_validation->set_rules('city','City / Municipality','required');
+        $this->form_validation->set_rules('barangay','Barangay','required');
+        $this->form_validation->set_rules('zip_code','Zip Code','required');
+        $this->form_validation->set_rules('address','Street Address','required');        
+
+        if($this->form_validation->run() == FALSE) {
+            $response = array(
+            'success'      => false,
+            'message'      => 'Please check for field errors',
+            'field_errors' => $this->form_validation->error_array(),              
+            );
+
+            generate_json($response);
+            die();            
+        }
+        
+        $this->model_address->update_shipping_address_by_id($address_id,$address_info);
+
+        $response['success'] = true;
+        $response['message'] = 'Address has been updated';
+        $response['address_id'] = $address_id;
+
+        generate_json($response);
+    }
+
+    public function get_address(){
+        $data = $this->input->post();
+
+        $address_id = en_dec('dec',$data['address_id']);
+
+        $address = $this->model_address->get_shippind_address_by_id($address_id);
+
+        $response['success'] = true;   
+        $response['address_data'] = $address;
+        
         generate_json($response);
     }
     
