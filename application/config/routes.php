@@ -75,6 +75,7 @@ $route['checkout_gcash'] = 'user/payment/create_source';
 $route['payment_failed'] = 'user/payment/payment_failed';
 
 $route['profile'] = 'user/account/profile';
+$route['account/verification'] = 'user/account/verification';
 
 $route['cart'] = 'user/cart/index';
 

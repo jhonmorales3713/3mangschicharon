@@ -337,6 +337,15 @@
     color: #d67943; 
 }
 
+/* profile styles */
+.profile-img{
+    width: 300px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 50%;
+}
+
 @media only screen and (max-width: 548px) {
     .right-bordered{
         border-right: none;

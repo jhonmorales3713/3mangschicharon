@@ -29,7 +29,12 @@
     <div class="top-nav">
         <div class="welcome">
             <?php if(isset($_SESSION['full_name'])){ ?>
-                <small>Hello <b><?= $_SESSION['full_name']; ?></b></small> <span class="badge badge-success">Verified</span>
+                <small>Hello <b><?= $_SESSION['full_name']; ?></b></small> 
+                <?php if($_SESSION['is_verified'] == 1){ ?>
+                    <span class="badge badge-success">Verified</span>                    
+                <?php } else { ?>
+                    <span class="badge badge-warning">Pending Verification</span>
+                <?php }?>            
             <?php }?>
         </div>
         <div class="top-nav-container">            
@@ -64,7 +69,11 @@
                         <center>
                             <div class="profile-img" style="background-image: url(<?= base_url('assets/img/profile_default.png'); ?>)"></div>
                             <b><?= isset($_SESSION['full_name']) ? $_SESSION['full_name'] : '' ; ?></b><br>
-                            <span class="badge badge-success">Verified</span>
+                            <?php if($_SESSION['is_verified'] == 1){ ?>
+                                <span class="badge badge-success">Verified</span>                    
+                            <?php } else { ?>
+                                <span class="badge badge-warning">Pending Verification</span>
+                            <?php }?>
                         </center>
                     </li>
                     <br>
