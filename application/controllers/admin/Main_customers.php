@@ -207,6 +207,7 @@ class Main_customers extends CI_Controller {
                 'token'               => $token,
                 'Id'                  => $Id,
                 'main_nav_id'         => $main_nav_id,
+                'get_customer_documents' => $this->Model_customers->get_customer_documents(en_dec('dec',$Id)),
                 'get_customerdetails'  => $this->Model_customers->get_customerdetails(en_dec('dec',$Id))
                 //'get_branchdetails'   => $this->model_products->get_sys_branch_profile($this->model_products->get_productdetails($Id)['sys_shop'], $Id, $branchid),
             );
@@ -227,10 +228,74 @@ class Main_customers extends CI_Controller {
             'success'     => true,
             'message'     => 'Customer has been '.$status. ' successfully'
         ];
-
+        $email = json_decode($order[0]['shipping_data'])->email;
+        $subject = "Order #".$reference_num." has been confirmed";
+        $message = $this->load->view('email/templates/email_template',$data,true);
+		$this->send_email($email,$subject,$message);
         echo json_encode($response);
         die();
     }
+    
+	function send_email($emailto,$subject,$message){
+		
+		$this->load->library('email');
+        
+		// $config = Array(
+		// 	'protocol' => 'smtp',
+		// 	'smtp_host' => 'ssl://smtp.googlemail.com',
+		// 	'smtp_port' => 465,
+		// 	'smtp_user' => 'teeseriesphilippines@gmail.com',
+		// 	'smtp_pass' => 'teeseriesph',
+		// 	'charset' => 'utf-8',
+		// 	'newline'   => "\r\n",
+		// 	'wordwrap'=> TRUE,
+		// 	'mailtype' => 'html'
+		// );
+        $this->load->library('email');
+        if(strpos(base_url(),'3mangs.com')){
+            $config = array(
+                'protocol' => 'smtp',
+                'smtp_host' => get_host(),
+                'smtp_port' => 587,
+                'smtp_user' => get_email(),
+                'smtp_pass' => get_emailpassword(),
+                'charset' => 'utf-8',
+                'newline'   => "\r\n",
+                'mailtype' => 'html'
+            );
+        }else{
+            $config = Array(
+            	'protocol' => 'smtp',
+            	'smtp_host' => 'ssl://smtp.googlemail.com',
+            	'smtp_port' => 465,
+            	'smtp_user' => 'teeseriesphilippines@gmail.com',
+            	'smtp_pass' => '@ugOct0810',
+            	'charset' => 'utf-8',
+            	'newline'   => "\r\n",
+            	'wordwrap'=> TRUE,
+            	'mailtype' => 'html'
+            );
+        }
+		// $config = Array(
+		// 	'protocol' => 'smtp',
+		// 	'smtp_host' => get_host(),
+		// 	'smtp_port' => 587,
+		// 	'smtp_user' => get_email(),
+		// 	'smtp_pass' => get_emailpassword(),
+		// 	'charset' => 'utf-8',
+		// 	'newline'   => "\r\n",
+		// 	'wordwrap'=> TRUE,
+		// 	'mailtype' => 'html'
+		// );
+		$this->email->initialize($config);
+		$this->email->set_newline("\r\n");  
+		$this->email->from('noreply@3mangs.com');
+		$this->email->to($emailto);
+		$this->email->subject($subject);
+		$this->email->message($message);
+		$this->email->send();
+        
+	}
 
     public function changestatus_user(){
         $data = $this->input->post();

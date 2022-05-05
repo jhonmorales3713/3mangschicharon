@@ -3,6 +3,10 @@
 class Model_accounts extends CI_Model {    
     
     public function insert_document($doc_data){
+        // print_r($doc_data);
+        $this->db->where('id',$doc_data['customer_id']);
+        $this->db->update('sys_customers',array('user_type_id'=>3));
+
         $this->db->insert('sys_uploaded_documents',$doc_data);
         return $this->db->insert_id();
     }

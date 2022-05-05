@@ -77,11 +77,22 @@ class Model_customers extends CI_Model {
         $sql = "UPDATE sys_customers set user_type_id = ? where id = ?";
         $params = array ($status,en_dec('dec',$id));
         $this->db->query($sql, $params);
+        if($status == 1){
+            $sql = "UPDATE sys_uploaded_documents set is_verified = ? where customer_id = ?";
+            $params = array (1,en_dec('dec',$id));
+            $this->db->query($sql, $params);
+        }
     }
     public function changestatus_user($id, $status){
         $sql = "UPDATE sys_customers set status_id = ? where id = ?";
         $params = array ($status,en_dec('dec',$id));
         $this->db->query($sql, $params);
+    }
+    public function get_customer_documents($id){
+		$query=" SELECT * from sys_uploaded_documents
+		WHERE customer_id = ?";
+		$params = array($id);
+		return $this->db->query($query, $params)->row_array();
     }
   public function get_customers($_type, $_name, $_status, $requestData, $exportable = false){
 
@@ -144,6 +155,8 @@ class Model_customers extends CI_Model {
         if($row["user_type_id"] == 1 ) {
             $nestedData[] = (!$exportable) ? "<label class='badge badge-success'> Verified</label>":"Verified";
         }else if($row["user_type_id"] == 2 ) {
+            $nestedData[] = (!$exportable) ? "<label class='badge badge-secondary'> Unverified</label>":" Unverified";
+        }else if($row["user_type_id"] == 3 ) {
             $nestedData[] = (!$exportable) ? "<label class='badge badge-primary'> For Verification</label>":" For Verification";
         }else{
             $nestedData[] = (!$exportable) ? "<label class='badge badge-info'> Guest</label>":"Guest";

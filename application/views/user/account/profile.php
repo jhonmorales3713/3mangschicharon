@@ -21,7 +21,7 @@
         <div class="col-lg-6 col-md-6 col-sm-12 clearfix">
             <h5>My Profile</h5>
             <span class="badge badge-pill badge-primary float-right" id="edit_profile_btn">EDIT PROFILE</span>                        
-            <?php if($customer_data['profile_img'] != ''){ ?>
+            <?php if(isset($customer_data['profile_img'])){ ?>
                 <div class="profile-img" style="background-image: url(<?= base_url('uploads/profile_img/'.$customer_data['profile_img']); ?>);"></div>
             <?php } else { ?>
                 <div class="profile-img" style="background-image: url(<?= base_url('assets/img/profile_default.png');?>"></div>

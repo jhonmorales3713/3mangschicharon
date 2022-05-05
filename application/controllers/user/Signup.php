@@ -97,7 +97,7 @@ class Signup extends CI_Controller {
             $response['field_errors'] = array('login_email' => 'Account does not exist');
             generate_json($response); die();
         }
-        
+        // print_r($customer_data);
         $this->set_session($customer_data);
         $response['success'] = true;        
         $response['message'] = 'Login Successful';
@@ -110,7 +110,7 @@ class Signup extends CI_Controller {
         $_SESSION['full_name'] = $customer_data['full_name'];
         $_SESSION['customer_id'] = en_dec('en',$customer_data['id']);
         $_SESSION['email'] = en_dec('en',$customer_data['email']);
-        $_SESSION['is_verified'] = $customer_data['is_verified'];
+        $_SESSION['is_verified'] = $customer_data['status_id'];
         
         $cart_session = $this->model_customers->get_cart_session($customer_data['id']);     
         if($cart_session){            

@@ -32,8 +32,9 @@
                                     <!-- <label class="form-control-label col-form-label-sm">Customer Type</label> -->
                                     <select id="search_type" class="form-control material_josh form-control-sm search-input-text">
                                         <option value="">All Customer Type</option>
-                                        <option value="2">For Verification</option>
+                                        <option value="3">For Verification</option>
                                         <option value="1">Verified</option>
+                                        <option value="2">Unverified</option>
                                     </select>
                                 </div>
                             </div>

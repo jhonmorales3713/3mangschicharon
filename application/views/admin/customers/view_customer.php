@@ -102,8 +102,8 @@
                                                     <div class="image-upload-card">
                                                         <div class="form-group">
                                                             <label>User Image </label></br>
-                                                            <label><small><b>Primary Photo</b></small></label>
-                                                            <img src="<?= base_url('assets/img/logo-imgplaceholder.jpg') ?>" id="primary_product" class="img-thumbnail" alt="Responsive image">
+                                                            <!-- <label><small><b>Primary Photo</b></small></label> -->
+                                                            <img src="<?= base_url().'uploads/docs/'.$get_customer_documents['image']?>" width=300 id="primary_product" class="img-thumbnail" alt="Responsive image">
                                                             </br>
                                                             
                                                             <div id="product-placeholder">
@@ -137,7 +137,7 @@
                         <div class="card ">
                             <div class="card-body">
                                 <!-- <button type="button" class="btn btn-outline-secondary cancelBtn" id="backBtn">Close</button> -->
-                                <?php if($get_customerdetails['user_type_id']==2 ){?>
+                                <?php if($get_customerdetails['user_type_id']==3 ){?>
                                 <button type="button" class="btn btn-danger approvalbtn" data-content=".declineContent" data-custid="<?=$Id?>" data-disable=".verifyContent">Decline</button>
                                 <button type="button" class="btn btn-success approvalbtn" data-content=".verifyContent" data-custid="<?=$Id?>"  data-disable=".declineContent">Verify</button>
                                 <?php } ?>
