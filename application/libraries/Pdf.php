@@ -6,10 +6,11 @@ class Pdf extends TCPDF{
     protected $img_file, $params;
     
     function __construct(){
-        parent::__construct('p', 'pt', 'A4', true, 'UTF-8', false);
+        parent::__construct('p', 'pt', 'Letter', true, 'UTF-8', false);
         $this->CI =& get_instance();
 
-        $this->img_file = K_PATH_IMAGES.'jci_header.png';
+        $this->img_file = K_PATH_IMAGES.'header.jpg';
+        //$this->flower_line = K_PATH_IMAGES.'flower_line.png';
         //$this->params = $this->CI->session->params;
     }
 
@@ -21,25 +22,25 @@ class Pdf extends TCPDF{
         $h = 980;        
         
         // Header Image
-        //$this->Image($this->img_file, $x, $y, '', 165, 'PNG', '', '', true, 150, '', false, false, 0, false, false, false);
+        $this->Image($this->img_file, $x, $y, '', 180, 'JPG', '', '', true, 150, '', false, false, 0, false, false, false);
         
     }
     // Page footer
     public function Footer() {
-        $x = 0;
-        $y = 775;
+        $x = 35;
+        $y = 440;
         $w = 980;
-        $h = 800;
+        $h = 980;
 		
-        $img_file = K_PATH_IMAGES.'jci_footer.png';
+        //$img_file = K_PATH_IMAGES.'jci_footer.png';
         // Position at 15 mm from bottom
         $this->SetY(-11);
         // Set font
         $this->SetFont('helvetica', 'I', 7);
         // Page footer image
-        //$this->Image($img_file, $x, $y, '', 165, 'PNG', '', '', true, 150, '', false, false, 0, false, false, false);
+        //$this->Image($this->flower_line, $x, $y, '', 28, 'PNG', '', '', true, 70, '', false, false, 0, false, false, false);
         // Page number
-        //$this->MultiCell(0, 15, '(Date Generated: '.format_shortdatetime(todaytime()) . ') Page '.$this->getAliasNumPage().'/'.$this->getAliasNbPages(), 0, 'R', 0, 1, 15, '', true, 0, false, true, 0, 'T', false);
+        $this->MultiCell(0, 15, '(Date Generated: '.(todaytime()) . ') Page '.$this->getAliasNumPage().'/'.$this->getAliasNbPages(), 0, 'R', 0, 1, 15, '', true, 0, false, true, 0, 'T', false);
             
         
     }
@@ -85,31 +86,12 @@ class Pdf extends TCPDF{
             ob_end_clean();
             $obj_pdf->writeHTML($content, true, false, true, false, '');
         }
+        ob_end_clean();
         $obj_pdf->Output($filename.".pdf", 'I');
     }
 
 
-    //landscape header
-    public function landscape_header(){
-        $x = 163;
-        $y = 12;
-        $w = 590;
-        $h = 980;
-        
-        $this->Image($this->img_file, $x+50, $y+15, '', 85, 'JPG', '', '', true, 150, '', false, false, 0, false, false, false);
-    }
-    //landscape footer
-    public function landscape_footer(){
-        $x = 12;
-        $y = 12;
-        $w = 590;
-        $h = 980;
-        // Position at 15 mm from bottom
-        $this->SetY(-20);
-        // Set font
-        $this->SetFont('helvetica', 'I', 7);
-        // Page number
-        $this->MultiCell(0, 15, '(Date Generated: '.format_shortdatetime(todaytime()) . ') Page '.$this->getAliasNumPage().'/'.$this->getAliasNbPages(), 0, 'R', 0, 1, 15, '', true, 0, false, true, 0, 'T', false);
-    }
-        
+    
+    
+    
 }

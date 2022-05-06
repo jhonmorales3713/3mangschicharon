@@ -95,4 +95,24 @@ $(document).ajaxStop(function(){
 
 $('#signout').click(function(){
     window.location.href = base_url + 'signout';
-})
+});
+
+function redirect_post(location, args){
+    var f = document.createElement("form");
+    f.setAttribute('id', "temporary_form");
+    f.setAttribute('method', "POST");
+    f.setAttribute('target', "_blank");
+    f.setAttribute('action', location);
+    $.each(args, function( key, value ) {
+        var i = document.createElement("input");
+        i.setAttribute('name',key);
+        i.setAttribute('value',value);
+        f.appendChild(i);
+    });
+    var s = document.createElement("input");
+    s.setAttribute('type',"submit");
+    s.setAttribute('value',"Submit");
+    document.getElementsByTagName('body')[0].appendChild(f);
+    f.submit();
+    f.remove();
+}

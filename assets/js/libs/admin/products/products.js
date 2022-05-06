@@ -274,7 +274,7 @@ $(function(){
 				filter: JSON.stringify($('#_search').val()),
 			},
 			success:function(response){
-				console.log(response);
+				
 			}
 		})
 	});

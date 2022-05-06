@@ -19,9 +19,8 @@ class Main_products extends CI_Controller {
         $this->load->library('pdf');
         $this->load->library('excel');
         $this->load->library('uuid');
-    }
+    }  
 
-    
     public function isLoggedIn()
     {
         if ($this->session->userdata('isLoggedIn')=='') {
@@ -1138,29 +1137,7 @@ class Main_products extends CI_Controller {
         }else{
             $this->load->view('error_404');
         }
-    }
-    //controller
-    public function export(){
-        if(empty($this->input->post()) || !array_key_exists('post_url', $this->input->post()) || !array_key_exists('export_type', $this->input->post()) ){
-            $this->load->view('custom_404',NULL);
-            return;
-        }
-
-        $post_data = $this->input->post();
-        $function  = $post_data['post_url'];
-        
-        $export_type = strtolower($post_data['export_type']);        
-        if(!in_array($export_type, $this->array_export_formats)){
-            $this->load->view('custom_404',NULL);
-            return;
-        }
-        try {
-            $this->$function($post_data, $export_type);   
-        } catch (\Throwable $th) {
-            $this->load->view('custom_404',NULL);
-            return;
-        }
-    }
+    }    
 
     public function export_products($post_data,$type){
 
@@ -1819,7 +1796,7 @@ class Main_products extends CI_Controller {
         }
     }
 
-    public function products_list_pdf(){
+    public function products_list_pdf($post_data = '',$type = ''){
 
         $data = $this->input->post();
         $title = 'Product List';
@@ -1827,11 +1804,12 @@ class Main_products extends CI_Controller {
 
         $request = url_decode(json_decode($this->input->post("_search")));
         // $request = url_decode(json_decode($this->input->post('filter')));
-        // print_r( $this->model_products->product_table(0, $request, true)['data']);
+        //print_r( $this->model_products->product_table(0, $request, true)['data']);
 
-        $data['data'] = $this->model_products->product_table(0, $request, true)['data'];
+        $view_data['data'] = $this->model_products->product_table(0, $request, TRUE)['data'];
         
-        $page = $this->load->view('admin/products/product_list_pdf',$data,true);
+        $page = $this->load->view('admin/products/product_list_pdf',$view_data,TRUE);
+        
         $this->pdf->load_pdf($title, $page, $filename, TRUE, $data);
         
     }
