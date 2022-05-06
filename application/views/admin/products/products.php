@@ -1,5 +1,13 @@
 <!-- change the data-num and data-subnum for numbering of navigation -->
-<button class="btn btn-primary btn-sm" id="export_pdf_btn">EXPORT PDF</button>
+                                        <form action="<?=base_url('admin/Main_products/products_list_pdf')?>" method="post" target="_blank">
+                                            <input type="hidden" name="date_from" id="date_from">
+                                            <input type="hidden" name="_shops" id="_shops">
+                                            <input type="hidden" name="_category" id="category">
+                                            <input type="hidden" name="_name" id="_name">
+                                            <input type="hidden" name="_record_status" id="_record_status">
+                                            <input type="hidden" name="_search" id="_search">
+                                            <button class="btn-mobile-w-100 btn btn-primary btnExport" type="submit" id="s" style="">Export</button>&nbsp;
+                                        </form>
 <div class="col-12">
     <div class="alert alert-secondary ml-4 color-dark" role="alert">
         <span class="font-weight-bold"><a class="text-dark" href="<?=base_url('admin/Main_products/products_home/Products');?>"><?=$active_page?></a></span>

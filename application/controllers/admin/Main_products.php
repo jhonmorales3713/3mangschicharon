@@ -1822,13 +1822,12 @@ class Main_products extends CI_Controller {
     public function products_list_pdf(){
 
         $data = $this->input->post();
-
         $title = 'Product List';
         $filename = $title;        
 
-        //$request = url_decode(json_decode($this->input->post('filter')));
-
-        $request = array();
+        $request = url_decode(json_decode($this->input->post("_search")));
+        // $request = url_decode(json_decode($this->input->post('filter')));
+        // print_r( $this->model_products->product_table(0, $request, true)['data']);
 
         $data['data'] = $this->model_products->product_table(0, $request, true)['data'];
         

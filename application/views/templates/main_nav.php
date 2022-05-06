@@ -67,7 +67,7 @@
                 <ul class="list-unstyled">
                     <li>
                         <center>
-                        <?php if($_SESSION['profile_img'] != ''){ ?>
+                        <?php if(isset($_SESSION['profile_img'])){ ?>
                             <div class="profile-img" style="background-image: url(<?= base_url('uploads/profile_img/'.$_SESSION['profile_img']); ?>);"></div>
                         <?php } else { ?>
                             <div class="profile-img" style="background-image: url(<?= base_url('assets/img/profile_default.png');?>"></div>
