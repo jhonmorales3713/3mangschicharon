@@ -21,7 +21,7 @@ class Pdf extends TCPDF{
         $h = 980;        
         
         // Header Image
-        $this->Image($this->img_file, $x, $y, '', 165, 'PNG', '', '', true, 150, '', false, false, 0, false, false, false);
+        //$this->Image($this->img_file, $x, $y, '', 165, 'PNG', '', '', true, 150, '', false, false, 0, false, false, false);
         
     }
     // Page footer
@@ -37,9 +37,9 @@ class Pdf extends TCPDF{
         // Set font
         $this->SetFont('helvetica', 'I', 7);
         // Page footer image
-        $this->Image($img_file, $x, $y, '', 165, 'PNG', '', '', true, 150, '', false, false, 0, false, false, false);
+        //$this->Image($img_file, $x, $y, '', 165, 'PNG', '', '', true, 150, '', false, false, 0, false, false, false);
         // Page number
-        $this->MultiCell(0, 15, '(Date Generated: '.format_shortdatetime(todaytime()) . ') Page '.$this->getAliasNumPage().'/'.$this->getAliasNbPages(), 0, 'R', 0, 1, 15, '', true, 0, false, true, 0, 'T', false);
+        //$this->MultiCell(0, 15, '(Date Generated: '.format_shortdatetime(todaytime()) . ') Page '.$this->getAliasNumPage().'/'.$this->getAliasNbPages(), 0, 'R', 0, 1, 15, '', true, 0, false, true, 0, 'T', false);
             
         
     }
@@ -111,126 +111,5 @@ class Pdf extends TCPDF{
         // Page number
         $this->MultiCell(0, 15, '(Date Generated: '.format_shortdatetime(todaytime()) . ') Page '.$this->getAliasNumPage().'/'.$this->getAliasNbPages(), 0, 'R', 0, 1, 15, '', true, 0, false, true, 0, 'T', false);
     }
-
-
-    // clearance_certificate
-    public function header_clearance_certificate(){
-        $x = 12;
-        $y = 12;
-        $w = 587; //letter > 569 , legal > 587 , 8.5 x 13 > 587
-        $h = 910; //letter > 820 , legal > 984 , 8.5 x 13 > 910
         
-        $array = ['width' => 2.3, 'cap' => 'square', 'join' => 'miter', 'dash' => 0];
-        $green = array(116, 178, 125);
-        $blue  = array(107, 129, 175);
-        $green_merged = array_merge($array, ['color' => $green]);
-        $blue_merged  = array_merge($array, ['color' => $blue]);
-        $green_border = array(
-                'L' => $green_merged,
-                'T' => $green_merged,
-                'R' => $green_merged,
-                'B' => $green_merged
-            );
-        $blue_border = array(
-                'L' => $blue_merged,
-                'T' => $blue_merged,
-                'R' => $blue_merged,
-                'B' => $blue_merged
-            );
-
-        $this->Rect($x, $y, $w, $h, '', $green_border, $green);
-        $this->Rect($x+4, $y+4, $w-8, $h-8, '', $blue_border, $blue);
-        $this->Rect($x+8, $y+8, $w-16, $h-16, '', $green_border, $green);
-        $this->Image($this->img_file, $x+40, $y+15, '', 85, 'JPG', '', '', true, 150, '', false, false, 0, false, false, false);
-    }
-    public function footer_clearance_certificate(){
-        $x = 12;
-        $y = 12;
-        $w = 587; //letter > 569 , legal > 587 , 8.5 x 13 > 587
-        $h = 910; //letter > 820 , legal > 984 , 8.5 x 13 > 910
-        
-        if(isset($this->params['qr_code'])){
-            $this->Image($this->params['qr_code'], $w-48, $h-876, 40, 40, 'png'); //letter > h = 790 , legal > 952 , 8.5 x 13 > 876
-        }
-
-        $html = "**This document is electronically generated**";
-        $this->SetXY($x+14, $h-6);
-        $this->SetFont('helvetica', 'I', 8);
-        $this->Cell(0,0,$html,0,1,'L',0);// space
-
-        // $this->SetXY($w-$x,$h-6);
-        // $html = utf8_decode($this->params['ctrl_number']);
-        // $this->Cell(0,0,$html,0,1,'R',0);// space
-    }
-    public function load_clearance_certificate($title, $pages, $filename){
-        $obj_pdf = new Pdf('p', 'pt', 'LEGAL', true, 'UTF-8', false);
-        $obj_pdf->SetCreator(PDF_CREATOR);
-        $obj_pdf->SetTitle($title);
-        $obj_pdf->SetDefaultMonospacedFont('helvetica');
-        $obj_pdf->SetFont('helvetica', '', 10);
-        $obj_pdf->setFontSubsetting(false);
-        $tagsVS = array(
-            'p' => [
-                array('n'=>1,'h'=>'1'), 
-                array('n'=>1,'h'=>'1')
-                ]
-            );
-        $obj_pdf->setHtmlVSpace($tagsVS);
-        $obj_pdf->SetMargins(36, 115, 36, false);
-        $obj_pdf->SetFooterMargin(52);
-        $obj_pdf->SetAutoPageBreak(true, 52);
-        $obj_pdf->SetDisplayMode('real', 'default');
-        $obj_pdf->setCellHeightRatio(1.1);
-
-        $this->show_output($obj_pdf, $pages, $filename);
-    }  
-    
-    public function load_evaluation_report($title, $pages, $filename){
-        $obj_pdf = new Pdf('p', 'pt', 'LEGAL', true, 'UTF-8', false);
-        $obj_pdf->SetCreator(PDF_CREATOR);
-        $obj_pdf->SetTitle($title);
-        $obj_pdf->SetDefaultMonospacedFont('helvetica');
-        $obj_pdf->SetFont('helvetica', '', 10);
-        $obj_pdf->setFontSubsetting(false);
-        $tagsVS = array(
-            'p' => [
-                array('n'=>1,'h'=>'1'), 
-                array('n'=>1,'h'=>'1')
-                ]
-            );
-        $obj_pdf->setHtmlVSpace($tagsVS);
-        $obj_pdf->SetMargins(54, 115, 64, false);
-        $obj_pdf->SetFooterMargin(52);
-        $obj_pdf->SetAutoPageBreak(true, 52);
-        $obj_pdf->SetDisplayMode('real', 'default');
-        $obj_pdf->setCellHeightRatio(1.1);
-
-        $this->show_output($obj_pdf, $pages, $filename);
-    }  
-
-
-    // transmittal letter
-    public function load_transmittal_letter($title, $pages, $filename){
-        $obj_pdf = new Pdf();
-        $obj_pdf->SetCreator(PDF_CREATOR);
-        $obj_pdf->SetTitle($title);
-        // $obj_pdf->SetDefaultMonospacedFont('helvetica');
-        // $obj_pdf->SetFont('helvetica', '', 10);
-        // $obj_pdf->setFontSubsetting(false);
-        $tagsVS = array(
-            'p' => [
-                array('n'=>1,'h'=>'1'), 
-                array('n'=>1,'h'=>'1')
-                ]
-            );
-        $obj_pdf->setHtmlVSpace($tagsVS);
-        $obj_pdf->SetMargins(54, 115, 54, false);
-        $obj_pdf->SetFooterMargin(50);
-        $obj_pdf->SetAutoPageBreak(true, 85);
-        // $obj_pdf->SetDisplayMode('real', 'default');
-
-        $this->show_output($obj_pdf,$pages,$filename);        
-    }
-    
-    
 }

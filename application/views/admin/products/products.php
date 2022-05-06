@@ -1,5 +1,5 @@
 <!-- change the data-num and data-subnum for numbering of navigation -->
-
+<button class="btn btn-primary btn-sm" id="export_pdf_btn">EXPORT PDF</button>
 <div class="col-12">
     <div class="alert alert-secondary ml-4 color-dark" role="alert">
         <span class="font-weight-bold"><a class="text-dark" href="<?=base_url('admin/Main_products/products_home/Products');?>"><?=$active_page?></a></span>

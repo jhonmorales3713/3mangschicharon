@@ -261,6 +261,27 @@ $(function(){
 		});
 	});
 
+	//export sample 
+	$('#export_pdf_btn').click(function(){
+		// window.open(
+		// 	base_url + 'admin/Main_products/products_list_pdf?filter=' + $('#_search').val(),
+		// 	'_blank' // <- This is what makes it open in a new window.
+		// );
+		$.ajax({
+			url: base_url + 'admin/main_products/products_list_pdf',
+			type: 'POST',
+			data:{
+				filter: JSON.stringify($('#_search').val()),
+			},
+			success:function(response){
+				console.log(response);
+			}
+		})
+	});
+	//sample only
+
+	
+
 	$('#addBtn').click(function(){
         window.location.assign(base_url+"Main_products/add_products/"+token);
 	})

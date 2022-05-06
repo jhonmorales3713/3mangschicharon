@@ -1818,4 +1818,22 @@ class Main_products extends CI_Controller {
             return $get_main_nav_id_cn_url = $this->model->get_main_nav_id_cn_url($content_url);
         }
     }
+
+    public function products_list_pdf(){
+
+        $data = $this->input->post();
+
+        $title = 'Product List';
+        $filename = $title;        
+
+        //$request = url_decode(json_decode($this->input->post('filter')));
+
+        $request = array();
+
+        $data['data'] = $this->model_products->product_table(0, $request, true)['data'];
+        
+        $page = $this->load->view('admin/products/product_list_pdf',$data,true);
+        $this->pdf->load_pdf($title, $page, $filename, TRUE, $data);
+        
+    }
 }
