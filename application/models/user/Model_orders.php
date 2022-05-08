@@ -22,6 +22,14 @@ class Model_orders extends CI_Model {
 		return $this->db->query($query)->result_array();
     }
     
+	public function get_cities() {
+		$query = "SELECT * FROM sys_cities
+				WHERE enabled = 1
+				ORDER BY city_name ASC";
+
+		return $this->db->query($query);
+
+	}
     public function get_completed_orders(){
         $query = 'SELECT * FROM sys_orders WHERE status_id = 5';
 		return $this->db->query($query)->result_array();

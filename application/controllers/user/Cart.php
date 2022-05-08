@@ -212,6 +212,7 @@ class Cart extends CI_Controller {
         }
 
         $view_data['payment_methods'] = $this->model_cart->get_payment_methods();
+        $view_data['cities'] = $this->model_orders->get_cities()->result_array();
         $view_data['shipping_types'] = $this->model_cart->get_shipping_types();        
 
         $data['page_content'] = $this->load->view('user/cart/checkout',$view_data,TRUE);

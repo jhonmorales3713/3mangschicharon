@@ -54,7 +54,6 @@ $(function () {
 		var order_status_view = $("#order_status_view").val();
 		var _forpickup = $("#_forpickup").val();
 		var _isconfirmed = $("#_isconfirmed").val();
-
 		// console.log(date);
 
 		var dataTable = $("#table-grid-order").DataTable({
@@ -101,7 +100,7 @@ $(function () {
 					} else {
 						$("#btnExport").hide(100);
 					}
-					$("#_record_status_export").val(_record_status);
+					$("#_record_status_export").val(JSON.stringify(this.data));
 					$("#_name_export").val(_name);
 					$("#status_export").val(status);
 					$("#date_export").val(date);

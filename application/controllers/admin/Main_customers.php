@@ -222,20 +222,27 @@ class Main_customers extends CI_Controller {
     public function changestatus(){
         $data = $this->input->post();
         $this->Model_customers->changestatus($data['id'],$data['status']);
-        $status = $data['status'] == 3 ? 'Declined' : 'Verified';
         $response = [
             'environment' => ENVIRONMENT,
             'success'     => true,
             'message'     => 'Customer has been '.$status. ' successfully'
         ];
-        $email = json_decode($order[0]['shipping_data'])->email;
-        $subject = "Order #".$reference_num." has been confirmed";
-        $message = $this->load->view('email/templates/email_template',$data,true);
+        $status = $data['status'] == 3 ? 'Denied' : 'Successfully Verified';
+        $email = $data['email'];
+        $data['email'] = $email;
+        $data['status'] = $status;
+        $subject = "Account Verification - Update";
+        $message = $this->load->view('email/templates/customer_verification',$data,true);
 		$this->send_email($email,$subject,$message);
         echo json_encode($response);
         die();
+        
     }
-    
+    // public function test_email(){
+    //     $data['fullname'] = 'ff';
+    //     $data['view'] = $this->load->view('email/customer_verification',$data,TRUE);
+    //     $this->load->view('email/templates/email_template',$data,'',true);
+    // }
 	function send_email($emailto,$subject,$message){
 		
 		$this->load->library('email');

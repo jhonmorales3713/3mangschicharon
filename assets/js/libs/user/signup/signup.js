@@ -18,6 +18,7 @@ $('#btn_signup').click(function(){
         success: function(response){            
             if(response.success){
                 sys_toast_success(response.message);
+                window.location.assign(base_url+"login/");
             }
             else{
                 clearFormErrors();

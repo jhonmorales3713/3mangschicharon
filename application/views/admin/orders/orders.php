@@ -115,8 +115,9 @@
                             <div class="col-lg-3 col-md-6 citymundiv">
                                 City
                                 <select class="form-control select2" id="citymunCode">
+                                    <option value="">Select City</option>
                                     <?php foreach($cities as $citymun){?>
-                                        <option value="<?=$citymun['id']?>"><?=$citymun['city_name']?></option>
+                                        <option value="<?=$citymun['city_name']?>"><?=$citymun['city_name']?></option>
                                     <?php } ?>
                                 </select>
                             </div>
@@ -143,7 +144,7 @@
                                 <input type="text" class="form-control" placeholder="Search..." aria-label="Recipient's username" aria-describedby="basic-addon2" name="_name" id="_name">
                             </div>
                             <div class="col-12 col-md-auto px-1 mb-3">
-                                <form action="<?php echo base_url('orders/main_orders/export_orders');?>" method="post" target="_blank">
+                                <form action="<?php echo base_url('admin/Main_orders/export_order_table');?>" method="post" target="_blank">
                                     <input type="hidden" name="_record_status_export" id="_record_status_export">
                                     <input type="hidden" name="_name_export" id="_name_export">
                                     <input type="hidden" name="status_export" id="status_export">
@@ -151,7 +152,6 @@
                                     <input type="hidden" name="_shops_export" id="_shops_export">
                                     <input type="hidden" name="date_from_export" id="date_from_export">
                                     <input type="hidden" name="date_to_export" id="date_to_export">
-                                    <input type="hidden" name="location_export" id="location_export">
                                     <input type="hidden" name="address_export" id="address_export">
                                     <input type="hidden" name="regCode_export" id="regCode_export">
                                     <input type="hidden" name="provCode_export" id="provCode_export">
@@ -183,13 +183,13 @@
                                     <th width="150">Order</th>
                                     <th>Customer</th>
                                     <th>Contact No.</th>
+                                    <th>City</th>
                                     <th>Amount</th>
-                                    <!-- <th>Voucher</th>
+                                    <th>Discount</th>
                                     <th>Shipping</th>
-                                    <th>Total</th> -->
+                                    <th>Total</th>
                                     <th>Payment</th>
                                     <th>Status</th>
-                                    <!-- <th>City</th> -->
                                     <th width="30">Action</th>
                                 </tr>
                             </thead>

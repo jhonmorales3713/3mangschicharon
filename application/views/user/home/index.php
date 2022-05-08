@@ -73,6 +73,7 @@
             </div>
             <?php 
             $variants2 = array();
+            $discount_ids = array();
             foreach($discounts as $discount_){
                 ?>
                 <div class="col-12 text-white d-flex justify-content-center  timer-<?=$discount_['discount_info']['id']?>" style="display:none;" >
@@ -84,7 +85,6 @@
                 <div class="col-12">
                     <div class="row d-flex justify-content-center  timer-<?=$discount_['discount_info']['id']?>">
                         <?php $count =0; 
-                            $discount_ids = array();
                             foreach($discount_['products'] as $product){ 
                                 array_push($discount_ids,$product['id']);
                             }

@@ -1,8 +1,10 @@
 $(document).ready(function () {
 	var base_url = $("body").data("base_url"); //base_url came from built-in CI function base_url();
     var custId='';
+    var email='';
     $(".approvalbtn").click(function(){
         target = $(this).data('content');
+        email = $(this).data('email');
         $(target).show(250);
         disable = $(this).data('disable');
         $(disable).hide(250);
@@ -14,7 +16,7 @@ $(document).ready(function () {
 		$.ajax({				
 			url: base_url+'admin/Main_customers/changestatus',
 	       	type: 'POST',
-			data: {id:custId,status:3},
+			data: {id:custId,status:3,email:email},
 			beforeSend:function() {
 				$.LoadingOverlay("show"); 
 			},
@@ -31,7 +33,7 @@ $(document).ready(function () {
 		$.ajax({				
 			url: base_url+'admin/Main_customers/changestatus',
 	       	type: 'POST',
-			data: {id:custId,status:1},
+			data: {id:custId,status:1,email:email},
 			beforeSend:function() {
 				$.LoadingOverlay("show"); 
 			},

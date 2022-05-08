@@ -387,14 +387,17 @@ class Model_orders extends CI_Model {
 		$total_amount = 0;
 		$sub_total_converted = 0; 
 		$discount_total = 0;
+		$qty = 0;
 		foreach(json_decode($orderdata) as $key => $row ){
-			
+			$total_amount = $row->qty * $row->amount;
 			$discount_info = $row->discount_info;
+			$qty += $row->qty;
 			$amount = $row->amount;
 			$badge = '';
 			if($discount_info != '' && $discount_info != null){
 				if(in_array($key,json_decode($discount_info->product_id))){
 					$discount_id = $discount_info->id;
+					$discount_price = 0;
 					if($discount_info->discount_type == 1){
 						if($discount_info->disc_amount_type == 2){
 							$newprice = $amount - ($amount * ($discount_info->disc_amount/100));
@@ -423,30 +426,25 @@ class Model_orders extends CI_Model {
 				$sub_total_converted += floatval($row->amount) * floatval($row->qty); 
 			}
 		}
-		return($sub_total_converted);
+		return Array('subtotal_converted'=>$sub_total_converted,'subtotal_unconverted'=>$total_amount,'total_qty' => $qty);
 	}
     public function order_table_data(){
 		$sql = "SELECT * from sys_orders WHERE status_id = 5";
 		return $this->db->query($sql)->result_array();
 	}
-    public function order_table(){
+    public function order_table($requestData = array(),$exportable = false){
 		// storing  request (ie, get/post) global array to a variable
-		$_record_status       = $this->input->post('_record_status');
-		$_name 			      = $this->input->post('_name');
-		$status 		      = $this->input->post('status');
+		$_record_status       = $exportable ? $requestData : $this->input->post('_record_status_export');
+		$_name 			      = $exportable ? $requestData['_name'] : $this->input->post('_name');
+		$status 		      =  $this->input->post('status');
+		$citymunCode	      = $exportable ? $requestData['citymunCode'] : $this->input->post('citymunCode');
 		$date 		          = $this->input->post('date');
-		$location 		      = $this->input->post('location');
-		$address 		      = $this->input->post('address');
-		$regCode 		      = $this->input->post('regCode');
-		$provCode 		      = $this->input->post('provCode');
-		$citymunCode	      = $this->input->post('citymunCode');
-		$drno	 		      = $this->input->post('drno');
-		$order_status_view    = $this->input->post('order_status_view');
-		$forpickup            = $this->input->post('forpickup');
-		$isconfirmed          = $this->input->post('isconfirmed');
-		$_shops 		      = $this->input->post('_shops');
-		$date_from 		      = format_date_reverse_dash($this->input->post('date_from'));
-		$date_to 		      = format_date_reverse_dash($this->input->post('date_to'));
+		// $order_status_view    = $exportable ? $requestData['order_status_view'] : $this->input->post('order_status_view');
+		// $forpickup            = $exportable ? $requestData['forpickup'] : $this->input->post('forpickup');
+		// $isconfirmed          = $exportable ? $requestData['isconfirmed'] : $this->input->post('isconfirmed');
+		// $_shops 		      = $exportable ? $requestData['_shops'] : $this->input->post('_shops');
+		$date_from 		      = $exportable ? format_date_reverse_dash($requestData['date_from']) : format_date_reverse_dash($this->input->post('date_from'));
+		$date_to 		      = $exportable ? format_date_reverse_dash($requestData['date_to']) : format_date_reverse_dash($this->input->post('date_to'));
 		$token_session        = $this->session->userdata('token_session');
 		$token                = en_dec('en', $token_session);
 		$date_from_2          = $this->db->escape(date('Y-m-d H:i:s',strtotime($date_from.' 00:00:00')));
@@ -454,7 +452,7 @@ class Model_orders extends CI_Model {
 		$date_from_2_shipping = $this->db->escape(date('Y-m-d H:i:s',strtotime($date_from.' 00:00:00 -2 days')));
 		$date_to_2_shipping   = $this->db->escape(date('Y-m-d H:i:s',strtotime($date_to.' 23:59:59 +2 days')));
 
-		$requestData = $_REQUEST;
+		$requestData = $exportable ? $requestData:$_REQUEST;
 
 		switch ($date) {
 			case "date_fulfilled":
@@ -543,9 +541,12 @@ class Model_orders extends CI_Model {
 					1 => 'reference_num',
 					2 => 'name',
 					3 => 'conno',
-					4 => 'total_amount',
-					5 => 'payment_status',
-					6 => 'order_status'
+					4 => 'city',
+					5 => 'discount',
+					6 => 'shipping',
+					7 => 'total_amount',
+					8 => 'payment_status',
+					9 => 'order_status'
 				);
 			break;
 		}
@@ -553,7 +554,7 @@ class Model_orders extends CI_Model {
 		if($status == ""){
             $date_to = date('Y-m-d',strtotime($date_to. ' + 1 days'));
             //print_r($date_to);
-			$date_string  = ($_name != "") ? "" : "date_created >= '".format_date_dash_reverse($date_from)."' AND date_created <= '".format_date_dash_reverse($date_to)."'";
+			$date_string  =  "date_created >= '".format_date_dash_reverse($date_from)."' AND date_created <= '".format_date_dash_reverse($date_to)."'";
             $sql = "SELECT * FROM sys_orders WHERE ".$date_string;
 
 			// $sql = "SELECT * FROM (
@@ -570,7 +571,7 @@ class Model_orders extends CI_Model {
 
 			// getting records as per search parameters
 			if($_name != ""){
-				$sql.=" AND (reference_num LIKE '%".$this->db->escape_like_str($_name)."%')";
+				$sql.=" AND (order_id LIKE '%".$this->db->escape_like_str($_name)."%')";
 			}
 
 			if($status != ""){
@@ -592,9 +593,9 @@ class Model_orders extends CI_Model {
 				// }
 			}
 
-			if($location != ''){
-				$sql.=" AND shipping_data LIKE '%address".'"'.$address."%' ";
-			}
+			// if($location != ''){
+			// 	$sql.=" AND shipping_data LIKE '%address".'"'.$address."%' ";
+			// }
 		}
 		// else if($status == 1 || $status == 'p' || $status == 'po' || $status == 'rp'|| $status == 'bc' || $status == 'f' || $status == 'rs' || $status == 's' || $status == '7'){
 			
@@ -742,7 +743,10 @@ class Model_orders extends CI_Model {
 			$nestedData=array();
             $name = json_decode($row['shipping_data'])->full_name;
             $contact_no = json_decode($row['shipping_data'])->contact_no;
-			$subtotal_converted = number_format($this->get_total_order_amount($row['order_data']), 2);
+            $city = json_decode($row['shipping_data'])->city; 
+			$subtotal_converted = number_format($this->get_total_order_amount($row['order_data'])['subtotal_converted'], 2);
+			$subtotal_unconverted = number_format($this->get_total_order_amount($row['order_data'])['subtotal_unconverted'], 2);
+			$total_qty = number_format($this->get_total_order_amount($row['order_data'])['total_qty'], 2);
             $payment_status = json_decode($row['payment_data'])->status_id;
             $payment_method = json_decode($row['payment_data'])->payment_method_name;
 			// if($international == 1){
@@ -795,13 +799,18 @@ class Model_orders extends CI_Model {
 			}
 		    $special_upper = ["&NTILDE", "&NDASH"];
     		$special_format = ["&Ntilde", "&ndash"];
+			$exportable ? $nestedData[] = $row["date_created"]:'';
 			$nestedData[] = $row["order_id"];
 			$nestedData[] = str_replace($special_upper, $special_format, $name);
 			$nestedData[] = $contact_no;
-            $nestedData[] = $subtotal_converted;
+			$nestedData[] = $city;
+            $nestedData[] = $subtotal_unconverted;
+            $nestedData[] = number_format($subtotal_unconverted-$subtotal_converted,2);
+            $nestedData[] = 50;
+            $nestedData[] = number_format($subtotal_unconverted+50,2);
 
-			$nestedData[] = display_payment_status($payment_status, $payment_method);
-			$nestedData[] = display_order_status($row['status_id']);
+			$nestedData[] = display_payment_status($payment_status, $payment_method,$exportable);
+			$nestedData[] = display_order_status($row['status_id'],$exportable);
 
 
             $nestedData[] =
@@ -812,7 +821,9 @@ class Model_orders extends CI_Model {
                 </div>
             </div>';
 
-			$data[] = $nestedData;
+			if($citymunCode == '' || ($citymunCode != '' && $citymunCode == $city)){
+				$data[] = $nestedData;
+			}
 		}
 
 		$json_data = array(

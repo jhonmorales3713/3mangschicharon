@@ -3,6 +3,9 @@
 date_default_timezone_set('Asia/Manila');
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+require_once('vendor/autoload.php');
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class Main_orders extends CI_Controller {
 
@@ -498,7 +501,126 @@ class Main_orders extends CI_Controller {
 
         
     }
+    
+    public function export_order_table()
+    {
+        $this->isLoggedIn();
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $request = url_decode(json_decode($this->input->post("_record_status_export")));
+        // $member_id = $this->session->userdata('sys_users_id');
+        $filter_text = "";
+      
+        // $sys_shop = $this->model_products->get_sys_shop($member_id);
+        // $sys_shop = $this->session->userdata('sys_shop');
+        $query = $this->model_orders->order_table($request, true);
 
+        // $_record_status = ($this->input->post('_record_status') == 1 && $this->input->post('_record_status') != '') ? "Enabled":"Disabled";
+
+        if($this->input->post('_record_status') == ''){
+            $_record_status = 'All Records';
+        }
+        else if($this->input->post('_record_status') == 1){
+            $_record_status = 'Enabled';
+        }
+        else if($this->input->post('_record_status') == 2){
+            $_record_status = 'Disabled';
+        }
+        else{
+            $_record_status = '';
+        }
+
+		$_name 			= ($this->input->post('_name') == "") ? "":"'" . $this->input->post('_name') ."'";
+        
+        /// for details column in audit trail
+        // if($_name != ''){
+        //     $filter_text .= $_record_status.' in '.$_shops. ', Product Name: '.$_name;
+        // }else{
+        //     $filter_text .= $_record_status.' in '.$_shops;
+        // }
+        
+        $sheet->setCellValue('A1', "Orders");
+        // print_r($request);
+        // $sheet->setCellValue('B2', "Filter: '$_name', $_record_status in $_shops");
+        $sheet->setCellValue('A2', date('Y/m/d'));
+        $sheet->setCellValue('A4', "Date From");
+        // $sheet->setCellValue('B2', "Filter: '$_name', $_record_status in $_shops");
+        $sheet->setCellValue('A5',$request['date_from'] != '' ? $request['date_from'] : "All Time");
+        $sheet->setCellValue('B4', "Date To");
+        // $sheet->setCellValue('B2', "Filter: '$_name', $_record_status in $_shops");
+        $sheet->setCellValue('B5', $request['date_to'] != '' ? $request['date_to']: "All Time");
+        
+        $sheet->getColumnDimension('A')->setWidth(40);
+        $sheet->getColumnDimension('B')->setWidth(30);
+        $sheet->getColumnDimension('C')->setWidth(20);
+        $sheet->getColumnDimension('D')->setWidth(20);
+        $sheet->getColumnDimension('E')->setWidth(20);
+        $sheet->getColumnDimension('F')->setWidth(30);
+
+        // <th>Date</th>
+        // <th width="150">Order</th>
+        // <th>Customer</th>
+        // <th>Contact No.</th>
+        // <th>City</th>
+        // <th>Amount</th>
+        // <th>Discount</th>
+        // <th>Shipping</th>
+        // <th>Total</th>
+        // <th>Payment</th>
+        // <th>Status</th>
+        // <th width="30">Action</th>
+        $sheet->setCellValue('A6', 'Date Ordered');
+        $sheet->setCellValue('B6', 'Order ID');
+        $sheet->setCellValue('C6', 'Customer Name');
+        $sheet->setCellValue('D6', 'Contact No.');
+        $sheet->setCellValue('E6', 'City');
+        $sheet->setCellValue('F6', 'Amount');
+        $sheet->setCellValue('G6', 'Discount');
+        $sheet->setCellValue('H6', 'Shipping Fee');
+        $sheet->setCellValue('I6', 'Total');
+        $sheet->setCellValue('J6', 'Payment Status');
+        $sheet->setCellValue('K6', 'Status');
+
+        $sheet->getStyle('A1')->getFont()->setBold(true);
+        $sheet->getStyle('A4:B4')->getFont()->setBold(true);
+        $sheet->getStyle('A6:L6')->getFont()->setBold(true);
+
+        // print_r($query);
+        $exceldata= array();
+        foreach ($query['data'] as $key => $row) {
+            $resultArray = array(
+                '1' => $row[1],
+                '2' => $row[2],
+                '3' => $row[3],
+                '4' => $row[4],
+                '5' => ucwords($row[5]),
+                '6' => ucwords($row[6]),
+                '7' => ucwords($row[7]),
+                '8' => ucwords($row[8]),
+                '9' => ucwords($row[9]),
+                '10' => ucwords($row[10]),
+                '11' => ucwords($row[11])
+            );
+            $exceldata[] = $resultArray;
+        }
+
+        $sheet->fromArray($exceldata, null, 'A7');
+        $row_count = count($exceldata)+7;
+        for ($i=7; $i < $row_count; $i++) {
+            $sheet->getStyle("C$i")->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT);
+            $sheet->getStyle("D$i")->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT);
+        }
+
+        $writer = new Xlsx($spreadsheet);
+        $filename = 'Orders List' . date('Y/m/d');
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment;filename="'.$filename.'.xlsx"'); 
+        header('Cache-Control: max-age=0');
+        ob_end_clean();
+        $this->audittrail->logActivity('Product List', 'Products has been exported into excel with filter '.$filter_text, 'export', $this->session->userdata('username'));
+        return $writer->save('php://output');
+        exit();
+    }
     public function orders_view($token = '', $ref_num = '')
     {
         $this->isLoggedIn();

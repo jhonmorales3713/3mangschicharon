@@ -47,7 +47,13 @@
         <div class="col-lg-6 col-md-6 col-sm-12">
             <div class="form-group">
                 <small for="">City / Municipality <span class="text-danger">*</span></small>
-                <input type="text" id="city" class="form-control form-control-sm">            
+                <select id="city" class="form-control form-control-sm">
+                    <option value="">Select City</option>
+                    <?php foreach($cities as $city){?>
+                        <option value="<?=$city['city_name'];?>"><?=$city['city_name'];?></option>
+                    <?php }?>
+                </select>
+                <!-- <input type="text" id="city" class="form-control form-control-sm">             -->
             </div>        
         </div>
         <div class="col-lg-6 col-md-6 col-sm-12">

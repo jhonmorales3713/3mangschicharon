@@ -23,6 +23,7 @@
         $discount_info = $row->discount_info;
         $amount = $row->amount;
         $badge = '';
+        $discount_price=0;
         if($discount_info != '' && $discount_info != null){
             if(in_array($key,json_decode($discount_info->product_id))){
                 $discount_id = $discount_info->id;

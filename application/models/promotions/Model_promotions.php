@@ -14,8 +14,8 @@ class Model_promotions extends CI_Model {
 			date('Y-m-d H:i:s',strtotime($data['date_to'])),
 			$data['disc_ammount_type'],
 			$data['disc_ammount'],
-			$data['set_max_amount'] != '' ? 1 : 0,
-			$data['set_max_amount'] != '' ? $data['disc_ammount_limit'] : 0,
+			isset($data['set_max_amount']) ? 1 : 0,
+			isset($data['set_max_amount']) ? $data['disc_ammount_limit'] : 0,
 			isset($data['usage_quantity'])?$data['usage_quantity']:0,
             $date_created,
 			1
