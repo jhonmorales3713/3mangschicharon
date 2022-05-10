@@ -22,7 +22,7 @@ class Main_orders extends CI_Controller {
     {
         if ($this->session->userdata('isLoggedIn')=='') {
             
-            //header("location:" . base_url('Main/logout'));
+            header("location:" . base_url('Main/logout'));
         }
     }
 
@@ -501,6 +501,7 @@ class Main_orders extends CI_Controller {
 
         
     }
+
     
     public function export_order_table()
     {

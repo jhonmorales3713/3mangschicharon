@@ -29,7 +29,7 @@
                                             <tbody>
                                                 <tr>
                                                     <td>
-                                                        <p style="color: #222; margin-top: 0;">You are receiving this email because you submitted documents for Profile verification for your account <?=$email;?>.</p>
+                                                        <p style="color: #222; margin-top: 0;">You are receiving this email because a user submitted application for account <?=$email;?>.</p>
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -38,16 +38,7 @@
                                                 <tbody>
                                                     <tr>
                                                         <td>
-                                                            <p style="color: #222; margin-top: 0;">We would like to inform you that your account has been  <b><?=$status?></b></p><br>
-                                                            <?php if($status == 'Denied'){?>
-                                                                Reason: <?=$reason?>
-                                                                <?php if($allow_to_resubmit){ ?>
-                                                                    <br>
-                                                                    <i  style="font-size: 13px; color:#525252; font-family: 'Fira Sans', sans-serif;">You can resubmit your info to avail our validated customer perks!</i>
-                                                                <?php } ?>
-                                                            <?php }else{ ?>
-                                                                You can now log in <a href="<?=base_url()?>" target="_blank">here</a> and enjoy our member perks such as COD Order Type!
-                                                            <?php } ?>
+                                                                You can now log in <a href="<?=base_url('admin')?>" target="_blank">here</a> to view application
                                                         </td>
                                                     </tr>
                                                 </tbody>

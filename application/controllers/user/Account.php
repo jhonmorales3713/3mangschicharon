@@ -227,9 +227,75 @@ class Account extends CI_Controller {
         $response['message'] = 'Document has been submitted';
         $response['doc_id'] = en_dec('en',$doc_id);
 
-        generate_json($response);
+        $data['email'] = en_dec('dec',$_SESSION['email']);
+        $email = get_host();
+        $subject = "New Profile Application - Activation Request";
+        $message = $this->load->view('email/customer_verification_application',$data,true);
+		$this->send_email($email,$subject,$message);
+        echo json_encode($response);
+        die();
     }
 
+	function send_email($emailto,$subject,$message){
+		
+		$this->load->library('email');
+        
+		// $config = Array(
+		// 	'protocol' => 'smtp',
+		// 	'smtp_host' => 'ssl://smtp.googlemail.com',
+		// 	'smtp_port' => 465,
+		// 	'smtp_user' => 'teeseriesphilippines@gmail.com',
+		// 	'smtp_pass' => 'teeseriesph',
+		// 	'charset' => 'utf-8',
+		// 	'newline'   => "\r\n",
+		// 	'wordwrap'=> TRUE,
+		// 	'mailtype' => 'html'
+		// );
+        $this->load->library('email');
+        if(strpos(base_url(),'3mangs.com')){
+            $config = array(
+                'protocol' => 'smtp',
+                'smtp_host' => get_host(),
+                'smtp_port' => 587,
+                'smtp_user' => get_email(),
+                'smtp_pass' => get_emailpassword(),
+                'charset' => 'utf-8',
+                'newline'   => "\r\n",
+                'mailtype' => 'html'
+            );
+        }else{
+            $config = Array(
+            	'protocol' => 'smtp',
+            	'smtp_host' => 'ssl://smtp.googlemail.com',
+            	'smtp_port' => 465,
+            	'smtp_user' => 'teeseriesphilippines@gmail.com',
+            	'smtp_pass' => '@ugOct0810',
+            	'charset' => 'utf-8',
+            	'newline'   => "\r\n",
+            	'wordwrap'=> TRUE,
+            	'mailtype' => 'html'
+            );
+        }
+		// $config = Array(
+		// 	'protocol' => 'smtp',
+		// 	'smtp_host' => get_host(),
+		// 	'smtp_port' => 587,
+		// 	'smtp_user' => get_email(),
+		// 	'smtp_pass' => get_emailpassword(),
+		// 	'charset' => 'utf-8',
+		// 	'newline'   => "\r\n",
+		// 	'wordwrap'=> TRUE,
+		// 	'mailtype' => 'html'
+		// );
+		$this->email->initialize($config);
+		$this->email->set_newline("\r\n");  
+		$this->email->from('noreply@3mangs.com');
+		$this->email->to($emailto);
+		$this->email->subject($subject);
+		$this->email->message($message);
+		$this->email->send();
+        
+	}
     public function save_address(){
         $address_info = $this->input->post();        
 

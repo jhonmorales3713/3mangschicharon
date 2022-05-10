@@ -221,25 +221,51 @@ class Main_customers extends CI_Controller {
     }
     public function changestatus(){
         $data = $this->input->post();
-        $this->Model_customers->changestatus($data['id'],$data['status']);
+        $reason = trim($data['decline_reason_select']);
+        if($reason == "" && $data['status'] == 4){
+            $response = [
+                'environment' => ENVIRONMENT,
+                'success'     => false,
+                'message'     => 'Please Select Reason'
+            ];
+            echo json_encode($response);
+            die();
+        }
+        if($reason == "Other" && $data['decline_reason'] == '' && $data['status'] == 4){
+            $response = [
+                'environment' => ENVIRONMENT,
+                'success'     => false,
+                'message'     => 'Please State Reason of Decline'
+            ];
+            echo json_encode($response);
+            die();
+        }
+        $data['decline_reason'] = json_encode(Array('reason'=>$reason == "Other"?$data['decline_reason']:$reason,'allow_to_resubmit'=>$data['allow_to_resubmit']));
+        $this->Model_customers->changestatus($data['id'],$data['status'],$data['decline_reason']);
+        $status = $data['status'] == 4 ? 'Denied' : 'Successfully Verified';
         $response = [
             'environment' => ENVIRONMENT,
             'success'     => true,
             'message'     => 'Customer has been '.$status. ' successfully'
         ];
-        $status = $data['status'] == 3 ? 'Denied' : 'Successfully Verified';
         $email = $data['email'];
         $data['email'] = $email;
         $data['status'] = $status;
+        $data['reason'] = 'Denied due to: '.($reason != "Other" ? $reason:$data['decline_reason']);
         $subject = "Account Verification - Update";
-        $message = $this->load->view('email/templates/customer_verification',$data,true);
+        $message = $this->load->view('email/customer_verification',$data,true);
 		$this->send_email($email,$subject,$message);
         echo json_encode($response);
         die();
         
     }
     // public function test_email(){
+    //     $email = 'asdasd';
+    //     $data['email'] = $email;
+    //     $data['status'] = 'Declined';
+    //     $data['allow_to_resubmit']=true;
     //     $data['fullname'] = 'ff';
+    //     $data['reason'] = 'Denied due to :sd';
     //     $data['view'] = $this->load->view('email/customer_verification',$data,TRUE);
     //     $this->load->view('email/templates/email_template',$data,'',true);
     // }

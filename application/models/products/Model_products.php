@@ -719,11 +719,16 @@ class Model_products extends CI_Model {
 			if($_categories != "" && $_categories == "0"){
 				
 				$details = $this->get_productdetails($row["parent_product_id"]);
-				$nestedData[] = (!$exportable) ? '<img class="img-thumbnail" style="width: 50px;" src="'.base_url('assets/uploads/products/'.str_replace('==','',$details['img']).'?'.rand()).'">' : '';;
+				if(!$exportable){
+					$nestedData[] = '<img class="img-thumbnail" style="width: 50px;" src="'.base_url('assets/uploads/products/'.str_replace('==','',$details['img']).'?'.rand()).'">' ;
+				}
 				$nestedData[] = $details['name'].' - '.$row["name"];
 				$nestedData[] = $details["category_name"];
 			}else{
-				$nestedData[] = (!$exportable) ? '<img class="img-thumbnail" style="width: 50px;" src="'.base_url('assets/uploads/products/'.str_replace('==','',$row['img']).'?'.rand()).'">' : '';;
+				if(!$exportable){
+					$nestedData[] ='<img class="img-thumbnail" style="width: 50px;" src="'.base_url('assets/uploads/products/'.str_replace('==','',$row['img']).'?'.rand()).'">' ;
+				}
+				// $nestedData[] = (!$exportable) ? '<img class="img-thumbnail" style="width: 50px;" src="'.base_url('assets/uploads/products/'.str_replace('==','',$row['img']).'?'.rand()).'">' : '';;
 				$nestedData[] = $row["name"];
 				$nestedData[] = $row["category_name"];
 			}

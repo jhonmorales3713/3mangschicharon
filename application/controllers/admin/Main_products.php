@@ -1139,58 +1139,6 @@ class Main_products extends CI_Controller {
         }
     }    
 
-    public function export_products($post_data,$type){
-
-        $title = 'Products List';
-        $filename = construct_name_from_filter([], $title);
-        
-        $data['data'] = $this->load_events(true,$post_data)['data'];
-
-        if($type == 'pdf'){
-            $page = $this->load->view('admin/events/events_list_pdf',$data,true);
-            $this->pdf->load_pdf($title, $page, $filename, TRUE, $post_data);           
-        } 
-        elseif ($type == 'xlsx' || $type == 'csv') { //export xlsx or csv
-            
-            //initialize
-            $excel = new Excel();
-
-            //data to display
-            $get_data = array(); 
-            foreach ($data['data'] as $key => $column) { //select column to be display in excel                
-                $get_data[$key][] = trim(strip_tags($column[0]));
-                $get_data[$key][] = trim(strip_tags($column[6]));
-                $get_data[$key][] = trim(strip_tags($column[2]));
-                $get_data[$key][] = trim(strip_tags($column[7]));
-                $get_data[$key][] = trim(strip_tags($column[8]));
-                $get_data[$key][] = trim(strip_tags($column[3]));
-                $get_data[$key][] = trim(strip_tags($column[4]));
-            }
-
-            //column headers
-            $columns = array( 
-                0 => 'Event Title',
-                1 => 'Chapter',
-                2 => 'Hosted By',
-                3 => 'Sponsor',
-                4 => 'Event Date',
-                5 => '# of Participants',
-                6 => 'Participants Joined'
-            );
-
-            $excel->set_column_header($columns);
-            $excel->set_row_data($get_data);
-            
-            if ($type == 'xlsx'){
-                $excel->export_xlsx($filename);      
-            }                
-            elseif ($type == 'csv'){
-                $excel->export_csv($filename);
-            }            
-        }    
-    }
-
-
     public function update_product()
     {
 
@@ -1527,7 +1475,6 @@ class Main_products extends CI_Controller {
         echo json_encode($response);
     }
 
-    
     public function delete_modal_confirm()
     {
         $this->isLoggedIn();

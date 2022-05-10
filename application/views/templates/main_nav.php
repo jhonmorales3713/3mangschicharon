@@ -32,8 +32,12 @@
                 <small>Hello <b><?= $_SESSION['full_name']; ?></b></small> 
                 <?php if($_SESSION['is_verified'] == 1){ ?>
                     <span class="badge badge-success">Verified</span>                    
-                <?php } else { ?>
+                <?php } else if($_SESSION['is_verified'] == 3){ ?>
                     <span class="badge badge-warning">Pending Verification</span>
+                <?php } else if($_SESSION['is_verified'] == 2){ ?>
+                    <span class="badge badge-secondary">Unverified</span>
+                <?php } else if($_SESSION['is_verified'] == 4){ ?>
+                    <span class="badge badge-danger">Denied Application</span>
                 <?php }?>            
             <?php }?>
         </div>
@@ -75,9 +79,13 @@
                             <b><?= isset($_SESSION['full_name']) ? $_SESSION['full_name'] : '' ; ?></b><br>
                             <?php if($_SESSION['is_verified'] == 1){ ?>
                                 <span class="badge badge-success">Verified</span>                    
-                            <?php } else { ?>
+                            <?php } else if($_SESSION['is_verified'] == 3){ ?>
                                 <span class="badge badge-warning">Pending Verification</span>
-                            <?php }?>
+                            <?php } else if($_SESSION['is_verified'] == 2){ ?>
+                                <span class="badge badge-secondary">Unverified</span>
+                            <?php } else if($_SESSION['is_verified'] == 4){ ?>
+                                <span class="badge badge-danger">Denied Application</span>
+                            <?php }?>            
                         </center>
                     </li>
                     <br>

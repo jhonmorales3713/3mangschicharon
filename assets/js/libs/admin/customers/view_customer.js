@@ -11,21 +11,39 @@ $(document).ready(function () {
         $("#verifyCustomerModal").modal('show');
         custId = $(this).data('custid');
     });
-
+    $(".other_reason").hide();
+    $("#decline_reason_select").on("change",function(){
+        if($(this).val() == "Other"){
+            $(".other_reason").show(250);
+        }else{
+            $(".other_reason").hide(250);
+        }
+    });
     $("#declinebtnCustomer").click(function(){
 		$.ajax({				
 			url: base_url+'admin/Main_customers/changestatus',
 	       	type: 'POST',
-			data: {id:custId,status:3,email:email},
+			data: {
+                id:custId,
+                status:4,
+                email:email,
+                decline_reason_select:$("#decline_reason_select").val(),
+                decline_reason:$("#decline_reason").val(),
+                allow_to_resubmit:$("#allow_to_resubmit").prop('checked')
+            },
 			beforeSend:function() {
 				$.LoadingOverlay("show"); 
 			},
 			success : function(data){
 				json_data = JSON.parse(data);
-                $("#verifyCustomerModal").modal('hide');
 				$.LoadingOverlay("hide"); 
-                sys_toast_success(json_data.message);
-                setTimeout(function(){location.reload()}, 2000);
+                if(json_data.success){
+                    $("#verifyCustomerModal").modal('hide');
+                    sys_toast_success(json_data.message);
+                    setTimeout(function(){location.reload()}, 2000);
+                }else{
+                    sys_toast_warning(json_data.message);
+                }
             }
         });
     });
@@ -33,7 +51,12 @@ $(document).ready(function () {
 		$.ajax({				
 			url: base_url+'admin/Main_customers/changestatus',
 	       	type: 'POST',
-			data: {id:custId,status:1,email:email},
+			data: {id:custId,status:1,
+                email:email,
+                decline_reason_select:$("#decline_reason_select").val(),
+                decline_reason:$("#decline_reason").val(),
+                allow_to_resubmit:$("#allow_to_resubmit").prop('checked')
+            },
 			beforeSend:function() {
 				$.LoadingOverlay("show"); 
 			},

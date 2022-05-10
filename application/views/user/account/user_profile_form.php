@@ -2,7 +2,7 @@
     <div class="row" id="profile_form">
         <div class="col-lg-12 p20">
             <center>
-                <?php if($customer_data['profile_img'] != ''){ ?>                    
+                <?php if(isset($customer_data['profile_img'])){ ?>                    
                     <img class="image-preview" src="<?= base_url('uploads/profile_img/'.$customer_data['profile_img']); ?>" alt="" width="300px">
                 <?php } else { ?>                    
                     <img class="image-preview" src="<?= base_url('assets/img/profile_default.png');?>" alt="" width="300px">

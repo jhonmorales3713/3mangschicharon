@@ -68,6 +68,13 @@
                             <form id="form_update" enctype="multipart/form-data" method="post">
                                 <div class="card-body">
                                     <div class="row">
+            
+                                        <?php if($get_customerdetails['user_type_id']==4 ){?>
+                                        <div class="col-lg-12 alert alert-warning">
+                                            Declined due to:
+                                            <?=print_r(json_decode($get_customerdetails['decline_reason'])->reason,true)?>
+                                        </div>
+                                        <?php }?>
                                         <div class="col-12">
                                             <div class="row hidden">
                                                 <div class="col-12">
@@ -138,8 +145,8 @@
                             <div class="card-body">
                                 <!-- <button type="button" class="btn btn-outline-secondary cancelBtn" id="backBtn">Close</button> -->
                                 <?php if($get_customerdetails['user_type_id']==3 ){?>
-                                <button type="button" class="btn btn-danger approvalbtn" data-content=".declineContent" data-email="<?=$get_customerdetails['email']?>" data-custid="<?=$Id?>" data-disable=".verifyContent">Decline</button>
-                                <button type="button" class="btn btn-success approvalbtn" data-content=".verifyContent" data-email="<?=$get_customerdetails['email']?>" data-custid="<?=$Id?>"  data-disable=".declineContent">Verify</button>
+                                    <button type="button" class="btn btn-danger approvalbtn" data-content=".declineContent" data-email="<?=$get_customerdetails['email']?>" data-custid="<?=$Id?>" data-disable=".verifyContent">Decline</button>
+                                    <button type="button" class="btn btn-success approvalbtn" data-content=".verifyContent" data-email="<?=$get_customerdetails['email']?>" data-custid="<?=$Id?>"  data-disable=".declineContent">Verify</button>
                                 <?php } ?>
                                 <!-- <button type="submit" class="btn btn-success saveBtn">Save</button> -->
                             </div>
@@ -176,10 +183,20 @@
             <div class="declineContent" style="display:none">
                 <div class="modal-body">
                     <div class="card-body">
-                        Declining this customer information will disable COD transactions for this user. Continue?
+                        Declining this customer information will disable COD transactions for this user. Continue?<br>
+                        Reason:
+                        <select name="decline_reason_select" id="decline_reason_select" class="form-control">
+                            <option value="">Select Reason</option>
+                            <option value="Wrong Information Provided">Wrong Information Provided</option>
+                            <option value="Invalid File Type/ Cannot open">Invalid File Type/ Cannot open</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <label for="allow_to_resubmit" class="form-inline">
+                        <input type="checkbox" class="form-control" id="allow_to_resubmit" name="allow_to_resubmit">Allow to resubmit information</label>
+                        <textarea name="decline_reason" class="form-control other_reason" id="decline_reason" placeholder="Input Other Reason Here"></textarea>
                     </div>
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer ">
                     <button type="button" class="btn btn-outline-secondary cancelBtn" data-dismiss="modal" aria-label="Close">Close</button>
                     <button id="declinebtnCustomer" class="btn btn-primary">Continue</button>
                 </div>

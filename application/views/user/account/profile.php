@@ -1,9 +1,13 @@
 <div class="container">
     <div class="row">        
-        <?php if($_SESSION['is_verified'] == 0){ ?>
+        <?php if($_SESSION['is_verified'] != 1){ ?>
             <?php if($has_docs){ ?>
                 <div class="col-lg-12">
                     <div class="alert alert-warning">
+                        <?php if($this->session->userdata('decline_details') != ''){?>
+                            <i>Your application has been declined due to: <b><?=json_decode($_SESSION['decline_details'])->reason?></b></i><br>
+                        <?php } ?>
+                        <span></span>
                         <span>Document has been <b>submitted</b></span><br>
                         <span>An email will be sent to you once we are done with the verification process</span><br>
                     </div>

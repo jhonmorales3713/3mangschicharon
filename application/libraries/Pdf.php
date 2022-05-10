@@ -10,6 +10,7 @@ class Pdf extends TCPDF{
         $this->CI =& get_instance();
 
         $this->img_file = K_PATH_IMAGES.'header.jpg';
+        $this->img_file_footer = K_PATH_IMAGES.'footer.jpg';
         //$this->flower_line = K_PATH_IMAGES.'flower_line.png';
         //$this->params = $this->CI->session->params;
     }
@@ -22,25 +23,29 @@ class Pdf extends TCPDF{
         $h = 980;        
         
         // Header Image
-        $this->Image($this->img_file, $x, $y, '', 180, 'JPG', '', '', true, 150, '', false, false, 0, false, false, false);
+        $this->Image($this->img_file, $x, $y, '', 80, 'JPG', '', '', true, 150, '', false, false, 0, false, false, false);
         
     }
     // Page footer
     public function Footer() {
-        $x = 35;
-        $y = 440;
+        $x = 0;
+        $y = 870;
         $w = 980;
         $h = 980;
 		
         //$img_file = K_PATH_IMAGES.'jci_footer.png';
         // Position at 15 mm from bottom
-        $this->SetY(-11);
+        $this->SetY(-15);
+        $this->SetTextColor(255,255,255);
         // Set font
-        $this->SetFont('helvetica', 'I', 7);
+        // $this->SetFont('helvetica', 'I', 7);
         // Page footer image
-        //$this->Image($this->flower_line, $x, $y, '', 28, 'PNG', '', '', true, 70, '', false, false, 0, false, false, false);
+        $this->Image($this->img_file_footer, $x, $y, '', 70, 'JPG', '', '', true, 100, '', false, false, 0, false, false, false);
         // Page number
-        $this->MultiCell(0, 15, '(Date Generated: '.(todaytime()) . ') Page '.$this->getAliasNumPage().'/'.$this->getAliasNbPages(), 0, 'R', 0, 1, 15, '', true, 0, false, true, 0, 'T', false);
+        // $this->Write(0, $this->img_file_footer, '', 0, 'C', true, 0, false, false, 0);
+
+        $this->Cell(0, 10, 'Page '.$this->getAliasNumPage().'/'.$this->getAliasNbPages(), 0, false, 'C', 0, '', 0, false, 'T', 'M');
+        // $this->MultiCell(0, 10, 'Page '.$this->getAliasNumPage().'/'.$this->getAliasNbPages(), 0, 'R', 0, 1, 15, '', true, 0, false, true, 0, 'T', false);
             
         
     }

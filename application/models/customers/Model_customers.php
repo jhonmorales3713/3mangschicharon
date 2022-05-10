@@ -73,9 +73,9 @@ class Model_customers extends CI_Model {
 		$params = array($Id);
 		return $this->db->query($query, $params)->row_array();
 	}
-    public function changestatus($id, $status){
-        $sql = "UPDATE sys_customers set user_type_id = ? where id = ?";
-        $params = array ($status,en_dec('dec',$id));
+    public function changestatus($id, $status, $reason){
+        $sql = "UPDATE sys_customers set user_type_id = ?, decline_reason =? where id = ?";
+        $params = array ($status,$reason,en_dec('dec',$id));
         $this->db->query($sql, $params);
         if($status == 1){
             $sql = "UPDATE sys_uploaded_documents set is_verified = ? where customer_id = ?";

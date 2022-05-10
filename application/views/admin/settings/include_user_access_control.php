@@ -67,8 +67,8 @@
 				<a class="nav-link col" id="v-pills-products-tab" data-toggle="pill" href="#v-pills-products" role="tab" aria-controls="v-pills-products" aria-selected="false" class="row m-0">Products <span class="check-count badge-success rounded text-xs rounded-lg px-1 bg-teal-500 text-light">0</span></a>
 				<!-- <a class="nav-link col" id="v-pills-shops-tab" data-toggle="pill" href="#v-pills-shops" role="tab" aria-controls="v-pills-shops" aria-selected="false">Shops <span class="check-count badge-success rounded text-xs rounded-lg px-1 bg-teal-500 text-light">0</span></a>-->
 				<a class="nav-link col" id="v-pills-customers-tab" data-toggle="pill" href="#v-pills-customers" role="tab" aria-controls="v-pills-customers" aria-selected="false">Customers <span class="check-count badge-success rounded text-xs rounded-lg px-1 bg-teal-500 text-light">0</span></a>
-				<!--<a class="nav-link col" id="v-pills-accounts-tab" data-toggle="pill" href="#v-pills-accounts" role="tab" aria-controls="v-pills-accounts" aria-selected="false">Accounts <span class="check-count badge-success rounded text-xs rounded-lg px-1 bg-teal-500 text-light">0</span></a>
-				<a class="nav-link col" id="v-pills-reports-tab" data-toggle="pill" href="#v-pills-reports" role="tab" aria-controls="v-pills-reports" aria-selected="false">Reports <span class="check-count badge-success rounded text-xs rounded-lg px-1 bg-teal-500 text-light">0</span></a> -->
+				<!-- <a class="nav-link col" id="v-pills-accounts-tab" data-toggle="pill" href="#v-pills-accounts" role="tab" aria-controls="v-pills-accounts" aria-selected="false">Accounts <span class="check-count badge-success rounded text-xs rounded-lg px-1 bg-teal-500 text-light">0</span></a> -->
+				<a class="nav-link col" id="v-pills-reports-tab" data-toggle="pill" href="#v-pills-reports" role="tab" aria-controls="v-pills-reports" aria-selected="false">Reports <span class="check-count badge-success rounded text-xs rounded-lg px-1 bg-teal-500 text-light">0</span></a>
 				<a class="nav-link col" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">Settings <span class="check-count badge-success rounded text-xs rounded-lg px-1 bg-teal-500 text-light">0</span></a>
 				<a class="nav-link col" id="v-pills-promotions-tab" data-toggle="pill" href="#v-pills-promotions" role="tab" aria-controls="v-pills-promotions" aria-selected="false">Promotions <span class="check-count badge-success rounded text-xs rounded-lg px-1 bg-teal-500 text-light">0</span></a>
 				<!-- <a class="nav-link col" id="v-pills-dev_settings-tab" data-toggle="pill" href="#v-pills-dev_settings" role="tab" aria-controls="v-pills-dev_settings" aria-selected="false">Developer Settings <span class="check-count badge-success rounded text-xs rounded-lg px-1 bg-teal-500 text-light">0</span></a> -->
@@ -1428,58 +1428,46 @@
 						</div> -->
 					</div>
 				</div>
-				<!--
-				<div class="tab-pane fade w-100 online_ordering parent_section" id="v-pills-vouchers" role="tabpanel" aria-labelledby="v-pills-vouchers-tab">
+				<div class="tab-pane fade w-100 online_ordering parent_section" id="v-pills-reports" role="tabpanel" aria-labelledby="v-pills-reports-tab">
 					<div class="py-3 px-4 row m-0 mb-1">
 						<div class="col-6 col-sm-3">
 							<label> 
-								<input type="checkbox" class="hidden" id="main_nav_ac_vouchers_view" name="main_nav_ac_vouchers_view">
-								<input type="checkbox" class="main_nav_ac_vouchers_view sub_parent_checkbox checkbox-template m-r-xs mr-2" >
+								<input type="checkbox" class="hidden" id="main_nav_ac_sales_report_view" name="main_nav_ac_sales_report_view">
+								<input type="checkbox" class="main_nav_ac_sales_report_view sub_parent_checkbox checkbox-template m-r-xs mr-2" >
 								All
 							</label>
 						</div>
 						<div class="col-12 mt-2">
-							<h4 class="font-semibold">Vouchers Claimed</h4>
+							<h4 class="font-semibold">Reporting</h4>
 							<div class="row">
 								<div class="col-6 col-sm-3">
 									<label>
-										<input type="checkbox" id="ac_vouchers_claimed_view" name="ac_vouchers_claimed_view" class="checkbox-template m-r-xs mr-2">
-										View
-									</label>
-								</div>
-							</div>
-						</div>
-						<div class="col-12 mt-2">
-							<h4 class="font-semibold">Vouchers List</h4>
-							<div class="row">
-								<div class="col-6 col-sm-3">
-									<label>
-										<input type="checkbox" id="ac_vouchers_list_view" name="ac_vouchers_list_view" class="checkbox-template m-r-xs mr-2">
-										View
+										<input type="checkbox" id="ac_sales_report_view" name="ac_sales_report_view" class="checkbox-template m-r-xs mr-2">
+										Sales Report
 									</label>
 								</div>
 								<div class="col-6 col-sm-3">
 									<label>
-										<input type="checkbox" id="ac_vouchers_list_create" name="ac_vouchers_list_create" class="checkbox-template m-r-xs mr-2">
-										create
+										<input type="checkbox" id="ac_sales_order_report_view" name="ac_sales_order_report_view" class="checkbox-template m-r-xs mr-2">
+										Order Report
 									</label>
 								</div>
 								<div class="col-6 col-sm-3">
 									<label>
-										<input type="checkbox" id="ac_vouchers_list_update" name="ac_vouchers_list_update" class="checkbox-template m-r-xs mr-2">
-										update
+										<input type="checkbox" id="ac_sales_top_products_view" name="ac_sales_top_products_view" class="checkbox-template m-r-xs mr-2">
+										Top Products Sold
 									</label>
 								</div>
 								<div class="col-6 col-sm-3">
 									<label>
-										<input type="checkbox" id="ac_vouchers_list_delete" name="ac_vouchers_list_delete" class="checkbox-template m-r-xs mr-2">
-										delete
+										<input type="checkbox" id="ac_sales_raw_data_view" name="ac_sales_raw_data_view" class="checkbox-template m-r-xs mr-2">
+										Order Report Raw Data
 									</label>
 								</div>
 								<div class="col-6 col-sm-3">
 									<label>
-										<input type="checkbox" id="ac_vouchers_list_disable" name="ac_vouchers_list_disable" class="checkbox-template m-r-xs mr-2">
-										disable
+										<input type="checkbox" id="ac_inventory_report_view" name="ac_inventory_report_view" class="checkbox-template m-r-xs mr-2">
+										Inventory Report
 									</label>
 								</div>
 							</div>
@@ -1487,6 +1475,7 @@
 					</div>
 				</div>
 				
+				<!--
 				<div class="tab-pane fade w-100 online_ordering parent_section" id="v-pills-wallet" role="tabpanel" aria-labelledby="v-pills-wallet-tab">
 					<div class="py-3 px-4 row m-0 mb-1">
 						<div class="col-6 col-sm-3">

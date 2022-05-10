@@ -39,167 +39,6 @@ class Model_user_list extends CI_Model {
 		$sql = "SELECT `main_nav_id`, `main_nav_href` FROM `cp_main_navigation` WHERE `enabled` > 0";
 		$queries = $this->db->query($sql);
 
-		$main_nav_ac_products_view = $this->input->post('ac_products_view');
-		$main_nav_products = ($main_nav_ac_products_view) ? 1 : 0;
-
-        
-		$main_nav_ac_settings_view_aul = $this->input->post('settings_aul_view');
-		$main_nav_settings = ($main_nav_ac_settings_view_aul) ? 1 : 0;
-		
-
-		$main_nav_ac_orders_view = $this->input->post('ac_transactions_view');
-		$main_nav_orders = ($main_nav_ac_orders_view) ? 1 : 0;
-
-		$main_nav_ac_customers_view = $this->input->post('ac_customer_view');
-		$main_nav_customer = ($main_nav_ac_customers_view) ? 1 : 0;
-
-		$main_nav_profile = 1;
-
-
-		$array_main_nav_id = [];
-
-		if ($queries->num_rows() > 0) {
-			foreach ($queries->result() as $row) {
-
-
-				if ($main_nav_orders == 1) {
-					$main_nav_href_string = 'orders_home'; //get reference in cp_main_navigation
-					if ($main_nav_href_string == $row->main_nav_href) {
-						$array_main_nav_id[] = $row->main_nav_id;
-					} 
-				}
-
-				if ($main_nav_profile == 1) {
-					$main_nav_href_string = 'profile_home'; //get reference in cp_main_navigation
-					if ($main_nav_href_string == $row->main_nav_href) {
-						$array_main_nav_id[] = $row->main_nav_id;
-					} 
-				}
-
-
-				if ($main_nav_products == 1) {
-					$main_nav_href_string = 'products_home'; //get reference in cp_main_navigation
-					if ($main_nav_href_string == $row->main_nav_href) {
-						$array_main_nav_id[] = $row->main_nav_id;
-					} 
-				}
-
-
-				if ($main_nav_settings == 1) {
-					$main_nav_href_string = 'settings_home'; //get reference in cp_main_navigation
-					if ($main_nav_href_string == $row->main_nav_href) {
-						$array_main_nav_id[] = $row->main_nav_id;
-					} 
-				}
-				
-				if ($main_nav_customer == 1) {
-					$main_nav_href_string = 'customers_home'; //get reference in cp_main_navigation
-					if ($main_nav_href_string == $row->main_nav_href) {
-						$array_main_nav_id[] = $row->main_nav_id;
-					} 
-				}
-
-
-			}
-		}
-
-		$list_main_nav_id = implode(', ', $array_main_nav_id); 
-
-		// end for cp_main_navigation purposes
-
-		// for cp_content_navigation purposes
-		$sql = "SELECT `id`, `cn_name` FROM `cp_content_navigation` WHERE `status` = 1";
-		$queries = $this->db->query($sql);
-
-
-		$ac_products_view = $this->input->post('ac_products_view');
-		$ac_products_view = ($ac_products_view) ? 1 : 0;
-        
-		$ac_settings_aul_view = $this->input->post('settings_aul_view');
-		$ac_settings_aul_view = ($ac_settings_aul_view) ? 1 : 0;
-        
-		$ac_orders_view = $this->input->post('ac_transactions_view');
-		$ac_orders_view = ($ac_orders_view) ? 1 : 0;
-
-		$ac_customers_view = $this->input->post('ac_customer_view');
-		$ac_customers_view = ($ac_customers_view) ? 1 : 0;
-		
-		$ac_profile_view = 1;
-
-		$array_content_nav_id = [];
-
-		if ($queries->num_rows() > 0) {
-			foreach ($queries->result() as $row) {
-
-				if ($ac_products_view == 1) {
-					$content_nav_href_string = 'Products'; //get reference in cp_content_navigation->cn_name
-					if ($content_nav_href_string == $row->cn_name) {
-						$array_content_nav_id[] = $row->id;
-					} 
-				}
-                
-                if($ac_settings_aul_view == 1){
-					$content_nav_href_string = 'User List'; //get reference in cp_content_navigation->cn_name
-					if ($content_nav_href_string == $row->cn_name) {
-						$array_content_nav_id[] = $row->id;
-					} 
-                }
-
-                if($ac_orders_view == 1){
-					$content_nav_href_string = 'Order List'; //get reference in cp_content_navigation->cn_name
-					if ($content_nav_href_string == $row->cn_name) {
-						$array_content_nav_id[] = $row->id;
-					} 
-                }
-
-                if($ac_profile_view == 1){
-					$content_nav_href_string = 'Profile Update'; //get reference in cp_content_navigation->cn_name
-					if ($content_nav_href_string == $row->cn_name) {
-						$array_content_nav_id[] = $row->id;
-					} 
-                }
-
-                if($ac_customers_view == 1){
-					$content_nav_href_string = 'Customer List'; //get reference in cp_content_navigation->cn_name
-					if ($content_nav_href_string == $row->cn_name) {
-						$array_content_nav_id[] = $row->id;
-					} 
-                }
-
-			}
-		}
-		$list_content_nav_id = implode(', ', $array_content_nav_id);
-		
-        // var_dump($list_main_nav_id);
-        // var_dump($functions);
-        // die();
-		// end for cp_content_navigation purposes
-
-		$argument = array(
-			$status,
-			password_hash($password,PASSWORD_BCRYPT,array('cost' => 12)),
-			$username,
-			$avatar,
-			$functions,
-			$list_main_nav_id,
-			$list_content_nav_id,
-			0,
-			0,
-			0,
-			1
-		);
-		$query="INSERT INTO sys_users (active, password, username, avatar, functions, access_nav, access_content_nav, failed_login_attempts, first_login, code_isset, login_code) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-		 $query = $this->db->query($query,$argument);
-
-		 return $query;
-	}
-
-	public function update_user($username, $password, $avatar, $functions, $id, $args = '', $muserlist = '')
-	{
-		// for cp_main_navigation purposes
-		$sql = "SELECT `main_nav_id`, `main_nav_href` FROM `cp_main_navigation` WHERE `enabled` > 0";
-		$queries = $this->db->query($sql);
-
 		$main_nav_ac_products_view = $this->input->post('main_nav_ac_products_view');
 		$main_nav_products = ($main_nav_ac_products_view) ? 1 : 0;
 
@@ -222,6 +61,20 @@ class Model_user_list extends CI_Model {
 		$main_nav_ac_dicounts_view = $main_nav_promotions == 0 ? $this->input->post('ac_sd_view') : $main_nav_ac_dicounts_view;
 		$main_nav_promotions = ($main_nav_ac_dicounts_view) ? 1 : 0;
 		//promotions end
+
+		//sales report start
+		$main_nav_ac_sales_report_view = $this->input->post('ac_sales_report_view');
+		$main_nav_promotions = ($main_nav_ac_dicounts_view) ? 1 : 0;
+
+		$main_nav_ac_sales_report_view = $main_nav_ac_sales_report_view == 0 ? $this->input->post('ac_sales_order_report_view') : $main_nav_ac_sales_report_view;
+		$main_nav_sales_report = ($main_nav_ac_sales_report_view) ? 1 : 0;
+		$main_nav_ac_sales_report_view = $main_nav_sales_report == 0 ? $this->input->post('ac_sales_top_products_view') : $main_nav_ac_sales_report_view;
+		$main_nav_sales_report = ($main_nav_ac_sales_report_view) ? 1 : 0;
+		$main_nav_ac_sales_report_view = $main_nav_sales_report == 0 ? $this->input->post('ac_sales_raw_data_view') : $main_nav_ac_sales_report_view;
+		$main_nav_sales_report = ($main_nav_ac_sales_report_view) ? 1 : 0;
+		$main_nav_ac_sales_report_view = $main_nav_sales_report == 0 ? $this->input->post('ac_inventory_report_view') : $main_nav_ac_sales_report_view;
+		$main_nav_sales_report = ($main_nav_ac_sales_report_view) ? 1 : 0;
+		//sales report end
 
 		$main_nav_profile = 1;
 
@@ -271,7 +124,12 @@ class Model_user_list extends CI_Model {
 						$array_main_nav_id[] = $row->main_nav_id;
 					} 
 				}
-
+				if($main_nav_sales_report == 1) {
+					$main_nav_href_string = 'reports_home'; //get reference in cp_main_navigation
+					if ($main_nav_href_string == $row->main_nav_href) {
+						$array_main_nav_id[] = $row->main_nav_id;
+					} 
+				}
 
 			}
 		}
@@ -283,6 +141,8 @@ class Model_user_list extends CI_Model {
 		// for cp_content_navigation purposes
 		$sql = "SELECT `id`, `cn_name` FROM `cp_content_navigation` WHERE `status` = 1";
 		$queries = $this->db->query($sql);
+
+
 
 		$ac_products_view = $this->input->post('ac_products_view');
 		$ac_products_view = ($ac_products_view) ? 1 : 0;
@@ -308,6 +168,23 @@ class Model_user_list extends CI_Model {
 		$ac_sd_view = $this->input->post('ac_sd_view');
 		$ac_sd_view = ($ac_sd_view) ? 1 : 0;
 		
+
+		$ac_sales_report_view = $this->input->post('ac_sales_report_view');
+		$ac_sales_report_view = ($ac_sales_report_view) ? 1 : 0;
+
+		$ac_sales_order_report_view = $this->input->post('ac_sales_order_report_view');
+		$ac_sales_order_report_view = ($ac_sales_order_report_view) ? 1 : 0;
+
+		$ac_sales_top_products_view = $this->input->post('ac_sales_top_products_view');
+		$ac_sales_top_products_view = ($ac_sales_top_products_view) ? 1 : 0;
+
+		$ac_sales_raw_data_view = $this->input->post('ac_sales_raw_data_view');
+		$ac_sales_raw_data_view = ($ac_sales_raw_data_view) ? 1 : 0;
+
+		$ac_inventory_report_view = $this->input->post('ac_inventory_report_view');
+		$ac_inventory_report_view = ($ac_inventory_report_view) ? 1 : 0;
+
+
 		$ac_profile_view = 1;
 
 		$array_content_nav_id = [];
@@ -371,6 +248,331 @@ class Model_user_list extends CI_Model {
 				
                 if($ac_shd_view == 1){
 					$content_nav_href_string = 'Shipping Discounts'; //get reference in cp_content_navigation->cn_name
+					if ($content_nav_href_string == $row->cn_name) {
+						$array_content_nav_id[] = $row->id;
+					} 
+                }
+				
+				
+                if($ac_sales_report_view == 1){
+					$content_nav_href_string = 'Sales Report'; //get reference in cp_content_navigation->cn_name
+					if ($content_nav_href_string == $row->cn_name) {
+						$array_content_nav_id[] = $row->id;
+					} 
+                }
+				
+                if($ac_sales_order_report_view == 1){
+					$content_nav_href_string = 'Order Report'; //get reference in cp_content_navigation->cn_name
+					if ($content_nav_href_string == $row->cn_name) {
+						$array_content_nav_id[] = $row->id;
+					} 
+                }
+				
+                if($ac_sales_top_products_view == 1){
+					$content_nav_href_string = 'Top Products Report'; //get reference in cp_content_navigation->cn_name
+					if ($content_nav_href_string == $row->cn_name) {
+						$array_content_nav_id[] = $row->id;
+					} 
+                }
+				
+                if($ac_sales_raw_data_view == 1){
+					$content_nav_href_string = 'Sales Raw Data Report'; //get reference in cp_content_navigation->cn_name
+					if ($content_nav_href_string == $row->cn_name) {
+						$array_content_nav_id[] = $row->id;
+					} 
+                }
+				
+                if($ac_inventory_report_view == 1){
+					$content_nav_href_string = 'Inventory List Report'; //get reference in cp_content_navigation->cn_name
+					if ($content_nav_href_string == $row->cn_name) {
+						$array_content_nav_id[] = $row->id;
+					} 
+                }
+				
+                if($ac_sd_view == 1){
+					$content_nav_href_string = 'Shop Discounts'; //get reference in cp_content_navigation->cn_name
+					if ($content_nav_href_string == $row->cn_name) {
+						$array_content_nav_id[] = $row->id;
+					} 
+                }
+			}
+		}
+
+		$list_content_nav_id = implode(', ', $array_content_nav_id);
+		
+		// end for cp_content_navigation purposes
+        // var_dump($list_main_nav_id);
+        // var_dump($functions);
+        // die();
+		// end for cp_content_navigation purposes
+
+		$argument = array(
+			$status,
+			password_hash($password,PASSWORD_BCRYPT,array('cost' => 12)),
+			$username,
+			$avatar,
+			$functions,
+			$list_main_nav_id,
+			$list_content_nav_id,
+			0,
+			0,
+			0,
+			1
+		);
+		$query="INSERT INTO sys_users (active, password, username, avatar, functions, access_nav, access_content_nav, failed_login_attempts, first_login, code_isset, login_code) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		 $query = $this->db->query($query,$argument);
+
+		 return $query;
+	}
+
+	public function update_user($username, $password, $avatar, $functions, $id, $args = '', $muserlist = '')
+	{
+		// for cp_main_navigation purposes
+		$sql = "SELECT `main_nav_id`, `main_nav_href` FROM `cp_main_navigation` WHERE `enabled` > 0";
+		$queries = $this->db->query($sql);
+
+		$main_nav_ac_products_view = $this->input->post('main_nav_ac_products_view');
+		$main_nav_products = ($main_nav_ac_products_view) ? 1 : 0;
+
+        
+		$main_nav_ac_settings_view_aul = $this->input->post('settings_aul_view');
+		$main_nav_settings = ($main_nav_ac_settings_view_aul) ? 1 : 0;
+
+		$main_nav_ac_orders_view = $this->input->post('ac_transactions_view');
+		$main_nav_orders = ($main_nav_ac_orders_view) ? 1 : 0;
+
+		$main_nav_ac_customers_view = $this->input->post('ac_customer_view');
+		$main_nav_customer = ($main_nav_ac_customers_view) ? 1 : 0;
+		
+		//promotions start
+		$main_nav_ac_dicounts_view = $this->input->post('ac_shd_view');
+		$main_nav_promotions = ($main_nav_ac_dicounts_view) ? 1 : 0;
+
+		$main_nav_ac_dicounts_view = $main_nav_ac_dicounts_view == 0 ? $this->input->post('ac_pd_view') : $main_nav_ac_dicounts_view;
+		$main_nav_promotions = ($main_nav_ac_dicounts_view) ? 1 : 0;
+		$main_nav_ac_dicounts_view = $main_nav_promotions == 0 ? $this->input->post('ac_sd_view') : $main_nav_ac_dicounts_view;
+		$main_nav_promotions = ($main_nav_ac_dicounts_view) ? 1 : 0;
+		//promotions end
+		
+		//sales report start
+		$main_nav_ac_sales_report_view = $this->input->post('ac_sales_report_view');
+		$main_nav_promotions = ($main_nav_ac_dicounts_view) ? 1 : 0;
+
+		$main_nav_ac_sales_report_view = $main_nav_ac_sales_report_view == 0 ? $this->input->post('ac_sales_order_report_view') : $main_nav_ac_sales_report_view;
+		$main_nav_sales_report = ($main_nav_ac_sales_report_view) ? 1 : 0;
+		$main_nav_ac_sales_report_view = $main_nav_sales_report == 0 ? $this->input->post('ac_sales_top_products_view') : $main_nav_ac_sales_report_view;
+		$main_nav_sales_report = ($main_nav_ac_sales_report_view) ? 1 : 0;
+		$main_nav_ac_sales_report_view = $main_nav_sales_report == 0 ? $this->input->post('ac_sales_raw_data_view') : $main_nav_ac_sales_report_view;
+		$main_nav_sales_report = ($main_nav_ac_sales_report_view) ? 1 : 0;
+		$main_nav_ac_sales_report_view = $main_nav_sales_report == 0 ? $this->input->post('ac_inventory_report_view') : $main_nav_ac_sales_report_view;
+		$main_nav_sales_report = ($main_nav_ac_sales_report_view) ? 1 : 0;
+		//sales report end
+
+		$main_nav_profile = 1;
+
+		$array_main_nav_id = [];
+
+		if ($queries->num_rows() > 0) {
+			foreach ($queries->result() as $row) {
+
+				if ($main_nav_orders == 1) {
+					$main_nav_href_string = 'orders_home'; //get reference in cp_main_navigation
+					if ($main_nav_href_string == $row->main_nav_href) {
+						$array_main_nav_id[] = $row->main_nav_id;
+					} 
+				}
+
+				if ($main_nav_products == 1) {
+					$main_nav_href_string = 'products_home'; //get reference in cp_main_navigation
+					if ($main_nav_href_string == $row->main_nav_href) {
+						$array_main_nav_id[] = $row->main_nav_id;
+					} 
+				}
+				
+				if ($main_nav_settings == 1) {
+					$main_nav_href_string = 'settings_home'; //get reference in cp_main_navigation
+					if ($main_nav_href_string == $row->main_nav_href) {
+						$array_main_nav_id[] = $row->main_nav_id;
+					} 
+				}
+
+				if ($main_nav_profile == 1) {
+					$main_nav_href_string = 'profile_home'; //get reference in cp_main_navigation
+					if ($main_nav_href_string == $row->main_nav_href) {
+						$array_main_nav_id[] = $row->main_nav_id;
+					} 
+				}
+
+				
+				if ($main_nav_customer == 1) {
+					$main_nav_href_string = 'customers_home'; //get reference in cp_main_navigation
+					if ($main_nav_href_string == $row->main_nav_href) {
+						$array_main_nav_id[] = $row->main_nav_id;
+					} 
+				}
+				if ($main_nav_promotions == 1) {
+					$main_nav_href_string = 'promotions_home'; //get reference in cp_main_navigation
+					if ($main_nav_href_string == $row->main_nav_href) {
+						$array_main_nav_id[] = $row->main_nav_id;
+					} 
+				}
+				if($main_nav_sales_report == 1) {
+					$main_nav_href_string = 'reports_home'; //get reference in cp_main_navigation
+					if ($main_nav_href_string == $row->main_nav_href) {
+						$array_main_nav_id[] = $row->main_nav_id;
+					} 
+				}
+
+
+			}
+		}
+
+		$list_main_nav_id = implode(', ', $array_main_nav_id); 
+
+		// end for cp_main_navigation purposes
+
+		// for cp_content_navigation purposes
+		$sql = "SELECT `id`, `cn_name` FROM `cp_content_navigation` WHERE `status` = 1";
+		$queries = $this->db->query($sql);
+
+		$ac_products_view = $this->input->post('ac_products_view');
+		$ac_products_view = ($ac_products_view) ? 1 : 0;
+        
+		$ac_settings_aul_view = $this->input->post('settings_aul_view');
+		$ac_settings_aul_view = ($ac_settings_aul_view) ? 1 : 0;
+
+		$ac_settings_web_view = $this->input->post('settings_web_view');
+		$ac_settings_web_view = ($ac_settings_web_view) ? 1 : 0;
+		
+		$ac_orders_view = $this->input->post('ac_transactions_view');
+		$ac_orders_view = ($ac_orders_view) ? 1 : 0;
+
+		$ac_customers_view = $this->input->post('ac_customer_view');
+		$ac_customers_view = ($ac_customers_view) ? 1 : 0;
+
+		$ac_pd_view = $this->input->post('ac_pd_view');
+		$ac_pd_view = ($ac_pd_view) ? 1 : 0;
+
+		$ac_shd_view = $this->input->post('ac_shd_view');
+		$ac_shd_view = ($ac_shd_view) ? 1 : 0;
+
+		$ac_sd_view = $this->input->post('ac_sd_view');
+		$ac_sd_view = ($ac_sd_view) ? 1 : 0;
+		
+
+		$ac_sales_report_view = $this->input->post('ac_sales_report_view');
+		$ac_sales_report_view = ($ac_sales_report_view) ? 1 : 0;
+
+		$ac_sales_order_report_view = $this->input->post('ac_sales_order_report_view');
+		$ac_sales_order_report_view = ($ac_sales_order_report_view) ? 1 : 0;
+
+		$ac_sales_top_products_view = $this->input->post('ac_sales_top_products_view');
+		$ac_sales_top_products_view = ($ac_sales_top_products_view) ? 1 : 0;
+
+		$ac_sales_raw_data_view = $this->input->post('ac_sales_raw_data_view');
+		$ac_sales_raw_data_view = ($ac_sales_raw_data_view) ? 1 : 0;
+
+		$ac_inventory_report_view = $this->input->post('ac_inventory_report_view');
+		$ac_inventory_report_view = ($ac_inventory_report_view) ? 1 : 0;
+
+		$ac_profile_view = 1;
+
+		$array_content_nav_id = [];
+
+		if ($queries->num_rows() > 0) {
+			foreach ($queries->result() as $row) {
+
+				if ($ac_products_view == 1) {
+					$content_nav_href_string = 'Products'; //get reference in cp_content_navigation->cn_name
+					if ($content_nav_href_string == $row->cn_name) {
+						$array_content_nav_id[] = $row->id;
+					} 
+				}
+                
+                if($ac_settings_aul_view == 1){
+					$content_nav_href_string = 'User List'; //get reference in cp_content_navigation->cn_name
+					if ($content_nav_href_string == $row->cn_name) {
+						$array_content_nav_id[] = $row->id;
+					} 
+                }
+                
+                if($ac_settings_web_view == 1){
+					$content_nav_href_string = 'Website Information'; //get reference in cp_content_navigation->cn_name
+					if ($content_nav_href_string == $row->cn_name) {
+						$array_content_nav_id[] = $row->id;
+					} 
+                }
+				
+                if($ac_orders_view == 1){
+					$content_nav_href_string = 'Order List'; //get reference in cp_content_navigation->cn_name
+					if ($content_nav_href_string == $row->cn_name) {
+						$array_content_nav_id[] = $row->id;
+					} 
+                }
+
+                if($ac_profile_view == 1){
+					$content_nav_href_string = 'Profile Update'; //get reference in cp_content_navigation->cn_name
+					if ($content_nav_href_string == $row->cn_name) {
+						$array_content_nav_id[] = $row->id;
+					} 
+					
+					$content_nav_href_string = 'Change Password'; //get reference in cp_content_navigation->cn_name
+					if ($content_nav_href_string == $row->cn_name) {
+						$array_content_nav_id[] = $row->id;
+					} 
+                }
+				
+                if($ac_customers_view == 1){
+					$content_nav_href_string = 'Customer List'; //get reference in cp_content_navigation->cn_name
+					if ($content_nav_href_string == $row->cn_name) {
+						$array_content_nav_id[] = $row->id;
+					} 
+                }
+				
+                if($ac_pd_view == 1){
+					$content_nav_href_string = 'Products Discount'; //get reference in cp_content_navigation->cn_name
+					if ($content_nav_href_string == $row->cn_name) {
+						$array_content_nav_id[] = $row->id;
+					} 
+                }
+				
+                if($ac_shd_view == 1){
+					$content_nav_href_string = 'Shipping Discounts'; //get reference in cp_content_navigation->cn_name
+					if ($content_nav_href_string == $row->cn_name) {
+						$array_content_nav_id[] = $row->id;
+					} 
+                }
+				
+                if($ac_sales_report_view == 1){
+					$content_nav_href_string = 'Sales Report'; //get reference in cp_content_navigation->cn_name
+					if ($content_nav_href_string == $row->cn_name) {
+						$array_content_nav_id[] = $row->id;
+					} 
+                }
+				
+                if($ac_sales_order_report_view == 1){
+					$content_nav_href_string = 'Order Report'; //get reference in cp_content_navigation->cn_name
+					if ($content_nav_href_string == $row->cn_name) {
+						$array_content_nav_id[] = $row->id;
+					} 
+                }
+				
+                if($ac_sales_top_products_view == 1){
+					$content_nav_href_string = 'Top Products Report'; //get reference in cp_content_navigation->cn_name
+					if ($content_nav_href_string == $row->cn_name) {
+						$array_content_nav_id[] = $row->id;
+					} 
+                }
+				
+                if($ac_sales_raw_data_view == 1){
+					$content_nav_href_string = 'Sales Raw Data Report'; //get reference in cp_content_navigation->cn_name
+					if ($content_nav_href_string == $row->cn_name) {
+						$array_content_nav_id[] = $row->id;
+					} 
+                }
+				
+                if($ac_inventory_report_view == 1){
+					$content_nav_href_string = 'Inventory List Report'; //get reference in cp_content_navigation->cn_name
 					if ($content_nav_href_string == $row->cn_name) {
 						$array_content_nav_id[] = $row->id;
 					} 

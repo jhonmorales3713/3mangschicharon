@@ -308,6 +308,33 @@ class Model_access_control extends CI_Model {
         }else{
             $this->access_control['shop_discount']['delete'] = 0;
 		}
+
+        
+        if(isset($data['ac_sales_report_view'])) {
+            $this->access_control['sales_report']['view'] = 1;
+        }else{
+            $this->access_control['sales_report']['view'] = 0;
+		}
+        if(isset($data['ac_sales_order_report_view'])) {
+            $this->access_control['order_report']['vieww'] = 1;
+        }else{
+            $this->access_control['order_report']['view'] = 0;
+		}
+        if(isset($data['ac_sales_top_products_view'])) {
+            $this->access_control['top_products']['view'] = 1;
+        }else{
+            $this->access_control['top_products']['view'] = 0;
+		}
+        if(isset($data['ac_sales_raw_data_view'])) {
+            $this->access_control['sales_report_raw']['view'] = 1;
+        }else{
+            $this->access_control['sales_report_raw']['view'] = 0;
+		}
+        if(isset($data['ac_inventory_report_view'])) {
+            $this->access_control['inventory_report']['view'] = 1;
+        }else{
+            $this->access_control['inventory_report']['view'] = 0;
+		}
 		
 
 		return json_encode($this->access_control);
