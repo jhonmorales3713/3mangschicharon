@@ -1,13 +1,4 @@
 <!-- change the data-num and data-subnum for numbering of navigation -->
-<form action="<?=base_url('admin/Main_products/products_list_pdf')?>" method="post" target="_blank">
-    <input type="hidden" name="date_from" id="date_from">
-    <input type="hidden" name="_shops" id="_shops">
-    <input type="hidden" name="_category" id="category">
-    <input type="hidden" name="_name" id="_name">
-    <input type="hidden" name="_record_status" id="_record_status">
-    <input type="hidden" name="_search" id="_search">
-    <button class="btn-mobile-w-100 btn btn-primary btnExport" type="submit" id="s" style="">Export</button>&nbsp;
-</form>
 <div class="col-12">
     <div class="alert alert-secondary ml-4 color-dark" role="alert">
         <span class="font-weight-bold"><a class="text-dark" href="<?=base_url('admin/Main_products/products_home/Products');?>"><?=$active_page?></a></span>
@@ -48,7 +39,7 @@
                                 <div class="form-group">
                                     <select name="_categories" class="form-control material_josh form-control-sm search-input-text enter_search">
                                         <option value="">All Category</option>
-                                        <option value="0">By Sizes</option>
+                                        <!-- <option value="0">By Sizes</option> -->
                                         <?php foreach ($categories as $category): ?>
                                             <option value="<?=$category['id'];?>"><?=$category['category_name'];?></option>
                                         <?php endforeach ?>
@@ -73,6 +64,28 @@
                 <div class="card-body table-body">
                     <div class="col-md-12 col-lg-auto table-search-container text-right d-flex justify-content-end">
                         <div class="row no-gutters ">
+                            <div class="col-12 col-md-4 px-1 mb-3">
+                                <form action="<?=base_url('admin/Main_products/export_product_table')?>" method="post" target="_blank">
+                                    <input type="hidden" name="date_from" id="date_from">
+                                    <input type="hidden" name="_shops" id="_shops">
+                                    <input type="hidden" name="_category" id="category">
+                                    <input type="hidden" name="_name" id="_name">
+                                    <input type="hidden" name="_record_status" id="_record_status">
+                                    <input type="hidden" name="_search" id="_search">
+                                    <button class="btn-mobile-w-100 btn btn-primary btnExport" type="submit" id="btnExport" style="display:none">Export To XLSX</button>&nbsp;
+                                </form>
+                            </div>
+                            <div class="col-12 col-md-3 px-1 mb-3">
+                                <form action="<?=base_url('admin/Main_products/products_list_pdf')?>" method="post" target="_blank">
+                                    <input type="hidden" name="date_from" id="date_from">
+                                    <input type="hidden" name="_shops" id="_shops">
+                                    <input type="hidden" name="_category" id="category">
+                                    <input type="hidden" name="_name" id="_name">
+                                    <input type="hidden" name="_record_status" id="_record_status">
+                                    <input type="hidden" name="_search" id="_search">
+                                    <button class="btn-mobile-w-100 btn btn-primary btnExport" type="submit" id="s" style="">Export to PDF</button>&nbsp;
+                                </form>
+                            </div>
                             <div class="col-12 col-md-auto">
                                 <?php if($this->loginstate->get_access()['products']['create'] == 1){ ?>
                                         <button class="btn-mobile-w-100 mx-0 mx-sm-2 btn btn-primary mb-3 mb-md-0" id="addBtn">Add</button>
@@ -80,17 +93,6 @@
                             </div>
                             <div class="col-12 col-md-auto">
                                 <div class="row no-gutters">
-                                    <div class="col-12 col-md-auto px-1 mb-3">
-                                        <form action="<?=base_url('admin/Main_products/export_product_table')?>" method="post" target="_blank">
-                                            <input type="hidden" name="date_from" id="date_from">
-                                            <input type="hidden" name="_shops" id="_shops">
-                                            <input type="hidden" name="_category" id="category">
-                                            <input type="hidden" name="_name" id="_name">
-                                            <input type="hidden" name="_record_status" id="_record_status">
-                                            <input type="hidden" name="_search" id="_search">
-                                            <button class="btn-mobile-w-100 btn btn-primary btnExport" type="submit" id="btnExport" style="display:none">Export</button>&nbsp;
-                                        </form>
-                                    </div>
                                     <div class="col-6 col-md-auto px-1 mb-3">
                                         <a class="btn-mobile-w-100 btn btn-outline-secondary py-1 btn-block" type="button" id="search_clear_btn"><i class="fa fa-refresh" aria-hidden="true"></i></a>
                                     </div>
