@@ -62,8 +62,8 @@
 		</div>
 		<div class="">
 			<div class="nav nav-tabs p-0 row" id="v-pills-tab">
-				<a class="nav-link col active" id="v-pills-dashboard-tab" data-toggle="pill" href="#v-pills-dashboard" role="tab" aria-controls="v-pills-dashboard" aria-selected="true">Dashboard <span class="check-count badge-success rounded text-xs rounded-lg px-1 bg-teal-500 text-light">0</span></a>
-				<a class="nav-link col" id="v-pills-order-headers-tab" data-toggle="pill" href="#v-pills-order-headers" role="tab" aria-controls="v-pills-order-headers" aria-selected="false" class="row m-0">Orders <span class="check-count badge-success rounded text-xs rounded-lg px-1 bg-teal-500 text-light">0</span></a>
+				<!-- <a class="nav-link col active" id="v-pills-dashboard-tab" data-toggle="pill" href="#v-pills-dashboard" role="tab" aria-controls="v-pills-dashboard" aria-selected="true">Dashboard <span class="check-count badge-success rounded text-xs rounded-lg px-1 bg-teal-500 text-light">0</span></a> -->
+				<a class="nav-link col active" id="v-pills-order-headers-tab" data-toggle="pill" href="#v-pills-order-headers" role="tab" aria-controls="v-pills-order-headers" aria-selected="false" class="row m-0">Orders <span class="check-count badge-success rounded text-xs rounded-lg px-1 bg-teal-500 text-light">0</span></a>
 				<a class="nav-link col" id="v-pills-products-tab" data-toggle="pill" href="#v-pills-products" role="tab" aria-controls="v-pills-products" aria-selected="false" class="row m-0">Products <span class="check-count badge-success rounded text-xs rounded-lg px-1 bg-teal-500 text-light">0</span></a>
 				<!-- <a class="nav-link col" id="v-pills-shops-tab" data-toggle="pill" href="#v-pills-shops" role="tab" aria-controls="v-pills-shops" aria-selected="false">Shops <span class="check-count badge-success rounded text-xs rounded-lg px-1 bg-teal-500 text-light">0</span></a>-->
 				<a class="nav-link col" id="v-pills-customers-tab" data-toggle="pill" href="#v-pills-customers" role="tab" aria-controls="v-pills-customers" aria-selected="false">Customers <span class="check-count badge-success rounded text-xs rounded-lg px-1 bg-teal-500 text-light">0</span></a>
@@ -74,7 +74,7 @@
 				<!-- <a class="nav-link col" id="v-pills-dev_settings-tab" data-toggle="pill" href="#v-pills-dev_settings" role="tab" aria-controls="v-pills-dev_settings" aria-selected="false">Developer Settings <span class="check-count badge-success rounded text-xs rounded-lg px-1 bg-teal-500 text-light">0</span></a> -->
 			</div>
 			<div class="tab-content" id="v-pills-tabContent">
-				<div class="tab-pane fade show active w-100 online_ordering parent_section has-seller-access has-seller-branch-access has-food-hub-access" id="v-pills-dashboard" role="tabpanel" aria-labelledby="v-pills-dashboard-tab">
+				<!-- <div class="tab-pane fade show active w-100 online_ordering parent_section has-seller-access has-seller-branch-access has-food-hub-access" id="v-pills-dashboard" role="tabpanel" aria-labelledby="v-pills-dashboard-tab">
 					<div class="py-3 px-4 row m-0">
 						<div class="col-6 col-sm-3">
 							<label> 
@@ -147,8 +147,8 @@
 							</div>
 						</div>
 					</div>
-				</div>
-				<div class="tab-pane fade w-100 online_ordering parent_section has-seller-access has-seller-branch-access has-food-hub-access" id="v-pills-order-headers" role="tabpanel" aria-labelledby="v-pills-order-headers-tab">
+				</div> -->
+				<div class="tab-pane fade w-100 show active online_ordering parent_section has-seller-access has-seller-branch-access has-food-hub-access" id="v-pills-order-headers" role="tabpanel" aria-labelledby="v-pills-order-headers-tab">
 					<div class="py-3 px-4 row m-0 mb-1">
 						<div class="col-6 col-sm-3">
 							<label> 
