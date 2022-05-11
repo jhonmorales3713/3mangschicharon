@@ -1446,7 +1446,7 @@
 										Sales Report
 									</label>
 								</div>
-								<div class="col-6 col-sm-3">
+								<!-- <div class="col-6 col-sm-3">
 									<label>
 										<input type="checkbox" id="ac_sales_order_report_view" name="ac_sales_order_report_view" class="checkbox-template m-r-xs mr-2">
 										Order Report
@@ -1463,7 +1463,7 @@
 										<input type="checkbox" id="ac_sales_raw_data_view" name="ac_sales_raw_data_view" class="checkbox-template m-r-xs mr-2">
 										Order Report Raw Data
 									</label>
-								</div>
+								</div> -->
 								<div class="col-6 col-sm-3">
 									<label>
 										<input type="checkbox" id="ac_inventory_report_view" name="ac_inventory_report_view" class="checkbox-template m-r-xs mr-2">

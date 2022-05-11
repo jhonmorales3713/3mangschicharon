@@ -621,7 +621,7 @@
         <div class="col-lg-12 col-12 text-right col-md-auto px-1 mb-3">
             <div class="card">
                 <div class="card-body">
-                    <button type="button" class="btn-mobile-w-100 btn btn-success printBtn mb-2 mb-md-0" id="printBtn" data-reference_num="<?=$reference_num?>">Print</button>
+                    <a  class="btn-mobile-w-100 btn btn-success printBtn mb-2 mb-md-0" target="_blank" href="<?=base_url("admin/Main_reports/export_receipt/".$token."/".en_dec('en',$reference_num))?>" id="printBtn" data-reference_num="<?=$reference_num?>">Print</a>
                     <button type="button" class="btn-mobile-w-100 btn btn-outline-secondary backBtn mb-2 mb-md-0" id="backBtn">Close</button>
                     <!-- <?php if($order_details['paystatus'] == 1 && $branch_count > 0 && $order_details['sales_order_status'] == 'p' && $this->loginstate->get_access()['transactions']['reassign'] == 1 && $branchid == 0 && $refunded_all == 0){ ?>
                         <button type="button" class="btn-mobile-w-100 btn btn-success reassignBtn mb-2 mb-md-0" id="reassignBtn" data-value="<?=$mainshopid?>" data-branchid="<?=$branch_id?>" data-reference_num="<?=$reference_num?>">Re-Assign</button>

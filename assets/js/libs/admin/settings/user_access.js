@@ -486,6 +486,26 @@ function populate_edit_user_form(data) {
 		if(('customer' in fn) && fn.customer.disable == 1) {
 			$('#ac_customer_disable').prop('checked', true);
 		}
+		
+		if(('sales_report' in fn) && fn.sales_report.view == 1) {
+			$('#ac_sales_report_view').prop('checked', true);
+		}
+		
+		if(('inventory_report' in fn) && fn.inventory_report.view == 1) {
+			$('#ac_inventory_report_view').prop('checked', true);
+		}
+		
+		if(('order_report' in fn) && fn.order_report.view == 1) {
+			$('#ac_sales_order_report_view').prop('checked', true);
+		}
+		
+		if(('top_products' in fn) && fn.top_products.view == 1) {
+			$('#ac_sales_top_products_view').prop('checked', true);
+		}
+		
+		if(('sales_report_raw' in fn) && fn.sales_report_raw.view == 1) {
+			$('#sales_report_raw').prop('checked', true);
+		}
 
 	}
 	run_sub_parent_checkbox_checker();

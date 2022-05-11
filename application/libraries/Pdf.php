@@ -11,10 +11,10 @@ class Pdf extends TCPDF{
 
         $this->img_file = K_PATH_IMAGES.'header.jpg';
         $this->img_file_footer = K_PATH_IMAGES.'footer.jpg';
+        $this->params = $this->CI->session->params;
         //$this->flower_line = K_PATH_IMAGES.'flower_line.png';
         //$this->params = $this->CI->session->params;
     }
-
     // Page header
     public function Header() {
         $x = 0;
@@ -23,8 +23,33 @@ class Pdf extends TCPDF{
         $h = 980;        
         
         // Header Image
-        $this->Image($this->img_file, $x, $y, '', 80, 'JPG', '', '', true, 150, '', false, false, 0, false, false, false);
+        if($this->params) {
+            if(isset($this->params['pdf_type'])){
+                $this->receipt_header();
+            }
+        }else{
+            $this->Image($this->img_file, $x, $y, '', 80, 'JPG', '', '', true, 150, '', false, false, 0, false, false, false);
+        }
         
+    }
+    //landscape header
+    public function receipt_header(){
+        $x = 0;
+        $y = 0;
+        $w = 0;
+        $h = 0;
+        $this->Image($this->img_file, $x, $y, '', 60, 'JPG', '', '', true, 150, '', false, false, 0, false, false, false);
+    }
+    // Page footer
+    public function receipt_footer() {
+        $x = 0;
+        $y = 550;
+        $w = 0;
+        $h = 0;
+        $this->SetY(0);
+        $this->SetTextColor(255,255,255);
+        $this->Image($this->img_file_footer, $x, $y, '', 50, 'JPG', '', '', true, 150, '', false, false, 0, false, false, false);
+        $this->Cell(0, 20, 'Page '.$this->getAliasNumPage().'/'.$this->getAliasNbPages(), 0, false, 'C', 0, '', 0, false, 'T', 'M');
     }
     // Page footer
     public function Footer() {
@@ -40,7 +65,13 @@ class Pdf extends TCPDF{
         // Set font
         // $this->SetFont('helvetica', 'I', 7);
         // Page footer image
-        $this->Image($this->img_file_footer, $x, $y, '', 70, 'JPG', '', '', true, 100, '', false, false, 0, false, false, false);
+        if($this->params) {
+            if(isset($this->params['pdf_type'])){
+                $this->receipt_footer();
+            }
+        }else{
+            $this->Image($this->img_file_footer, $x, $y, '', 70, 'JPG', '', '', true, 100, '', false, false, 0, false, false, false);
+        }
         // Page number
         // $this->Write(0, $this->img_file_footer, '', 0, 'C', true, 0, false, false, 0);
 
@@ -51,7 +82,7 @@ class Pdf extends TCPDF{
     }
 
 
-    public function load_pdf($title, $pages, $filename, $use_template = false, $filter = '', $orientation = 'p'){
+    public function load_pdf($title, $pages, $filename, $use_template = false, $filter = '', $orientation = 'p', $paper_size = 'A4'){
         if($use_template == TRUE){
             $data['view']   = $pages;
             $data['title']  = $title;
@@ -69,13 +100,13 @@ class Pdf extends TCPDF{
         $obj_pdf->SetAutoPageBreak(true, 31);
         $obj_pdf->SetDisplayMode('real', 'default');
 
-        $this->show_output($obj_pdf, $pages, $filename, $orientation);
+        $this->show_output($obj_pdf, $pages, $filename, $orientation,$paper_size);
     }    
 
-    public function show_output($obj_pdf,$pages,$filename, $orientation = 'p'){
+    public function show_output($obj_pdf,$pages,$filename, $orientation = 'p',$paper_size = 'A4'){
         if(is_array($pages)){
             foreach($pages as $page) {
-                $obj_pdf->AddPage($orientation,'FOLIO');
+                $obj_pdf->AddPage($orientation,$paper_size);
                 //solution to page size default LETTER into LEGAL
                 ob_start();
                 echo $page;
@@ -84,7 +115,7 @@ class Pdf extends TCPDF{
                 $obj_pdf->writeHTML($content, true, false, true, false, '');
             }
         }else{
-            $obj_pdf->AddPage($orientation,'FOLIO');
+            $obj_pdf->AddPage($orientation,$paper_size);
             ob_start();
             echo $pages;
             $content.= ob_get_contents();

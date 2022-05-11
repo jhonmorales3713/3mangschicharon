@@ -805,9 +805,9 @@ class Model_orders extends CI_Model {
 			$nestedData[] = $contact_no;
 			$nestedData[] = $city;
             $nestedData[] = $subtotal_unconverted;
-            $nestedData[] = number_format($subtotal_unconverted-$subtotal_converted,2);
+            $nestedData[] = number_format(floatval(str_replace(',','',$subtotal_unconverted))-floatval(str_replace(',','',$subtotal_converted)),2);
             $nestedData[] = 50;
-            $nestedData[] = number_format($subtotal_unconverted+50,2);
+            $nestedData[] = number_format(floatval(str_replace(',','',$subtotal_unconverted))+50,2);
 
 			$nestedData[] = display_payment_status($payment_status, $payment_method,$exportable);
 			$nestedData[] = display_order_status($row['status_id'],$exportable);

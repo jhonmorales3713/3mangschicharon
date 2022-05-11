@@ -320,6 +320,26 @@ class Main_reports extends CI_Controller {
         $this->pdf->load_pdf($title, $page, $filename, TRUE, $data);
         
     }
+
+    public function export_receipt($token = '', $orderid =''){
+
+        $orderid = en_dec('dec',$orderid);
+        $title = '';
+        $filename = $title;        
+        $data = $this->model_orders->orders_details($orderid);
+        // $request = url_decode(json_decode($this->input->post('filter')));
+        //print_r( $this->model_products->product_table(0, $request, true)['data']);
+
+        $view_data['data'] = $data[0];
+        // print_r($view_data['data']);
+        // print_r($request);
+        // print_r($this->Model_reports->sales_report_table($request, TRUE));
+        $params = Array("pdf_type"=>"receipt");
+        $this->session->set_flashdata('params', $params);
+        $page = $this->load->view('admin/reports/receipt_pdf',$view_data,TRUE);
+        $this->pdf->load_pdf($title, $page, $filename, FALSE, $data,'','A5');
+    }
+    
     public function inventory_report_pdf($post_data = '',$type = ''){
 
         $data = $this->input->post();

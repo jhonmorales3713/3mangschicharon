@@ -474,6 +474,10 @@ class Model_reports extends CI_Model {
                 <i class="fa fa-ellipsis-v fa-lg" id="dropdown_menu_button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-hidden="true"></i>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown_menu_button">
                     <a class="dropdown-item"  href="'.base_url('admin/Main_orders/orders_view/'.$token.'/'.$row["order_id"]).'"><i class="fa fa-pencil" aria-hidden="true"></i> View</a>
+					
+					<a class="dropdown-item btn_changestatus" target="_blank"href="'.base_url('admin/Main_reports/export_receipt/'.$token.'/'.en_dec('en',$row["order_id"])).'">
+					<i class="fa fa-print" aria-hidden="true"></i>Print Receipt
+					</a>
                 </div>
             </div>';
 
