@@ -12,16 +12,21 @@
     <tbody>
         <tr>
             <td>
-                <p style="color: #222; margin-top: 0;">
-                <?php if(isset($customer_name)){ ?>
-                    Your order #<?= $reference_num; ?> has been placed. Customer has also
-                    been notified to start processing order and will update them once it's on its way.
-                  <?php }else{ ?>
-                    Your order #<?= $reference_num; ?> has been confirmed. Our Shop has also
-                    been notified to start processing your order and will update you once it's on its way. Thank you for shopping with
-                    us and hope to see you soon
-                 <?php }?>
-                 </p>
+                <?php if(isset($include_receipt)){?>
+                  Your Order #<?= $reference_num; ?> has been completed. To view the receipt for this transaction, you can download using the link below<br>
+                  <a style="padding:10px;background-color:#28A745;border-radius:10px;color:white;" target="_blank" href="<?=base_url("admin/Main_reports/export_receipt/0/".en_dec('en',$reference_num))?>">Download Receipt</a>
+                  <br><br>
+                  <?php } else{?>
+                  <?php if(isset($customer_name)){ ?>
+                      Your order #<?= $reference_num; ?> has been placed. Customer has also
+                      been notified to start processing order and will update them once it's on its way.
+                    <?php }else{ ?>
+                      Your order #<?= $reference_num; ?> has been confirmed. Our Shop has also
+                      been notified to start processing your order and will update you once it's on its way. Thank you for shopping with
+                      us and hope to see you soon
+                  <?php }?>
+                  </p>
+                <?php }?>
             </td>
         </tr>
     </tbody>

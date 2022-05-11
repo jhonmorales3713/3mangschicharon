@@ -190,7 +190,7 @@ class Model_orders extends CI_Model {
 			$order_info = $this->orders_details($reference_num)[0]['payment_data'];
 			$order_info = json_decode($order_info);
 			$new_shipping_data = array(
-				'payment_method_id' => $order_info -> payment_method_id,
+				'payment_method_id' => isset($order_info -> payment_method_id)?$order_info -> payment_method_id:3,
 				'payment_method_name' => $order_info -> payment_method_name,
 				'amount' => $order_info -> amount,
 				'status_id' => $order_info -> status_id,

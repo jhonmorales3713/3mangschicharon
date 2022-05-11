@@ -135,11 +135,12 @@ class Main_orders extends CI_Controller {
             echo json_encode($response);
             die();
         }
+        $delivery_option = $this->input->post('delivery_option');
         $success    = $this->model_orders->confirmOrder($reference_num,$this->input->post('delivery_option'),$reason);
         // $items      = $this->model_orders->listShopItems($reference_num, $sys_shop);
         // $salesOrder = $this->model_orders->getSalesOrder($reference_num, $sys_shop);
         //$this->model_orders->addOrderHistory($salesOrder->id, 'Order is being prepared for shipping by the seller.', 'Process Order', $this->session->userdata('username'), date('Y-m-d H:i:s'));
-
+        
         $order = $this->model_orders->orders_details($reference_num);
         //print_r($reference_num);
         $recipient_details = json_decode($order[0]['shipping_data']);
@@ -154,7 +155,6 @@ class Main_orders extends CI_Controller {
             'reference_num'=> $reference_num
         );
         $status = 'Delivered';
-        $delivery_option = $this->input->post('delivery_option');
         if($delivery_option == 8 || $delivery_option == 9){
             $status = 'Re-Deliver';
         }
@@ -164,6 +164,16 @@ class Main_orders extends CI_Controller {
         $subject = "Order #".$reference_num." has been tagged as ".$status;
         $message = $this->load->view('email/templates/email_template',$data,true);
 		$this->send_email($email,$subject,$message);
+        
+        if($delivery_option == 5){
+            $data['include_receipt'] = true;
+            $data['view'] = $this->load->view('email/order_processing',$data,TRUE);
+            $email = json_decode($order[0]['shipping_data'])->email;
+            $subject = "Order #".$reference_num." has been tagged as ".$status;
+            $message = $this->load->view('email/templates/email_template',$data,true);
+            $this->send_email($email,$subject,$message);
+        }
+
         $response['success'] = $success;
         $response['message'] = "Order #".$reference_num." has been tagged as ".$status;
         $this->audittrail->logActivity('Order List', 'Order #'.$reference_num.' has been tagged as '.$status, $status.' Order', $this->session->userdata('username'));
