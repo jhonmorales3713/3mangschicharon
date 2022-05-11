@@ -41,6 +41,11 @@ class website_info extends CI_Controller {
         $result = $this->model_dev_settings->get_faq($data['id']);
         echo json_encode($result[0]);
     }
+    public function get_aboutus(){
+        $data = $this->input->post();
+        $result = $this->model_dev_settings->get_aboutus($data['id']);
+        echo json_encode($result[0]);
+    }
     public function view($token = '')
     {
         $this->isLoggedIn();
@@ -71,6 +76,16 @@ class website_info extends CI_Controller {
         ];
         echo json_encode($response);
     }
+    public function enable_disable_aboutus(){
+        $data = $this->input->post();
+        $this->model_dev_settings->enable_disable_aboutus($data);
+        $response = [
+            'environment' => ENVIRONMENT,
+            'success'     => 1,
+            'message'     => 'Info Saved Successfully'
+        ];
+        echo json_encode($response);
+    }
     public function delete_faq(){
         $data = $this->input->post();
         $this->model_dev_settings->delete_faq($data);
@@ -78,6 +93,16 @@ class website_info extends CI_Controller {
             'environment' => ENVIRONMENT,
             'success'     => 1,
             'message'     => 'FAQ Deleted Successfully'
+        ];
+        echo json_encode($response);
+    }
+    public function delete_aboutus(){
+        $data = $this->input->post();
+        $this->model_dev_settings->delete_aboutus($data);
+        $response = [
+            'environment' => ENVIRONMENT,
+            'success'     => 1,
+            'message'     => 'Info Deleted Successfully'
         ];
         echo json_encode($response);
     }
@@ -106,6 +131,36 @@ class website_info extends CI_Controller {
                 'environment' => ENVIRONMENT,
                 'success'     => 1,
                 'message'     => 'FAQ Saved Successfully'
+            ];
+            echo json_encode($response);
+        }
+    }
+    
+    public function save_aboutus(){
+        $data = $this->input->post();
+		$validation = array(
+            array('f_title','Title','required|max_length[100]|min_length[1]'),
+            array('f_content','Content','required|max_length[100]|min_length[1]')
+        );
+        $this->form_validation->set_data($data); 
+        foreach ($validation as $value) {
+            $this->form_validation->set_rules($value[0],$value[1],$value[2], (count($value) > 3 ? $value[3] : ''));
+        }
+        if($this->form_validation->run() == FALSE){
+            $response = [
+                'environment' => ENVIRONMENT,
+                'success'     => 0,
+                'message'     => explode("\n",validation_errors())
+            ];
+
+            echo json_encode($response);
+            die();
+        }else{
+            $this->model_dev_settings->save_aboutus($data);
+            $response = [
+                'environment' => ENVIRONMENT,
+                'success'     => 1,
+                'message'     => 'Info Saved Successfully'
             ];
             echo json_encode($response);
         }
@@ -186,6 +241,19 @@ class website_info extends CI_Controller {
         ];
         echo json_encode($response);
     }
+
+    public function save_arrangement_aboutus(){
+        $data = $this->input->post()['arrangement'];
+        foreach($data as $arr){
+            $this->model_dev_settings->save_arrangement_aboutus($arr['value'],1+$arr['order']);
+        }
+        $response = [
+            'success'     => 1,
+            'message'     => 'About Us Arrangement Saved Successfully'
+        ];
+        echo json_encode($response);
+    }
+
     public function faqs_view($token = ''){
         //start - for restriction of views
         $content_url = $this->uri->segment(1).'/'.$this->uri->segment(2).'/'.$this->uri->segment(3).'/'.$this->uri->segment(4).'/';
@@ -205,12 +273,38 @@ class website_info extends CI_Controller {
         $data_admin['page_content'] = $this->load->view('admin/settings/faqs',$data_admin,TRUE);
         $this->load->view('admin_template',$data_admin,'',TRUE);
     }
+    public function about_us($token = ''){
+        //start - for restriction of views
+        $content_url = $this->uri->segment(1).'/'.$this->uri->segment(2).'/'.$this->uri->segment(3).'/'.$this->uri->segment(4).'/';
+        $main_nav_id = $this->views_restriction($content_url);
+        //end - for restriction of views main_nav_id
+
+        // start - data to be used for views
+        $data_admin = array(
+            'token' => $token,
+            'main_nav_id' => $main_nav_id, //for highlight the navigation
+        );
+        // end - data to be used for views
+
+        // start - load all the views synchronously
+        $data_admin['active_page'] =  $this->session->userdata('active_page');
+        $data_admin['subnav'] = false;
+        $data_admin['page_content'] = $this->load->view('admin/settings/about_us',$data_admin,TRUE);
+        $this->load->view('admin_template',$data_admin,'',TRUE);
+    }
     
     public function load_faqs(){
     
         $this->isLoggedIn();
         $request = $_REQUEST;
         $query = $this->model_dev_settings->load_faqs($request);
+        generate_json($query);
+    }    
+    public function load_aboutus(){
+    
+        $this->isLoggedIn();
+        $request = $_REQUEST;
+        $query = $this->model_dev_settings->load_aboutus($request);
         generate_json($query);
     }
 

@@ -12,7 +12,8 @@ class About extends CI_Controller {
     public function index()
 	{		
 		$data['active_page'] = 'about';		
-        $data['page_content'] = $this->load->view('user/about/index','',TRUE);     
+        $data['about_us'] = $this->model_dev_settings->get_active_aboutus();
+        $data['page_content'] = $this->load->view('user/about/index',$data,TRUE);     
 		$this->load->view('landing_template',$data,'',TRUE);
 	}
     public function faqs()
