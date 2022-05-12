@@ -112,6 +112,7 @@ class Signup extends CI_Controller {
         $_SESSION['customer_id'] = en_dec('en',$customer_data['id']);
         $_SESSION['email'] = en_dec('en',$customer_data['email']);
         $_SESSION['is_verified'] = $customer_data['user_type_id'];
+        $_SESSION['addresses'] = $this->model_customers->get_customer_addresses($customer_data['id']);
         
         $cart_session = $this->model_customers->get_cart_session($customer_data['id']);     
         if($cart_session){            

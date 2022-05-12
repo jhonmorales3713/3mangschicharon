@@ -50,7 +50,7 @@
                 <select id="city" class="form-control form-control-sm">
                     <option value="">Select City</option>
                     <?php foreach($cities as $city){?>
-                        <option value="<?=$city['city_name'];?>"><?=$city['city_name'];?></option>
+                        <option value="<?=$city['id'];?>"><?=$city['city_name'];?></option>
                     <?php }?>
                 </select>
                 <!-- <input type="text" id="city" class="form-control form-control-sm">             -->

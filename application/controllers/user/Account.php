@@ -9,6 +9,7 @@ class Account extends CI_Controller {
         $this->load->model('user/model_customers');
         $this->load->model('user/model_accounts');
         $this->load->model('user/model_address');
+        $this->load->model('orders/model_orders');
     }
 
     public function index()
@@ -24,8 +25,10 @@ class Account extends CI_Controller {
         $email = en_dec('dec',$this->session->email);
 
         $customer_data = $this->model_customers->get_customer_by_email($email); 
+        $cities = $this->model_orders->get_cities()->result_array(); 
 
         $view_data['customer_data'] = $customer_data;
+        $view_data['cities'] = $cities;
         $view_data['shipping_addresses'] = $this->model_address->get_shipping_address($customer_id);
 
         $doc_count = $this->model_accounts->check_pending_verification($customer_id);
@@ -296,6 +299,24 @@ class Account extends CI_Controller {
 		$this->email->send();
         
 	}
+    public function set_default_address(){
+        $address_id = $this->model_address->set_default_address($this->input->post());
+
+        $response['success'] = true;
+        $response['message'] = 'Default Address has been saved';
+        $response['address_id'] = en_dec('en',$address_id);
+
+        generate_json($response);
+    }
+    public function remove_address(){
+        $address_id = $this->model_address->remove_address($this->input->post());
+
+        $response['success'] = true;
+        $response['message'] = 'Default Address has been removed';
+        $response['address_id'] = en_dec('en',$address_id);
+
+        generate_json($response);
+    }
     public function save_address(){
         $address_info = $this->input->post();        
 
@@ -323,7 +344,6 @@ class Account extends CI_Controller {
             generate_json($response);
             die();            
         }
-
         $address_info['customer_id'] = $customer_id;
         $address_id = $this->model_address->insert_address($address_info);
 

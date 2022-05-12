@@ -46,6 +46,19 @@ function set_cart_data(cart_data){
     set_is_included_change();
 }
 
+function set_address_data(address_data){
+    $('#address_category_id').val(address_data.address_category_id);
+    $(' #address').val(address_data.address);
+    $(' #full_name').val(address_data.contact_person);
+    $(' #contact_no').val(address_data.contact_no);
+    $(' #address_alias').val(address_data.address_alias);
+    $(' #province').val(address_data.province);
+    $(' #city').val(address_data.city);
+    $(' #barangay').val(address_data.barangay);
+    $(' #zip_code').val(address_data.zip_code);
+    $('#notes').text(address_data.notes);
+    // $('#address_modal').modal('show');
+}
 $('#remove_from_cart').click(function(){  
     var selected_key = $('#item_key').val();
     $.ajax({
@@ -118,8 +131,41 @@ function set_qty_change(){
 $('#btn_checkout').click(function(){
     window.location.href = base_url + 'user/cart/checkout';
 });
-
+$(".payment-method-select.method-selected").ready(function(){
+    console.log("SD");
+    console.log($(this));
+    $.each($(".payment-method-select.method-selected"), function(i, history){
+        if($(this).data('enabled') == 1){
+            var address_data = {
+                address_alias:$(this).data('address_alias'),
+                address_type:$(this).data('address_type'),
+                contact_person:$(this).data('contact_person'),
+                contact_no:$(this).data('contact_no'),
+                barangay:$(this).data('barangay'),
+                address:$(this).data('address'),
+                city:$(this).data('city'),
+                zip_code:$(this).data('zip_code'),
+                province:$(this).data('province'),
+                address_category_id:$(this).data('address_category_id'),
+            };
+            set_address_data(address_data);
+        }
+    });
+});
 $('.payment-method-select').click(function(){
+    var address_data = {
+        address_alias:$(this).data('address_alias'),
+        address_type:$(this).data('address_type'),
+        contact_person:$(this).data('contact_person'),
+        contact_no:$(this).data('contact_no'),
+        barangay:$(this).data('barangay'),
+        address:$(this).data('address'),
+        city:$(this).data('city'),
+        zip_code:$(this).data('zip_code'),
+        province:$(this).data('province'),
+        address_category_id:$(this).data('address_category_id'),
+    };
+    set_address_data(address_data);
     $('.payment-method-select').removeClass('method-selected');
     $(this).addClass('method-selected');
 });

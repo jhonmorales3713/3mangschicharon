@@ -12,10 +12,23 @@
             <?php if(isset($shipping_address) && sizeof($shipping_address) > 0){ ?>
             <div class="col-12 p20">
                 <h6>Deliver to:</h6>                
-                    <?php foreach($shipping_address as $address){ ?>
-                    <div class="payment-method-select" data-address_id="">
+                    <?php foreach($shipping_address as $address){ 
+                        $enabled = '';
+                        if($address['enabled'] == 1){ $enabled = 'method-selected';}?>
+                    <div class="payment-method-select <?=$enabled?>"
+                    data-enabled="<?=($address['enabled']);?>"
+                    data-address_alias="<?=($address['address_alias']);?>"
+                    data-address_type="<?=($address['address_type']);?>"
+                    data-contact_person="<?=($address['contact_person']);?>"
+                    data-contact_no="<?=($address['contact_no']);?>"
+                    data-barangay="<?=($address['barangay']);?>"
+                    data-address="<?=($address['address']);?>"
+                    data-city="<?=($address['city']);?>"
+                    data-zip_code="<?=($address['zip_code']);?>"
+                    data-province="<?=($address['province']);?>"
+                    data-address_category_id="<?=($address['address_category_id']);?>">
                         <span class="badge badge-pill badge-info"><?= $address['address_alias'] == '' ? $address['address_type'] : $address['address_alias']; ?></span><br>  
-                        <b><?= $address['full_name']; ?></b><span>(<?= $address['contact_no']; ?>)</span><br>
+                        <b><?= $address['contact_person']; ?></b><span>(<?= $address['contact_no']; ?>)</span><br>
                         <span><?= $address['address'] . ' ' . $address['barangay'] . ' ' . $address['city'] . ', ' .$address['province']; ?></span>         
                     </div>                               
                     <?php } ?>                

@@ -42,10 +42,25 @@
                 <div class="p10" style="overflow-y:scroll; width: 100%; max-height: 300px !important;"> 
                 <?php foreach($shipping_addresses as $address){ ?>
                     <div class="mt10 clearfix p10 rounded border <?= $address['address_category_id'] > 1 ? 'border-warning' : 'border-success' ?>">
+                        <span class="badge badge-danger float-right delete-address" data-customer_id="<?= en_dec('en',$address['customer_id']); ?>" data-en_id="<?= en_dec('en',$address['id']); ?>" >Remove</span>
+                        <?php if($address['enabled'] == 2){?>
+                            <span class="badge badge-success float-right set-address" data-customer_id="<?= en_dec('en',$address['customer_id']); ?>" data-en_id="<?= en_dec('en',$address['id']); ?>">Set Default</span>
+                        <?php }?>
                         <span class="badge badge-primary float-right edit-address" data-en_id="<?= en_dec('en',$address['id']); ?>">Edit</span>
                         <span class="badge <?= $address['address_category_id'] > 1 ? 'badge-warning' : 'badge-success' ?>"><?= $address['address_type'] ?></span> 
-                        <b><?= $address['contact_person']; ?></b><br>
-                        <?= $address['address'].' '.$address['barangay'].' '.$address['city'].', '.$address['province'].' ('.$address['zip_code'].')'; ?><br>
+                        <b><?= $address['contact_person']; ?></b>
+                        
+                        <?php if($address['enabled'] == 1){?>
+                            <span class="badge badge-success " data-en_id="<?= en_dec('en',$address['id']); ?>">Default</span>
+                        <?php }?>
+                        <br>
+                        <?php $city_name = '';
+                        foreach($cities as $city){
+                            if($city['id'] == $address['city']){
+                                $city_name = $city['city_name'];
+                            }
+                        }?>
+                        <?= $address['address'].' '.$address['barangay'].' '.$city_name.', '.$address['province'].' ('.$address['zip_code'].')'; ?><br>
                         <b><?= $address['contact_no']; ?></b>
                     </div>
                 <?php } ?>
@@ -106,6 +121,7 @@
 </div>
 
 <script>
+    base_url = "<?=base_url()?>"
     //file input image preview
     $('#profile_img').on('change', function(){        
         var reader = new FileReader();
@@ -167,7 +183,7 @@
     function get_shipping_details(){
         var data = {
             address_category_id: $('#address_category_id').val(),
-            address_alias: $('#alias').val(),
+            address_alias: $('#address_alias').val(),
             contact_person: $('#address_form #full_name').val(),
             contact_no: $('#contact_no').val(),            
             province: $('#province').val(),
@@ -179,7 +195,58 @@
         }   
         return data; 
     }
+    $(".set-address").click(function(e){  
+        var id = $(this).data('en_id');
+        var customer_id = $(this).data('customer_id');
+        e.preventDefault();        
+        $.ajax({
+            url: base_url+'user/account/set_default_address',
+            type: 'post',
+            data: {id:id,customer_id:customer_id},
+            success: function(response){
+                clearFormErrors();
+                if(response.success){
+                    sys_toast_success(response.message);
+                    $('#address_modal').modal('hide');
+                    setTimeout(function(){
+                        window.location.reload();
+                    },1000);                    
+                }
+                else{
+                    // show_errors(response,$('#address_modal'));                    
+                }
+            },
+            error: function(response){
 
+            }           
+        });
+    });
+    $(".delete-address").click(function(e){  
+        var id = $(this).data('en_id');
+        var customer_id = $(this).data('customer_id');
+        e.preventDefault();        
+        $.ajax({
+            url: base_url+'user/account/remove_address',
+            type: 'post',
+            data: {id:id,customer_id:customer_id},
+            success: function(response){
+                clearFormErrors();
+                if(response.success){
+                    sys_toast_success(response.message);
+                    $('#address_modal').modal('hide');
+                    setTimeout(function(){
+                        window.location.reload();
+                    },1000);                    
+                }
+                else{
+                    // show_errors(response,$('#address_modal'));                    
+                }
+            },
+            error: function(response){
+
+            }           
+        });
+    });
     $('#submit_address_btn').click(function(e){        
         e.preventDefault();        
         $.ajax({
@@ -260,7 +327,6 @@
     }
 
     function set_address_data(address_data){
-        console.log(address_data);
         $('#address_modal #address_category_id').val(address_data.address_category_id);
         $('#address_modal #address').val(address_data.address);
         $('#address_modal #full_name').val(address_data.contact_person);

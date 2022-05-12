@@ -12,6 +12,11 @@ class Model_customers extends CI_Model {
         return $this->db->get('sys_customers')->row_array();
     }
 
+    public function get_customer_addresses($id){
+        $this->db->where('id',$id);
+        return $this->db->get('sys_shipping_address')->result_array();
+    }
+
     public function save_cart_session($cart_session){
         $this->db->insert('sys_cart_sessions',$cart_session);
     }
