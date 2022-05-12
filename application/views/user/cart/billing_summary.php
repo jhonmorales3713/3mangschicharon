@@ -2,11 +2,13 @@
 <b>Select Payment Method</b><br>
 
 <div id="payment_method_error">
-        <?php if($_SESSION['is_verified'] != 1) {?>
+        <?php if(isset($_SESSION['is_verified'])) {
+            if($_SESSION['is_verified'] != 1) {?>
             <div class="alert alert-warning"> You must be a verified user before enabling COD type of transactions</div>
-        <?php }?>
+        <?php }}?>
     <?php foreach($payment_methods as $method){ 
-            if(($method['method'] == 'Cash On Delivery' && $_SESSION['is_verified'] == 1) || $method['method'] != 'Cash On Delivery'){?>
+            if(($method['method'] == 'Cash On Delivery' && isset($_SESSION['is_verified'])) || $method['method'] != 'Cash On Delivery'){
+               ?>
             <div class="payment-method-select" data-payment_method="<?= $method['id']; ?>" data-keyword="<?= $method['keyword']; ?>">
                 <center>
                 <b><?= $method['method']; ?></b><br>        

@@ -108,7 +108,7 @@ class Signup extends CI_Controller {
     private function set_session($customer_data){
         $_SESSION['has_logged_in'] = true;
         $_SESSION['full_name'] = $customer_data['full_name'];
-        $_SESSION['decline_details'] = $customer_data['decline_reason'];
+        $_SESSION['decline_details'] = isset($customer_data['decline_reason'])?$customer_data['decline_reason']:'';
         $_SESSION['customer_id'] = en_dec('en',$customer_data['id']);
         $_SESSION['email'] = en_dec('en',$customer_data['email']);
         $_SESSION['is_verified'] = $customer_data['user_type_id'];

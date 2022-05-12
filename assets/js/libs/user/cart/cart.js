@@ -42,6 +42,7 @@ function set_cart_data(cart_data){
     $('#total_amount').val(sub_total)
 
     set_remove_item_click();
+    $.LoadingOverlay("show"); 
     set_qty_change();
     set_is_included_change();
 }
@@ -131,9 +132,8 @@ function set_qty_change(){
 $('#btn_checkout').click(function(){
     window.location.href = base_url + 'user/cart/checkout';
 });
+$.LoadingOverlay("show"); 
 $(".payment-method-select.method-selected").ready(function(){
-    console.log("SD");
-    console.log($(this));
     $.each($(".payment-method-select.method-selected"), function(i, history){
         if($(this).data('enabled') == 1){
             var address_data = {
@@ -151,6 +151,7 @@ $(".payment-method-select.method-selected").ready(function(){
             set_address_data(address_data);
         }
     });
+    $.LoadingOverlay("hide"); 
 });
 $('.payment-method-select').click(function(){
     var address_data = {

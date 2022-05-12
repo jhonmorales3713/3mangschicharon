@@ -11,11 +11,14 @@ $('#btn_place_order').click(function(){
         shipping_data: get_shipping_details()     
     };    
 
+    $.LoadingOverlay("show"); 
     $.ajax({
         url: base_url + 'user/cart/place_order',
         type: 'POST',
         data: data,
         success: function(response){
+            $.LoadingOverlay("hide"); 
+
             if(response.success){
                 if(response.redirect_url != ''){
                     window.location.href = response.redirect_url;
