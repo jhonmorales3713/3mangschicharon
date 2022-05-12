@@ -61,7 +61,7 @@
 
     $sub_total_converted=floatval($sub_total_converted); 
     $shipping_fee_converted = number_format($order_details['delivery_amount'],2);
-    print_r('xxx'.$sub_total_converted.'/'.$discount_total.'[]'.$shipping_fee_converted);   
+    // print_r('xxx'.$sub_total_converted.'/'.$discount_total.'[]'.$shipping_fee_converted);   
     $total_amount_converted = floatval($sub_total_converted) + floatval($shipping_fee_converted) - floatval($discount_total);
     $payment_method = strtoupper(json_decode($order_details['payment_data'])->payment_method_name);
     // $special_upper = ["&NTILDE", "&NDASH",'|::PA::|'];
@@ -626,7 +626,7 @@
             <div class="card">
                 <div class="card-body">
                     <a  class="btn-mobile-w-100 btn btn-success printBtn mb-2 mb-md-0" target="_blank" href="<?=base_url("admin/Main_reports/export_receipt/".$token."/".en_dec('en',$reference_num))?>" id="printBtn" data-reference_num="<?=$reference_num?>">Print</a>
-                    <button type="button" class="btn-mobile-w-100 btn btn-outline-secondary backBtn mb-2 mb-md-0" id="backBtn">Close</button>
+                    <a type="button" href="<?=base_url('Main_orders/orders/'.$token)?>" class="btn-mobile-w-100 btn btn-outline-secondary backBtn mb-2 mb-md-0" id="backBtn">Close</a>
                     <!-- <?php if($order_details['paystatus'] == 1 && $branch_count > 0 && $order_details['sales_order_status'] == 'p' && $this->loginstate->get_access()['transactions']['reassign'] == 1 && $branchid == 0 && $refunded_all == 0){ ?>
                         <button type="button" class="btn-mobile-w-100 btn btn-success reassignBtn mb-2 mb-md-0" id="reassignBtn" data-value="<?=$mainshopid?>" data-branchid="<?=$branch_id?>" data-reference_num="<?=$reference_num?>">Re-Assign</button>
                     <?php } ?>  -->

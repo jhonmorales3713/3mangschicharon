@@ -193,7 +193,83 @@ class Home extends CI_Controller {
 		$response['success'] = true;
 		$response['message'] = 'Message send succesfully';
 
+        $email = $data['email'];
+		$data['email'] = $email;
+		$data['name'] = $data['name'];
+		$data['message'] = $data['message'];
+        $subject = "Contact Us - New Inquiry";
+        $data['view'] = $this->load->view('email/contact_us',$data,TRUE);
+        $message = $this->load->view('email/templates/email_template',$data,true);
+		$this->send_email($email,$subject,$message);
+
 		generate_json($response);		
+	}
+	// public function test_email(){
+	// 	$data['email'] = "ss";
+	// 	$data['name'] = "ss";
+	// 	$data['message'] = "ss";
+    //     $data['view'] = $this->load->view('email/contact_us',$data,TRUE);
+    //     $this->load->view('email/templates/email_template',$data,'',true);
+	// }
+	function send_email($emailto,$subject,$message){
+		
+		$this->load->library('email');
+        
+		// $config = Array(
+		// 	'protocol' => 'smtp',
+		// 	'smtp_host' => 'ssl://smtp.googlemail.com',
+		// 	'smtp_port' => 465,
+		// 	'smtp_user' => 'teeseriesphilippines@gmail.com',
+		// 	'smtp_pass' => 'teeseriesph',
+		// 	'charset' => 'utf-8',
+		// 	'newline'   => "\r\n",
+		// 	'wordwrap'=> TRUE,
+		// 	'mailtype' => 'html'
+		// );
+        $this->load->library('email');
+        if(strpos(base_url(),'3mangs.com')){
+            $config = array(
+                'protocol' => 'smtp',
+                'smtp_host' => get_host(),
+                'smtp_port' => 587,
+                'smtp_user' => get_email(),
+                'smtp_pass' => get_emailpassword(),
+                'charset' => 'utf-8',
+                'newline'   => "\r\n",
+                'mailtype' => 'html'
+            );
+        }else{
+            $config = Array(
+            	'protocol' => 'smtp',
+            	'smtp_host' => 'ssl://smtp.googlemail.com',
+            	'smtp_port' => 465,
+            	'smtp_user' => 'teeseriesphilippines@gmail.com',
+            	'smtp_pass' => '@ugOct0810',
+            	'charset' => 'utf-8',
+            	'newline'   => "\r\n",
+            	'wordwrap'=> TRUE,
+            	'mailtype' => 'html'
+            );
+        }
+		// $config = Array(
+		// 	'protocol' => 'smtp',
+		// 	'smtp_host' => get_host(),
+		// 	'smtp_port' => 587,
+		// 	'smtp_user' => get_email(),
+		// 	'smtp_pass' => get_emailpassword(),
+		// 	'charset' => 'utf-8',
+		// 	'newline'   => "\r\n",
+		// 	'wordwrap'=> TRUE,
+		// 	'mailtype' => 'html'
+		// );
+		$this->email->initialize($config);
+		$this->email->set_newline("\r\n");  
+		$this->email->from('noreply@3mangs.com');
+		$this->email->to('3mangschicha@gmail.com');
+		$this->email->subject($subject);
+		$this->email->message($message);
+		$this->email->send();
+        
 	}
 	
 }
