@@ -390,7 +390,7 @@ class Model_orders extends CI_Model {
 		$qty = 0;
 		foreach(json_decode($orderdata) as $key => $row ){
 			$total_amount = $row->qty * $row->amount;
-			$discount_info = $row->discount_info;
+			$discount_info = isset($row->discount_info) ? $row->discount_info : Array();
 			$qty += $row->qty;
 			$amount = $row->amount;
 			$badge = '';
