@@ -10,6 +10,7 @@ function set_cart_data(cart_data){
     var summary_string = '';
     var sub_total = 0;
 
+    $.LoadingOverlay("show"); 
     Object.keys(cart_data).forEach(function(key){
 
         var is_included = cart_data[key]['is_included'] == 1 ? 'checked' : '';
@@ -42,7 +43,7 @@ function set_cart_data(cart_data){
     $('#total_amount').val(sub_total)
 
     set_remove_item_click();
-    $.LoadingOverlay("show"); 
+    $.LoadingOverlay("hide"); 
     set_qty_change();
     set_is_included_change();
 }
@@ -96,6 +97,12 @@ $('#remove_item_modal').on('hidden.bs.modal',function(){
     $('#remove_label').text('Are you sure you want to remove all items?');
 });
 
+$('.remove-item').click(function(){
+    var key = $(this).data('target');
+    $('#item_key').val(key);
+    $('#remove_label').text('Are you sure you want to remove this item?');
+    $('#remove_item_modal').modal('show');    
+});
 function set_remove_item_click(){
     $('.remove-item').click(function(){
         var key = $(this).data('target');
@@ -117,6 +124,7 @@ function set_qty_change(){
                 quantity: quantity,
             },
             success: function(response){
+                console.log(response);
                 if(response.success){                    
                     $('#cart-items').text(response.cart_items);    
                     set_cart_data(response.cart_data);
@@ -172,6 +180,7 @@ $('.payment-method-select').click(function(){
 });
 
 function set_is_included_change(){
+    // $.LoadingOverlay("show"); 
     $('.is_included').on('change',function(){
         var target = $(this).data('product_id');
         var value = $(this).prop('checked');
@@ -183,12 +192,13 @@ function set_is_included_change(){
                 value: value,
             },
             success: function(response){
+				// $.LoadingOverlay("hide"); 
                 if(response.success){                    
                     set_cart_data(response.cart_data);
                 }                
             },
             error: function(){
-    
+                // $.LoadingOverlay("hide");
             }
         });
     });

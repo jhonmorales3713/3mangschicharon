@@ -189,7 +189,7 @@ class Cart extends CI_Controller {
         if(!isset($_SESSION['cart'])){
             header('Location:'.base_url());
         }
-        if($product_id != ''){
+        if($product_id != '' && $this->session->userdata('first_time') == ''){
             if(isset($_SESSION['cart'])){
                 if(sizeof($_SESSION['cart'])){
                     foreach($_SESSION['cart'] as $key => $value){
@@ -199,7 +199,9 @@ class Cart extends CI_Controller {
             }          
             $this->add_to_cart($product_id, $variant_id, $size, $quantity);
         }
-
+        if($this->session->userdata('first_time') == ''){
+            $this->session->set_userdata('first_time', true);
+        }
 		$view_data['discounts'] = $this->model_promotions->get_ongoing();
         $data['active_page'] = 'shop'; 
         $view_data['sub_active_page'] = 'checkout';
