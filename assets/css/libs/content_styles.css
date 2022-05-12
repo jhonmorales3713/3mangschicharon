@@ -288,7 +288,7 @@
     border: 1px solid #873e23;
 }
 
-.payment-method-select{    
+.payment-method-select,.address-select{    
     padding: 7px; 
     margin: 5px;
     box-sizing: border-box;
@@ -296,7 +296,7 @@
     border: 1px solid gray;
 }
 
-.payment-method-select:hover, .method-selected{
+.payment-method-select:hover,.address-select:hover, .method-selected, .address-selected{
     border: 1px solid #873e23;
     background: lightgray;
 }

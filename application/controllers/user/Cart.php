@@ -224,7 +224,6 @@ class Cart extends CI_Controller {
     public function place_order(){
 
         $data = $this->input->post();        
-        
         $id = isset($_SESSION['customer_id']) ? $_SESSION['customer_id'] : '';
 
         $customer_id = en_dec('dec',$id);
@@ -275,7 +274,7 @@ class Cart extends CI_Controller {
             }
         }
         $payment_data = array(
-            'payment_method_id:' => $data['payment_method'] != ''?$data['payment_method'] : 2,
+            'payment_method_id:' => isset($data['payment_method']) ? $data['payment_method'] : 2,
             'payment_method_name' => $data['payment_keyword'] != ''?$data['payment_keyword'] : 'COD',
             'amount' => $data['total_amount'],
             'status_id' => 1, //pending
@@ -296,45 +295,58 @@ class Cart extends CI_Controller {
     
         $customer_shipping_address = $this->model_address->get_shipping_address($customer_id);
 
-        if($customer_shipping_address){
-            //
+        // print_r($customer_shipping_address);
+        // die();
+        // if($customer_shipping_address){
+        //     //
+        // }
+        // else{
+        // }
+        
+        $this->form_validation->validation_data = $data['shipping_data'];
+
+        //declaration of form validations
+        $this->form_validation->set_rules('address_category_id','Address Type','required');
+        $this->form_validation->set_rules('full_name','Full Name','required');
+        $this->form_validation->set_rules('contact_no','Contact Number','required');
+        $this->form_validation->set_rules('province','Province','required');
+        $this->form_validation->set_rules('city','City / Municipality','required');
+        $this->form_validation->set_rules('barangay','Barangay','required');
+        $this->form_validation->set_rules('zip_code','Zip Code','required');
+        $this->form_validation->set_rules('address','Street Address','required');
+
+        if(!isset($_SESSION['has_logged_in'])){
+            $this->form_validation->set_rules('email','Email Address','required');
         }
         else{
-            $this->form_validation->validation_data = $data['shipping_data'];
-
-            //declaration of form validations
-            $this->form_validation->set_rules('address_category_id','Address Type','required');
-            $this->form_validation->set_rules('full_name','Full Name','required');
-            $this->form_validation->set_rules('contact_no','Contact Number','required');
-            $this->form_validation->set_rules('province','Province','required');
-            $this->form_validation->set_rules('city','City / Municipality','required');
-            $this->form_validation->set_rules('barangay','Barangay','required');
-            $this->form_validation->set_rules('zip_code','Zip Code','required');
-            $this->form_validation->set_rules('address','Street Address','required');
-
-            if(!isset($_SESSION['has_logged_in'])){
-                $this->form_validation->set_rules('email','Email Address','required');
-            }
-            else{
-                $shipping_data['email'] = en_dec('dec',$_SESSION['email']);
-            }
-
-            if($data['payment_method'] == ''){
-                $this->form_validation->set_rules('payment_method_error','Payment Method','required');
-            }
-
-            if($this->form_validation->run() == FALSE) {
-                $response = array(
-                'success'      => false,
-                'message'      => 'Please check for field errors',
-                'field_errors' => $this->form_validation->error_array(),              
-                );
-
-                generate_json($response);
-                die();            
-            }
+            $shipping_data['email'] = en_dec('dec',$_SESSION['email']);
         }
 
+        if($data['payment_method'] == ''){
+            $this->form_validation->set_rules('payment_method_error','Payment Method','required');
+        }
+
+        if($this->form_validation->run() == FALSE) {
+            $response = array(
+            'success'      => false,
+            'message'      => 'Please check for field errors',
+            'field_errors' => $this->form_validation->error_array(),              
+            );
+
+            generate_json($response);
+            die();            
+        }
+        if($order_data == '' || count($order_data) == 0){
+            
+            $response = array(
+                'success'      => false,
+                'msg'           => true,
+                'message'      => 'Please Select Product/s to checkout',
+                'field_errors' => $this->form_validation->error_array(),              
+            );
+            generate_json($response);
+            die();            
+        }
         $order_id = $this->generate_order_id();
 
         $order = array(
@@ -347,6 +359,8 @@ class Cart extends CI_Controller {
             'total_amount' => floatval($data['total_amount']),
             'delivery_amount' => floatval($data['delivery_amount'])            
         );        
+        // print_r($order_data);
+        // die();
 
         $id = $this->model_orders->insert_order($order);
 

@@ -27,3 +27,23 @@
         </div>
     </div>
 </div>
+
+<div id="remove_item_modal" class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">               
+            <div class="modal-body">            
+                <div class="row">
+                    <div class="col-12">
+                        <h5>Remove from cart</h5><hr>
+                        <span id="remove_label">Are you sure you want to remove all items?</span>    
+                        <input type="hidden" id="item_key" value="all">                              
+                    </div>
+                </div>                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">CLOSE</button>
+                <button type="button" class="btn btn-sm btn-danger" id="remove_from_cart">REMOVE</button>      
+            </div>
+        </div>
+    </div>
+</div>

@@ -63,6 +63,7 @@ function set_address_data(address_data){
 }
 $('#remove_from_cart').click(function(){  
     var selected_key = $('#item_key').val();
+    console.log(selected_key);
     $.ajax({
         url: base_url + 'user/cart/remove_from_cart',
         type: 'POST',
@@ -70,6 +71,7 @@ $('#remove_from_cart').click(function(){
             key: selected_key,
         },
         success: function(response){
+            console.log(response);
             if(response.success){
                 if(selected_key != 'all'){                      
                     if(typeof response.cart_data === 'undefined'){
@@ -97,15 +99,10 @@ $('#remove_item_modal').on('hidden.bs.modal',function(){
     $('#remove_label').text('Are you sure you want to remove all items?');
 });
 
-$('.remove-item').click(function(){
-    var key = $(this).data('target');
-    $('#item_key').val(key);
-    $('#remove_label').text('Are you sure you want to remove this item?');
-    $('#remove_item_modal').modal('show');    
-});
 function set_remove_item_click(){
     $('.remove-item').click(function(){
         var key = $(this).data('target');
+        console.log(key);
         $('#item_key').val(key);
         $('#remove_label').text('Are you sure you want to remove this item?');
         $('#remove_item_modal').modal('show');    
@@ -141,8 +138,8 @@ $('#btn_checkout').click(function(){
     window.location.href = base_url + 'user/cart/checkout';
 });
 $.LoadingOverlay("show"); 
-$(".payment-method-select.method-selected").ready(function(){
-    $.each($(".payment-method-select.method-selected"), function(i, history){
+$(".address-select.address-selected").ready(function(){
+    $.each($(".address-select.address-selected"), function(i, history){
         if($(this).data('enabled') == 1){
             var address_data = {
                 address_alias:$(this).data('address_alias'),
@@ -161,7 +158,7 @@ $(".payment-method-select.method-selected").ready(function(){
     });
     $.LoadingOverlay("hide"); 
 });
-$('.payment-method-select').click(function(){
+$('.address-select').click(function(){
     var address_data = {
         address_alias:$(this).data('address_alias'),
         address_type:$(this).data('address_type'),
@@ -175,6 +172,11 @@ $('.payment-method-select').click(function(){
         address_category_id:$(this).data('address_category_id'),
     };
     set_address_data(address_data);
+    $('.address-select').removeClass('address-selected');
+    $(this).addClass('address-selected');
+});
+
+$('.payment-method-select').click(function(){
     $('.payment-method-select').removeClass('method-selected');
     $(this).addClass('method-selected');
 });

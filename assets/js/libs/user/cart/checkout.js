@@ -17,6 +17,7 @@ $('#btn_place_order').click(function(){
         type: 'POST',
         data: data,
         success: function(response){
+            $(".loading-screen").hide();
             $.LoadingOverlay("hide"); 
 
             if(response.success){
@@ -31,7 +32,11 @@ $('#btn_place_order').click(function(){
             }
             else{
                 clearFormErrors();
-                show_errors(response,$('#checkout_container'));
+                if(response.msg){
+                    sys_toast_error(response.message);
+                }else{
+                    show_errors(response,$('#checkout_container'));
+                }
             }
         },
         error: function(){

@@ -38,6 +38,7 @@
                         $badge =  '<span class=" mr-1 badge badge-danger">- '.$discount_price.'% off</span> <s><small>'.$amount.'</small></s>'.number_format($newprice,2);
                     }else{
                         $newprice = $amount - $discount_info->disc_amount;
+                        $discount_price = $amount - $discount_info->disc_amount;
                         $badge = '<span class=" mr-1 badge badge-danger">- &#8369; '.$discount_info->disc_amount.' off</span>'.number_format($newprice,2);
                         if($discount_info->max_discount_isset && $newprice < $discount_info->max_discount_price){
                             $discount_price = $discount_info->max_discount_price;
@@ -46,18 +47,21 @@
                             // $newprice = $discount['max_discount_price'];
                         }
                     }
+                    $sub_total_converted += floatval($row->amount) * floatval($row->quantity); 
+                    $discount_total += ($amount - $newprice) * floatval($row->quantity);
                     $amount = $newprice;
-                    $discount_total += $discount_price* floatval($row->qty);
-                    $sub_total_converted += floatval($newprice) * floatval($row->qty); 
+                    // print_r('xxx'.($newprice).'/'.$row->quantity);
                 }
             }
         }else{
-            $sub_total_converted += floatval($row->amount) * floatval($row->qty); 
+            $sub_total_converted += floatval($row->amount) * floatval($row->quantity); 
         }
     }
     // print_r($newprice);
+
     $sub_total_converted=floatval($sub_total_converted); 
     $shipping_fee_converted = number_format($order_details['delivery_amount'],2);
+    print_r('xxx'.$sub_total_converted.'/'.$discount_total.'[]'.$shipping_fee_converted);   
     $total_amount_converted = floatval($sub_total_converted) + floatval($shipping_fee_converted) - floatval($discount_total);
     $payment_method = strtoupper(json_decode($order_details['payment_data'])->payment_method_name);
     // $special_upper = ["&NTILDE", "&NDASH",'|::PA::|'];
@@ -267,7 +271,7 @@
                                     </div>
                                     <div class="col-12 col-md-6">
                                         <label class="">Total Discount:</label>
-                                        <label id="tm_subtotal" class="font-weight-bold"><?=number_format($discount_total,2);?></label>
+                                        <label id="tm_subtotal" class="font-weight-bold">-<?=number_format($discount_total,2);?></label>
                                     </div> 
                                     <div class="col-12 col-md-6">
                                         <label class="">Total Amount:</label>

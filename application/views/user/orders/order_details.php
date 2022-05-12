@@ -8,7 +8,9 @@
                     $order_data = json_decode($orders[0]['order_data'],true);
                     $payment_data = json_decode($orders[0]['payment_data'],true);
                     $shipping_data = json_decode($orders[0]['shipping_data'],true);
-                    $order_amount = number_format($orders[0]['total_amount'],2);
+                    $order_amount = 0;
+                    $discount_total = 0;
+                    $subtotal = 0;
                     $delivery_amount = number_format($orders[0]['delivery_amount'],2);
                     $total_amount = number_format(floatval($orders[0]['total_amount']) + floatval($orders[0]['delivery_amount']),2);
                     $total_quantity = 0;
@@ -26,7 +28,52 @@
                     </div>
                     <hr>
                     <div class="row">
-                        <?php foreach($order_data as $order){ ?>     
+                        <?php foreach($order_data as $key => $order){ 
+                            // print_r($order);
+                            // $order_info = json_decode($row["order_data"]);
+                            //print_r($value);
+                            $qty = $order['quantity'];
+                            $amount = $order['amount'];
+                            $product = (en_dec('dec',$key));
+                            $subtotal += $amount*$qty;
+                            $discount_info = $order['discount_info'];
+                            $discount_price = 0;
+                            // print_r($discount_info);
+                            $newprice = $amount;
+                            $badge = '';
+                            if($discount_info != '' && $discount_info != null){
+                                if(in_array($key,json_decode($discount_info['product_id']))){
+                                    $discount_id = $discount_info['id'];
+                                    if($discount_info['discount_type'] == 1){
+                                        if($discount_info['disc_amount_type'] == 2){
+                                            $oldvalue = $newprice;
+                                            $newprice = $amount - ($amount * ($discount_info['disc_amount']/100));
+                                            $discount_price = $discount_info['disc_amount'];
+                                            if($discount_info['max_discount_isset'] && $newprice < $discount_info['max_discount_price']){
+                                                $discount_price = $discount_info['max_discount_price'];
+                                                $newprice = $discount_info['max_discount_price'];
+                                            }
+                                            $discount_total += $qty*($oldvalue - $newprice);
+                                            $badge =  '<span class=" mr-1 badge badge-danger">- '.$discount_price.'% off</span> <s><small>'.$amount.'</small></s>'.number_format($newprice,2);
+                                        }else{
+                                            $oldvalue = $newprice;
+                                            $newprice = $amount - $discount_info['disc_amount'];
+                                            $discount_total += $qty*($oldvalue - $newprice);
+                                            $discount_price = $discount_info['disc_amount'];
+                                            $badge = '<span class=" mr-1 badge badge-danger">- &#8369; '.$discount_info['disc_amount'].' off</span> <s><small>'.$amount.'</small></s>';
+                                            if($discount_info['max_discount_isset'] && $newprice < $discount_info['max_discount_price']){
+                                                $badge ='<span class=" mr-1 badge badge-danger">- &#8369; '.$discount_info['max_discount_price'].' off</span> <s><small>'.$amount.'</small></s>'.number_format($newprice,2);
+                                                $newprice = $discount_info['max_discount_price'];
+                                                // $newprice = $discount['max_discount_price'];
+                                                $discount_price = $discount_info['max_discount_price'];
+                                            }
+                                        }
+                                        $amount = $newprice;
+                                    }
+                                }
+                            }
+                            $order_amount += $newprice * $qty;
+                            ?>     
                             <div class="col-2 mt5">
                                 <img src="<?= base_url('assets/uploads/products/'.$order['img']); ?>" alt="" width="100%">
                             </div>                       
@@ -37,7 +84,7 @@
                                 <small>Qty: <?= $order['quantity']; ?></small>
                             </div>                     
                             <div class="col-3 mt5 clearfix">
-                                <small class="float-right"><b><?= number_format($order['amount'],2); ?></b></small>
+                                <small class="float-right"><b><?= number_format($newprice,2); ?><?=$badge?></b></small>
                             </div>
                             <?php $total_quantity += intval($order['quantity']); ?>
                         <?php }?>
@@ -48,7 +95,7 @@
                             <small><b>Sub Total</b></small>
                         </div>
                         <div class="col-3 clearfix">                            
-                            <small><b class="float-right"><?= $order_amount; ?></b></small>
+                            <small><b class="float-right"><?= number_format($order_amount,2); ?></b></small>
                         </div>
                     </div>
                 </div>
@@ -66,7 +113,13 @@
                             <p>Sub Total (<?= $total_quantity; ?>) item(s)</p>
                         </div>
                         <div class="col-4 clearfix">
-                            <p class="float-right"><?= $order_amount; ?></p>
+                            <p class="float-right"><?= number_format($subtotal,2); ?></p>
+                        </div>
+                        <div class="col-8">
+                            <p>Discount Total</p>
+                        </div>
+                        <div class="col-4 clearfix">
+                            <p class="float-right"><?='-'. number_format($discount_total,2); ?></p>
                         </div>
                         <div class="col-8">
                             <p>Shipping Fee</p>
@@ -81,7 +134,7 @@
                             <b>Total</b>
                         </div>
                         <div class="col-4 clearfix">                                
-                            <b class="float-right">&#8369; <?= $total_amount; ?></b>
+                            <b class="float-right">&#8369; <?= number_format($order_amount+$delivery_amount,2); ?></b>
                         </div>
                     </div>
                 </div>                

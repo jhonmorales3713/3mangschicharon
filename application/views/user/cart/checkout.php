@@ -14,8 +14,8 @@
                 <h6>Deliver to:</h6>                
                     <?php foreach($shipping_address as $address){ 
                         $enabled = '';
-                        if($address['enabled'] == 1){ $enabled = 'method-selected';}?>
-                    <div class="payment-method-select <?=$enabled?>"
+                        if($address['enabled'] == 1){ $enabled = 'address-selected';}?>
+                    <div class="address-select <?=$enabled?>"
                     data-enabled="<?=($address['enabled']);?>"
                     data-address_alias="<?=($address['address_alias']);?>"
                     data-address_type="<?=($address['address_type']);?>"

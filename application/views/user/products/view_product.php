@@ -42,10 +42,10 @@
                                     }
                                     $badge =  number_format($newprice,2).' <s><small>'.$variant['price'].'</small></s><span class=" mr-1 badge badge-danger">- '.$discount_price.'% off</span>';
                                 }else{
-                                    $newprice = $product['price'] -$discount['disc_amount'];
-                                    $badge =  number_format($newprice,2).'<span class=" mr-1 badge badge-danger">- &#8369; '.$discount['disc_amount'].' off</span>';
+                                    $newprice = $variant['price'] -$discount['disc_amount'];
+                                    $badge =  number_format($newprice,2).'<s><small>'.$variant['price'].'</small></s><span class=" mr-1 badge badge-danger">- &#8369; '.$discount['disc_amount'].' off</span> ';
                                     if($discount['max_discount_isset'] && $newprice < $discount['max_discount_price']){
-                                        $badge = number_format($newprice,2).'<span class=" mr-1 badge badge-danger">- &#8369; '.$discount['max_discount_price'].' off</span>';
+                                        $badge = number_format($newprice,2).'<s><small>'.$variant['price'].'</small></s><span class=" mr-1 badge badge-danger">- &#8369; '.$discount['max_discount_price'].' off</span>';
                                         // $newprice = $discount['max_discount_price'];
                                     }
                                 }
