@@ -61,56 +61,6 @@
                                 </select>
                             </div>
                             
-                            <!-- 
-                            <div class="col-md-3 mb-3">
-                                <select class="form-control" id="select_status">
-                                    <?php if($branchid == 0){?>
-                                        <option value="">All Status</option> 
-                                        <option value="0">Waiting for Payment</option>
-                                    <?php }?>
-                                    <option value="1" selected>Paid</option>
-                                    <option value="p">Ready for Processing</option>
-                                    <option value="po">Processing Order</option>
-                                    <option value="rp">Ready for Pickup</option>
-                                    <option value="bc">Booking Confirmed</option>
-                                    <option value="f">Fulfilled</option>
-                                    <option value="rs">Return to Sender</option>
-                                    <option value="s">Shipped</option>
-
-                                    <?php if(cs_clients_info()->c_allow_cod == 1){?>
-                                        <option value="6">Pending(COD)<?=cs_clients_info()->c_allow_cod?></option>
-                                        <option value="7">Paid(COD)</option>
-                                    <?php }?>
-                                    
-                                </select>
-                            </div> -->
-
-                            <!--  <div class="col-md-3">
-                            <label class="form-control-label col-form-label-sm">Location</label> 
-                                <select class="form-control" id="select_location">
-                                    <option value="all">All Locations</option>
-                                    <option value="address">Address</option>
-                                    <option value="region">Region</option>
-                                    <option value="province">Province</option>
-                                    <option value="citymun">City/Municipality</option>
-                                </select>
-                            </div>-->
-
-                            <!-- <div class="col-lg-3 regiondiv" style="display:none;">
-                                <select class="form-control select2" id="regCode">
-                                    <?php foreach($regions as $region){?>
-                                        <option value="<?=$region['regCode']?>"><?=$region['regDesc']?></option>
-                                    <?php } ?>
-                                </select>
-                            </div>
-
-                            <div class="col-lg-3 provincediv" style="display:none;">
-                                <select class="form-control select2" id="provCode">
-                                    <?php foreach($provinces as $province){?>
-                                        <option value="<?=$province['provCode']?>"><?=$province['provDesc']?></option>
-                                    <?php } ?>
-                                </select>
-                            </div> -->
 
                             <div class="col-lg-3 col-md-6 citymundiv">
                                 City
@@ -121,19 +71,6 @@
                                     <?php } ?>
                                 </select>
                             </div>
-
-                            <!-- <?php if($shopid == 0){?>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <select name="_shops" id="_shops" class="form-control material_josh form-control-sm search-input-text enter_search">
-                                            <option value="">All Shops</option>
-                                            <?php foreach ($shops as $shop): ?>
-                                                <option value="<?=$shop['id'];?>"><?=$shop['shopname'];?></option>
-                                            <?php endforeach ?>
-                                        </select>
-                                    </div>
-                                </div>
-                            <?php } ?> -->
                         </div>
                     </form>
                 </div>
@@ -175,6 +112,33 @@
                         </div>
                     </div>
                     
+                    <div class="row">
+                        <div class="col btn btn-link bg-success text-white status-select nav-all" data-target="nav-all" data-status=10>
+                            All &nbsp;<span class="check-count badge-success rounded text-xs rounded-lg px-1 bg-teal-500 text-light all-status">0</span>
+                        </div>
+                        <div class="col btn btn-link status-select nav-pending"data-target="nav-pending"data-status=1>
+                            Pending &nbsp;<span class="check-count badge-success rounded text-xs rounded-lg px-1 bg-teal-500 text-light pending-status">0</span>
+                        </div>
+                        <div class="col btn btn-link status-select nav-processing"data-target="nav-processing"data-status=2>
+                            Processing &nbsp;<span class="check-count badge-success rounded text-xs rounded-lg px-1 bg-teal-500 text-light processing-status">0</span>
+                        </div>
+                        <div class="col btn btn-link status-select nav-fulfilled"data-target="nav-fulfilled"data-status=3>
+                            To Deliver &nbsp;<span class="check-count badge-success rounded text-xs rounded-lg px-1 bg-teal-500 text-light fulfilled-status">0</span>
+                        </div>
+                        <div class="col btn btn-link status-select nav-shipped"data-target="nav-shipped"data-status=4>
+                            Shipped &nbsp;<span class="check-count badge-success rounded text-xs rounded-lg px-1 bg-teal-500 text-light shipped-status">0</span>
+                        </div>
+                        <div class="col btn btn-link status-select nav-failed"data-target="nav-failed"data-status=67>
+                            Failed &nbsp;<span class="check-count badge-success rounded text-xs rounded-lg px-1 bg-teal-500 text-light failed-status">0</span>
+                        </div>
+                        <div class="col btn btn-link status-select nav-cancelled"data-target="nav-cancelled"data-status=89>
+                            Cancelled &nbsp;<span class="check-count badge-success rounded text-xs rounded-lg px-1 bg-teal-500 text-light cancelled-status">0</span>
+                        </div>
+                        <div class="col btn btn-link status-select nav-delivered"data-target="nav-delivered"data-status=5>
+                            Delivered &nbsp;<span class="check-count badge-success rounded text-xs rounded-lg px-1 bg-teal-500 text-light delivered-status">0</span>
+                        </div>
+                    </div>
+
                     <div id="tableDiv" >
                         <table class="table wrap-btn-last-td table-striped table-hover table-bordered display nowrap" style="width:100%;" id="table-grid-order"  cellpadding="0" cellspacing="0" border="0">
                             <thead>
@@ -182,7 +146,7 @@
                                     <th>Date</th>
                                     <th width="150">Order</th>
                                     <th>Customer</th>
-                                    <th>Contact No.</th>
+                                    <!-- <th>Contact No.</th> -->
                                     <th>City</th>
                                     <th>Amount</th>
                                     <th>Discount</th>

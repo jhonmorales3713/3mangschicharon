@@ -157,10 +157,12 @@
             $('#'+el_id).addClass('open');
             $(target_el).css('z-index','5');
             $(target_el).css('opacity','1');
+            $(target_el).css('display','block');
         }
         else if(action == 'hide'){
             $('#'+el_id).removeClass('open');
             $(target_el).css('z-index','-1');
+            $(target_el).css('display','none');
             $(target_el).css('opacity','0');
         }
     }

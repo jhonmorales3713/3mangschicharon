@@ -583,7 +583,7 @@ class Main_orders extends CI_Controller {
         $sheet->setCellValue('A6', 'Date Ordered');
         $sheet->setCellValue('B6', 'Order ID');
         $sheet->setCellValue('C6', 'Customer Name');
-        $sheet->setCellValue('D6', 'Contact No.');
+        // $sheet->setCellValue('D6', 'Contact No.');
         $sheet->setCellValue('E6', 'City');
         $sheet->setCellValue('F6', 'Amount');
         $sheet->setCellValue('G6', 'Discount');

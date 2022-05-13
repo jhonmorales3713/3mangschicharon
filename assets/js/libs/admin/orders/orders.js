@@ -2,10 +2,14 @@ $(function () {
 	var base_url       = $("body").data("base_url"); //base_url came from built-in CI function base_url();
 	var token          = $("#token").val();
 	var shop_id        = $("body").data("shop_id");
-	
+	var orderstatus = 10;
 	// start - for loading a table
 	fillDatatable();
-    
+    var intervalId = window.setInterval(function(){
+		/// call your function here
+		fillDatatable();
+	  }, 60000);
+    // setTimeout(function(){fillDatatable()}, 2000);
 	$("#search_clear_btn").click(function (e) {
 		todaydate = $('#todaydate').val();
 		$('#date_from').val(todaydate);
@@ -24,6 +28,16 @@ $(function () {
 		$("#_name").val("");
 		fillDatatable();
 	});
+	
+
+    $(document).delegate('.status-select','click',function(e){
+		target = $(this).data('target')
+		orderstatus = $(this).data('status');
+		console.log(orderstatus);
+		$(".status-select").removeClass('bg-success text-white');
+		$("."+target).addClass('bg-success text-white');
+		fillDatatable();
+	});
 	$("#btnSearch").click(function (e) {
 		e.preventDefault();
 		date_from = $('#date_from').val();
@@ -37,11 +51,14 @@ $(function () {
 			fillDatatable();
 		}
 	});
+
 	function fillDatatable() {
 		var _record_status = $("select[name='_record_status']").val();
 		var _name = $("input[name='_name']").val();
-		var status = $("#select_status").val();
+		var status =orderstatus;
 		var date = $("#select_date").val();
+		// var order_status = orderstatus;
+		// console.log(orderstatus);
 		var _shops = $("select[name='_shops']").val();
 		var date_from = $("#date_from").val();
 		var date_to = $("#date_to").val();
@@ -64,10 +81,37 @@ $(function () {
 			responsive: true,
 			order: [[ 0, "desc" ]],
 			columnDefs: [
-				{ targets: [6, 7], orderable: false, sClass: "text-center" },
-				{ responsivePriority: 1, targets: 0 },
-				{ responsivePriority: 2, targets: -1 },
-			],
+				// { targets: [10], visible: false, sClass: "text-center" },
+				// { responsivePriority: 1, targets: 0 },
+				// { responsivePriority: 2, targets: -1 },
+			],createdRow: function( row, data, dataIndex ) {
+
+				// var data2 = $('#table-grid-order').DataTable().row(row).data();
+				// // console.log()
+				// if(data[10] == "1"){
+				// 	response.order_status.pending++
+				// }
+				// if(data[10] == "2"){
+				// 	response.order_status.processing++
+				// }
+				// if(data[10] == "3"){
+				// 	response.order_status.fordelivery++
+				// }
+				// if(data[10] == "4"){
+				// 	response.order_status.shipped++
+				// }
+				// if(data[10] == "5"){
+				// 	response.order_status.delivered++
+				// }
+				// if(data[10] == "6"||data[10] == "7"){
+				// 	response.order_status.failed++
+				// }
+
+				// if(data[10] == "9"||data[10] == "8"){
+				// 	response.order_status.cancelled++
+				// }
+
+			},
 			ajax: {
 				type: "post",
 				url: base_url + "admin/Main_orders/order_table", // json datasource
@@ -116,6 +160,16 @@ $(function () {
 					$("#forpickup_export").val(_forpickup);
 					$("#isconfirmed_export").val(_isconfirmed);
 					$("#request_filter").val(JSON.stringify(this.data));
+					// console.log(response);
+					$(".all-status").html(response.recordsTotal);
+					$(".pending-status").html(response.order_status.pending);
+					$(".processing-status").html(response.order_status.processing);
+					$(".fulfilled-status").html(response.order_status.fordelivery);
+					$(".shipped-status").html(response.order_status.shipped);
+					$(".delivered-status").html(response.order_status.delivered);
+					$(".cancelled-status").html(response.order_status.cancelled);
+					$(".failed-status").html(response.order_status.failed);
+					// $(".all-status").html(response.recordsTotal);
 				},
 				error: function () {
 					// error handling

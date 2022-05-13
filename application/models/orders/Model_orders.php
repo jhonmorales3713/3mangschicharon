@@ -436,7 +436,7 @@ class Model_orders extends CI_Model {
 		// storing  request (ie, get/post) global array to a variable
 		$_record_status       = $exportable ? $requestData : $this->input->post('_record_status_export');
 		$_name 			      = $exportable ? $requestData['_name'] : $this->input->post('_name');
-		$status 		      =  $this->input->post('status');
+		$status 		      = $exportable ? $requestData['status'] : $this->input->post('status');
 		$citymunCode	      = $exportable ? $requestData['citymunCode'] : $this->input->post('citymunCode');
 		$date 		          = $this->input->post('date');
 		// $order_status_view    = $exportable ? $requestData['order_status_view'] : $this->input->post('order_status_view');
@@ -451,9 +451,18 @@ class Model_orders extends CI_Model {
 		$date_to_2         	  = $this->db->escape(date('Y-m-d H:i:s',strtotime($date_to.' 23:59:59')));
 		$date_from_2_shipping = $this->db->escape(date('Y-m-d H:i:s',strtotime($date_from.' 00:00:00 -2 days')));
 		$date_to_2_shipping   = $this->db->escape(date('Y-m-d H:i:s',strtotime($date_to.' 23:59:59 +2 days')));
-
+		$order_status = Array(
+			
+			'pending'=>0,
+			'fordelivery'=>0,
+			'shipped'=>0,
+			'failed'=>0,
+			'processing'=>0,
+			'delivered'=>0,
+			'cancelled'=>0
+		);
 		$requestData = $exportable ? $requestData:$_REQUEST;
-
+		// print_r($date);	
 		switch ($date) {
 			case "date_fulfilled":
 				$columns = array(
@@ -551,26 +560,60 @@ class Model_orders extends CI_Model {
 			break;
 		}
 
-		if($status == ""){
-            $date_to = date('Y-m-d',strtotime($date_to. ' + 1 days'));
-            //print_r($date_to);
-			$date_string  =  "date_created >= '".format_date_dash_reverse($date_from)."' AND date_created <= '".format_date_dash_reverse($date_to)."'";
-            $sql = "SELECT * FROM sys_orders WHERE ".$date_string;
-			if($_name != ""){
-				$sql.=" AND (order_id LIKE '%".$this->db->escape_like_str($_name)."%')";
-			}
+		$date_to = date('Y-m-d',strtotime($date_to. ' + 1 days'));
+		//print_r($date_to);
+		$date_string  =  "date_created >= '".format_date_dash_reverse($date_from)."' AND date_created <= '".format_date_dash_reverse($date_to)."'";
+		$sql = "SELECT * FROM sys_orders WHERE ".$date_string;
+		if($_name != ""){
+			$sql.=" AND (order_id LIKE '%".$this->db->escape_like_str($_name)."%')";
+		}
+		// if($status == ""){
 
-			if($status != ""){
-                $sql.=" AND payment_data  LIKE '%status_id:".'"'.$this->db->escape($status)." %'";
+		// 	if($status != ""){
+        //         $sql.=" AND payment_data  LIKE '%status_id:".'"'.$this->db->escape($status)." %'";
+		// 	}
+		// }
+		$query = $this->db->query($sql);
+		
+		foreach( $query->result_array() as $row ) {  
+			
+			if($row['status_id'] == 1){
+				$order_status['pending'] ++;
+			}
+			if($row['status_id'] == 2){
+				$order_status['processing'] ++;
+			}
+			if($row['status_id'] == 3){
+				$order_status['fordelivery'] ++;
+			}
+			if($row['status_id'] == 4){
+				$order_status['shipped'] ++;
+			}
+			if($row['status_id'] == 5){
+				$order_status['delivered'] ++;
+			}
+			if($row['status_id'] == 6|| $row['status_id'] == 7){
+				$order_status['failed'] ++;
+			}
+			if($row['status_id'] == 8 ||$row['status_id'] == 9){
+				$order_status['cancelled'] ++;
 			}
 		}
-			$query = $this->db->query($sql);
-		
         $totalData = $query->num_rows();
 		$totalFiltered = $query->num_rows(); // when there is a search parameter then we have to modify total number filtered rows as per search result.
-
+		// if($)
+		if($status != 10){
+			$sql.=" AND status_id = ".$status; 
+		}
+		if($status == 89){
+			$sql.=" AND (status_id =  8 OR status_id = 9)"; 
+		}
+		if($status == 67){
+			$sql.=" AND (status_id =  7 OR status_id = 6)"; 
+		}
+		// print_r($status.'/');
 		$sql.=" ORDER BY ". $columns[$requestData['order'][0]['column']]." ".$requestData['order'][0]['dir']." LIMIT ".$requestData['start']." ,".$requestData['length']."   ";  // adding length
-	
+		
 		$query = $this->db->query($sql);
 
 		$data          = array();
@@ -615,7 +658,7 @@ class Model_orders extends CI_Model {
 			$exportable ? $nestedData[] = $row["date_created"]:'';
 			$nestedData[] = $row["order_id"];
 			$nestedData[] = str_replace($special_upper, $special_format, $name);
-			$nestedData[] = $contact_no;
+			// $nestedData[] = $contact_no;
 			$nestedData[] = $city;
             $nestedData[] = $subtotal_unconverted;
             $nestedData[] = number_format(floatval(str_replace(',','',$subtotal_unconverted))-floatval(str_replace(',','',$subtotal_converted)),2);
@@ -623,9 +666,11 @@ class Model_orders extends CI_Model {
             $nestedData[] = number_format(floatval(str_replace(',','',$subtotal_unconverted))+50,2);
 
 			$nestedData[] = display_payment_status($payment_status, $payment_method,$exportable);
+			// $nestedData[] = 
 			$nestedData[] = display_order_status($row['status_id'],$exportable);
+			// $nestedData[] = $row['status_id'];
 
-
+			// print_r($row['status_id']);
             $nestedData[] =
             '<div class="dropdown">
                 <i class="fa fa-ellipsis-v fa-lg" id="dropdown_menu_button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-hidden="true"></i>
@@ -643,7 +688,8 @@ class Model_orders extends CI_Model {
 			"draw"            => intval( $requestData['draw'] ),   // for every request/draw by clientside , they send a number as a parameter, when they recieve a response/data they first check the draw number, so we are sending same number in draw.
 			"recordsTotal"    => intval( $totalData ),  // total number of records
 			"recordsFiltered" => intval( $totalFiltered ), // total number of records after searching, if there is no searching then totalFiltered = totalData
-			"data"            => $data   // total data array
+			"data"            => $data,   // total data array
+			"order_status"    => $order_status
 		);
 
 		return $json_data;
