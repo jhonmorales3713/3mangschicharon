@@ -24,28 +24,56 @@ class Shop extends CI_Controller {
         }
 		return $times_sold;
     }
-
+    public function search_category(){
+        
+        $this->session->set_userdata('search_category',$this->input->post('categories'));
+    }
     public function index()
 	{		
+        // print_r(basename($_SERVER['REQUEST_URI']));
+        // print_r();
+        // die();
 		$data['active_page'] = 'shop';        
         $data['has_search'] = true;
+        $data['searchbox'] = isset($_GET['search'])?$_GET['search']:'';
         $view_data['categories'] = $this->model_products->get_categories();
+        $view_data['search_categories'] = $this->session->userdata('search_category');
 		
         $products = $this->model_products->get_products();
 
         $view_data['products'] = array();
 		$discounts = $this->model_promotions->get_ongoing();
         foreach($products as $product){
-            $product['variants'] = $this->model_products->get_variants($product['id']);
-            $product['inventory'] = $this->model_products->get_inventorydetails($product['id']);
-            $product['id'] = en_dec('en',$product['id']);  
-			$times_sold = 0;
-			foreach($product['variants'] as $variant){
-				$times_sold+=($this->generate_product_number_of_sold(en_dec('en',$variant['id'])));
-				// print_r(en_dec('en',$variant['id']).'//');
-			}
-			$product['sold_count']=$times_sold;
-            array_push($view_data['products'],$product);
+            if($data['searchbox']!= ''){
+                // print_r(str_contains(strtolower($product['name']),strtolower($data['searchbox'])));
+                // die();
+                if(str_contains(strtolower($product['name']),strtolower($data['searchbox']))){
+    
+                    $product['variants'] = $this->model_products->get_variants($product['id']);
+                    $product['inventory'] = $this->model_products->get_inventorydetails($product['id']);
+                    $product['id'] = en_dec('en',$product['id']);  
+                    $times_sold = 0;
+                    foreach($product['variants'] as $variant){
+                        $times_sold+=($this->generate_product_number_of_sold(en_dec('en',$variant['id'])));
+                        // print_r(en_dec('en',$variant['id']).'//');
+                    }
+                    $product['sold_count']=$times_sold;
+                    array_push($view_data['products'],$product);
+                    
+                }
+            }else{
+    
+                $product['variants'] = $this->model_products->get_variants($product['id']);
+                $product['inventory'] = $this->model_products->get_inventorydetails($product['id']);
+                $product['id'] = en_dec('en',$product['id']);  
+                $times_sold = 0;
+                foreach($product['variants'] as $variant){
+                    $times_sold+=($this->generate_product_number_of_sold(en_dec('en',$variant['id'])));
+                    // print_r(en_dec('en',$variant['id']).'//');
+                }
+                $product['sold_count']=$times_sold;
+                array_push($view_data['products'],$product);
+            }
         }
 		$count = 0;
         foreach($discounts as $discount){

@@ -821,8 +821,8 @@ class Model_products extends CI_Model {
 			$buttons = "";
 			if($_categories != "" && $_categories == "0"){
 			}else{
-				$buttons .= '
-				<a class="dropdown-item" data-value="'.$row['id'].'" href="'.base_url('admin/Main_products/view_products/'.$token.'/'.en_dec('en',$row['id'])).'"><i class="fa fa-search" aria-hidden="true"></i> View</a>';
+				// $buttons .= '
+				// <a class="dropdown-item" data-value="'.$row['id'].'" href="'.base_url('admin/Main_products/view_products/'.$token.'/'.en_dec('en',$row['id'])).'"><i class="fa fa-search" aria-hidden="true"></i> View</a>';
 			
 			}
 			if($this->loginstate->get_access()['products']['update'] == 1){
@@ -1058,8 +1058,8 @@ class Model_products extends CI_Model {
 			}
 
 			$buttons = "";
-			$buttons .= '
-				<a class="dropdown-item" data-value="'.$row['id'].'" href="'.base_url('admin/Main_products/view_products/'.$token.'/'.en_dec('en',$row['id'])).'"><i class="fa fa-search" aria-hidden="true"></i> View</a>';
+			// $buttons .= '
+			// 	<a class="dropdown-item" data-value="'.$row['id'].'" href="'.base_url('admin/Main_products/view_products/'.$token.'/'.en_dec('en',$row['id'])).'"><i class="fa fa-search" aria-hidden="true"></i> View</a>';
 
 			if($this->loginstate->get_access()['products']['update'] == 1){
 				$buttons .= '<div class="dropdown-divider"></div>

@@ -46,9 +46,9 @@
                 <div class="top-nav-icon">
                     <div class="searchbar">
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control form-control-sm" placeholder="Search here..." aria-label="Recipient's username" aria-describedby="basic-addon2">
+                            <input type="text" class="form-control form-control-sm" id="searchbox" value="<?=isset($searchbox)?$searchbox:''?>" placeholder="Search here..." aria-label="Recipient's username" aria-describedby="basic-addon2">
                             <div class="input-group-append">
-                                <button class="btn btn-sm btn-primary add-to-cart" type="button"><i class="fas fa-search"></i></button>
+                                <button class="btn btn-sm btn-primary add-to-cart" id="btn_searchbox" type="button"><i class="fas fa-search"></i></button>
                             </div>
                         </div>
                     </div>  

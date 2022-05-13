@@ -4,12 +4,19 @@
             <i class="fa fa-filter" aria-hidden="true"></i> <b>Search Filter</b>
             <br><br>
             <small><b>Category</b></small><br>            
-            <?php foreach($categories as $category){ ?>
-                <input type="checkbox" value="<?= $category['id']; ?>"> <small><?= $category['category_name']; ?></small><br>
+            <?php foreach($categories as $category){ 
+                $checked = '';
+                if($search_categories != ''){
+                    if(in_array($category['id'],$search_categories)){
+                        $checked ='checked';
+                    }
+                }
+            ?>
+                <input type="checkbox" class="category_checkbox" <?=$checked?> value="<?= $category['id']; ?>"> <small><?= $category['category_name']; ?></small><br>
             <?php } ?>
 
             <br><br>
-            <button class="btn btn-sm btn-primary form-control form-control-sm add-to-cart">Apply</button>
+            <button class="btn btn-sm btn-primary form-control form-control-sm apply-filter">Apply</button>
         </div>
         <div class="col-lg-10 col-md-10 col-sm-8">
             <?php        
@@ -21,13 +28,25 @@
                         }
                     }
                 }
-                foreach($categories as $category){ ?>        
+                foreach($categories as $category){ 
+                    if($search_categories != ''){
+                        if(in_array($category['id'],$search_categories)){
+                    ?>        
                 <div class="row">
                     <div class="col-12">                
-                        <?php if($category['id'] > 1){ ?>
+                        <?php if($category['id'] > 1){?>
                             <hr>
-                        <?php } ?>
-                        <strong><?= $category['category_name']; ?></strong>    
+                        <?php }
+                        $included=0;
+                        foreach($products as $product){
+                            if($category['id'] == $product['category_id']){ 
+                                $included++;
+                            }
+                        }
+                        if($included>0){
+                        ?>
+                        <strong><?= $category['category_name']; ?></strong> 
+                        <?php } ?>   
                     </div>
                 </div>
                 <div class="row">
@@ -160,7 +179,9 @@
                         <?php } ?>
                     <?php } ?>
                 </div>
-            <?php } ?>
+            <?php }
+                        }
+                    }  ?>
         </div>
     </div>
 </div>

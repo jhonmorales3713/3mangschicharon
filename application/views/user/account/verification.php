@@ -77,16 +77,24 @@
     }
 
     $('#upload_btn').click(function(e){        
+        
+        $.LoadingOverlay("show");
         e.preventDefault();        
         $.ajax({
             url: base_url+'user/account/upload_document',
             type: 'post',
             data: get_form_data(),           
-            success: function(response){
+            success: function(data){
+				response = JSON.parse(data);
+                $.LoadingOverlay("hide");
                 clearFormErrors();
                 if(response.success){
                     $('#upload_form').hide();
                     $('#verifying_note').show();
+                    
+                    sys_toast_success(response.message);
+                    
+					setTimeout(function(){location.reload()}, 2000);
                 }
                 else{
                     show_errors(response,$('#upload_form'));                    
