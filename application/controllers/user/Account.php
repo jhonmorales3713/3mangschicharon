@@ -130,6 +130,7 @@ class Account extends CI_Controller {
     }
 
     public function verification(){
+        $this->isLoggedIn();
         $customer_id = en_dec('dec',$this->session->customer_id);
         $email = en_dec('dec',$this->session->email);
 
@@ -144,6 +145,12 @@ class Account extends CI_Controller {
 		
         $data['page_content'] = $this->load->view('user/account/verification',$view_data,TRUE);     
 		$this->load->view('landing_template',$data,'',TRUE);
+    }
+    public function isLoggedIn()
+    {
+        if ($this->session->userdata('isLoggedIn')=='') {
+            header("location:" . base_url('Main/logout'));
+        }
     }
 
     public function upload_document(){

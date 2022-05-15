@@ -6,6 +6,12 @@
             <small><b>Category</b></small><br>            
             <?php foreach($categories as $category){ 
                 $checked = '';
+                if($search_categories == ''){
+                    $search_categories = Array();
+                }
+                if(count($search_categories) == 0){
+                    $checked ='checked';
+                }
                 if($search_categories != ''){
                     if(in_array($category['id'],$search_categories)){
                         $checked ='checked';
@@ -30,7 +36,7 @@
                 }
                 foreach($categories as $category){ 
                     if($search_categories != ''){
-                        if(in_array($category['id'],$search_categories)){
+                        if(in_array($category['id'],$search_categories) || count($search_categories) == 0){
                     ?>        
                 <div class="row">
                     <div class="col-12">                
