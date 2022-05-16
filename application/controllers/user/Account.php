@@ -149,7 +149,7 @@ class Account extends CI_Controller {
     public function isLoggedIn()
     {
         if ($this->session->userdata('has_logged_in')=='') {
-            header("location:" . base_url('Main/logout'));
+            header("location:" . base_url('/signout'));
         }
     }
 
