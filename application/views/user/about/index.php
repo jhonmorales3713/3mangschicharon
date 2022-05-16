@@ -12,8 +12,8 @@
     <div class="col-12 h2 d-flex justify-content-center">About Us</div>
     <?php foreach($about_us as $info){?>
 
-        <div class="col-12 h4 m-3"><?=$info['title']?></div>
-        <div class="col-12 mr-3 ml-3"><?=$info['content']?></div>
+        <div class="col-12 d-flex justify-content-center h4 mt-4"><?=$info['title']?></div>
+        <div class="col-12 d-flex justify-content-center mt-2"><?=$info['content']?></div>
         <br>
     <?php } ?>
 </div>

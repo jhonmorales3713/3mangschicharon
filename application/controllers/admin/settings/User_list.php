@@ -359,8 +359,8 @@ class user_list extends CI_Controller {
 		$this->email->subject($subject);
 		$this->email->message($message);
 		$this->email->send();
-        print_r($this->email->print_debugger());
-        die();
+        // print_r($this->email->print_debugger());
+        // die();
 	}
 
     public function view($token = '')

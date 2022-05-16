@@ -105,6 +105,7 @@ $(function(){
 					sys_toast_success(data.message);
 					$('#disable_modal').modal('toggle'); //close modal
 					$.LoadingOverlay("hide");
+                    setTimeout(function(){location.reload()}, 2000);
 					$(".modal-backdrop").remove();
 				}else{
 					//showToast('note', data.message);
@@ -134,6 +135,9 @@ $(function(){
 					fillDatatable(); //refresh datatable
 					//showToast('success', data.message);
 					sys_toast_success(data.message);
+					$(".modal-backdrop").remove();
+					
+                    setTimeout(function(){location.reload()}, 2000);
 					$('#delete_modal').modal('toggle'); //close modal
 					$.LoadingOverlay("hide");
 				}else{

@@ -62,10 +62,17 @@ class Model_orders extends CI_Model {
 					$inventory_id = $inventory_details['id'];
 					$current_inventory_count = $inventory_details['qty'];
 					
-					$sql = 'UPDATE sys_inventory SET qty = '.($current_inventory_count - $orderproduct->qty).' WHERE id = '.$inventory_id;
+					$sql = 'UPDATE sys_inventory SET qty = '.($current_inventory_count - $orderproduct->quantity).' WHERE id = '.$inventory_id;
+					if(($current_inventory_count - $orderproduct->quantity) <= 0){
+						$response = Array(
+							'success' => false,
+							'message' => 'Insufficient Stocks, cannot process the order. You need to re-stock to proceed.'
+						);
+						echo json_encode($response);
+					}
 					$this->db->query($sql);
 				}
-				$inventory_data[]=Array('id' => $inventory_id,'qty' => $orderproduct->qty);
+				$inventory_data[]=Array('id' => $inventory_id,'qty' => $orderproduct->quantity);
 			}
 		}
 		// die();
