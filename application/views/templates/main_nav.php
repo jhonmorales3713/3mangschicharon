@@ -34,11 +34,11 @@
                     <span class="badge badge-success">Verified</span>                    
                 <?php } else if($_SESSION['is_verified'] == 3){ ?>
                     <span class="badge badge-warning">Pending Verification</span>
-                <?php } else if($_SESSION['is_verified'] == 2){ ?>
-                    <span class="badge badge-secondary">Unverified</span>
                 <?php } else if($_SESSION['is_verified'] == 4){ ?>
                     <span class="badge badge-danger">Denied Application</span>
-                <?php }?>            
+                <?php }else{ ?>
+                    <span class="badge badge-secondary">Unverified</span>
+                <?php } ?>            
             <?php }?>
         </div>
         <div class="top-nav-container">            
@@ -48,7 +48,7 @@
                         <div class="input-group mb-3">
                             <input type="text" class="form-control form-control-sm" id="searchbox" value="<?=isset($searchbox)?$searchbox:''?>" placeholder="Search here..." aria-label="Recipient's username" aria-describedby="basic-addon2">
                             <div class="input-group-append">
-                                <button class="btn btn-sm btn-primary add-to-cart" id="btn_searchbox" type="button"><i class="fas fa-search"></i></button>
+                                <button class="btn btn-sm btn-primary add-to-cart" id="btn_searchbox" type="button"><i class="fa fa-search"></i></button>
                             </div>
                         </div>
                     </div>  
@@ -81,10 +81,10 @@
                                 <span class="badge badge-success">Verified</span>                    
                             <?php } else if($_SESSION['is_verified'] == 3){ ?>
                                 <span class="badge badge-warning">Pending Verification</span>
-                            <?php } else if($_SESSION['is_verified'] == 2){ ?>
-                                <span class="badge badge-secondary">Unverified</span>
                             <?php } else if($_SESSION['is_verified'] == 4){ ?>
                                 <span class="badge badge-danger">Denied Application</span>
+                            <?php } else{ ?>
+                                <span class="badge badge-secondary">Unverified</span>
                             <?php }?>            
                         </center>
                     </li>

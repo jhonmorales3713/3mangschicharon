@@ -445,4 +445,4 @@
     <div class="container-fluid">
     </div>
 
-<script src="<?= base_url('assets/js/libs/user/home/home.js'); ?>"></script>
+    <script src="<?= base_url('assets/js/libs/user/home/home.js'); ?>"></script>

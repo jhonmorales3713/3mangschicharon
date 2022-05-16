@@ -7,7 +7,8 @@
             <div class="alert alert-warning"> You must be a verified user before enabling COD type of transactions</div>
         <?php }}?>
     <?php foreach($payment_methods as $method){ 
-            if(($method['method'] == 'Cash On Delivery' && isset($_SESSION['is_verified'])) || $method['method'] != 'Cash On Delivery'){
+            if(($method['method'] == 'Cash On Delivery' && $this->session->userdata('is_verified') == 1) || $method['method'] != 'Cash On Delivery'){
+               
                ?>
             <div class="payment-method-select" data-payment_method="<?= $method['id']; ?>" data-keyword="<?= $method['keyword']; ?>">
                 <center>

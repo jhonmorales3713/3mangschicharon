@@ -1,6 +1,7 @@
 <div class="container">
     <div class="row">        
-        <?php if($_SESSION['is_verified'] != 1){ ?>
+        <?php if(isset($_SESSION['is_verified'])){
+            if($_SESSION['is_verified'] != 1){ ?>
             <?php if($has_docs){ ?>
                 <div class="col-lg-12">
                     <div class="alert alert-warning">
@@ -21,7 +22,7 @@
                     </div>
                 </div>
             <?php } ?>
-        <?php } ?>
+        <?php }} ?>
         <div class="col-lg-6 col-md-6 col-sm-12 clearfix">
             <h5>My Profile</h5>
             <span class="badge badge-pill badge-primary float-right" id="edit_profile_btn">EDIT PROFILE</span>                        

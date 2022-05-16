@@ -33,6 +33,15 @@ var x = setInterval(function() {
   });
 }, 1000);
 
+$("#btn_searchbox").click(function(){
+  window.location.href = base_url + 'user/shop?search='+$("#searchbox").val();
+});
+
+$("#searchbox").on('keyup', function (e) {
+  if (e.key === 'Enter' || e.keyCode === 13) {
+      window.location.href = base_url + 'user/shop?search='+$("#searchbox").val();
+  }
+});
 $('.product-img').click(function(){
   var product_id = $(this).data('product_id');
   window.location.href = base_url + 'products/'+product_id;
