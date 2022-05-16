@@ -119,7 +119,9 @@ class Signup extends CI_Controller {
             $_SESSION['cart'] = json_decode($cart_session['cart_data'],true);
             $cart_items = 0;
             foreach($_SESSION['cart'] as $key => $value){
-                $cart_items += intval($_SESSION['cart'][$key]['quantity']);
+                if(isset($_SESSION['cart'][$key]['quantity'])){
+                    $cart_items += intval($_SESSION['cart'][$key]['quantity']);
+                }
             }
             $_SESSION['cart_items'] = $cart_items;            
         }

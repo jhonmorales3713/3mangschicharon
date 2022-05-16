@@ -46,8 +46,9 @@
                                                             }
                                                             $badge =  '<span class=" mr-1 badge badge-danger">- '.$discount_price.'% off</span> <s><small>'.$_SESSION['cart'][$key]['amount'].'</small></s>'.number_format($newprice,2);
                                                         }else{
-                                                            $newprice = $value['price'] -$discount['disc_amount'];
-                                                            $badge = '<span class=" mr-1 badge badge-danger">- &#8369; '.$discount['disc_amount'].' off</span>'.number_format($newprice,2);
+
+                                                            $newprice = $_SESSION['cart'][$key]['amount'] - $discount['disc_amount'];
+                                                            $badge = '<span class=" mr-1 badge badge-danger">- &#8369; '.$discount['disc_amount'].' off</span> <s><small>'.$_SESSION['cart'][$key]['amount'].'</small></s>'.number_format($newprice,2);
                                                             if($discount['max_discount_isset'] && $newprice < $discount['max_discount_price']){
                                                                 $badge ='<span class=" mr-1 badge badge-danger">- &#8369; '.$discount['max_discount_price'].' off</span>'.number_format($newprice,2);
                                                                 $newprice = $discount['max_discount_price'];
