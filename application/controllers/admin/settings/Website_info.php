@@ -110,7 +110,7 @@ class website_info extends CI_Controller {
         $data = $this->input->post();
 		$validation = array(
             array('f_title','Title','required|max_length[100]|min_length[1]'),
-            array('f_content','Content','required|max_length[100]|min_length[1]')
+            // array('f_content','Content','required|max_length[100]|min_length[1]')
         );
         $this->form_validation->set_data($data); 
         foreach ($validation as $value) {
@@ -140,7 +140,7 @@ class website_info extends CI_Controller {
         $data = $this->input->post();
 		$validation = array(
             array('f_title','Title','required|max_length[100]|min_length[1]'),
-            array('f_content','Content','required|max_length[100]|min_length[1]')
+            // array('f_content','Content','required|max_length[100]|min_length[1]')
         );
         $this->form_validation->set_data($data); 
         foreach ($validation as $value) {
