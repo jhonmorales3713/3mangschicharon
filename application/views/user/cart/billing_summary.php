@@ -22,7 +22,7 @@
 <hr>
 
 <?php foreach($shipping_types as $type){ ?>
-    <div class="payment-method-select" data-shipping_type="<?= $type['id'] ?>">
+    <div class="payment-method-select2" data-shipping_type="<?= $type['id'] ?>">
     <b><?= $type['type']; ?></b><br>
     <small>Estimated Time: <?= $type['est_delivery_start'].'-'.$type['est_delivery_end']; ?> hrs.</small>
     </div>
