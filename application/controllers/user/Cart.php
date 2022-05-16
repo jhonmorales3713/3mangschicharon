@@ -356,6 +356,7 @@ class Cart extends CI_Controller {
             'order_data' => json_encode($order_data),
             'payment_data' => json_encode($payment_data),
             'shipping_data' => json_encode($shipping_data),
+            'status_id'        => $data['payment_method'] == 1 ? 0 : 1,
             'total_amount' => floatval($data['total_amount']),
             'delivery_amount' => floatval($data['delivery_amount'])            
         );        

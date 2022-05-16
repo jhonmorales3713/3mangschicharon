@@ -75,11 +75,11 @@
     <div class="alert alert-secondary ml-4 color-dark" role="alert">
         <span class="font-weight-bold"><a class="text-dark" href="<?=base_url('admin/Main_orders/orders_home/Orders');?>"><?=$active_page?></a></span>
         &nbsp;<span class="fa fa-chevron-right"></span>&nbsp;
-        <span class="font-weight-bold">View Orders</span>
+        <span class="font-weight-bold"><a class="text-dark" href="<?=base_url('Main_orders/orders/'.$token)?>">View Orders</a></span>
         
         &nbsp;<span class="fa fa-chevron-right"></span>&nbsp;
         <span class="font-weight-regular"><?=$reference_num?></span>
-        
+        <!-- //Main_orders/orders/ -->
     </div>
 </div>
 

@@ -12,6 +12,14 @@ class Model_payment extends CI_Model {
         );
 
         $this->db->insert('sys_payments',$info);
+        
+		$sql = "UPDATE `sys_orders` SET status_id = 1 WHERE order_id = ?";
+		
+		$bind_data = array(
+			$order_data['order_id']
+		);
+        
+		return $this->db->query($sql, $bind_data);
         return $this->db->insert_id();
 
     }

@@ -396,7 +396,8 @@ class Model_orders extends CI_Model {
 		$discount_total = 0;
 		$qty = 0;
 		foreach(json_decode($orderdata) as $key => $row ){
-			$total_amount = $row->quantity * $row->amount;
+			// print_r($row);
+			$total_amount = (isset($row->quantity)?$row->quantity:0) * $row->amount;
 			$discount_info = isset($row->discount_info) ? $row->discount_info : Array();
 			$qty += $row->quantity;
 			$amount = $row->amount;
@@ -641,8 +642,17 @@ class Model_orders extends CI_Model {
 			$subtotal_converted = number_format($this->get_total_order_amount($row['order_data'])['subtotal_converted'], 2);
 			$subtotal_unconverted = number_format($this->get_total_order_amount($row['order_data'])['subtotal_unconverted'], 2);
 			$total_qty = number_format($this->get_total_order_amount($row['order_data'])['total_qty'], 2);
-            $payment_status = json_decode($row['payment_data'])->status_id;
             $payment_method = json_decode($row['payment_data'])->payment_method_name;
+			// print_r($payment_method);
+			// if()
+			// print_r($this->orders_details($row["order_id"]));
+			$payment_details = $this->orders_details($row["order_id"])[0];
+			$payment_status = 0;
+			// print_r($payment_details);
+			if(($payment_details['payment_details'] != '' && $payment_method !='COD') || $payment_details['status_id'] == 5){
+				$payment_status = 1;
+			}
+            // $payment_status = $payment_details->payment_details != '' ? 1 : json_decode($row['payment_data'])->status_id;
 			// if($international == 1){
 			if($date === 'date_fulfilled'){	
 		       $nestedData[] = $row["date_fulfilled"];
@@ -671,7 +681,6 @@ class Model_orders extends CI_Model {
             $nestedData[] = number_format(floatval(str_replace(',','',$subtotal_unconverted))-floatval(str_replace(',','',$subtotal_converted)),2);
             $nestedData[] = 50;
             $nestedData[] = number_format(floatval(str_replace(',','',$subtotal_unconverted))+50,2);
-
 			$nestedData[] = display_payment_status($payment_status, $payment_method,$exportable);
 			// $nestedData[] = 
 			$nestedData[] = display_order_status($row['status_id'],$exportable);
@@ -701,6 +710,5 @@ class Model_orders extends CI_Model {
 
 		return $json_data;
 	}
-
 }
 ?>

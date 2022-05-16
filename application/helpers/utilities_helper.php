@@ -177,22 +177,23 @@ function generate_json($data) {
     
 
 	function display_payment_status($payment_status, $payment_method, $export = false){
-
-		if($payment_status == 1 && $payment_method != 'Free Payment' && $payment_method != 'Prepayment') {
+		if($payment_status == 0 && $payment_method == 'COD') {
 			$label = (!$export) ? "<label class='badge badge-info'> Pending(COD)</label>" : "Pending(COD)";
+		}else if($payment_status == 0 && $payment_method != 'COD' ) {
+			$label = (!$export) ? "<label class='badge badge-info'> Pending(".strtoupper($payment_method).")</label>" : "Pending(".strtoupper($payment_method).")";
 		}
 		else if($payment_status == 1) {
-			$label = (!$export) ? "<label class='badge badge-success'> Paid</label>" : "Paid";
+			$label = (!$export) ? "<label class='badge badge-success'> Paid(".strtoupper($payment_method).")</label>" : "Paid(".strtoupper($payment_method).")";
 		}
-		else if($payment_status == 3 && $payment_method != 'Free Payment' && $payment_method != 'Prepayment'){
-			$label = (!$export) ? "<label class='badge badge-info'> Pending(COD)</label>" : "Pending(COD)";
-		}
-		else if($payment_status == 0){
-			$label = (!$export) ? "<label class='badge badge-info'> Pending</label>" : "Pending";
-		}
-		else{
-			$label = (!$export) ? "<label class='badge badge-info'> Pending</label>" : "Pending";
-		}
+		// else if($payment_status == 3 && $payment_method != 'Free Payment' && $payment_method != 'Prepayment'){
+		// 	$label = (!$export) ? "<label class='badge badge-info'> Pending(COD)</label>" : "Pending(COD)";
+		// }
+		// else if($payment_status == 0){
+		// 	$label = (!$export) ? "<label class='badge badge-info'> Pending</label>" : "Pending";
+		// }
+		// else{
+		// 	$label = (!$export) ? "<label class='badge badge-info'> Pending</label>" : "Pending";
+		// }
 
 		return $label;
 	}
