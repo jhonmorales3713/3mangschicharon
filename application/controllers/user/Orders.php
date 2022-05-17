@@ -87,7 +87,7 @@ class Orders extends CI_Controller {
         $view_data['order_id'] = $order['order_id'];
         $view_data['order_data'] = json_decode($order['order_data'],true);
         $view_data['payment_data'] = json_decode($order['payment_data'],true);
-        $this->model_orders->update_payment($id);
+        $this->model_orders->update_payment($order['order_id']);
         
         if(isset($_SESSION['cart'])){
             //set temporary cart
