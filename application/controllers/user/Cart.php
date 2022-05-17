@@ -33,6 +33,8 @@ class Cart extends CI_Controller {
             $data['quantity'] = $quantity;            
         }        
         
+        // print_r($data);
+        // die();
         $en_product_id = $data['product_id'];
         $en_variant_id = $data['variant_id'];
         $product_id = en_dec('dec',$data['product_id']);        

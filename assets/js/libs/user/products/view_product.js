@@ -13,6 +13,7 @@ $(function(){
             return;
         }
         
+        var max_checkout = $(this).data('max_checkout');
         var product_id = $(this).data('product_id');
         var qty = $('#qty').val();
           
@@ -24,8 +25,10 @@ $(function(){
                 size: variant.size,
                 variant_id: variant.variant_id,
                 discount_id: variant.discount_id,
+                max_checkout: max_checkout,
                 quantity: qty,
-                from_checkout: false
+                from_checkout: false,
+                order_now: false
             },
             success: function(response){                
                 if(response.success){
@@ -62,7 +65,8 @@ $(function(){
                 max_checkout: max_checkout,
                 variant_id: variant.variant_id,
                 quantity: qty,
-                order_now: true              
+                order_now: true,
+                from_checkout: false
             },
             success: function(response){
                 if(response.success){
