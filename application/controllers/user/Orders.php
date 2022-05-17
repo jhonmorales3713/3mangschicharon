@@ -10,7 +10,7 @@ class Orders extends CI_Controller {
     }
 
     public function orders($order_id = ""){
-
+        $this->isLoggedIn();
         $customer_id = en_dec('dec',$this->session->customer_id);
 
         if($order_id != ""){
@@ -36,7 +36,33 @@ class Orders extends CI_Controller {
             $this->load->view('landing_template',$data,'',TRUE);
         }        
     }
-
+    public function isLoggedIn()
+    {
+        if ($this->session->userdata('has_logged_in')=='') {
+            header("location:" . base_url('/signout'));
+        }
+    }
+    public function rate_order(){
+        $data = $this->input->post();
+        // print_r($data);
+        if($data['rating'] == 0){
+            $response = Array(
+                'success' => false,
+                'message' => 'Rating is required'
+            );
+        }else{
+            $response = Array(
+                'success' => true,
+                'message' => 'Order Successfully rated.'
+            );
+        }
+        $rating_data = Array(
+            'rating' => $data['rating'],
+            'message' => $data['message'] 
+        );
+        $this->model_orders->rate_order(en_dec('dec',$data['id']),json_encode($rating_data));
+        echo json_encode($response);
+    }
     public function details($order_id){
         $order_id = en_dec('dec',$order_id);
 

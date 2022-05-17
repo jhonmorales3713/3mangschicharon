@@ -240,7 +240,7 @@ class Cart extends CI_Controller {
             $email = $data['shipping_data']['email'];
         }
         else{
-            $email = en_dec('dec',$_SESSION['email']);
+            $email = !isset($_SESSION['email']) ? '' : en_dec('dec',$_SESSION['email']);
         }
         //end checking of discount usage
 

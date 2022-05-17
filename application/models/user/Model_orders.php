@@ -30,6 +30,11 @@ class Model_orders extends CI_Model {
 		return $this->db->query($query);
 
 	}
+    public function rate_order($id,$rating_data){
+        $sql = 'UPDATE sys_orders SET customer_feedback = ? where id = ?';
+        $bind_data = Array($rating_data,$id);
+        $this->db->query($sql,$bind_data);
+    }
     public function get_completed_orders(){
         $query = 'SELECT * FROM sys_orders WHERE status_id = 5';
 		return $this->db->query($query)->result_array();
