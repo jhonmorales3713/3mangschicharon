@@ -5,16 +5,24 @@
         padding-right: 0 !important;
         padding-bottom: 0 !important;
     }
+    body{
+        background-image: url(<?=base_url('assets/img/about_us.png')?>) !important; background-size: cover;
+    }
 </style>
-<!-- <img src="<?= base_url('assets/img/about.png'); ?>" alt="" width="100%"> -->
-<div class="row">
+<div class="row  d-flex justify-content-center ">
     
-    <div class="col-12 h2 d-flex justify-content-center">About Us</div>
-    <?php foreach($about_us as $info){?>
+    <div class="col-8 bg-white   ">
+        <div class="row">
+            <div class="col-12 h2 font-weight-bold  d-flex justify-content-center">
+            About Us
+            </div>
+            <?php foreach($about_us as $info){?>
 
-        <div class="col-12 d-flex justify-content-center h4 mt-4"><?=$info['title']?></div>
-        <div class="col-12 d-flex justify-content-center mt-2"><?=$info['content']?></div>
-        <br>
-    <?php } ?>
+                <div class="col-12 bg-white text-wrap d-flex justify-content-center h4 mt-4"><?=$info['title']?></div>
+                <div class="col-12 bg-white  text-wrap d-flex justify-content-center mt-2"><?=$info['content']?></div>
+                <br>
+            <?php } ?>
+        </div>
+    </div>
 </div>
 

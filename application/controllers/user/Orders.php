@@ -87,7 +87,17 @@ class Orders extends CI_Controller {
         $view_data['order_id'] = $order['order_id'];
         $view_data['order_data'] = json_decode($order['order_data'],true);
         $view_data['payment_data'] = json_decode($order['payment_data'],true);
-        // $this->model_orders->update_payment($id);
+        $this->model_orders->update_payment($id);
+        
+        if(isset($_SESSION['cart'])){
+            //set temporary cart
+            $_SESSION['temp_cart'] = $_SESSION['cart'];
+            foreach($_SESSION['cart'] as $key => $value){
+                if($value['is_included'] == 1){
+                    unset($_SESSION['cart'][$key]);
+                }
+            }
+        }
 		$data['active_page'] = 'shop';		
         $data['page_content'] = $this->load->view('user/orders/order_confirmation',$view_data,TRUE);
 		$this->load->view('landing_template',$data,'',TRUE);

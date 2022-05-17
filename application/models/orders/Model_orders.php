@@ -571,7 +571,7 @@ class Model_orders extends CI_Model {
 		$date_to = date('Y-m-d',strtotime($date_to. ' + 1 days'));
 		//print_r($date_to);
 		$date_string  =  "date_created >= '".format_date_dash_reverse($date_from)."' AND date_created <= '".format_date_dash_reverse($date_to)."'";
-		$sql = "SELECT * FROM sys_orders WHERE ".$date_string;
+		$sql = "SELECT * FROM sys_orders WHERE status_id > 0  AND ".$date_string;
 		if($_name != ""){
 			$sql.=" AND (order_id LIKE '%".$this->db->escape_like_str($_name)."%')";
 		}
@@ -610,7 +610,7 @@ class Model_orders extends CI_Model {
         $totalData = $query->num_rows();
 		$totalFiltered = $query->num_rows(); // when there is a search parameter then we have to modify total number filtered rows as per search result.
 		// if($)
-		if($status != 10){
+		if($status != 10 ){
 			$sql.=" AND status_id = ".$status; 
 		}
 		if($status == 89){
