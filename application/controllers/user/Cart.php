@@ -1,6 +1,7 @@
 <?php
 
 defined('BASEPATH') OR exit('No direct script access allowed');
+date_default_timezone_set('Asia/Manila');
 
 class Cart extends CI_Controller {
 
@@ -244,59 +245,6 @@ class Cart extends CI_Controller {
         }
         //end checking of discount usage
 
-        if(isset($_SESSION['cart'])){
-            //set temporary cart
-            $_SESSION['temp_cart'] = $_SESSION['cart'];
-            foreach($_SESSION['cart'] as $key => $value){
-                if($value['is_included'] == 1){
-                    $order_data[$key] = $value;
-                    $discount_info = Array();
-                    foreach($discounts as $discount){
-                        if(in_array($key,json_decode($discount['product_id']))){
-                            $discount_info = $discount;
-                        }
-                        // $usage_max = $discount['usage_quantity'];
-                        // foreach($completed_orders as $order){
-                        //     if(strtolower(json_decode($order['shipping_data'])->email) == strtolower($email)){
-                        //         foreach(json_decode($order['order_data']) as $product_id => $order_value){
-                        //             if(in_array($order,json_decode($discount['product_id'])) && $product_id == $key){
-                                        
-                        //             }
-                        //             print_r($order);
-                        //         }
-                        //     }
-                        // }
-                    }
-                    $order_data[$key]['discount_info'] = $discount_info;
-                    // print_r($order_data);
-                    // die();
-                    unset($_SESSION['cart'][$key]);
-                    array_push($product_id,en_dec('dec',$key));
-                }
-            }
-        }
-        $payment_data = array(
-            'payment_method_id:' => isset($data['payment_method']) ? $data['payment_method'] : 2,
-            'payment_method_name' => $data['payment_keyword'] != ''?$data['payment_keyword'] : 'COD',
-            'amount' => $data['total_amount'],
-            'status_id' => 1, //pending
-        );
-
-        $rider = array(
-            'name' => '3Mang Rider',
-            'contact_no' => '09091901632',
-            'vehicle_type' => 'motorcycle'
-        );
-        
-        $data['shipping_data']['rider'] = $rider;
-
-        $shipping_data = $data['shipping_data'];
-
-        $deliver_amount = $data['delivery_amount'];
-        $total_amount = $data['total_amount'];
-    
-        $customer_shipping_address = $this->model_address->get_shipping_address($customer_id);
-
         // print_r($customer_shipping_address);
         // die();
         // if($customer_shipping_address){
@@ -338,6 +286,16 @@ class Cart extends CI_Controller {
             generate_json($response);
             die();            
         }
+        
+        if(isset($_SESSION['cart'])){
+            //set temporary cart
+            $_SESSION['temp_cart'] = $_SESSION['cart'];
+            foreach($_SESSION['cart'] as $key => $value){
+                if($value['is_included'] == 1){
+                    $order_data[$key] = $value;
+                }
+            }
+        }
         if($order_data == '' || count($order_data) == 0){
             
             $response = array(
@@ -349,6 +307,61 @@ class Cart extends CI_Controller {
             generate_json($response);
             die();            
         }
+        if(isset($_SESSION['cart'])){
+            //set temporary cart
+            $_SESSION['temp_cart'] = $_SESSION['cart'];
+            foreach($_SESSION['cart'] as $key => $value){
+                if($value['is_included'] == 1){
+                    // $order_data[$key] = $value;
+                    $discount_info = Array();
+                    foreach($discounts as $discount){
+                        if(in_array($key,json_decode($discount['product_id']))){
+                            $discount_info = $discount;
+                        }
+                        // $usage_max = $discount['usage_quantity'];
+                        // foreach($completed_orders as $order){
+                        //     if(strtolower(json_decode($order['shipping_data'])->email) == strtolower($email)){
+                        //         foreach(json_decode($order['order_data']) as $product_id => $order_value){
+                        //             if(in_array($order,json_decode($discount['product_id'])) && $product_id == $key){
+                                        
+                        //             }
+                        //             print_r($order);
+                        //         }
+                        //     }
+                        // }
+                    }
+                    $order_data[$key]['discount_info'] = $discount_info;
+                    // print_r($order_data);
+                    // die();
+                    if($data['payment_method'] != 1){
+                        unset($_SESSION['cart'][$key]);
+                    }
+                    array_push($product_id,en_dec('dec',$key));
+                }
+            }
+        }
+        $payment_data = array(
+            'payment_method_id:' => isset($data['payment_method']) ? $data['payment_method'] : 2,
+            'payment_method_name' => $data['payment_keyword'] != ''?$data['payment_keyword'] : 'COD',
+            'amount' => $data['total_amount'],
+            'status_id' => 1, //pending
+        );
+
+        $rider = array(
+            'name' => '3Mang Rider',
+            'contact_no' => '09091901632',
+            'vehicle_type' => 'motorcycle'
+        );
+        
+        $data['shipping_data']['rider'] = $rider;
+
+        $shipping_data = $data['shipping_data'];
+
+        $deliver_amount = $data['delivery_amount'];
+        $total_amount = $data['total_amount'];
+    
+        $customer_shipping_address = $this->model_address->get_shipping_address($customer_id);
+
         $order_id = $this->generate_order_id();
 
         $order = array(
@@ -362,9 +375,8 @@ class Cart extends CI_Controller {
             'total_amount' => floatval($data['total_amount']),
             'delivery_amount' => floatval($data['delivery_amount'])            
         );        
-        // print_r($order_data);
+        // print_r($order);
         // die();
-
         $id = $this->model_orders->insert_order($order);
 
         $total_qty = 0;
