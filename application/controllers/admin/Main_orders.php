@@ -584,17 +584,17 @@ class Main_orders extends CI_Controller {
         $sheet->setCellValue('B6', 'Order ID');
         $sheet->setCellValue('C6', 'Customer Name');
         // $sheet->setCellValue('D6', 'Contact No.');
-        $sheet->setCellValue('E6', 'City');
-        $sheet->setCellValue('F6', 'Amount');
-        $sheet->setCellValue('G6', 'Discount');
-        $sheet->setCellValue('H6', 'Shipping Fee');
-        $sheet->setCellValue('I6', 'Total');
-        $sheet->setCellValue('J6', 'Payment Status');
-        $sheet->setCellValue('K6', 'Status');
+        $sheet->setCellValue('D6', 'City');
+        $sheet->setCellValue('E6', 'Amount');
+        $sheet->setCellValue('F6', 'Discount');
+        $sheet->setCellValue('G6', 'Shipping Fee');
+        $sheet->setCellValue('H6', 'Total');
+        $sheet->setCellValue('I6', 'Payment Status');
+        $sheet->setCellValue('J6', 'Status');
 
         $sheet->getStyle('A1')->getFont()->setBold(true);
         $sheet->getStyle('A4:B4')->getFont()->setBold(true);
-        $sheet->getStyle('A6:L6')->getFont()->setBold(true);
+        $sheet->getStyle('A6:J6')->getFont()->setBold(true);
 
         // print_r($query);
         $exceldata= array();
@@ -609,8 +609,7 @@ class Main_orders extends CI_Controller {
                 '7' => ucwords($row[7]),
                 '8' => ucwords($row[8]),
                 '9' => ucwords($row[9]),
-                '10' => ucwords($row[10]),
-                '11' => ucwords($row[11])
+                '10' => ucwords($row[10])
             );
             $exceldata[] = $resultArray;
         }

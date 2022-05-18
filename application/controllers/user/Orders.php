@@ -77,8 +77,7 @@ class Orders extends CI_Controller {
 		$this->load->view('landing_template',$data,'',TRUE);
     }
 
-    public function order_confirmation($order_id){        
-
+    public function order_confirmation($order_id){
         $id = en_dec('dec',$order_id);
 
         $order = $this->model_orders->get_order_info($id);

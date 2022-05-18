@@ -391,50 +391,56 @@ class Model_orders extends CI_Model {
 		return $json_data;
     }
 	public function get_total_order_amount($orderdata){
-		$total_amount = 0;
-		$sub_total_converted = 0; 
+                
+		$order_amount = 0;
 		$discount_total = 0;
-		$qty = 0;
-		foreach(json_decode($orderdata) as $key => $row ){
-			// print_r($row);
-			$total_amount = (isset($row->quantity)?$row->quantity:0) * $row->amount;
-			$discount_info = isset($row->discount_info) ? $row->discount_info : Array();
-			$qty += $row->quantity;
-			$amount = $row->amount;
+		$subtotal = 0;
+		foreach(json_decode($orderdata) as $key => $order ){
+			// $order_info = json_decode($row["order_data"]);
+			//print_r($value);
+			$qty = $order->quantity;
+			$amount = $order->amount;
+			$product = (en_dec('dec',$key));
+			$subtotal += $amount*$qty;
+			$discount_info = isset($order->discount_info) ? $order->discount_info : Array();
+			$discount_price = 0;
+			// print_r($discount_info);
+			$newprice = $amount;
 			$badge = '';
 			if($discount_info != '' && $discount_info != null){
 				if(in_array($key,json_decode($discount_info->product_id))){
 					$discount_id = $discount_info->id;
-					$discount_price = 0;
 					if($discount_info->discount_type == 1){
 						if($discount_info->disc_amount_type == 2){
+							$oldvalue = $newprice;
 							$newprice = $amount - ($amount * ($discount_info->disc_amount/100));
-							$discount_price = ($amount * ($discount_info->disc_amount/100));
+							$discount_price = $discount_info->disc_amount;
 							if($discount_info->max_discount_isset && $newprice < $discount_info->max_discount_price){
 								$discount_price = $discount_info->max_discount_price;
 								$newprice = $discount_info->max_discount_price;
 							}
+							$discount_total += $qty*($oldvalue - $newprice);
 							$badge =  '<span class=" mr-1 badge badge-danger">- '.$discount_price.'% off</span> <s><small>'.$amount.'</small></s>'.number_format($newprice,2);
 						}else{
+							$oldvalue = $newprice;
 							$newprice = $amount - $discount_info->disc_amount;
-							$badge = '<span class=" mr-1 badge badge-danger">- &#8369; '.$discount_info->disc_amount.' off</span>'.number_format($newprice,2);
+							$discount_total += $qty*($oldvalue - $newprice);
+							$discount_price = $discount_info->disc_amount;
+							$badge = '<span class=" mr-1 badge badge-danger">- &#8369; '.$discount_info->disc_amount.' off</span> <s><small>'.$amount.'</small></s>';
 							if($discount_info->max_discount_isset && $newprice < $discount_info->max_discount_price){
-								$discount_price = $discount_info->max_discount_price;
+								$badge ='<span class=" mr-1 badge badge-danger">- &#8369; '.$discount_info->max_discount_price.' off</span> <s><small>'.$amount.'</small></s>'.number_format($newprice,2);
 								$newprice = $discount_info->max_discount_price;
-								$badge ='<span class=" mr-1 badge badge-danger">- &#8369; '.$discount_info->max_discount_price.' off</span>'.number_format($newprice,2);
 								// $newprice = $discount['max_discount_price'];
+								$discount_price = $discount_info->max_discount_price;
 							}
 						}
 						$amount = $newprice;
-						$discount_total += $discount_price* floatval($row->quantity);
-						$sub_total_converted += floatval($newprice) * floatval($row->quantity); 
 					}
 				}
-			}else{
-				$sub_total_converted += floatval($row->amount) * floatval($row->quantity); 
 			}
+			$order_amount += $newprice * $qty;
 		}
-		return Array('subtotal_converted'=>$sub_total_converted,'subtotal_unconverted'=>$total_amount,'total_qty' => $qty);
+		return Array('subtotal_converted'=>$subtotal,'subtotal_unconverted'=>$order_amount,'total_qty' => $qty);
 	}
     public function order_table_data(){
 		$sql = "SELECT * from sys_orders WHERE status_id = 5";
@@ -677,7 +683,7 @@ class Model_orders extends CI_Model {
 			$nestedData[] = str_replace($special_upper, $special_format, $name);
 			// $nestedData[] = $contact_no;
 			$nestedData[] = $city;
-            $nestedData[] = $subtotal_unconverted;
+            $nestedData[] = number_format(floatval(str_replace(',','',$subtotal_converted)),2);
             $nestedData[] = number_format(floatval(str_replace(',','',$subtotal_unconverted))-floatval(str_replace(',','',$subtotal_converted)),2);
             $nestedData[] = 50;
             $nestedData[] = number_format(floatval(str_replace(',','',$subtotal_unconverted))+50,2);

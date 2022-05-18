@@ -196,10 +196,11 @@ class Model_reports extends CI_Model {
 				}
 				$variant_price [] = $variant['price'];
 			}
-			// print_r($stock_status);
+			// print_r($stock_status.'x');
+			// print_r($parent_stocks.'y');
 			// print_r('//');
-			// print_r($variant_stocks);
-			if($stock_status == '' && $variant_stocks == 0){
+			// print_r($variant_stocks.'z');
+			if($stock_status == '' && $variant_stocks == 0&& $parent_stocks == 0){
 				$stock_status = 'Out of Stocks';
 			}else if($stock_status == ''){
 				$stock_status = 'Active';
