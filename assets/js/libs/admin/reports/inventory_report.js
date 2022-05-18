@@ -43,6 +43,7 @@ $(function () {
 			destroy: true,
 			searching: false,
 			serverSide: true,
+			ordering: false,
 			responsive: true,
 			order: [[ 0, "desc" ]],
             createdRow: function( row, data, dataIndex ) {

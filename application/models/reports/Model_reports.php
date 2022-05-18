@@ -45,6 +45,17 @@ class Model_reports extends CI_Model {
 		$params = array($Id);
 		return $this->db->query($query, $params)->result_array();
 	}
+	public function get_inventorydetails2($Id,$uniqueID = '') {
+		$field = 'product_id';
+		if($uniqueID != ''){
+			$field = 'id';
+			$Id = $uniqueID;
+		}
+		$query=" SELECT * from sys_inventory
+		WHERE $field = ? ORDER BY date_expiration ASC";
+		$params = array($Id);
+		return $this->db->query($query, $params)->result_array();
+	}
 	public function get_total_order_amount($orderdata){
 		$total_amount = 0;
 		$sub_total_converted = 0; 
@@ -110,23 +121,37 @@ class Model_reports extends CI_Model {
 		$_categories		  = $exportable ? $requestData['category'] : $this->input->post('category');
 		$token                = en_dec('en', $token_session);
 		
+		$columns = array(
+			// datatable column index  => database column name for sorting
+				0 => 'img',
+				1 => 'name',
+				2 => 'category_name',
+				3 => 'qty',
+				4 => 'date_manufactured',
+				5 => 'date_expiration',
+				6 => 'deducted_qty',
+				7 => 'total_qty',
+				9 => 'status'
+			);
 		$date_to = date('Y-m-d',strtotime($date_to. ' + 1 days'));
 		//print_r($date_to);
 		$date_string  =  "date_manufactured >= '".format_date_dash_reverse($date_from)."' AND date_manufactured <= '".format_date_dash_reverse($date_to)."'";
 		
-		$sql = "SELECT a.*, c.category_name,img.filename,sum(d.qty) as no_of_stocks,d.date_manufactured,d.date_expiration,d.status as stock_status,d.id as inventory_id FROM sys_products a 
+		$sql = "SELECT a.*, c.category_name,img.filename,d.qty,d.date_manufactured,d.date_expiration,d.status as stock_status,d.id as inventory_id FROM sys_products a 
 		LEFT JOIN sys_product_category c ON a.category_id = c.id
 		LEFT JOIN sys_products_images img ON a.id = img.product_id
-		LEFT JOIN sys_inventory d on d.product_id = a.id";
+		LEFT JOIN sys_inventory d on d.product_id = a.id ";
 
-		$sql.=" WHERE a.enabled > 0 AND ".$date_string;
-		$sql.=" AND a.parent_product_id IS NOT NULL GROUP BY a.id";
+		$sql.=" WHERE ".$date_string;
+		$sql.=" AND a.parent_product_id IS NOT NULL";
 
 		if($_categories != ""){
 			$sql.=" AND (category_name LIKE '%".$this->db->escape_like_str($_categories)."%')";
 		}
-
+		$sql.=' GROUP by d.id';
+		$count = 0;
 		$query = $this->db->query($sql);
+		// print_r($sql);
 		$totalData = count($query->result_array());
 		$totalFiltered = $totalData; 
 		$data = [];
@@ -148,6 +173,7 @@ class Model_reports extends CI_Model {
 			// print_r($_search);
 			// print_r($details['name'].' - '.$row["name"]);
 			$nestedData[] = $details['name'].' - '.$row["name"];
+			$stock_status = '';
 			if($_search != "" && (strpos(strtoupper($details['name'].' - '.$row["name"]),strtoupper($_search)) === 0 || strpos(strtoupper($details['name'].' - '.$row["name"]),strtoupper($_search)) > 0)){
 				$matched = true;
 			}else if($_search == ""){
@@ -157,45 +183,66 @@ class Model_reports extends CI_Model {
 			$variant_stocks = 0;
 			$variant_price = [];
 			$parent_stocks = 0;
-			$stock_status = '';
-			//print_r($row['id'].'..');
-			foreach($this->get_inventorydetails($row["id"]) as $inventory){
-				$now = time(); // or your date as well
-				$your_date = strtotime($inventory['date_expiration']);
-				$datediff = $now - $your_date;
-				$days_differ =  -1*(round($datediff / (60 * 60 * 24))-1);
-				if($inventory['status']==1){
-					$parent_stocks += $inventory['qty'];
-				}
-				if(in_array($inventory['status'],[1,2]) && date('Y-m-d',strtotime($inventory['date_expiration'])) <= date('Y-m-d')){
-					$stock_status = 'Expired Stocks';
-					$this->disable_modal_confirm($inventory['product_id'],2);
-					$row['enabled'] = 2;
-				}else if(in_array($inventory['status'],[1,2]) && date('Y-m-d',strtotime($inventory['date_expiration'])) > date('Y-m-d') && $days_differ < 30 && $stock_status==''){
-					$stock_status = 'Expiring Soon';
-				}
-				//print_r($days_differ.'//'.$row["id"].'?');
-			}
-			foreach($this->getVariants($row["id"]) as $variant){
-				foreach($this->get_inventorydetails($variant["id"]) as $inventory){
+			
+			foreach($this->get_inventorydetails2('',$row["inventory_id"]) as $inventory){
+				if($_search != "" && (strpos(strtoupper($details['name'].' - '.$row["name"]),strtoupper($_search)) === 0 || strpos(strtoupper($details['name'].' - '.$row["name"]),strtoupper($_search)) > 0)){
+			
+					// if($_search != '' && $row ['id'] == $inventory['product_id']){
 					$now = time(); // or your date as well
 					$your_date = strtotime($inventory['date_expiration']);
 					$datediff = $now - $your_date;
-					
 					$days_differ =  -1*(round($datediff / (60 * 60 * 24))-1);
 					if($inventory['status']==1){
-						$variant_stocks += $inventory['qty'];
+						$parent_stocks += $inventory['qty'];
 					}
-					if(in_array($inventory['status'],[1,2]) && date('Y-m-d',strtotime($inventory['date_expiration'])) <= date('Y-m-d')){
+						// print_r($inventory);
+					if(in_array($inventory['status'],[1,2,3]) && date('Y-m-d',strtotime($inventory['date_expiration'])) <= date('Y-m-d')){
 						$stock_status = 'Expired Stocks';
-						$this->disable_modal_confirm($inventory['product_id'],2);
+						$row['enabled'] = 2;
+					}else if(in_array($inventory['status'],[1,2]) && date('Y-m-d',strtotime($inventory['date_expiration'])) > date('Y-m-d') && $days_differ < 30 && $stock_status==''){
+						$stock_status = 'Expiring Soon';
+					}
+					
+					// print_r($stock_status);
+				}else{
+					
+					$now = time(); // or your date as well
+					$your_date = strtotime($inventory['date_expiration']);
+					$datediff = $now - $your_date;
+					$days_differ =  -1*(round($datediff / (60 * 60 * 24))-1);
+					if($inventory['status']==1){
+						$parent_stocks += $inventory['qty'];
+					}
+						// print_r($inventory);
+					if(in_array($inventory['status'],[1,2,3]) && date('Y-m-d',strtotime($inventory['date_expiration'])) <= date('Y-m-d')){
+						$stock_status = 'Expired Stocks';
 						$row['enabled'] = 2;
 					}else if(in_array($inventory['status'],[1,2]) && date('Y-m-d',strtotime($inventory['date_expiration'])) > date('Y-m-d') && $days_differ < 30 && $stock_status==''){
 						$stock_status = 'Expiring Soon';
 					}
 				}
-				$variant_price [] = $variant['price'];
+				//print_r($days_differ.'//'.$row["id"].'?');
 			}
+			// foreach($this->getVariants($row["id"]) as $variant){
+			// 	foreach($this->get_inventorydetails2($variant["id"]) as $inventory){
+			// 		$now = time(); // or your date as well
+			// 		$your_date = strtotime($inventory['date_expiration']);
+			// 		$datediff = $now - $your_date;
+					
+			// 		$days_differ =  -1*(round($datediff / (60 * 60 * 24))-1);
+			// 		if($inventory['status']==1){
+			// 			$variant_stocks += $inventory['qty'];
+			// 		}
+			// 		if(in_array($inventory['status'],[1,2,3]) && date('Y-m-d',strtotime($inventory['date_expiration'])) <= date('Y-m-d')){
+			// 			$stock_status = 'Expired Stocks';
+			// 			// $this->disable_modal_confirm($inventory['product_id'],2);
+			// 			$row['enabled'] = 2;
+			// 		}else if(in_array($inventory['status'],[1,2]) && date('Y-m-d',strtotime($inventory['date_expiration'])) > date('Y-m-d') && $days_differ < 30 && $stock_status==''){
+			// 			$stock_status = 'Expiring Soon';
+			// 		}
+			// 	}
+			// 	$variant_price [] = $variant['price'];
+			// }
 			// print_r($stock_status.'x');
 			// print_r($parent_stocks.'y');
 			// print_r('//');
@@ -226,13 +273,14 @@ class Model_reports extends CI_Model {
 			$nestedData[] = $stock_status;
 			if($matched == true){
 				$data[] = $nestedData;
+				$count++;
 			}
 		}
 
 		$json_data = array(
 			"draw"            => intval( $requestData['draw'] ),   // for every request/draw by clientside , they send a number as a parameter, when they recieve a response/data they first check the draw number, so we are sending same number in draw. 
-			"recordsTotal"    => intval( $totalData ),  // total number of records
-			"recordsFiltered" => intval( $totalFiltered ), // total number of records after searching, if there is no searching then totalFiltered = totalData
+			"recordsTotal"    => intval( $count ),  // total number of records
+			"recordsFiltered" => intval( $count ), // total number of records after searching, if there is no searching then totalFiltered = totalData
 			"data"            => $data   // total data array
 		);
 
@@ -391,7 +439,6 @@ class Model_reports extends CI_Model {
 
         if($exportable == false){
             $sql.=" ORDER BY ". $columns[$requestData['order'][0]['column']]." ".$requestData['order'][0]['dir']." LIMIT ".$requestData['start']." ,".$requestData['length']."   ";  // adding length
-        
         }
 		$query = $this->db->query($sql);
 
