@@ -153,6 +153,7 @@
                                     <th>Shipping</th>
                                     <th>Total</th>
                                     <th>Payment</th>
+                                    <th>Rating</th>
                                     <th>Status</th>
                                     <th width="30">Action</th>
                                 </tr>

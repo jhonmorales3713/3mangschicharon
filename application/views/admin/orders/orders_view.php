@@ -2,6 +2,9 @@
     .pac-container {
     z-index: 1051 !important;
     }
+    .checked {
+        color: orange;
+    }
     .modal{
         z-index: 1050;   
     }
@@ -188,7 +191,48 @@
                         </div>
                     </div>
                 </div>
+                <?php if($order_details['customer_feedback'] && $order_details['status_id'] == 5){?>
+                <div class="col-12 mb-4">
+                    <div class="card detail-container">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <!-- <i class="fa fa-credit-card no-margin"></i> -->
+                                Rating Details
+                            </h3>
+                        </div>
+                        <div class="card-body px-lg-5">
+                            <div class="">
 
+                                <div class="row " id="">
+                                    <div class="col-12 col-md-12">
+                                        <label class="">Rating:</label>
+                                        <label id="tm_payment_date" class="green-text font-weight-bold">
+                                            <?php for($i=json_decode($order_details['customer_feedback'])->rating;$i>0;$i--){?>
+                                                    <span class="fa fa-star checked r1 r" data-rate=1></span>
+                                            <?php }
+                                            for($i=json_decode($order_details['customer_feedback'])->rating;$i<5;$i++){?>
+                                                <span class="fa fa-star r1 r" data-rate=1></span>
+                                            <?php
+                                            }
+                                        ?></label>
+                                    </div>
+                                    <!-- <div class="col-12 col-md">
+                                        
+                                    </div> -->
+                                    <div class="col-12 col-md-12">
+                                        <label class="">Customer Feedback:</label>
+                                    </div>
+                                    <div class="col-12 col-md-12">
+                                        <?=json_decode($order_details['customer_feedback'])->message;?>
+                                    </div>
+                                </div>
+
+                                        
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <?php }?>
             </div>
         </div>
         <div class="col-md-8  order-md-1">

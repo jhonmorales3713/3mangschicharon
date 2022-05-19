@@ -590,11 +590,12 @@ class Main_orders extends CI_Controller {
         $sheet->setCellValue('G6', 'Shipping Fee');
         $sheet->setCellValue('H6', 'Total');
         $sheet->setCellValue('I6', 'Payment Status');
-        $sheet->setCellValue('J6', 'Status');
+        $sheet->setCellValue('J6', 'Rating');
+        $sheet->setCellValue('K6', 'Status');
 
         $sheet->getStyle('A1')->getFont()->setBold(true);
         $sheet->getStyle('A4:B4')->getFont()->setBold(true);
-        $sheet->getStyle('A6:J6')->getFont()->setBold(true);
+        $sheet->getStyle('A6:K6')->getFont()->setBold(true);
 
         // print_r($query);
         $exceldata= array();
@@ -609,7 +610,8 @@ class Main_orders extends CI_Controller {
                 '7' => ucwords($row[7]),
                 '8' => ucwords($row[8]),
                 '9' => ucwords($row[9]),
-                '10' => ucwords($row[10])
+                '10' => ucwords($row[10]),
+                '11' => ucwords($row[11])
             );
             $exceldata[] = $resultArray;
         }

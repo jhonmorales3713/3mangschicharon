@@ -653,6 +653,10 @@ class Model_orders extends CI_Model {
 			// if()
 			// print_r($this->orders_details($row["order_id"]));
 			$payment_details = $this->orders_details($row["order_id"])[0];
+			$rating = 'None';
+			if($row['customer_feedback'] != ''){
+				$rating = json_decode($row['customer_feedback'])->rating.'/5';
+			}
 			$payment_status = 0;
 			// print_r($payment_details);
 			if(($payment_details['payment_details'] != '' && $payment_method !='COD') || $payment_details['status_id'] == 5){
@@ -688,6 +692,7 @@ class Model_orders extends CI_Model {
             $nestedData[] = 50;
             $nestedData[] = number_format(floatval(str_replace(',','',$subtotal_unconverted))+50,2);
 			$nestedData[] = display_payment_status($payment_status, $payment_method,$exportable);
+			$nestedData[] = $rating;
 			// $nestedData[] = 
 			$nestedData[] = display_order_status($row['status_id'],$exportable);
 			// $nestedData[] = $row['status_id'];
